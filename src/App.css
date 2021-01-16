@@ -1,0 +1,7 @@
+.app {
+  min-height: 100vh;
+  background: lightblue;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
