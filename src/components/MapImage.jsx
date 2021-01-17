@@ -11,8 +11,15 @@ import '../App.css';
  * @param {string} mapURL - URL for map image
  */
 const MapImage = ({mapURL}) => {
-  return (   
-      <img className="mapImg" src={mapURL} alt="Map" />    
+
+var mapImageURL = 'https://www.mapquestapi.com/staticmap/v5/map?key=HaI8dvLBtirhMstWmwrcbkRmltyyHAT2&locations=England&size=@2x';
+
+if(mapURL !== undefined){
+  mapImageURL = mapURL;
+}
+
+return (   
+      <img className="mapImg" src={mapImageURL} alt="Map" />    
   );
 };
 

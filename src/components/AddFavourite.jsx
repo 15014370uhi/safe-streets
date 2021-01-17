@@ -9,44 +9,58 @@ import {FavouritesContext} from '../context/FavouritesContext';
 import Button from '@material-ui/core/Button';
 
 const AddFavourite = () => {
-  // Context imported
+
+  // Favourites context imported
   const [favourites, setFavourites] = useContext (FavouritesContext);
 
-  // Set State
+  // Set local state for each value of title and mapURL
+  const [title, setTitle] = useState ('');
+  const [mapURL, setMapURL] = useState ('');
 
-  // Create event handler function to update state using the state functions
+  // Event handler to update title local state with user input
   const updateTitle = e => {
     setTitle (e.target.value);
   };
 
-  // Set state for each value of title and mapURL
-  const [title, setTitle] = useState ('');
-  const [mapURL, setMapURL] = useState ('');
-
-  // Eventually** This will be called to update the mapURL from wherever it is stored after a search
+  // Event handler to update mapURL local state with user input
   const updateMapURL = e => {
     setMapURL (e.target.value);
   };
 
+  // Event handler to add new favourite to favourites context state
   const addFavourite = e => {
-    // Prevent default page refresh when typing in input boxes on each character - since state in changing
     e.preventDefault ();
 
-    // To add Favourite, get previous favourites list and add a new favourite object to existing ones
-    setFavourites (prevFavourites => [
-      ...prevFavourites,
+    // Get previous favourites state and add a new favourite object
+    setFavourites (prevFavourites => [...prevFavourites,
       {
-        title: title, 
-        mapURL: mapURL
-      }
+        title: title,
+        mapURL: mapURL,
+      },
     ]);
   };
 
   // Eventually ** mapURL will be from wherever I store it after a search and not updated from user typing in form
+
+  // title and mapURL local state updated on each keystroke, then new favourite added when form submitted using
+  // local variables
   return (
     <form onSubmit={addFavourite}>
-      <input type="text" name="title" value={title} onChange={updateTitle} />
-      <input type="text" name="mapURL" value={mapURL} onChange={updateMapURL} />
+      <input
+        type="text"
+        name="title"
+        value={title}
+        placeholder="Note..."
+        onChange={updateTitle}
+      />
+
+      <input
+        type="text"
+        name="mapURL"
+        value={mapURL}
+        placeholder="TEST URL..."
+        onChange={updateMapURL}
+      />
       <Button variant="contained" color="primary">Submit</Button>
     </form>
   );
