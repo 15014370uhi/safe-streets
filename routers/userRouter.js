@@ -3,6 +3,8 @@ const User = require ('../models/userModel');
 const bcrypt = require ('bcryptjs');
 const jwt = require ('jsonwebtoken');
 
+
+// Register new user
 router.post ('/', async (req, res) => {
   try {
     const {email, password, passwordVerify} = req.body;
@@ -63,7 +65,8 @@ router.post ('/', async (req, res) => {
   }
 });
 
-// Login
+
+// Login User
 router.post ('/login', async (req, res) => {
   try {
     const {email, password} = req.body;
@@ -117,6 +120,7 @@ router.post ('/login', async (req, res) => {
   }
 });
 
+
 // Logout user (Clear Cookie by setting date to the past)
 router.get('/logout', (req, res) => {
     res.cookie('token', '', {
@@ -124,7 +128,6 @@ router.get('/logout', (req, res) => {
         expires: new Date(0)
     }).send();
 })
-
 
 
 module.exports = router;
