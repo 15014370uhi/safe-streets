@@ -11,10 +11,7 @@ const userSchema = new mongoose.Schema (
       required: true,
     },
     favourites: [],
-  },
-  {
-    usePushEach: true,
-  }
+  } 
 );
 
 module.exports = mongoose.model ('user', userSchema);
