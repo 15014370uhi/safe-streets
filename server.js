@@ -8,9 +8,11 @@ dotenv.config ();
 const app = express ();
 const PORT = process.env.PORT || 5000;
 
+
 // Middleware
 app.use (express.json ()); // Body parser json
 app.use (cors ());
+
 
 // Connect to MongoDB
 mongoose.connect (
@@ -23,6 +25,7 @@ mongoose.connect (
 );
 
 app.listen (PORT, () => console.log (`Server started on port ${PORT}`));
+
 
 // Routes
 app.use('/auth', require("./routers/userRouter"));
