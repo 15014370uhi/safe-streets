@@ -95,6 +95,15 @@ router.post ('/login', async (req, res) => {
           .json ({errorMessage: 'Wrong email or password'}); // Wrong password entered
       }
 
+      // Clear existing login tokens //TEST
+      res
+      .cookie ('token', '', {
+        httpOnly: true,
+        expires: new Date (0),
+      })
+      .send ();
+
+
       // Sign JWT token
       const token = jwt.sign (
         {user: existingUser._id},
@@ -123,6 +132,19 @@ router.get ('/logout', (req, res) => {
     })
     .send ();
 });
+
+
+
+
+// @route GET /
+// @desc GET current user
+// router.get ('/', (req, res) => {
+//   Item.find ()
+//     .sort ({date: -1}) // Sort by date in descending order
+//     .then (items => res.json (items)); // Return all items
+// });
+
+
 
 
 
@@ -163,41 +185,111 @@ router.put ('/favourites', async (req, res) => {
       mapURL: mapURL,
       title: title
     };
-
+///////////////////////////////////////////TEST
     // Push new favourite to user's array of favourites
-    User.updateOne (
+//    User.updateOne (
+     User.findOneAndUpdate (
       {_id: payload.user},
       {$push: {favourites: favouriteToAdd}},
-      {safe: true, upsert: true},
+      {safe: true, upsert: true, new: true},     
       function (err, res) {
         if (err) {
-          console.log ('ERROR: in updateOne line 173 ' + err);
-        } else {
-          console.log ('Sucessfully added Favourite');
+          console.log (err);
+        } else {          
+          console.log ('Sucessfully added Favourite');          
         }        
-      }      
+      }    
     );
+       
+    
+    
 
     // Retrieve updated list of user favourites
     const currentUser = await User.findById ({_id: payload.user}); // Replace with _id once know how to get form cookie
+    
+    //const currentUser = User.findOne ({_id: payload.user}); // Replace with _id once know how to get form cookie
+   // console.log("currentUser");
+      //console.log(currentUser);
     if (!currentUser) {
       console.log("No user found with supplied ID");
     } else {
-     // console.log(currentUser.favourites);
+    // console.log("currentUser");
      res.json (currentUser.favourites); // Return favourites to client side
     }
   }
 });
 
-// // Delete a favourite entry by favourite ID
-// router.delete ('/favourites/:id', async (req, res) => {
-//   //TODO check if logged in - check user exists - (ID will be got from user clicking on list
-//   //TODO of favourites - which will know the ID, pass the favourite id back here and then delete
-//   //TODO one by id?..)
-//   // Find item by id from parameters
-//   await Item.deleteById(req.params.id)
-//   res.json (items));
+
+
+
+// (Protected Route) Get all current user favourites 
+router.get ('/favourites/', async (req, res) => {
+
+  // Check user is logged in before allowing protected route
+
+   // Get user ID from cookie // TODO move to external function file
+   const rawCookie = req.header ('cookie').split ('=');
+   const token = rawCookie[1];
+   let payload; // Declare variable to hold payload
+
+   // if cookie not set, return unauthorized error
+   if (!rawCookie) {
+     console.log ('No token found');
+     return res.status (401).end (); // Unauthorised
+   } else {
+     try {
+       payload = jwt.verify (token, process.env.JWTSECRET);        
+     } catch (err) {
+       if (err instanceof jwt.JsonWebTokenError) {
+         //JWT unauthorized return 401 error
+         return res.status (401).end (); // Unauthorised
+       }
+       // Otherwise, return bad request error
+       return res.status (400).end (); // Bad request
+     }
+   }
+})
+
+
+
+  // TODO check token protected route
+// Delete a favourite entry by favourite ID
+router.delete ('/favourites/:id', async (req, res) => {
+         // Get user ID from cookie
+   const rawCookie = req.header ('cookie').split ('=');
+   const token = rawCookie[1];
+   let payload; // Declare variable to hold payload
+
+   // if cookie not set, return unauthorized error
+   if (!rawCookie) {
+     console.log ('No token found');
+     return res.status (401).end (); // Unauthorised
+   } else {
+     try {
+       payload = jwt.verify (token, process.env.JWTSECRET);        
+     } catch (err) {
+       if (err instanceof jwt.JsonWebTokenError) {
+         //JWT unauthorized return 401 error
+         return res.status (401).end (); // Unauthorised
+       }
+       // Otherwise, return bad request error
+       return res.status (400).end (); // Bad request
+     }
+   }
+
+   
+//   Users.findOneAndUpdate( // select your doc in moongo
+//     {req.params.id}, // your query, usually match by _id // USER ID
+//     { $pull: { favourites: { $elemMatch: { _id: req.params.id} } } }, // item(s) to match from array you want to pull/remove
+//     { multi: false } // set this to true if you want to remove multiple elements.
+//   )
+//   //res.json (items));
 // });
+  });
+
+
+
+
 
 
 module.exports = router;
