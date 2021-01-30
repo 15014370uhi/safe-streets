@@ -4,6 +4,9 @@ const bcrypt = require ('bcryptjs');
 const jwt = require ('jsonwebtoken');
 const {loginValidation, registerValidation} = require ('../util/validation'); // Form validation
 
+//TODO Inestigate use cookie-parser module
+// TODO findByIdAndUpdate title for a favourite to allow for user to edit
+
 // Register new user
 router.post ('/', async (req, res) => {
   try {
@@ -57,7 +60,10 @@ router.post ('/', async (req, res) => {
       .cookie ('token', token, {
         httpOnly: true,
       })
-      .send ();
+      .send ({
+        id: existingUser._id,
+        email: existingUser.email,
+      });
   } catch (err) {
     console.error (err);
     res.status (500).send (); // Server Error
@@ -105,7 +111,11 @@ router.post ('/login', async (req, res) => {
         .cookie ('token', token, {
           httpOnly: true,
         })
-        .send ();
+        .send ({
+          id: existingUser._id,
+          email: existingUser.email,
+          favourites: existingUser.favourites,
+        });
     }
   } catch (err) {
     console.error (err);
@@ -123,8 +133,8 @@ router.get ('/logout', (req, res) => {
     .send ();
 });
 
-// Add to favourites array
-router.put ('/favourites', async (req, res) => {
+// (Protected Route) Create new favourite in favourites array
+router.post ('/favourites', async (req, res) => {
   const {mapURL, title} = req.body;
 
   // Validation
@@ -135,14 +145,15 @@ router.put ('/favourites', async (req, res) => {
   } else {
     // Get user ID from cookie
     const rawCookie = req.header ('cookie').split ('=');
-    const token = rawCookie[1];
+
     let payload; // Declare variable to hold payload
 
-    // if cookie not set, return unauthorized error
+    // If cookie not set, return unauthorized error
     if (!rawCookie) {
       console.log ('No token found');
       return res.status (401).end ();
     } else {
+      const token = rawCookie[1];
       try {
         payload = jwt.verify (token, process.env.JWTSECRET);
       } catch (err) {
@@ -160,7 +171,7 @@ router.put ('/favourites', async (req, res) => {
       title: title,
     };
 
-    // Add new favourite to user array of favourites
+    // Push new favourite to array
     await User.findOneAndUpdate (
       {_id: payload.user}, // User ID
       {
@@ -179,15 +190,10 @@ router.put ('/favourites', async (req, res) => {
   }
 });
 
-//TODO use cookie-parser module
-
-// (Protected Route) Get favourites of logged in user
+// (Protected Route) Get all favourites of logged in user
 router.get ('/favourites/', async (req, res) => {
-  // Check user is logged in before allowing protected route
-
-  // Get user ID from cookie // TODO move to external function file
+  // Validate user is logged in from cookie // TODO move to external function file
   const rawCookie = req.header ('cookie').split ('=');
-  const token = rawCookie[1];
   let payload; // Declare variable to hold payload
 
   //if cookie not set, return unauthorized error
@@ -195,6 +201,7 @@ router.get ('/favourites/', async (req, res) => {
     console.log ('No token found');
     return res.status (401).end (); // Unauthorised
   } else {
+    const token = rawCookie[1];
     try {
       payload = jwt.verify (token, process.env.JWTSECRET);
     } catch (err) {
@@ -206,21 +213,33 @@ router.get ('/favourites/', async (req, res) => {
       return res.status (400).end (); // Bad request
     }
   }
+
+  // Return updated user favourites from database
+  await User.findById ({_id: payload.user}, function (err, result) {
+    if (err) {
+      res.send (err);
+    } else {
+      res.json (result.favourites);
+    }
+  });
 });
 
-// TODO check token protected route
-// Delete a favourite entry by favourite ID
+// (Protected Route) Delete a favourite entry by favourite ID
 router.delete ('/favourites/:id', async (req, res) => {
-  // Get user ID from cookie
+
+  // Get Object ID of favourite from params
+  const favouriteID = req.params.id;
+
+  // Validate user is logged in from cookie // TODO move to external function file
   const rawCookie = req.header ('cookie').split ('=');
-  const token = rawCookie[1];
   let payload; // Declare variable to hold payload
 
-  // if cookie not set, return unauthorized error
+  //if cookie not set, return unauthorized error
   if (!rawCookie) {
     console.log ('No token found');
     return res.status (401).end (); // Unauthorised
   } else {
+    const token = rawCookie[1];
     try {
       payload = jwt.verify (token, process.env.JWTSECRET);
     } catch (err) {
@@ -232,6 +251,22 @@ router.delete ('/favourites/:id', async (req, res) => {
       return res.status (400).end (); // Bad request
     }
   }
+
+  // Delete favourite from db
+  await User.findOneAndUpdate (
+    {_id: payload.user}, // User ID
+    {$pull: {favourites: {_id: favouriteID}}},
+    {new: true})
+    .then (doc => {
+      if (!doc) {
+        return res.status (404).end (); // No docuement found
+      }
+      doc.save (); // Save document
+      return res.status (200).json (doc.favourites); // Return updated favourites array
+    })
+    .catch (err => next (err));
 });
+
+
 
 module.exports = router;
