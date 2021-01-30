@@ -2,7 +2,6 @@ const router = require ('express').Router ();
 const User = require ('../models/userModel');
 const bcrypt = require ('bcryptjs');
 const jwt = require ('jsonwebtoken');
-const Joi = require ('@hapi/joi');
 const {loginValidation, registerValidation} = require ('../util/validation'); // Form validation
 
 // Register new user
@@ -124,23 +123,9 @@ router.get ('/logout', (req, res) => {
     .send ();
 });
 
-// @route GET /
-// @desc GET current user
-// router.get ('/', (req, res) => {
-//   Item.find ()
-//     .sort ({date: -1}) // Sort by date in descending order
-//     .then (items => res.json (items)); // Return all items
-// });
-
 // Add to favourites array
 router.put ('/favourites', async (req, res) => {
   const {mapURL, title} = req.body;
-
-  // Create favourite object with supplied data
-  favouriteToAdd = {
-    mapURL: mapURL,
-    title: title,
-  };
 
   // Validation
   if (!mapURL || !title) {
@@ -169,6 +154,11 @@ router.put ('/favourites', async (req, res) => {
         return res.status (400).end ();
       }
     }
+    // Create favourite object with supplied data
+    favouriteToAdd = {
+      mapURL: mapURL,
+      title: title,
+    };
 
     // Add new favourite to user array of favourites
     await User.findOneAndUpdate (
