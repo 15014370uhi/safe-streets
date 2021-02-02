@@ -1,32 +1,38 @@
 {
-  "name": "safe-streets",
-  "version": "1.0.0",
-  "description": "Safe Streets App",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server",
-    "dev": "nodemon server"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/15014370uhi/safe-streets.git"
-  },
-  "author": "Richard Clark",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/15014370uhi/safe-streets/issues"
-  },
-  "homepage": "https://github.com/15014370uhi/safe-streets#readme",
+  "name": "react-firestore-crud",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@hapi/joi": "^17.1.1",
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.11.13"
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/react": "^17.0.0",
+    "bootstrap": "^4.5.2",
+    "firebase": "^7.19.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
