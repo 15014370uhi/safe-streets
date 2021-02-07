@@ -21,8 +21,7 @@ const ListFavourites = () => {
   return (
     <div>
       <Link to="/add-favourite">Add Favourite</Link>
-      <h2>Favourites</h2>
-      
+      <h2>Favourites</h2>      
       <table>
         <thead>
           <tr>

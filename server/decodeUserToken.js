@@ -5,19 +5,18 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
-// TODO rename to something else
 async function decodeUserToken(req, res, next) {
 
-  // Assign authorization if present
-  const header = req.headers?.authorization;
+  // Assign authorisation if present
+  const header = req.headers?.authorisation;
 
-  // If 'Bearer' token exists with a value within authorization header
-  if (header !== 'Bearer null' && req.headers?.authorization?.startsWith('Bearer ')) {
+  // If 'Bearer' token exists with a value within authorisation header
+  if (header !== 'Bearer null' && req.headers?.authorisation?.startsWith('Bearer ')) {
     
-    // Get token value from authorization
-    const idToken = req.headers.authorization.split('Bearer ')[1];
+    // Get token value from authorisation
+    const idToken = req.headers.authorisation.split('Bearer ')[1];
     try {
-      // Set decoded token value to variable 
+      // Verify token value with firebase
       const decodedToken = await admin.auth().verifyIdToken(idToken);
 
       // Set currentUser request variable to value of decoded token
