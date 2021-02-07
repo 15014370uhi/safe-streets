@@ -16,12 +16,12 @@ const createToken = async () => {
   return payloadHeader;
 }
 
-export const addToPhonebook = async (name, number) => {
+export const addToFavourites = async (title, mapURL) => {
   const header = await createToken();
 
   const payload = {
-    name,
-    number,
+    title,
+    mapURL,
   }
   try {
     console.log(payload);
@@ -33,7 +33,7 @@ export const addToPhonebook = async (name, number) => {
   }
 };
 
-export const getPhonebookEntries = async () => {
+export const getFavourites = async () => {
   const header = await createToken();
 
   try {

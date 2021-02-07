@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 
 import fire from './fire.js';
 import Login from './components/session/Login';
-import ListAllNumbers from './components/phonebook/ListAllNumbers';
-import AddNumber from './components/phonebook/AddNumber';
+import ListAllFavourites from './components/favourites/ListAllFavourites';
+import AddFavourite from './components/favourites/AddFavourite';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -37,11 +37,11 @@ function App() {
               Sign out
             </button>
             <Switch>
-              <Route path="/add-number">
-                <AddNumber />
+              <Route path="/add-favourite">
+                <AddFavourite />
               </Route>
               <Route path="/">
-                <ListAllNumbers />
+                <ListAllFavourites />
               </Route>
             </Switch>
             </>

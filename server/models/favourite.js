@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
-const phoneSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+const favouriteSchema = new mongoose.Schema({
+  title: String,
+  mapURL: String,
 });
 
-phoneSchema.set('toJSON', {
+favouriteSchema.set('toJSON', {
   transform: (doc, returnedObject) => {
     returnedObject.id = returnedObject._id.toString();
     delete returnedObject._id;
@@ -13,4 +13,4 @@ phoneSchema.set('toJSON', {
   },
 });
 
-module.exports = mongoose.model('Phone', phoneSchema);
+module.exports = mongoose.model('Favourite', favouriteSchema);
