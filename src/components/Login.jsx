@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Fire from '.././Fire';
+import Fire from '../firebase';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import '.././App.css';

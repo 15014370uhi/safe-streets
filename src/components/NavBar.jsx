@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Fire from '.././Fire';
+import Fire from '../firebase';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { Link } from "@reach/router";

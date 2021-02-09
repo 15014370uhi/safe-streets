@@ -1,4 +1,4 @@
-import Fire from '.././Fire';
+import Fire from '../firebase';
 import Button from 'react-bootstrap/Button';
 
 

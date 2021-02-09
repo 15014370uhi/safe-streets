@@ -1,15 +1,15 @@
 import React, {Component} from 'react';
-import Fire from './Fire';
-import Login from './components/Login';
-import Search from './components/Search';
-import NavBar from './components/NavBar';
-import UserProvider from "./auth/UserProvider";
+import Fire from '../firebase';
+import Login from '../components/Login';
+import Search from '../components/Search';
+import NavBar from '../components/NavBar';
+import UserProvider from "../auth/UserProvider";
 
 ////////////////////////////////////////////////////////////////
 
 import { Router } from "@reach/router";
-import SignIn from "./components/testSignIn";
-import SignUp from "./components/testSignUp";
+import SignIn from "../components/testSignIn";
+import SignUp from "../components/testSignUp";
 //import ProfilePage from "./components/ProfilePage";
 ////////////////////////////////////////////////////
 

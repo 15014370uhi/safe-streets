@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Router } from "@reach/router";
-import SignIn from "./testSignIn";
-import SignUp from "./testSignUp";
-import ProfilePage from "./testProfilePage";
-import PasswordReset from "./testPasswordReset";
-function testApplication() {
-  const user = null;
+import SignIn from "./TestSignIn";
+import SignUp from "./TestSignUp";
+import ProfilePage from "./TestProfile";
+import PasswordReset from "./TestPasswordReset";
+import UserProvider from "../auth/UserProvider";
+import { UserContext } from "../auth/UserProvider";
+
+function TestApplication() {
+
+  const user = useContext(UserContext);
+
   return (
         user ?
         <ProfilePage />
@@ -18,4 +23,4 @@ function testApplication() {
 
   );
 }
-export default testApplication;
+export default TestApplication;

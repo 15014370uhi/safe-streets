@@ -1,17 +1,28 @@
-import React, { useState } from "react";
-import { Link } from "@reach/router";
+import React, { useState } from 'react';
+import { Link } from '@reach/router';
+import {auth, generateUserDocument} from '../firebase';
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState(null);
-  const createUserWithEmailAndPasswordHandler = (event, email, password) => {
+
+  const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
     event.preventDefault();
+    try{
+      const {user} = await auth.createUserWithEmailAndPassword(email, password);
+      generateUserDocument(user, {displayName});
+    }
+    catch(error){
+      setError('Error Signing up with email and password');
+    }
+
     setEmail("");
     setPassword("");
     setDisplayName("");
   };
+
   const onChangeHandler = event => {
     const { name, value } = event.currentTarget;
     if (name === "userEmail") {
@@ -22,6 +33,7 @@ const SignUp = () => {
       setDisplayName(value);
     }
   };
+
   return (
     <div className="mt-8">
       <h1 className="text-3xl mb-2 text-center font-bold">Sign Up</h1>
