@@ -19,12 +19,11 @@ const firebaseConfig = {
   const userRef = firestore.doc(`users/${user.uid}`);
   const snapshot = await userRef.get();
   if (!snapshot.exists) {
-    const { email, displayName, photoURL } = user;
+    const { email, displayName} = user;
     try {
       await userRef.set({
         displayName,
-        email,
-        photoURL,
+        email,       
         ...additionalData
       });
     } catch (error) {
@@ -49,11 +48,17 @@ const getUserDocument = async uid => {
 
 
 
-  // PREVIOUS
-  //const Fire = Firebase.initializeApp(firebaseConfig);
-   // export default Fire;
+  
+// Initialise firebase
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}else {
+  firebase.app(); // if already initialized, use that one
+}
 
-firebase.initializeApp(firebaseConfig);
+
+
+//firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 

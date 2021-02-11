@@ -10,7 +10,8 @@ import { UserContext } from "../auth/UserProvider";
 function TestApplication() {
 
   const user = useContext(UserContext);
-
+// TODO change profile to search form Page
+  // If user is logged in, display profile page, else show sign up page
   return (
         user ?
         <ProfilePage />

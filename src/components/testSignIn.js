@@ -7,21 +7,24 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
 
+    // Sign in user with firebase sign in method
    const signInWithEmailAndPasswordHandler = (event, email, password) => {
     event.preventDefault();
     auth.signInWithEmailAndPassword(email, password).catch(error => {
       setError("Error signing in with password and email!");
+      // TEST
       console.error("Error signing in with password and email", error);
     });
   };
 
       const onChangeHandler = (event) => {
           const {name, value} = event.currentTarget;
-
-          if(name === 'userEmail') {
+        // If email input set email state
+          if(name === 'email') {
               setEmail(value);
           }
-          else if(name === 'userPassword'){
+          // If password input, set password state
+          else if(name === 'password'){
             setPassword(value);
           }
       };
@@ -32,48 +35,39 @@ const SignIn = () => {
       <div className="border border-blue-400 mx-auto w-11/12 md:w-2/4 rounded py-8 px-4 md:px-8">
         {error !== null && <div className = "py-4 bg-red-600 w-full text-white text-center mb-3">{error}</div>}
         <form className="">
-          <label htmlFor="userEmail" className="block">
+          <label htmlFor="email" className="block">
             Email:
           </label>
           <input
             type="email"
             className="my-1 p-1 w-full"
-            name="userEmail"
+            name="email"
             value = {email}
-            placeholder="E.g: faruq123@gmail.com"
-            id="userEmail"
-            onChange = {(event) => onChangeHandler(event)}
+            placeholder="Email"
+            id="email"
+            onChange = {(e) => onChangeHandler(e)}
           />
-          <label htmlFor="userPassword" className="block">
+          <label htmlFor="password" className="block">
             Password:
           </label>
           <input
             type="password"
             className="mt-1 mb-3 p-1 w-full"
-            name="userPassword"
+            name="password"
             value = {password}
-            placeholder="Your Password"
-            id="userPassword"
-            onChange = {(event) => onChangeHandler(event)}
+            placeholder="Password"
+            id="password"
+            onChange = {(e) => onChangeHandler(e)}
           />
-          <button className="bg-green-400 hover:bg-green-500 w-full py-2 text-white" onClick = {(event) => {signInWithEmailAndPasswordHandler(event, email, password)}}>
+          <button className="bg-green-400 hover:bg-green-500 w-full py-2 text-white" onClick = {(e) => {signInWithEmailAndPasswordHandler(e, email, password)}}>
             Sign in
           </button>
         </form>
-        <p className="text-center my-3">or</p>
-        <button
-          className="bg-red-500 hover:bg-red-600 w-full py-2 text-white">
-          Sign in with Google
-        </button>
         <p className="text-center my-3">
-          Don't have an account?{" "}
+          Don't have an account?
           <Link to="signUp" className="text-blue-500 hover:text-blue-600">
             Sign up here
-          </Link>{" "}
-          <br />{" "}
-          <Link to = "passwordReset" className="text-blue-500 hover:text-blue-600">
-            Forgot Password?
-          </Link>
+          </Link>     
         </p>
       </div>
     </div>

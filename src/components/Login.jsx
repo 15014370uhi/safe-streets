@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import '.././App.css';
 
 const Login = () => {
-    const [displayName, setDisplayName] = useState("");
+    const [username, setUsername] = useState("");
 	const [email, setEmail] = useState(''); // State to hold email input
 	const [password, setPassword] = useState(''); // State to hold password input
 	const [formError, setFormError] = useState(''); // State to hold form errors
@@ -13,15 +13,15 @@ const Login = () => {
 	// Handle login form submit
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		//var errorText = "";
+		// Reset any previous form error state
 		setFormError('');
 
-		// Call firestore sign in method
+		// Sign in user with firestore sign in method
 		Fire.auth()
 			.signInWithEmailAndPassword(email, password)
 			.then((user) => {})
 			.catch((error) => {
-				// Set state value for error message
+				// Set state value for any error message
 				setFormError(error.message);
 			});
 	};
@@ -42,12 +42,12 @@ const Login = () => {
 	const register = (e) => {
 		e.preventDefault();
 
-		// Call firestore create user method
+		// Create new user with firestore create user method
 		Fire.auth()
 			.createUserWithEmailAndPassword(email, password)
 			.then((user) => {})
 			.catch((error) => {
-				// Set state value for error message
+				// Set state value for aany error message
 				setFormError(error.message);
 			});
 	};

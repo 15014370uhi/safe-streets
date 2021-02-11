@@ -17,7 +17,6 @@ const SignUp = () => {
     catch(error){
       setError('Error Signing up with email and password');
     }
-
     setEmail("");
     setPassword("");
     setDisplayName("");
@@ -33,7 +32,7 @@ const SignUp = () => {
       setDisplayName(value);
     }
   };
-
+// TODO tailwind CSS for form
   return (
     <div className="mt-8">
       <h1 className="text-3xl mb-2 text-center font-bold">Sign Up</h1>
@@ -52,7 +51,7 @@ const SignUp = () => {
             className="my-1 p-1 w-full "
             name="displayName"
             value={displayName}
-            placeholder="E.g: Faruq"
+            placeholder="Display Name"
             id="displayName"
             onChange={event => onChangeHandler(event)}
           />
@@ -64,7 +63,7 @@ const SignUp = () => {
             className="my-1 p-1 w-full"
             name="userEmail"
             value={email}
-            placeholder="E.g: faruq123@gmail.com"
+            placeholder="Email"
             id="userEmail"
             onChange={event => onChangeHandler(event)}
           />
@@ -76,7 +75,7 @@ const SignUp = () => {
             className="mt-1 mb-3 p-1 w-full"
             name="userPassword"
             value={password}
-            placeholder="Your Password"
+            placeholder="Password"
             id="userPassword"
             onChange={event => onChangeHandler(event)}
           />
@@ -88,13 +87,7 @@ const SignUp = () => {
           >
             Sign up
           </button>
-        </form>
-        <p className="text-center my-3">or</p>
-        <button
-          className="bg-red-500 hover:bg-red-600 w-full py-2 text-white"
-        >
-          Sign In with Google
-        </button>
+        </form>       
         <p className="text-center my-3">
           Already have an account?{" "}
           <Link to="/" className="text-blue-500 hover:text-blue-600">
