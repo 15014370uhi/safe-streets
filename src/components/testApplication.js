@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Router } from "@reach/router";
-import SignIn from "./TestSignIn";
-import SignUp from "./TestSignUp";
+import Login from "./Login";
+import Register from "./Register";
 import ProfilePage from "./TestProfile";
 import PasswordReset from "./TestPasswordReset";
 import UserProvider from "../auth/UserProvider";
@@ -12,13 +12,14 @@ function TestApplication() {
   const user = useContext(UserContext);
 // TODO change profile to search form Page
   // If user is logged in, display profile page, else show sign up page
+  // TODO NOTE:  <ComponentName path="browserAddress" />
   return (
         user ?
         <ProfilePage />
       :
         <Router>
-          <SignUp path="signUp" />
-          <SignIn path="/" />
+          <Register path="register" />
+          <Login path="/" />
           <PasswordReset path = "passwordReset" />
         </Router>
 

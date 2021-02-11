@@ -1,92 +1,76 @@
 import React, {useState} from 'react';
-import Fire from '../firebase';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import '.././App.css';
+import { Link } from '@reach/router';
+import {auth} from '../firebase';
 
 const Login = () => {
-    const [username, setUsername] = useState("");
-	const [email, setEmail] = useState(''); // State to hold email input
-	const [password, setPassword] = useState(''); // State to hold password input
-	const [formError, setFormError] = useState(''); // State to hold form errors
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
 
-	// Handle login form submit
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		// Reset any previous form error state
-		setFormError('');
+    // Sign in user with firebase sign in method
+   const signInWithEmailAndPasswordHandler = (event, email, password) => {
+    event.preventDefault();
+    auth.signInWithEmailAndPassword(email, password).catch(error => {
+      setError("Error signing in with password and email!");
+      // TEST
+      console.error("Error signing in with password and email", error);
+    });
+  };
 
-		// Sign in user with firestore sign in method
-		Fire.auth()
-			.signInWithEmailAndPassword(email, password)
-			.then((user) => {})
-			.catch((error) => {
-				// Set state value for any error message
-				setFormError(error.message);
-			});
-	};
+      const onChangeHandler = (event) => {
+          const {name, value} = event.currentTarget;
+        // If email input set email state
+          if(name === 'email') {
+              setEmail(value);
+          }
+          // If password input, set password state
+          else if(name === 'password'){
+            setPassword(value);
+          }
+      };
 
-	// Handle email input changes
-	const handleEmailChange = (e) => {
-		// Update email state
-		setEmail(e.target.value);
-	};
-
-	// Handle password input changes
-	const handlePasswordChange = (e) => {
-		// Update password state
-		setPassword(e.target.value);
-	};
-
-	// Handle register button click
-	const register = (e) => {
-		e.preventDefault();
-
-		// Create new user with firestore create user method
-		Fire.auth()
-			.createUserWithEmailAndPassword(email, password)
-			.then((user) => {})
-			.catch((error) => {
-				// Set state value for aany error message
-				setFormError(error.message);
-			});
-	};
-
-	return (
-		<div className="container">
-			<Form onSubmit={handleSubmit}>
-				<Form.Group>
-					<Form.Label>Email Address</Form.Label>
-					<Form.Control
-						onChange={handleEmailChange}
-						type="email"
-						name="email"
-						placeholder="Enter email"
-					/>
-				</Form.Group>
-
-				<Form.Group>
-					<Form.Label>Password</Form.Label>
-					<Form.Control
-						onChange={handlePasswordChange}
-						type="password"
-						name="password"
-						placeholder="Password"
-					/>
-				</Form.Group>
-
-				<Button variant="primary" type="submit">
-					Login
-				</Button>
-
-				<Button onClick={register} type="button" variant="danger">
-					Register
-				</Button>
-			</Form>
-			<br />
-			<p>{formError}</p>
-		</div>
-	);
+  return (
+    <div className="mt-8">
+      <h1 className="text-3xl mb-2 text-center font-bold">Sign In</h1>
+      <div className="border border-blue-400 mx-auto w-11/12 md:w-2/4 rounded py-8 px-4 md:px-8">
+        {error !== null && <div className = "py-4 bg-red-600 w-full text-white text-center mb-3">{error}</div>}
+        <form className="">
+          <label htmlFor="email" className="block">
+            Email:
+          </label>
+          <input
+            type="email"
+            className="my-1 p-1 w-full"
+            name="email"
+            value = {email}
+            placeholder="Email"
+            id="email"
+            onChange = {(e) => onChangeHandler(e)}
+          />
+          <label htmlFor="password" className="block">
+            Password:
+          </label>
+          <input
+            type="password"
+            className="mt-1 mb-3 p-1 w-full"
+            name="password"
+            value = {password}
+            placeholder="Password"
+            id="password"
+            onChange = {(e) => onChangeHandler(e)}
+          />
+          <button className="bg-green-400 hover:bg-green-500 w-full py-2 text-white" onClick = {(e) => {signInWithEmailAndPasswordHandler(e, email, password)}}>
+            Sign in
+          </button>
+        </form>
+        <p className="text-center my-3">
+          Don't have an account?
+          <Link to="register" className="text-blue-500 hover:text-blue-600">
+            Sign up here
+          </Link>     
+        </p>
+      </div>
+    </div>
+  );
 };
-
 export default Login;

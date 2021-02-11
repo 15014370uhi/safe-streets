@@ -58,7 +58,7 @@ logout = () => {
           </Nav>
           <Nav>
             <Navbar.Text>
-              Signed in as: <a href="#profile">Username Here</a>
+              Signed in as: <a href="/TestProfile">display Name Here</a>
             </Navbar.Text>
           </Nav>
         </Navbar.Collapse>

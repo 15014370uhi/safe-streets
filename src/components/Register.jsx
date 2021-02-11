@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from '@reach/router';
 import {auth, generateUserDocument} from '../firebase';
 
-const SignUp = () => {
+const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -98,4 +98,4 @@ const SignUp = () => {
     </div>
   );
 };
-export default SignUp;
+export default Register;

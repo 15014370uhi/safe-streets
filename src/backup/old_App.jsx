@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Fire from '../firebase';
-import Login from '../components/Login';
+import Login from '../Code ideas for later/Login';
 import Search from '../components/Search';
 import NavBar from '../components/NavBar';
 import UserProvider from "../auth/UserProvider";
@@ -8,8 +8,8 @@ import UserProvider from "../auth/UserProvider";
 ////////////////////////////////////////////////////////////////
 
 import { Router } from "@reach/router";
-import SignIn from "../components/testSignIn";
-import SignUp from "../components/testSignUp";
+import Login from "../components/Login";
+import Register from "../components/Register";
 //import ProfilePage from "./components/ProfilePage";
 ////////////////////////////////////////////////////
 
@@ -53,7 +53,7 @@ componentDidMount = () => {
         <Router>
           <SignUp path="signUp" />
           <SignIn path="/" />
-          <PasswordReset path = "passwordReset" />
+          <TestPasswordReset path = "passwordReset" />
         </Router>
     );
   } 

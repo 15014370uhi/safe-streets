@@ -6,6 +6,7 @@ const ProfilePage = () => {
   const user = useContext(UserContext);  // Get User from UserContext
 
   // TODO also get favourites array from user
+  // TODO move signout to a function
   const {displayName, email} = user; // Deconstruct user document elements
 
   return (
