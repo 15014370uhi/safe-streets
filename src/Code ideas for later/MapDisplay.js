@@ -4,7 +4,7 @@ import {auth} from "../firebase";
 
 const ProfilePage = () => {
   const user = useContext(UserContext);  // Get User from UserContext
-  const {photoURL, displayName, email} = user; // Deconstruct user document elements
+  const {photoURL, username, email} = user; // Deconstruct user document elements
 
   return (
     <div className = "mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
@@ -19,7 +19,7 @@ const ProfilePage = () => {
           className="border border-blue-300"
         ></div>
         <div className = "md:pl-4">
-        <h2 className = "text-2xl font-semibold">{displayName}</h2>
+        <h2 className = "text-2xl font-semibold">{username}</h2>
         <h3 className = "italic">{email}</h3>
         </div>
       </div>

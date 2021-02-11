@@ -7,14 +7,14 @@ const ProfilePage = () => {
 
   // TODO also get favourites array from user
   // TODO move signout to a function
-  const {displayName, email} = user; // Deconstruct user document elements
+  const {username, email} = user; // Deconstruct user document elements
 
   return (
     <div className = "mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
       <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
        
         <div className = "md:pl-4">
-        <h2 className = "text-2xl font-semibold">{displayName}</h2>
+        <h2 className = "text-2xl font-semibold">{username}</h2>
         <h3 className = "italic">{email}</h3>
         </div>
       </div>
