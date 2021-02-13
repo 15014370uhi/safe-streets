@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 import '.././App.css';
 
 const Login = () => {
-    const [displayName, setDisplayName] = useState("");
+    //const [displayName, setDisplayName] = useState("");
 	const [email, setEmail] = useState(''); // State to hold email input
 	const [password, setPassword] = useState(''); // State to hold password input
 	const [formError, setFormError] = useState(''); // State to hold form errors

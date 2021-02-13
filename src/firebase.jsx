@@ -1,6 +1,3 @@
-// Previous
-//import Firebase from "firebase/app";
-
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -14,8 +11,12 @@ const firebaseConfig = {
     appId: "1:400130243033:web:3439d32591167991e041c8"
   };
 
+  // Function to create a user document
   export const generateUserDocument = async (user, additionalData) => {
+
+    // If no current user passed, exit
   if (!user) return;
+  // Get reference to current user data in firestore by UID
   const userRef = firestore.doc(`users/${user.uid}`);
   const snapshot = await userRef.get();
   if (!snapshot.exists) {
@@ -23,7 +24,8 @@ const firebaseConfig = {
     try {
       await userRef.set({
         displayName,
-        email,       
+        email,
+        favourites: [], // TEST
         ...additionalData
       });
     } catch (error) {
@@ -33,6 +35,9 @@ const firebaseConfig = {
   return getUserDocument(user.uid);
 };
 
+
+
+// Get user document from firestore
 const getUserDocument = async uid => {
   if (!uid) return null;
   try {
@@ -48,14 +53,48 @@ const getUserDocument = async uid => {
 
 
 
-  
+
+
+// ADD new map URL to user collection of favourites
+export const addFavourite = async (user, mapURL) => {
+
+   // If no current user passed, exit
+   if (!user) {
+    console.log("user missing") ;
+    return;
+   }
+   if(!mapURL){
+    console.log("mapURL missing") ;
+    return;
+   } 
+ 
+  // Get reference to current user data in firestore by UID
+  const userRef = firestore.doc(`users/${user.uid}`);
+  const snapshot = await userRef.get();
+  if (!snapshot.exists) {
+    //const { email, displayName} = user;
+    try {
+      await userRef.update({
+        favourites: firebase.firestore.FieldValue.arrayUnion(mapURL)
+    })   
+    } catch (error) {
+      console.error("Error adding favourite", error);
+    }
+  }
+  return getUserDocument(user.uid);
+};
+
+
+
+
+
+
 // Initialise firebase
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }else {
   firebase.app(); // if already initialized, use that one
 }
-
 
 
 //firebase.initializeApp(firebaseConfig);

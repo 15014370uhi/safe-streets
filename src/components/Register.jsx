@@ -1,101 +1,149 @@
-import React, { useState } from 'react';
-import { Link } from '@reach/router';
+import React, {useState} from 'react';
+import {Link} from '@reach/router';
 import {auth, generateUserDocument} from '../firebase';
 
+// Style components
+import {
+	MDBContainer,
+	MDBRow,
+	MDBCol,
+	MDBCard,
+	MDBCardBody,
+	MDBModalFooter,
+	MDBIcon,
+	MDBCardHeader,
+	MDBBtn,
+	MDBInput,
+} from 'mdbreact';
+
 const Register = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
-  const [error, setError] = useState(null);
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [displayName, setDisplayName] = useState('');
+	const [error, setError] = useState(null);
 
-  const createUserWithEmailAndPasswordHandler = async (event, email, password) => {
-    event.preventDefault();
-    try{
-      const {user} = await auth.createUserWithEmailAndPassword(email, password);
-      generateUserDocument(user, {username});
-    }
-    catch(error){
-      setError('Error Signing up with email and password');
-    }
-    setEmail("");
-    setPassword("");
-    setUsername("");
-  };
+	const createUserWithEmailAndPasswordHandler = async (
+		e,
+		email,
+		password
+	) => {
+		e.preventDefault();
+		try {
+			const {user} = await auth.createUserWithEmailAndPassword(
+				email,
+				password
+			);
+			generateUserDocument(user, {displayName});
+		} catch (error) {
+			setError('Error creating user with email and password');
+		}
+		setEmail('');
+		setPassword('');
+		setDisplayName('');
+	};
 
-  const onChangeHandler = event => {
-    const { name, value } = event.currentTarget;
-    if (name === "userEmail") {
-      setEmail(value);
-    } else if (name === "userPassword") {
-      setPassword(value);
-    } else if (name === "username") {
-      setUsername(value);
-    }
-  };
-// TODO tailwind CSS for form
-  return (
-    <div className="mt-8">
-      <h1 className="text-3xl mb-2 text-center font-bold">Sign Up</h1>
-      <div className="border border-blue-400 mx-auto w-11/12 md:w-2/4 rounded py-8 px-4 md:px-8">
-        {error !== null && (
-          <div className="py-4 bg-red-600 w-full text-white text-center mb-3">
-            {error}
-          </div>
-        )}
-        <form className="">
-          <label htmlFor="username" className="block">
-            Display Name:
-          </label>
-          <input
-            type="text"
-            className="my-1 p-1 w-full "
-            name="username"
-            value={username}
-            placeholder="Display Name"
-            id="username"
-            onChange={event => onChangeHandler(event)}
-          />
-          <label htmlFor="userEmail" className="block">
-            Email:
-          </label>
-          <input
-            type="email"
-            className="my-1 p-1 w-full"
-            name="userEmail"
-            value={email}
-            placeholder="Email"
-            id="userEmail"
-            onChange={event => onChangeHandler(event)}
-          />
-          <label htmlFor="userPassword" className="block">
-            Password:
-          </label>
-          <input
-            type="password"
-            className="mt-1 mb-3 p-1 w-full"
-            name="userPassword"
-            value={password}
-            placeholder="Password"
-            id="userPassword"
-            onChange={event => onChangeHandler(event)}
-          />
-          <button
-            className="bg-green-400 hover:bg-green-500 w-full py-2 text-white"
-            onClick={event => {
-              createUserWithEmailAndPasswordHandler(event, email, password);
-            }}
-          >
-            Sign up
-          </button>
-        </form>       
-        <p className="text-center my-3">
-          Already have an account?{" "}
-          <Link to="/" className="text-blue-500 hover:text-blue-600">
-            Sign in here
-          </Link>
-        </p>
-      </div>
-    </div>
-  );
+	const onChangeHandler = (e) => {
+		const {name, value} = e.currentTarget;
+		if (name === 'email') {
+			setEmail(value);
+		} else if (name === 'password') {
+			setPassword(value);
+		} else if (name === 'displayName') {
+			setDisplayName(value);
+		}
+	};
+
+	return (
+		<MDBContainer>
+			<MDBRow>
+				<MDBCol md="6">
+					<MDBCard>
+						<MDBCardBody>
+							<MDBCardHeader className="form-header bg-primary rounded">
+								<h3 className="my-3">
+									<MDBIcon icon="user-circle" /> Sign Up:
+								</h3>
+							</MDBCardHeader>
+							<form>
+								<div className="grey-text">
+									<MDBInput
+										label="Your Username"
+										icon="user"
+										group
+										type="text"
+										name="displayName"
+										value={displayName}
+										validate
+										error="wrong"
+										success="right"
+										onChange={(event) =>
+											onChangeHandler(event)
+										}
+									/>
+
+									<MDBInput
+										label="Type your email"
+										icon="envelope"
+										group
+										type="email"
+										name="email"
+										validate
+										error="wrong"
+										success="right"
+										value={email}
+										onChange={(e) => onChangeHandler(e)}
+									/>
+
+									<MDBInput
+										label="Type your password"
+										icon="lock"
+										group
+										type="password"
+										name="password"
+										validate
+										value={password}
+										onChange={(e) => onChangeHandler(e)}
+									/>
+								</div>
+
+								<div className="text-center mt-4">
+									{error !== null && (
+										<div className="py-4 bg-red-600 w-full text-red text-center mb-3">
+											{error}
+										</div>
+									)}
+
+									<MDBBtn
+										color="light-blue"
+										className="mb-3"
+										type="submit"
+										onClick={(event) => {
+											createUserWithEmailAndPasswordHandler(
+												event,
+												email,
+												password
+											);
+										}}>
+										Sign Up
+									</MDBBtn>
+								</div>
+							</form>
+
+							<MDBModalFooter>
+								<div className="font-weight-light">
+									Already have an account?
+									<Link
+										to="/"
+										className="dark-grey-text font-weight-bold ml-1">
+										Login here
+									</Link>
+								</div>
+							</MDBModalFooter>
+						</MDBCardBody>
+					</MDBCard>
+				</MDBCol>
+			</MDBRow>
+		</MDBContainer>
+	);
 };
 export default Register;
