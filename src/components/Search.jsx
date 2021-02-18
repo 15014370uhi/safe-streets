@@ -9,7 +9,7 @@ const Search = () => {
 
   return (
     <React.Fragment>   
-      Search Page
+      This is the Search Page - for logged in users only
     </React.Fragment>
   );
 };

@@ -21,11 +21,14 @@ const firebaseConfig = {
   const snapshot = await userRef.get();
   if (!snapshot.exists) {
     const { email, displayName} = user;
+    //TEST
+    console.log("Firebase.jsx received: " + user.email + " " + user.displayName);
+    
     try {
       await userRef.set({
-        displayName,
-        email,
-        favourites: [], // TEST
+        displayName,  // Initialise user displayName
+        email, // initialise user email
+        favourites: [], // Initialise empty favourites array
         ...additionalData
       });
     } catch (error) {

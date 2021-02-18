@@ -16,7 +16,7 @@ import {
 	MDBInput,
 } from 'mdbreact';
 
-const Register = () => {
+const Register = (props) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [displayName, setDisplayName] = useState('');
