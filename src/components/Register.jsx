@@ -134,7 +134,7 @@ const Register = (props) => {
 									Already have an account?
 									<Link
 										to="/"
-										className="dark-grey-text font-weight-bold ml-1">
+										className="py-4 font-weight-bold ml-1 w-full text-red text-center mb-3">
 										Login here
 									</Link>
 								</div>

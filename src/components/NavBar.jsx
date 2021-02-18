@@ -42,10 +42,7 @@ const Navbar = props => {
     console.log ('No user found in navbar user context');
   }
 
-
   const [isOpen, setIsOpen] = useState ('false');
-
-
 
   const toggleCollapse = () => {
     setIsOpen (!isOpen);
@@ -53,12 +50,13 @@ const Navbar = props => {
 
 
 // useEffect(() => {
-//   effect
-  
-//   return () => {
-//     cleanup
-//   }
-// }, [])
+//     const clicked = () => console.log('window clicked')
+//     window.addEventListener('click', clicked)
+
+//     return () => {
+//       window.removeEventListener('click', clicked)
+//     }
+//   }, [])
 
 
 
@@ -95,9 +93,9 @@ const Navbar = props => {
                     </MDBTypography>
                   </MDBNavItem>
                 </MDBNavbarNav>
-                <MDBNavbarNav right>
+                <MDBNavbarNav right>                 
                   <MDBNavItem strong="true" className="white-text">
-                    ({displayName})
+                    ({user.email})
                   </MDBNavItem>
                   <MDBNavItem>
                     <MDBDropdown>
@@ -108,11 +106,10 @@ const Navbar = props => {
                         <MDBDropdownItem href="/profile">
                           Profile
                         </MDBDropdownItem>
-                        <MDBDropdownItem
-                          onClick={() => auth.signOut ()}
-                          href="/"
-                        >
+                        <MDBDropdownItem>
+                          <Link to="/" onClick={() => auth.signOut ()} strong="true" className="text-red">
                           Logout
+                        </Link>
                         </MDBDropdownItem>
                       </MDBDropdownMenu>
                     </MDBDropdown>
@@ -135,10 +132,7 @@ const Navbar = props => {
               </React.Fragment>}
         </MDBCollapse>
       </MDBNavbar>
-      <Router>
-        <Favourites path="/favourites" />       
-        
-      </Router>
+      
      
     </React.Fragment>
 	

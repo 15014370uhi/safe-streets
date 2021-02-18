@@ -26,8 +26,7 @@ const Login = () => {
 		e.preventDefault();
 
 		// Sign user in with firebase sign in method
-		auth.signInWithEmailAndPassword(email, password)
-		.catch((error) => {
+		auth.signInWithEmailAndPassword(email, password).catch((error) => {
 			setError('Error signing in with password and email!' + error);
 		});
 	};
@@ -108,9 +107,10 @@ const Login = () => {
 								<div className="font-weight-light">
 									Don't have an account?
 									<Link
-										to="register"
-										className="dark-grey-text font-weight-bold ml-1">
-										Sign up here
+										to="/register"
+										strong="true"
+										className="py-4 font-weight-bold ml-1 w-full text-red text-center mb-3">
+										Register
 									</Link>
 								</div>
 							</MDBModalFooter>

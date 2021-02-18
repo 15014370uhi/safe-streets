@@ -22,7 +22,7 @@ const firebaseConfig = {
   if (!snapshot.exists) {
     const { email, displayName} = user;
     //TEST
-    console.log("Firebase.jsx received: " + user.email + " " + user.displayName);
+    console.log(`Firebase.jsx received: ` + user.email + ` ` + user.displayName);
     
     try {
       await userRef.set({
