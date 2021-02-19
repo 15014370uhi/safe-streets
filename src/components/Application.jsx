@@ -4,10 +4,13 @@ import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
 import {UserContext} from '../auth/UserProvider';
-import Navbar from './Navbar';
-import Navbar2 from './Navbar2';
+import Navbar from './nav/Navbar';
+import Navbar2 from './nav/Navbar2';
+//import Navbar3 from './nav/Navbar3';
+import Navbar4 from './nav/Navbar4';
 import Search from './Search';
 import Favourites from './Favourites';
+
 
 function Application() {
 	const user = useContext(UserContext);
@@ -17,16 +20,16 @@ function Application() {
 
 	return (
 		<React.Fragment>
-			<Navbar />
+			<Navbar2 />
 			{user ? (
-				<React.Fragment>
+				
 					<Router>
 						<Redirect noThrow from="/" to="search" />
 						<Search path="search" />
 						<Profile exact path="/profile" />
 						<Favourites exact path="/favourites" />
 					</Router>
-				</React.Fragment>
+			
 			) : (
 				<Router>				
 					<Login path="/" />
@@ -36,12 +39,5 @@ function Application() {
 		</React.Fragment>
 	);
 }
-// TODO maybe try moving the router for favs and profile out of the above boolean check
-// TODO find correct method of linking to page from navbar and where the router goes
 
-// <Router>
-
-//      <Favourites path="/favourites" />
-
-//    </Router>
 export default Application;

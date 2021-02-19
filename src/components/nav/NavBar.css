@@ -1,0 +1,45 @@
+.navbar {
+	padding: 1% 4% 1% 9%;
+	cursor: pointer;
+	color: #0544f9;
+}
+
+.logo {
+	height: 100px;
+}
+
+.navbar ul {
+	padding-left: 500px;
+	max-width: 100%;
+	overflow-x: hidden;
+	transition: 0.5s;
+	border: none;
+}
+.navbar ul li {
+	background-color: rgba(0, 0, 0, 000);
+	border: 0;
+	color: #0544f9;
+	cursor: pointer;
+	display: inline-table;
+	font-size: 1.5rem;
+	height: 3.28rem;
+	line-height: 3.28rem;
+	padding: 0 1.14rem;
+	text-align: center;
+	border-style: none;
+}
+.dropdown {
+	position: fixed;
+	margin: 5%;
+	top: 100px;
+	width: 70%;
+	background-color: #ebebeb;
+	color: #0544f9;
+	cursor: pointer;
+	opacity: 100;
+}
+
+.dropdown li {
+	padding: 1% 12% 8% 2%;
+	color: #0544f9;
+}
