@@ -7,6 +7,13 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
 import {auth} from '../../firebase';
+import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+
+
+//import { useHistory } from 'react-router-dom';
+//history.push("/path/to/push");
 
 const Navbar2 = props => {
   const user = useContext (UserContext); // Get User Context
@@ -14,13 +21,18 @@ const Navbar2 = props => {
   const handleClick = () => setClick (!click);
   const closeMobileMenu = () => setClick (false);
 
+  //TODO replace all with Navbar stuff
+
   return (
     <React.Fragment>
-      <nav className="navbar">
-        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-          <Logo />
+      <Navbar className="navbar">
+
+      <Navbar.Brand>
+      <Logo />
+      <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>         
           Safe Streets
         </Link>
+    </Navbar.Brand>       
 
         {user
           ? <React.Fragment>
@@ -28,57 +40,57 @@ const Navbar2 = props => {
                 <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
               </div>
 
-              <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+              <ul className={click ? 'nav-menu active' : 'nav-menu'}>               
+             
                 <li className="nav-item">
                   <Link
                     to="/search"
                     className="nav-links"
-                    onClick={closeMobileMenu}
-                  >
+                    onClick={closeMobileMenu}>
                     Search
                   </Link>
                 </li>
+
 
                 <li className="nav-item">
                   <Link
                     to="/favourites"
                     className="nav-links"
-                    onClick={closeMobileMenu}
-                  >
+                    onClick={closeMobileMenu}>
                     Favourites
                   </Link>
                 </li>
-                <FontAwesomeIcon icon="user" />
 
-                <li className="nav-item">
-                  <DropdownButton
-                    id="dropdown-basic-button"
-                    title={user.displayName}
-                    icon="fas fa-user"
+              
+                <NavDropdown                   
+                    title={
+                      <span>
+                        <i className="fa fa-user fa-fw" /> {user.email}
+                      </span>
+                    }
                   >
 
-                    <Button>
-                      <Link to="/profile" className="nav-links">
-                        Profile
-                      </Link>
-                    </Button>
+                  <NavDropdown.Item>
+                    <i className="fa fa-envelope fa-lg" />
+                    <Link to="/profile" className="nav-links">
+                      Profile
+                    </Link>
+                  </NavDropdown.Item>
 
-                    <Dropdown.Divider />
+                  <Dropdown.Divider />
 
-                    <Button>
-                      <Link
-                        to="/"
-                        className="nav-links"
-                        onClick={() => auth.signOut ()}
-                      >
-                        Logout
-                      </Link>
-                    </Button>
-
-                  </DropdownButton>
-                </li>
+                  <NavDropdown.Item>
+                    <i className="fas fa-sign-out-alt fa-lg" />
+                    <Link to="/" onClick={() => auth.signOut ()} className="nav-links">
+                      Logout
+                    </Link>
+                  </NavDropdown.Item>
+                 
+                </NavDropdown>
+                         
               </ul>
             </React.Fragment>
+
           : <React.Fragment>
               <div className="menu-icon" onClick={handleClick}>
                 <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
@@ -106,7 +118,7 @@ const Navbar2 = props => {
                 </li>
               </ul>
             </React.Fragment>}
-      </nav>
+      </Navbar>
     </React.Fragment>
   );
 };

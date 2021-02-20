@@ -20,9 +20,9 @@ margin="normal"
 onChange={this.onSearchInputChange}
 /> */}
 
-  return (   
-    
+  return (       
           <div>
+          Favourites List
               { favourites ? (
                   <div>                     
                       <Grid container spacing={10} style={{padding: 24}}>
@@ -33,7 +33,7 @@ onChange={this.onSearchInputChange}
                           ))}
                       </Grid>
                   </div>
-              ) : "No favourites found" }
+              ) : (<div>No favourites found</div> )}
           </div>
       )
   

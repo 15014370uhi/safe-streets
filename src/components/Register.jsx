@@ -1,6 +1,13 @@
 import React, {useState} from 'react';
-import {Link} from '@reach/router';
+import {Link, navigate} from '@reach/router';
+
+//import { useHistory } from "react-router-dom";
 import {auth, generateUserDocument} from '../firebase';
+
+
+// TODO SORT out address bar after register user so it goes to search or /
+// TODO SATurday
+
 
 // Style components
 import {
@@ -22,6 +29,8 @@ const Register = (props) => {
 	const [displayName, setDisplayName] = useState('');
 	const [error, setError] = useState(null);
 
+	//const history = useHistory();
+
 	const createUserWithEmailAndPasswordHandler = async (
 		e,
 		email,
@@ -37,9 +46,13 @@ const Register = (props) => {
 		} catch (error) {
 			setError('Error creating user with email and password');
 		}
-		setEmail('');
-		setPassword('');
-		setDisplayName('');
+		//setEmail('');
+		//setPassword('');
+		//setDisplayName('');
+		navigate(`/search`);
+		//history.push("/");
+		//this.props.history.push('/'); // TODO TEST
+		//history.push("/path/to/push");
 	};
 
 	const onChangeHandler = (e) => {
