@@ -10,8 +10,10 @@ function BootNavbar() {
             <div className="row">
                 <div className="col-md-12">                   
                         <Navbar bg="dark" variant="dark" expand="lg" sticky="top">
-                            <Navbar.Brand href="#home">React Bootstrap Navbar</Navbar.Brand>
+                            <Navbar.Brand href="#home">Safe Streets</Navbar.Brand>
+                            
                             <Navbar.Toggle aria-controls="basic-navbar-nav" />
+
                             <Navbar.Collapse id="basic-navbar-nav">
                                 <Nav className="mr-auto">
                                 <Nav.Link href="/">Login</Nav.Link>
@@ -19,6 +21,7 @@ function BootNavbar() {
                                 <Nav.Link href="/favourites">Favourites</Nav.Link>                               
                                 </Nav>                              
                             </Navbar.Collapse>
+                            
                         </Navbar>                  
                 </div>
             </div>

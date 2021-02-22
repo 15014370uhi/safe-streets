@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Link, navigate} from '@reach/router';
+//import {Link, navigate} from '@reach/router';
+import {	
+	Link,
+	NavLink,
+	Route,
+	Redirect	
+} from 'react-router-dom';
 
 //import { useHistory } from "react-router-dom";
 import {auth, generateUserDocument} from '../firebase';
@@ -49,7 +55,8 @@ const Register = (props) => {
 		//setEmail('');
 		//setPassword('');
 		//setDisplayName('');
-		navigate(`/search`);
+		//navigate(`/search`);
+		return <Redirect to={'/search'} />;
 		//history.push("/");
 		//this.props.history.push('/'); // TODO TEST
 		//history.push("/path/to/push");

@@ -28,7 +28,20 @@ const firebaseConfig = {
       await userRef.set({
         displayName,  // Initialise user displayName
         email, // initialise user email
-        favourites: [], // Initialise empty favourites array
+        favourites: [
+          {
+            title: "The first favourite title",
+            mapURL: "www.amapurl.com"
+          },
+          {
+            title: "A second favourite title",
+            mapURL: "www.asecondmapurl.com"
+          },
+          {
+            title: "And the third favourite title",
+            mapURL: "www.athirdmapurl.com"
+          }
+        ], // Initialise empty favourites array
         ...additionalData
       });
     } catch (error) {
