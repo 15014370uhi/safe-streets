@@ -1,10 +1,7 @@
 import React, {useState} from 'react';
-//import {Link} from '@reach/router';
 import {auth} from '../firebase';
 import {	
-	Link,
-	NavLink,
-	Route	
+	Link	
 } from 'react-router-dom';
 
 // Style components

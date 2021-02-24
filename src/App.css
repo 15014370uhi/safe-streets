@@ -14,12 +14,8 @@
   cursor: pointer;
   text-decoration: none;
   font-size: 1.75rem;    
-}
-
-svg {    
   cursor: pointer; 
   padding-right: 0.1rem;
-  
 }
 
 .fa-firstdraft {
@@ -42,12 +38,21 @@ svg {
   display: flex;
   align-items: center;
   height: 80px;
+  margin-left: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.dropDownItem {
+  font-size: 1.6rem;
+
 }
 
 .nav-links {
   color: white;
   text-decoration: none;
   padding: 0.5rem 1rem;
+  margin-left: 0.5rem;
+  font-size: 1.6rem;
 }
 
 .nav-links:hover {
@@ -58,6 +63,10 @@ svg {
 
 .fa-bars {
   color: #fff;
+}
+
+.fa, .fas {
+  padding: 0.5rem;
 }
 
 .nav-links-mobile {
@@ -86,7 +95,7 @@ svg {
   }
 
   .nav-menu.active {
-    background: #5a55a3;
+    background: #7c7c83;
     left: 0;
     opacity: 1;
     transition: all 0.5s ease;
@@ -111,13 +120,11 @@ svg {
     left: 0;
     transform: translate(25%, 50%);
     padding-bottom: 1 rem;    
+    cursor: pointer; 
+  padding-right: 0.1rem;  
   }
 
   
-svg {    
-  cursor: pointer; 
-  padding-right: 0.1rem;  
-}
 
   .menu-icon {
     display: block;
@@ -130,7 +137,7 @@ svg {
   }
 
   .fa-times {
-    color: #fff;
+    color: rgb(25, 194, 236);
     font-size: 2rem;
   }
 

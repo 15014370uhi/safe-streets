@@ -107,7 +107,7 @@ const Profile = () => {
                     auth.signOut ();
                   }}
                 >
-                  Sign Out
+                  Logout
                 </MDBBtn>
               </MDBCardFooter>
             </MDBCard>
@@ -121,3 +121,4 @@ const Profile = () => {
 };
 export default Profile;
 
+// TODO add favourites using actual favourites list
