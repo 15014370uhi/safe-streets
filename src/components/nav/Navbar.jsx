@@ -7,6 +7,7 @@ import Favourites from '../../components/Favourites';
 import Search from '../../components/Search';
 import Profile from '../../components/Profile';
 import {ReactComponent as Logo} from '../../images/logo.svg';
+//import './NavBar.css';
 
 // TODO check CSS used in navbar 2 for here
 // TODO also check out navbar 2 for logo or icon etc

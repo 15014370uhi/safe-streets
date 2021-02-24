@@ -18,11 +18,7 @@ import Register from '../../components/Register';
 import Profile from '../../components/Profile';
 
 //import ReactDOM from "react-dom";
-import {	
-	Link,
-	NavLink,
-	Route	
-} from 'react-router-dom';
+import {Link, NavLink, Route} from 'react-router-dom';
 
 const Navbar2 = (props) => {
 	const user = useContext(UserContext); // Get User Context
@@ -32,116 +28,87 @@ const Navbar2 = (props) => {
 
 	//TODO replace all with Navbar stuff
 	return (
-	
-			<div className="App">
-				<Navbar>
-					<Navbar.Brand as={Link} to="/">
-          <Logo />
-						Safe Streets
-					</Navbar.Brand>
+		<Navbar>
+			<Navbar.Brand as={Link} to="/">
+				<Logo />
+				Safe Streets
+			</Navbar.Brand>
 
-					{user ? (
-						<Nav>
-							<div className="menu-icon" onClick={handleClick}>
-								<i
-									className={
-										click ? 'fas fa-times' : 'fas fa-bars'
-									}
-								/>
-							</div>
+			{user ? (
+				<Nav>
+					<div className="menu-icon" onClick={handleClick}>
+						<i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+					</div>
 
-							<ul className={click ? 'nav-menu active' : 'nav-menu'}>
+					<ul className={click ? 'nav-menu active' : 'nav-menu'}>
+						<Nav.Link as={NavLink} to="/favourites">
+							Favourites
+						</Nav.Link>
 
-								<Nav.Link as={NavLink} to="/favourites">
-									Favourites
-								</Nav.Link>
+						<Nav.Link as={NavLink} to="/search">
+							Search
+						</Nav.Link>
 
-								<Nav.Link as={NavLink} to="/search">
-									Search
-								</Nav.Link>
+						<NavDropdown
+							title={
+								<span>
+									<i className="fa fa-user fa-lg" />
+									{user.email}
+								</span>
+							}>
+							<Nav.Link
+								as={Link}
+								to="/profile"
+								onClick={closeMobileMenu}>
+								<i className="fa fa-envelope fa-lg" />
+								  Profile
+							</Nav.Link>
 
-								<NavDropdown
-									title={
-										<span>
-											<i className="fa fa-user fa-lg" />
-											{user.email}
-										</span>
-									}>
+							<Dropdown.Divider />
 
-								
-										<li>
-											<Nav.Link
-												as={Link}
-												to="/profile"
-												onClick={closeMobileMenu}>
-												<i className="fa fa-envelope fa-lg" />
-												   Profile
-											</Nav.Link>
-										</li>
-								
+							<Nav.Link
+								as={Link}
+								to="/"
+								onClick={() => auth.signOut()}>
+								<i className="fas fa-sign-out-alt fa-lg" />
+								  Logout
+							</Nav.Link>
+						</NavDropdown>
+					</ul>
+				</Nav>
+			) : (
+				<Nav>
+					<div className="menu-icon" onClick={handleClick}>
+						<i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+					</div>
 
-									<Dropdown.Divider />
+					<ul className={click ? 'nav-menu active' : 'nav-menu'}>
+						<li className="nav-item">
+							<Link
+								to="/register"
+								className="nav-links-mobile"
+								onClick={closeMobileMenu}>
+								Register
+							</Link>
+						</li>
 
-                  <li>
-											<Nav.Link
-												as={Link}
-												to="/"
-												onClick={() => auth.signOut()}>
-												<i className="fas fa-sign-out-alt fa-lg" />
-												   Logout
-											</Nav.Link>
-										</li>
-							
-								
-								</NavDropdown>
-							</ul>
-						</Nav>
-					) : (
-						<Nav>
-							<div className="menu-icon" onClick={handleClick}>
-								<i
-									className={
-										click ? 'fas fa-times' : 'fas fa-bars'
-									}
-								/>
-							</div>
-
-							<ul
-								className={
-									click ? 'nav-menu active' : 'nav-menu'
-								}>
-								<li className="nav-item">
-									<Link
-										to="/register"
-										className="nav-links-mobile"
-										onClick={closeMobileMenu}>
-										   Register
-									</Link>
-								</li>
-
-								<li className="nav-item">
-									<Link
-										to="/"
-										className="nav-links-mobile"
-										onClick={closeMobileMenu}>
-										   Login
-									</Link>
-								</li>
-							</ul>
-						</Nav>
-					)}
-				</Navbar>
-			
-				<Route path="/profile" exact component={Profile} />
-        </div>	
-	
+						<li className="nav-item">
+							<Link
+								to="/"
+								className="nav-links-mobile"
+								onClick={closeMobileMenu}>
+								Login
+							</Link>
+						</li>
+					</ul>
+				</Nav>
+			)}
+		</Navbar>
 	);
 
-  //	<Route path="/" exact component={Search} />
-  //<Route path="/search" exact component={Search} />
-  //	<Route path="/favourites" exact component={Favourites} />
-
-
+	//	<Route path="/" exact component={Search} />
+	//<Route path="/search" exact component={Search} />
+	//	<Route path="/favourites" exact component={Favourites} />
 
 	// TODO issue with navbar could be due to it not being given routes in the
 	// TODO applicaiton top path - check where routes are defined

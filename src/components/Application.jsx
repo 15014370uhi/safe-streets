@@ -6,9 +6,6 @@ import Profile from './Profile';
 import {UserContext} from '../auth/UserProvider';
 import Navbar from './nav/Navbar';
 import Navbar2 from './nav/Navbar2';
-//import Navbar3 from './nav/Navbar3';
-import Navbar4 from './nav/Navbar4';
-import BootNavbar from './BootNavbar';
 import Search from './Search';
 import Favourites from './Favourites';
 import {    
@@ -35,6 +32,7 @@ function Application () {
 			  <Route path="/search" component={Search} /> 
 			  <Redirect noThrow from="/register" to="/" />
 			  <Route path="/favourites" component={Favourites} /> 
+        <Route path="/profile" component={Profile} />
 			  <Route exact path="/" component={Search} /> 			
 			  </React.Fragment>              
 	   ) : (
