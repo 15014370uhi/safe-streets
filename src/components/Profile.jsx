@@ -33,45 +33,6 @@ const Profile = () => {
   // TODO logout using Auth
   // TODO move logout to function
 
-  // // Get user favourited locations
-  // const getFavourites = async () => {
-
-  //     var docRef = db.collection("users").doc(userID);
-  //     docRef.get()
-  //         .then(function (doc) {
-  //             if (doc.exists) {
-  //                 var returnedFavourites;
-  //                 var favouritesList = [];
-  //                 jQuery.each(doc.data(), function (key, value) {
-  //                     if (key == "favourites") {
-  //                         returnedFavourites = value.toString();
-  //                     }
-  //                 });
-
-  //                 if (returnedFavourites.length > 0) {
-  //                     favouritesList = returnedFavourites.split("https://");
-  //                     favouritesList.forEach(aFavourite => {
-  //                         if (aFavourite.length > 10) { // Ignore empty first element caused by split action
-  //                             alert("A Favourite: \n" + aFavourite);
-  //                         }
-  //                     });
-  //                 } else {
-  //                     alert("You have no favourites saved!");
-  //                 }
-
-  //                 // return favourites array
-  //                 return favouritesList;
-
-  //             } else {
-  //                 alert("You have no favourites saved!");
-  //                 console.log("No such document!");
-  //             }
-  //         })
-  //         .catch(function (error) {
-  //             console.error("Error getting document: ", error);
-  //         });
-  // }
-
   return (
     <React.Fragment>
       {user

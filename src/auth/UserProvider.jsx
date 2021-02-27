@@ -8,7 +8,6 @@ class UserProvider extends Component {
   state = {
     user: null
   };
-
    
   componentDidMount = async () => {
     auth.onAuthStateChanged(async userAuth => {
@@ -20,6 +19,17 @@ class UserProvider extends Component {
     });
   };
 
+
+
+
+
+
+
+
+
+
+
+  
 
   render() {
     return (

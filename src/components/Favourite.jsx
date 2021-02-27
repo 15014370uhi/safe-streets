@@ -1,10 +1,7 @@
-//TODO - Implementation to be replaced with mongoose schema for favourite
-
 import React from 'react';
-//import 'fontsource-roboto';
 
 /**
- * A favourite search result for a user
+ * A favourite for a user
  * 
  * @param {string} title - Title for this favourite  
  * @param {string} mapURL - URL for map image
@@ -12,8 +9,8 @@ import React from 'react';
 const Favourite = ({title, mapURL}) => {
   return (
     <div>
-      <h2>{title}</h2>
-      <p>{mapURL}</p>
+      <h2>{title}</h2>     
+      <h2>{mapURL}</h2>
     </div>
   );
 };

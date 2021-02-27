@@ -1,18 +1,9 @@
 import React, {useState} from 'react';
-//import {Link, navigate} from '@reach/router';
-import {	
-	Link,
-	NavLink,
-	Route,
-	Redirect	
-} from 'react-router-dom';
-
-//import { useHistory } from "react-router-dom";
 import {auth, generateUserDocument} from '../firebase';
+import {Link, Redirect} from 'react-router-dom';
 
 
-// TODO SORT out address bar after register user so it goes to search or /
-// TODO SATurday
+// TODO get list of errors and show them properly
 
 
 // Style components
@@ -35,32 +26,18 @@ const Register = (props) => {
 	const [displayName, setDisplayName] = useState('');
 	const [error, setError] = useState(null);
 
-	//const history = useHistory();
-
-	const createUserWithEmailAndPasswordHandler = async (
-		e,
-		email,
-		password
-	) => {
+	const createUserWithEmailAndPasswordHandler = async (e,	email, password) => {
 		e.preventDefault();
 		try {
-			const {user} = await auth.createUserWithEmailAndPassword(
-				email,
-				password
-			);
+			console.log("Calling createUser with email: " + email + " and password: " + password);
+			const {user} = await auth.createUserWithEmailAndPassword(email, password);
 			generateUserDocument(user, {displayName});
 		} catch (error) {
 			setError('Error creating user with email and password');
-		}
-		//setEmail('');
-		//setPassword('');
-		//setDisplayName('');
-		//navigate(`/search`);
-		return <Redirect to={'/search'} />;
-		//history.push("/");
-		//this.props.history.push('/'); // TODO TEST
-		//history.push("/path/to/push");
+		}		
+		return <Redirect to={'/search'} />;		
 	};
+
 
 	const onChangeHandler = (e) => {
 		const {name, value} = e.currentTarget;

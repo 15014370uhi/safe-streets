@@ -2,16 +2,16 @@ import React, { useContext } from "react";
 import { UserContext } from "../auth/UserProvider";
 import {auth} from "../firebase";
 
-const ProfilePage = () => {
+const MapDisplay = () => {
   const user = useContext(UserContext);  // Get User from UserContext
-  const {photoURL, displayName, email} = user; // Deconstruct user document elements
+  const {mapURL, displayName, email} = user; // Deconstruct user document elements
 
   return (
     <div className = "mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">
       <div className="flex border flex-col items-center md:flex-row md:items-start border-blue-400 px-3 py-4">
         <div
           style={{
-            background: `url(${photoURL || 'https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png'})  no-repeat center center`,
+            background: `url(${mapURL || 'https://res.cloudinary.com/dqcsk8rsc/image/upload/v1577268053/avatar-1-bitmoji_upgwhc.png'})  no-repeat center center`,
             backgroundSize: "cover",
             height: "200px",
             width: "200px"
@@ -27,4 +27,4 @@ const ProfilePage = () => {
     </div>
   ) 
 };
-export default ProfilePage;
+export default MapDisplay;

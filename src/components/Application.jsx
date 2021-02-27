@@ -3,9 +3,10 @@ import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
 import {UserContext} from '../auth/UserProvider';
-import Navbar from './nav/Navbar';
+import Navbar from './NavBar';
 import Search from './Search';
 import Favourites from './Favourites';
+import AddFavourite from './AddFavourite';
 import {    
   Route,
   Redirect
@@ -23,7 +24,8 @@ function Application () {
 		<br /><br />		            
 			  <Route path="/search" component={Search} /> 
 			  <Redirect noThrow from="/register" to="/" />
-			  <Route path="/favourites" component={Favourites} /> 
+        <Route path="/addFavourite" component={AddFavourite} /> 
+			  <Route path="/favourites" component={Favourites} />        
         <Route path="/profile" component={Profile} />
 			  <Route exact path="/" component={Search} /> 			
 			  </React.Fragment>              

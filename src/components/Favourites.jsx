@@ -1,55 +1,51 @@
 import React, {useContext} from 'react';
 import Favourite from './Favourite';
 import {UserContext} from '../auth/UserProvider';
-import Grid from '@material-ui/core/Grid';
 import uuid from 'react-uuid';
 import Container from 'react-bootstrap/Container';
-
-//import {MDBBtn} from 'mdb-react-ui-kit';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 const Favourites = () => {
-  
- const user = useContext (UserContext); // Get User Context
- let favourites;
- if(user){
-    favourites = user.favourites; // Deconstruct user document elements
-    console.log("Favourites: " + favourites);
- } 
- 
+	const user = useContext(UserContext); // Get User Context
+	let favourites;
+	if (user) {
+		favourites = user.favourites; // Deconstruct user document elements
+		console.log('Favourites: ' + favourites);
+	}
 
-// TODO get user favourites list from context
-// TODO implement search box / filter input as code below
-// TODO add code to allow searching of favourites titles
-{/* <TextField style={{padding: 24}}
-id="searchInput"
-placeholder="Search for Courses"   
-margin="normal"
-onChange={this.onSearchInputChange}
-/> */}
-
-  return (       
-          <Container>
-          Favourites List
-              { favourites.length ? (
-                <Container id="favouritesContainer">     
-                  <br />                 
-                  User display name:  {user.displayName}  
-                  <br /> 
-                  Number of favourites: {favourites.length}           
-                      <Grid container spacing={10} style={{padding: 24}}>
-                          { favourites.map(favourite => (
-                              <Grid item xs={12} sm={6} lg={4} xl={3} key={uuid ()}>
-                                  {favourite.title}
-                                  -------------------
-                                  {favourite.mapURL}
-                              </Grid>
-                          ))}
-                      </Grid>                     
-                      </Container>
-                 
-              ) : (<div>No favourites found</div> )}
-          </Container>
-      )
+	return (
+		<Container>
+			Favourites List
+			{favourites.length ? (
+				<Container id="favouritesContainer">
+					<br />
+					<h2>Favourites for: {user.displayName}</h2>					
+                    <br />
+					<h3>Number of favourites: {favourites.length}</h3>
+					<br />	
+                    <section>		
+					{favourites.map((favourite) => (
+						<ListGroup
+                        style={{border: 24}}
+                        spacing={10}
+							horizontal="sm"
+							className="my-2"
+							key={uuid()}>
+							<ListGroup.Item>								
+								<Favourite
+									title={favourite.title}
+									mapURL={favourite.mapURL}
+								/>
+							</ListGroup.Item>							
+						</ListGroup>
+					))}
+                    </section>		
+				</Container>
+			) : (
+				<div>No favourites found</div>
+			)}
+		</Container>
+	);
 };
 
 export default Favourites;
