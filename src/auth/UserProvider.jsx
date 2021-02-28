@@ -14,6 +14,7 @@ class UserProvider extends Component {
       const user = await generateUserDocument(userAuth);
       if(user){
         console.log("UserProvider setting user to: " + user.displayName);
+        console.log("User has favourites length: " + user.favourites.length);
       }
       this.setState({ user });
     });

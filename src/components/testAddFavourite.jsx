@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {auth, generateUserDocument} from '../firebase';
-import {Link, Redirect, useHistory} from 'react-router-dom';
-
+import React, {useState, useContext} from 'react';
+import {auth, generateUserDocument, addUserFavourite} from '../firebase';
+import {Link, Redirect} from 'react-router-dom';
+import {UserContext} from '../auth/UserProvider';
 
 // TODO get list of errors and show them properly
 
@@ -20,27 +20,21 @@ import {
 	MDBInput,
 } from 'mdbreact';
 
-const Register = (props) => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [displayName, setDisplayName] = useState('');
-	const [error, setError] = useState(null);
+const TestAddFavourite = (props) => {
+	const [title, setTitle] = useState('');
+	const [mapURL, setMapURL] = useState('');
+    const [error, setError] = useState('');
+    const user = useContext (UserContext); // Get User Context	const [error, setError] = useState(null);
 
-	const history = useHistory();
-
-
-	const createUserWithEmailAndPasswordHandler = async (e,	email, password) => {
-		e.preventDefault();
+	const createNewFavouriteHandler = async (event, title, mapURL) => {    
+    
+		event.preventDefault();
 		try {
-			console.log("Calling createUser with email: " + email + " and password: " + password);
-			const {user} = await auth.createUserWithEmailAndPassword(email, password);
-			generateUserDocument(user, {displayName});
+			await addUserFavourite(user, title, mapURL);
 		} catch (error) {
 			setError('Error creating user with email and password');
-		}	
-		// Redirect URL
-		let path = `/search`; 
-		history.push(path);	
+		}		
+        return( <div><Redirect to={'/search'} /> </div> );		
 	};
 
 
@@ -120,27 +114,17 @@ const Register = (props) => {
 										className="mb-3"
 										type="submit"
 										onClick={(event) => {
-											createUserWithEmailAndPasswordHandler(
+											createNewFavouriteHandler(
 												event,
-												email,
-												password
+												title,
+												mapURL
 											);
 										}}>
 										Sign Up
 									</MDBBtn>
 								</div>
 							</form>
-
-							<MDBModalFooter>
-								<div className="font-weight-light">
-									Already have an account?
-									<Link
-										to="/"
-										className="py-4 font-weight-bold ml-1 w-full text-red text-center mb-3">
-										Login here
-									</Link>
-								</div>
-							</MDBModalFooter>
+							
 						</MDBCardBody>
 					</MDBCard>
 				</MDBCol>
@@ -148,4 +132,4 @@ const Register = (props) => {
 		</MDBContainer>
 	);
 };
-export default Register;
+export default TestAddFavourite;

@@ -5,12 +5,12 @@ import uuid from 'react-uuid';
 import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 
-const Favourites = () => {
+const Favourites = (props) => {
 	const user = useContext(UserContext); // Get User Context
 	let favourites;
 	if (user) {
 		favourites = user.favourites; // Deconstruct user document elements
-		console.log('Favourites: ' + favourites);
+		console.log('Favourites has length: ' + favourites.length);
 	}
 
 	return (

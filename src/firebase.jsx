@@ -1,6 +1,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import {Redirect} from 'react-router-dom';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyBT4RoXDLZ505dMhCPkEuYPEeL1EUF_Wh0",
@@ -75,12 +77,12 @@ const getUserDocument = async uid => {
   }
 };
 
-
+//TODO could try fixing the returns from addUserFavourite so that it updates the user context
 
 // ADD new map URL to user collection of favourites
 export const addUserFavourite = async (user, title, mapURL) => {
 
-  console.log("firebase addUserFavourite Received: mapURL: " + mapURL + " title: " + title);
+ // console.log("firebase addUserFavourite Received: mapURL: " + mapURL + " title: " + title);
    // If no current user passed, exit
    if (!user) {
     console.log("user missing") ;
@@ -95,8 +97,6 @@ export const addUserFavourite = async (user, title, mapURL) => {
     return;
    } 
  
-   //const newFavourite = (title, mapURL) => { return { title: title, mapURL: mapURL } };
-
    var newFavourite = 
    {                 
            title: title, 
@@ -116,6 +116,7 @@ export const addUserFavourite = async (user, title, mapURL) => {
       console.error("Error adding favourite", error);
     }
   }
+  <Redirect to='/favourites' />;	
   return getUserDocument(user.uid);
 };
 

@@ -2,7 +2,7 @@
 import React, {useContext, useState} from 'react';
 import {addUserFavourite} from '../firebase';
 import {UserContext} from '../auth/UserProvider';
-import {Redirect} from 'react-router-dom';
+import {Redirect, useHistory} from 'react-router-dom';
 
 // Style components
 import {
@@ -23,16 +23,20 @@ const AddFavourite = (props) => {
 	const [error, setError] = useState(null);
     const user = useContext (UserContext); // Get User Context
 
+	const history = useHistory();
+
     const createNewFavourite = async (e) => {
-		e.preventDefault();
+		e.preventDefault();		
 		try {			
-			await addUserFavourite(user, title, mapURL);
-           // return <Redirect to={'/favourites'} />;	
+			await addUserFavourite(user, title, mapURL);			
         } 
         catch (error) {
 			setError('Adding favourite' + error);
 		}				
-        <Redirect to={'/favourites'} />;	
+		//console.log("about to redirect");
+		//return( <div><Redirect to={'/search'} /> </div> );	
+		let path = `/favourites`; 
+		history.push(path);	
 	};
 
 // TODO doesn't redirect properly
@@ -108,8 +112,9 @@ const AddFavourite = (props) => {
 						</MDBCardBody>
 					</MDBCard>
 				</MDBCol>
-			</MDBRow>
-		</MDBContainer>
+			</MDBRow>           
+		</MDBContainer>       
 	);
+
 };
 export default AddFavourite;
