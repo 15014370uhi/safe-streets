@@ -40,4 +40,6 @@ function Application() {
 	);
 }
 
+//<Route exact path="/favouritestest" render={(props) => <FavouritesTest {...props} user={user} />} />
+
 export default Application;

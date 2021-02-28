@@ -1,8 +1,6 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import {Redirect} from 'react-router-dom';
-
 
 const firebaseConfig = {
     apiKey: "AIzaSyBT4RoXDLZ505dMhCPkEuYPEeL1EUF_Wh0",
@@ -16,48 +14,38 @@ const firebaseConfig = {
   // Function to create a user document
   export const generateUserDocument = async (user, additionalData) => {
 
-    // If no current logged-in user, exit
+    // If user missing, exit
   if (!user){
     return;
   } 
+
   // Get reference to current user data in firestore by UID
   const userRef = firestore.doc(`users/${user.uid}`);
   const snapshot = await userRef.get();
+
+  // If user is logged in but no firestore document exists
   if (!snapshot.exists) {
 
-    // User logged in but no document contents exist, so create some in firestore
-    const { email, displayName} = user;
-    //TEST
-    console.log(`Firebase.jsx received: ` + user.email + ` ` + user.displayName);
+    // User logged in but no document contents exist, generate firestore document for user
+    const { email, displayName} = user;   
     
     try {
       await userRef.set({
         displayName,  // Initialise user displayName
         email, // initialise user email
-        favourites: [
-          {
-            title: "favourite title 1",
-            mapURL: "www.amapurl.com"
-          },
-          {
-            title: "favourite title 2",
-            mapURL: "www.asecondmapurl.com"
-          },
-          {
-            title: "favourite title",
-            mapURL: "www.athirdmapurl.com"
-          }
-        ], // Initialise empty favourites array
+        favourites: [], 
         ...additionalData
       });
-    } catch (error) {
+    } 
+    catch (error) {
       console.error("Error creating user document", error);
     }
   }
   return getUserDocument(user.uid);
 };
 
-// Get user document from firestore
+
+// Function which returns the latest user document from firestore
 const getUserDocument = async uid => {
 
   // No current logged in user, return null
@@ -72,17 +60,15 @@ const getUserDocument = async uid => {
       uid,
       ...userDocument.data()
     };
-  } catch (error) {
+  } 
+  catch (error) {
     console.error("Error fetching user", error);
   }
 };
 
-//TODO could try fixing the returns from addUserFavourite so that it updates the user context
-
-// ADD new map URL to user collection of favourites
+// Function to add a new favourite to user collection of favourites
 export const addUserFavourite = async (user, title, mapURL) => {
 
- // console.log("firebase addUserFavourite Received: mapURL: " + mapURL + " title: " + title);
    // If no current user passed, exit
    if (!user) {
     console.log("user missing") ;
@@ -97,6 +83,7 @@ export const addUserFavourite = async (user, title, mapURL) => {
     return;
    } 
  
+   // Create a new favourite object
    var newFavourite = 
    {                 
            title: title, 
@@ -116,8 +103,7 @@ export const addUserFavourite = async (user, title, mapURL) => {
       console.error("Error adding favourite", error);
     }
   }
-  <Redirect to='/favourites' />;	
-  return getUserDocument(user.uid);
+  return getUserDocument(user.uid);  // TODO 
 };
 
 

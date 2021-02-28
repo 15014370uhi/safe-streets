@@ -10,27 +10,15 @@ class UserProvider extends Component {
   };
    
   componentDidMount = async () => {
+    console.log("userProvider DidMount");
     auth.onAuthStateChanged(async userAuth => {
       const user = await generateUserDocument(userAuth);
-      if(user){
-        console.log("UserProvider setting user to: " + user.displayName);
-        console.log("User has favourites length: " + user.favourites.length);
+      if(user){      
+       console.log("UserProvider setting user to: " + user.displayName);
       }
       this.setState({ user });
     });
   };
-
-
-
-
-
-
-
-
-
-
-
-  
 
   render() {
     return (

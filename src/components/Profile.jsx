@@ -27,6 +27,15 @@ const Profile = () => {
     console.log ('Not authenticated');
   }
  
+
+  const onSignOutHandler = async (e) => {
+    //e.preventDefault();
+    console.log("onSignOutHandler clicked");
+    await auth.signOut()
+        .then(data => console.log(data))
+        .catch(err => console.log(err));
+   }
+
     // TODO also get favourites array from user
   // TODO move signout to a function
   // TODO delete account from
@@ -64,9 +73,7 @@ const Profile = () => {
                   color="light-blue"
                   className="mb-3"
                   type="submit"
-                  onClick={() => {
-                    auth.signOut ();
-                  }}
+                  onClick={onSignOutHandler}
                 >
                   Logout
                 </MDBBtn>

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import Fire from '../firebase';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import '.././App.css';
+import '../App.css';
 
 const Login = () => {
     //const [displayName, setDisplayName] = useState("");
@@ -54,6 +54,8 @@ const Login = () => {
 
 	return (
 		<div className="container">
+		
+	
 			<Form onSubmit={handleSubmit}>
 				<Form.Group>
 					<Form.Label>Email Address</Form.Label>
