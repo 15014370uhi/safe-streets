@@ -29,7 +29,7 @@ const Login = () => {
 
 		// Sign user in with firebase sign in method
 		auth.signInWithEmailAndPassword(email, password).catch((error) => {
-			setError('Error signing in with password and email!' + error);
+			setError("" + error);
 		});
 	};
 
@@ -60,6 +60,7 @@ const Login = () => {
 								<div className="grey-text">
 									<MDBInput
 										label="Type your email"
+										size="lg"
 										icon="envelope"
 										group
 										type="email"
@@ -67,13 +68,16 @@ const Login = () => {
 										validate
 										error="wrong"
 										success="right"
+										required
 										value={email}
 										onChange={(e) => onChangeHandler(e)}
 									/>
 
 									<MDBInput
 										label="Type your password"
+										size="lg"
 										icon="lock"
+										required
 										group
 										type="password"
 										name="password"

@@ -2,9 +2,12 @@ import React, { useContext } from "react";
 import { UserContext } from "../auth/UserProvider";
 import {auth} from "../firebase";
 
-const MapDisplay = () => {
-  const user = useContext(UserContext);  // Get User from UserContext
-  const {mapURL, displayName, email} = user; // Deconstruct user document elements
+// Functional component which displays the map image for a mapURL
+const MapDisplay = ({mapURL}) => {
+  const user = useContext(UserContext);  // Get current user from UserContext
+  //const {displayName, email} = user; // Deconstruct user document elements
+  
+  // TODO useEffect to get the map image from API server
 
   return (
     <div className = "mx-auto w-11/12 md:w-2/4 py-8 px-4 md:px-8">

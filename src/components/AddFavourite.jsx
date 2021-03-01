@@ -1,7 +1,6 @@
 // TODO Move this to a function within user context or firebase.
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {addUserFavourite} from '../firebase';
-import {UserContext} from '../auth/UserProvider';
 import {useHistory} from 'react-router-dom';
 
 // Style components
@@ -22,32 +21,29 @@ const AddFavourite = (props) => {
 	const [mapURL, setMapURL] = useState('');
 	const [error, setError] = useState(null);
 
-    const user = useContext (UserContext); // Get User Context
+    //const user = useContext (UserContext); // Get User Context
 	const history = useHistory();
 
     const createNewFavourite = async (e) => {
 		e.preventDefault();		
 		try {			
-			await addUserFavourite(user, title, mapURL);			
+			await addUserFavourite(title, mapURL);	
         } 
         catch (error) {
 			setError('Adding favourite' + error);
-		}				
-		//console.log("about to redirect");
-		//return( <div><Redirect to={'/search'} /> </div> );	
+		}	
 		let path = `/favourites`; 
 		history.push(path);	
 	};
 
-// TODO doesn't redirect properly
 	// Function to handle user form input
 	const onChangeHandler = (e) => {
 		const {name, value} = e.currentTarget;
-		// If email input set email state
+		// If mapURL input, set email state
 		if (name === 'mapURL') {
 			setMapURL(value);
 		} else if (name === 'title') {
-			// If password input, set password state
+			// If title input, set title state
 			setTitle(value);           
 		}
 	};
@@ -66,7 +62,9 @@ const AddFavourite = (props) => {
 							<form>
 								<div className="grey-text">
 									<MDBInput
-										label="Enter a title"										
+										required
+										label="Enter a title"	
+										size="lg"									
 										group
 										type="text"
 										name="title"
@@ -75,14 +73,18 @@ const AddFavourite = (props) => {
 										success="right"
 										value={title}
 										onChange={(e) => onChangeHandler(e)}
-									/>
+									/>								
 
 									<MDBInput
-										label="Enter a mapURL"									
+										required
+										label="Enter a mapURL"	
+										size="lg"								
 										group
 										type="text"
 										name="mapURL"
 										validate
+										error="Badly formed mapURL"
+										success="Correctly formed mapURL"
 										value={mapURL}
 										onChange={(e) => onChangeHandler(e)}
 									/>

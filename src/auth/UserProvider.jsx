@@ -1,21 +1,19 @@
 import React, { Component, createContext } from "react";
 import {auth, generateUserDocument} from '../firebase';
 
-// Context for user status
+// Context for user 
 export const UserContext = createContext({ user: null });
 
 class UserProvider extends Component {
+
+  // State to hold a reference to the currently logged in user
   state = {
     user: null
   };
    
   componentDidMount = async () => {
-    console.log("userProvider DidMount");
     auth.onAuthStateChanged(async userAuth => {
-      const user = await generateUserDocument(userAuth);
-      if(user){      
-       console.log("UserProvider setting user to: " + user.displayName);
-      }
+      const user = await generateUserDocument(userAuth);     
       this.setState({ user });
     });
   };

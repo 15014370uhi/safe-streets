@@ -29,7 +29,8 @@ const NavBar = props => {
               <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
             </div>
 
-            <ul className={click ? 'nav-menu active' : 'nav-menu'}>             
+            <ul className={click ? 'nav-menu active' : 'nav-menu'}>   
+                      
              <li className="nav-item">
                 <Nav.Link as={NavLink} to="/favourites" onClick={closeMobileMenu}>
                   Favourites

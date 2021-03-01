@@ -11,14 +11,18 @@ const firebaseConfig = {
     appId: "1:400130243033:web:3439d32591167991e041c8"
   };
 
+
+// TODO https://firebase.google.com/docs/auth/web/manage-users - add more user features
+
+
   // Function to create a user document
   export const generateUserDocument = async (user, additionalData) => {
 
-    // If user missing, exit
+     // If user missing, exit
   if (!user){
     return;
   } 
-
+  
   // Get reference to current user data in firestore by UID
   const userRef = firestore.doc(`users/${user.uid}`);
   const snapshot = await userRef.get();
@@ -26,35 +30,94 @@ const firebaseConfig = {
   // If user is logged in but no firestore document exists
   if (!snapshot.exists) {
 
-    // User logged in but no document contents exist, generate firestore document for user
+    // Get displayName and email of currently logged in user
     const { email, displayName} = user;   
     
     try {
       await userRef.set({
-        displayName,  // Initialise user displayName
-        email, // initialise user email
-        favourites: [], 
+        displayName,  // Set user displayName
+        email, // Set user email
+        favourites: [], // Initialise empty favourites array
         ...additionalData
       });
     } 
     catch (error) {
-      console.error("Error creating user document", error);
+      console.error("Error creating user firestore document", error);
     }
   }
+  // Call getUserDocument function with user UID
   return getUserDocument(user.uid);
 };
 
 
-// Function which returns the latest user document from firestore
+// Function to add a new favourite to user collection of favourites
+export const addUserFavourite = async (title, mapURL) => {
+  var user = firebase.auth().currentUser;
+
+  // If no current user passed, exit
+  if (!user) {
+   console.log("user missing") ;
+   return;
+  }
+  if(!mapURL){
+   console.log("mapURL missing") ;
+   return;
+  } 
+  if(!title){
+   console.log("title missing") ;
+   return;
+  } 
+
+  // Create a new favourite object
+  var newFavourite = 
+  {                 
+          title: title, 
+          mapURL: mapURL
+  };
+
+ // Get reference to current user data in firestore by UID
+ const userRef = firestore.doc(`users/${user.uid}`);
+ const snapshot = await userRef.get();
+ // If firestore user document found
+ if (snapshot.exists) {
+   try {
+     await userRef.update({
+       favourites: firebase.firestore.FieldValue.arrayUnion(Object.assign({}, newFavourite)),     
+   })   
+   } catch (error) {
+     console.error("Error adding favourite", error);
+   }
+ }
+ return getUserDocument(user.uid);  // TODO 
+};
+
+// Async function to delete a user account
+export const deleteUser = async () => {
+  var user = firebase.auth().currentUser;
+
+  // TODO REM user must have recently logged in user
+
+  user.delete().then(function() {
+    console.log("User " + user.displayName + " deleted!");
+  }).catch(function(error) {
+    console.log("Error deleting user account", error);
+  });
+}
+
+
+
+
+
+// Async function which returns the latest user document from firestore
 const getUserDocument = async uid => {
 
-  // No current logged in user, return null
+  // No UID supplied, return null
   if (!uid){
     return null;
   } 
-  // Else user logged in 
+  // Else user UID supplied for logged in user
   try {
-    // Get current user document
+    // Get reference to current user document
     const userDocument = await firestore.doc(`users/${uid}`).get();
     return {
       uid,
@@ -65,47 +128,6 @@ const getUserDocument = async uid => {
     console.error("Error fetching user", error);
   }
 };
-
-// Function to add a new favourite to user collection of favourites
-export const addUserFavourite = async (user, title, mapURL) => {
-
-   // If no current user passed, exit
-   if (!user) {
-    console.log("user missing") ;
-    return;
-   }
-   if(!mapURL){
-    console.log("mapURL missing") ;
-    return;
-   } 
-   if(!title){
-    console.log("title missing") ;
-    return;
-   } 
- 
-   // Create a new favourite object
-   var newFavourite = 
-   {                 
-           title: title, 
-           mapURL: mapURL
-   };
-
-  // Get reference to current user data in firestore by UID
-  const userRef = firestore.doc(`users/${user.uid}`);
-  const snapshot = await userRef.get();
-  // If firestore User document found
-  if (snapshot.exists) {
-    try {
-      await userRef.update({
-        favourites: firebase.firestore.FieldValue.arrayUnion(Object.assign({}, newFavourite)),     
-    })   
-    } catch (error) {
-      console.error("Error adding favourite", error);
-    }
-  }
-  return getUserDocument(user.uid);  // TODO 
-};
-
 
 // Initialise firebase
 if (!firebase.apps.length) {
