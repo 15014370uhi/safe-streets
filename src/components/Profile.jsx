@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {UserContext} from '../auth/UserProvider';
 import {Redirect} from '@reach/router';
-import {auth} from '../firebase';
+import {auth, getCurrentUser} from '../firebase';
 import uuid from 'react-uuid';
 
 import {
@@ -18,9 +18,12 @@ import {
 } from 'mdb-react-ui-kit';
 
 const Profile = () => {
-  const user = useContext (UserContext); // Get User Context
+ const user = useContext (UserContext); // Get User Context
+
   var displayName, email;
   if(user){
+    console.log("user.displayName: " + user.displayName);
+    console.log("user.email: " + user.email);
     displayName = user.displayName;
     email = user.email; // Deconstruct user document elements
   } else {
@@ -50,7 +53,7 @@ const Profile = () => {
               <MDBCardHeader><h2>Profile</h2></MDBCardHeader>
               <MDBCardBody>
                 <MDBCardTitle>
-                  {displayName}
+                 Display Name: {displayName}
                 </MDBCardTitle>
                 <MDBCardText>
                   {email}

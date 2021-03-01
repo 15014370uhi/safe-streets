@@ -9,7 +9,7 @@ import CardDeck from 'react-bootstrap/CardDeck';
 
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
-	const user = useContext(UserContext); // Get User Context for ID
+	const user = useContext(UserContext); // Get User Context for ID	
 
 	// TODO TRY move the functions to the firebase - for favs etc
 	// TODO REM - only use useContext Usercontext to get current user ID nothing else
@@ -40,8 +40,8 @@ const Favourites = (props) => {
 
 	// Function to remove a favourite from a user's collection of favourites
 	const deleteFavourite = (aTitle) => {
-		console.log('deleteFavourite function RUN for title: ');
-		console.log(aTitle);
+		//console.log('deleteFavourite function RUN for title: ');
+		//console.log(aTitle);
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
@@ -69,12 +69,9 @@ const Favourites = (props) => {
 	};
 
 	return (
-		<Container>
-			Favourites List
+		<Container>	
 			{localFavourites.length ? (
-				<Container id="favouritesContainer">
-					<br />
-					<h2>Favourites for: {user.displayName}</h2>
+				<Container id="favouritesContainer">									
 					<br />
 					<h3>You have {localFavourites.length} favourites</h3>
 					<br />
@@ -85,6 +82,7 @@ const Favourites = (props) => {
 								key={uuid()}
 								title={favourite.title}
 								mapURL={favourite.mapURL}
+								timestamp={favourite.timestamp}
 								deleteFavourite={deleteFavourite}
 							/>
 						))}

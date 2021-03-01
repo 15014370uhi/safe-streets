@@ -22,7 +22,7 @@ const firebaseConfig = {
   if (!user){
     return;
   } 
-  
+
   // Get reference to current user data in firestore by UID
   const userRef = firestore.doc(`users/${user.uid}`);
   const snapshot = await userRef.get();
@@ -68,11 +68,20 @@ export const addUserFavourite = async (title, mapURL) => {
    return;
   } 
 
+
+  // TODO get current date as string
+  //const timestamp = new Date().toLocaleString();
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const timestamp = new Date().toLocaleDateString([],options);
+  //const timestamp = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
+
+
   // Create a new favourite object
   var newFavourite = 
   {                 
           title: title, 
-          mapURL: mapURL
+          mapURL: mapURL,
+          timestamp: timestamp,
   };
 
  // Get reference to current user data in firestore by UID
@@ -91,6 +100,7 @@ export const addUserFavourite = async (title, mapURL) => {
  return getUserDocument(user.uid);  // TODO 
 };
 
+
 // Async function to delete a user account
 export const deleteUser = async () => {
   var user = firebase.auth().currentUser;
@@ -105,6 +115,14 @@ export const deleteUser = async () => {
 }
 
 
+export const getCurrentUser = async () => {
+  var user = firebase.auth().currentUser;
+  if (!user){
+    return null;
+  } else {
+    return user;
+  }
+}
 
 
 
@@ -119,6 +137,8 @@ const getUserDocument = async uid => {
   try {
     // Get reference to current user document
     const userDocument = await firestore.doc(`users/${uid}`).get();
+    console.log("Firebase getUserDocument displayname: " + userDocument.data().displayName);
+    // TODO NOTES This correctly gets displayname after adding a new favourite - interesting!!!
     return {
       uid,
       ...userDocument.data()
@@ -128,6 +148,7 @@ const getUserDocument = async uid => {
     console.error("Error fetching user", error);
   }
 };
+
 
 // Initialise firebase
 if (!firebase.apps.length) {

@@ -11,7 +11,11 @@ import map_placeholder from '../images/map_placeholder.jpg';
  * @param {string} title - Title for this favourite  
  * @param {string} mapURL - URL for map image
  */
-const Favourite = ({title, mapURL, deleteFavourite}) => {
+const Favourite = ({title, mapURL, timestamp, deleteFavourite}) => {
+
+  //const createdTimestamp = new Date( timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
+  //const date = timestamp.toDate();
+  //const atTime = createdTimestamp.toLocaleTimeString();
 
   return (
     <Col className="container-fluid mt-4">
@@ -27,7 +31,10 @@ const Favourite = ({title, mapURL, deleteFavourite}) => {
         <i className="far fa-trash-alt fa-lg" onClick={() => {deleteFavourite(title)}} />
       </Card.Body>
       <Card.Footer>
-      <small className="text-muted">Added 3 days ago</small>
+      <small className="text-muted">    
+     Date created: 
+    <h6>{timestamp}</h6>
+      </small>
     </Card.Footer>
     </Card>
     </Col>
