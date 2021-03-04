@@ -9,6 +9,8 @@ import CardDeck from 'react-bootstrap/CardDeck';
 
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
+	const [localUserName, setLocalUserName] = useState(null);
+	const [localDisplayName, setLocalDisplayName] = useState(null);
 	const user = useContext(UserContext); // Get User Context for ID	
 
 	// TODO TRY move the functions to the firebase - for favs etc
@@ -29,6 +31,8 @@ const Favourites = (props) => {
 			.then(function (doc) {
 				if (doc.exists) {
 					setLocalFavourites(doc.data().favourites);
+					setLocalUserName(doc.data().username);
+					setLocalDisplayName(doc.data().displayName);
 				} else {
 					console.log('No favourites!');
 				}
@@ -70,6 +74,8 @@ const Favourites = (props) => {
 
 	return (
 		<Container>	
+		<h2>Username: {localUserName}</h2> <br />
+		<h2>DisplayName: {localDisplayName}</h2>
 			{localFavourites.length ? (
 				<Container id="favouritesContainer">									
 					<br />

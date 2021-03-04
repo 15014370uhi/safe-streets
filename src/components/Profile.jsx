@@ -1,8 +1,10 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../auth/UserProvider';
 import {Redirect} from '@reach/router';
 import {auth, getCurrentUser} from '../firebase';
 import uuid from 'react-uuid';
+import firebase from 'firebase';
+
 
 import {
   MDBCard,
@@ -18,17 +20,60 @@ import {
 } from 'mdb-react-ui-kit';
 
 const Profile = () => {
+  
+  const [localFavouritesTotal, setLocalFavouritesTotal] = useState([]);
+	const [localUsername, setLocalUsername] = useState(null);
+	const [localDisplayName, setLocalDisplayName] = useState(null);
  const user = useContext (UserContext); // Get User Context
 
-  var displayName, email;
-  if(user){
-    console.log("user.displayName: " + user.displayName);
-    console.log("user.email: " + user.email);
-    displayName = user.displayName;
-    email = user.email; // Deconstruct user document elements
-  } else {
-    console.log ('Not authenticated');
-  }
+ // TODO maybe get current user document manually 
+
+  var displayName, email, username;
+
+
+
+
+	useEffect(() => {  
+    getUserDetails();  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+
+// Function which retrieves the favourites for a user
+// If user missing, exit
+
+
+const getUserDetails = async () => {
+if (user){
+  var userRef = await firebase.firestore().collection('users').doc(user.uid);
+  userRef
+    .get()
+    .then(function (doc) {
+      if (doc.exists) {
+        setLocalFavouritesTotal(doc.data().favourites.length);
+        setLocalUsername(doc.data().username);
+        setLocalDisplayName(doc.data().displayName);
+
+      } else {
+        console.log('No favourites!');
+      }
+    })
+    .catch(function (error) {
+      console.log('Error getting favourites:', error);
+    });  
+  }  
+};
+
+
+
+  // if(user){
+  //   console.log("user.displayName: " + user.displayName);
+  //   console.log("user.email: " + user.email);
+  //   displayName = user.displayName;
+  //   username = user.username;
+  //   email = user.email; // Deconstruct user document elements
+  // } else {
+  //   console.log ('Not authenticated');
+  // }
  
 
   const onSignOutHandler = async (e) => {
@@ -53,7 +98,10 @@ const Profile = () => {
               <MDBCardHeader><h2>Profile</h2></MDBCardHeader>
               <MDBCardBody>
                 <MDBCardTitle>
-                 Display Name: {displayName}
+                DisplayName: {localDisplayName}                
+                </MDBCardTitle>
+                <MDBCardTitle>               
+                 Username: {localUsername}
                 </MDBCardTitle>
                 <MDBCardText>
                   {email}

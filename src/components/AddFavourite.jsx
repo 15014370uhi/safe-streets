@@ -49,7 +49,7 @@ const AddFavourite = (props) => {
 	};
 
 	return (
-		<MDBContainer>
+		<MDBContainer>	
 			<MDBRow>
 				<MDBCol md="6">
 					<MDBCard>

@@ -27,15 +27,21 @@ const firebaseConfig = {
   const userRef = firestore.doc(`users/${user.uid}`);
   const snapshot = await userRef.get();
 
+  console.log("Additional data received in firebase for new user: " + additionalData.username);
+
   // If user is logged in but no firestore document exists
   if (!snapshot.exists) {
 
     // Get displayName and email of currently logged in user
-    const { email, displayName} = user;   
+   // const { email} = user;   
+       const {email} = user;  
+       const displayName = additionalData.displayName;   
+        const username = additionalData.displayName;
     
     try {
       await userRef.set({
-        displayName,  // Set user displayName
+        displayName,
+        username,  // Set user username
         email, // Set user email
         favourites: [], // Initialise empty favourites array
         ...additionalData
@@ -108,13 +114,14 @@ export const deleteUser = async () => {
   // TODO REM user must have recently logged in user
 
   user.delete().then(function() {
-    console.log("User " + user.displayName + " deleted!");
+    console.log("User " + user.email + " deleted!");
   }).catch(function(error) {
     console.log("Error deleting user account", error);
   });
 }
 
 
+// TODO can delete this probably
 export const getCurrentUser = async () => {
   var user = firebase.auth().currentUser;
   if (!user){
@@ -137,7 +144,7 @@ const getUserDocument = async uid => {
   try {
     // Get reference to current user document
     const userDocument = await firestore.doc(`users/${uid}`).get();
-    console.log("Firebase getUserDocument displayname: " + userDocument.data().displayName);
+    console.log("username: " + userDocument.data().username);
     // TODO NOTES This correctly gets displayname after adding a new favourite - interesting!!!
     return {
       uid,

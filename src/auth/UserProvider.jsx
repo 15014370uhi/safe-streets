@@ -1,5 +1,5 @@
 import React, { Component, createContext } from "react";
-import {auth, firebase} from '../firebase';
+import {auth} from '../firebase';
 
 // Context for user 
 export const UserContext = createContext({ user: null });
@@ -18,7 +18,6 @@ class UserProvider extends Component {
   componentDidMount = async () => {
     await auth.onAuthStateChanged(user => {
       this.setState({ user: user});
-      console.log("displayname in userProvider: " + user.displayName); // TODO this doesnt read displayName like..ever!
     });
 
     // OLD VERSION

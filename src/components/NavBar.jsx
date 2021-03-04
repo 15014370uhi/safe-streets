@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../auth/UserProvider';
 import {ReactComponent as Logo} from '../images/logo.svg';
 import Dropdown from 'react-bootstrap/Dropdown';
@@ -8,12 +8,51 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import {Link, NavLink} from 'react-router-dom';
+import firebase from 'firebase';
 
 const NavBar = props => {
   const user = useContext (UserContext); // Get User Context
   const [click, setClick] = useState (false);
   const handleClick = () => setClick (!click);
   const closeMobileMenu = () => setClick (false);
+
+  const [localFavouritesTotal, setLocalFavouritesTotal] = useState([]);
+	const [localUserName, setLocalUserName] = useState(null);
+	const [localDisplayName, setLocalDisplayName] = useState(null);
+
+  
+	useEffect(() => {  
+      getUserDetails();  
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+// Function which retrieves the favourites for a user
+ // If user missing, exit
+ 
+
+const getUserDetails = async () => {
+  if (user){
+    var userRef = await firebase.firestore().collection('users').doc(user.uid);
+    userRef
+      .get()
+      .then(function (doc) {
+        if (doc.exists) {
+          setLocalFavouritesTotal(doc.data().favourites.length);
+          setLocalUserName(doc.data().username);
+          setLocalDisplayName(doc.data().displayName);
+         // setLocalEmail(doc.data().displayName);
+
+        } else {
+          console.log('No favourites!');
+        }
+      })
+      .catch(function (error) {
+        console.log('Error getting favourites:', error);
+      });  
+    }  
+};
+
+
 
   //TODO replace all with Navbar stuff
   return (
@@ -33,8 +72,8 @@ const NavBar = props => {
                       
              <li className="nav-item">
                 <Nav.Link as={NavLink} to="/favourites" onClick={closeMobileMenu}>
-                  Favourites
-                </Nav.Link>
+                  Favourites 
+                </Nav.Link>               
               </li>
 
               <li className="nav-item">
@@ -47,8 +86,7 @@ const NavBar = props => {
                 <Nav.Link as={NavLink} to="/search" onClick={closeMobileMenu}>
                   Search
                 </Nav.Link>
-              </li>
-
+              </li>            
               <NavDropdown
                 title={
                   <span>

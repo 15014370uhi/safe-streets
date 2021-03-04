@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {auth, generateUserDocument} from '../firebase';
-import {Link, Redirect, useHistory} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 
 
 // TODO get list of errors and show them properly
@@ -24,17 +24,26 @@ const Register = (props) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [displayName, setDisplayName] = useState('');
+	//const [username, setUsername] = useState('');
+
 	const [error, setError] = useState(null);
 
 	const history = useHistory();
 
+	const createUserWithEmailAndPasswordHandler = async (e) => {
+		//	const createUserWithEmailAndPasswordHandler = async (e,	email, password) => {
 
-	const createUserWithEmailAndPasswordHandler = async (e,	email, password) => {
 		e.preventDefault();
 		try {
-			console.log("Calling createUser with email: " + email + " and password: " + password);
+			console.log("Calling createUser with email: " 
+			+ email + " and password: " 
+			+ password + " and displayName: " 
+			+ displayName);
+
+			const username = displayName;
+
 			const {user} = await auth.createUserWithEmailAndPassword(email, password);
-			generateUserDocument(user, {displayName});
+			generateUserDocument(user, {displayName, username});
 		} catch (error) {
 			setError('Error creating user with email and password');
 		}	
