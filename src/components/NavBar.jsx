@@ -8,7 +8,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import {Link, NavLink} from 'react-router-dom';
-import firebase from 'firebase';
+//import firebase from 'firebase';
 
 const NavBar = props => {
   const user = useContext (UserContext); // Get User Context
@@ -16,14 +16,14 @@ const NavBar = props => {
   const handleClick = () => setClick (!click);
   const closeMobileMenu = () => setClick (false);
 
-  const [localFavouritesTotal, setLocalFavouritesTotal] = useState([]);
-	const [localUserName, setLocalUserName] = useState(null);
-	const [localDisplayName, setLocalDisplayName] = useState(null);
+  //const [localFavouritesTotal, setLocalFavouritesTotal] = useState([]);
+	//const [localUserName, setLocalUserName] = useState(null);
+	//const [localDisplayName, setLocalDisplayName] = useState(null);
 
   
   
 	useEffect(() => {  
-      getUserDetails();  
+     // getUserDetails();  
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -31,31 +31,24 @@ const NavBar = props => {
  // If user missing, exit
  
 
-const getUserDetails = async () => {
-  console.log("Running getUserDetails in navbar");
-  if (user){
-    var userRef = await firebase.firestore().collection('users').doc(user.uid);
-    userRef
-      .get()
-      .then(function (doc) {
-        if (doc.exists) {
-          setLocalFavouritesTotal(doc.data().favourites.length);
-          setLocalUserName(doc.data().username);
-          setLocalDisplayName(doc.data().displayName);
-         // setLocalEmail(doc.data().displayName);
-         // TEST
-         //fetchedUsername = 
-         console.log("Navbar username: " + doc.data().username);
-
-        } else {
-          console.log('No favourites!');
-        }
-      })
-      .catch(function (error) {
-        console.log('Error getting favourites:', error);
-      });  
-    }  
-};
+// const getUserDetails = async () => {
+//   console.log("Running getUserDetails in navbar");
+//   if (user){
+//     var userRef = await firebase.firestore().collection('users').doc(user.uid);
+//     userRef
+//       .get()
+//       .then(function (doc) {
+//         if (doc.exists) {
+//           setLocalFavouritesTotal(doc.data().favourites.length);   
+//         } else {
+//           console.log('No favourites!');
+//         }
+//       })
+//       .catch(function (error) {
+//         console.log('Error getting favourites:', error);
+//       });  
+//     }  
+// };
 
 
 
@@ -92,14 +85,6 @@ const getUserDetails = async () => {
                   Search
                 </Nav.Link>
               </li>   
-
-              <li className="nav-item">
-                username: {user.username}
-              </li>   
-
-
-
-
 
               <NavDropdown
                 title={

@@ -7,10 +7,12 @@ import Container from 'react-bootstrap/Container';
 import firebase from 'firebase';
 import CardDeck from 'react-bootstrap/CardDeck';
 
+
+// TODO favourites as cards on this screen - or combine profile and favourites into single page?
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
-	const [localUserName, setLocalUserName] = useState(null);
-	const [localDisplayName, setLocalDisplayName] = useState(null);
+	//const [localUserName, setLocalUserName] = useState(null);
+	//const [localDisplayName, setLocalDisplayName] = useState(null);
 	const user = useContext(UserContext); // Get User Context for ID
 
 	// TODO TRY move the functions to the firebase - for favs etc
@@ -22,17 +24,21 @@ const Favourites = (props) => {
 	}, []);
 
 	// TODO change functions to consts
-
+	// TODO move getFavourites to firebase as a function
 	// Function which retrieves the favourites for a user
-	const getFavourites = () => {
-		var userRef = firebase.firestore().collection('users').doc(user.uid);
+	const getFavourites = async () => {
+		var userRef = await firebase.firestore().collection('users').doc(user.uid);
+
+		// TODO Previous working
+		// const getFavourites = () => {
+		// 	var userRef = firebase.firestore().collection('users').doc(user.uid);
+
+
 		userRef
 			.get()
 			.then(function (doc) {
 				if (doc.exists) {
-					setLocalFavourites(doc.data().favourites);
-					setLocalUserName(doc.data().username);
-					setLocalDisplayName(doc.data().displayName);
+					setLocalFavourites(doc.data().favourites);					
 				} else {
 					console.log('No favourites!');
 				}
@@ -73,9 +79,7 @@ const Favourites = (props) => {
 	};
 
 	return (
-		<Container>
-			<h2>Username: {localUserName}</h2> <br />
-			<h2>DisplayName: {localDisplayName}</h2>
+		<Container>		
 			{localFavourites.length ? (
 				<Container id="favouritesContainer">
 					<br />

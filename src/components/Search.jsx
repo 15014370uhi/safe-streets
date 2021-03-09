@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {UserContext} from '../auth/UserProvider';
-import firebase from 'firebase';
+//import firebase from 'firebase';
 
 
 const Search = () => {
@@ -16,8 +16,6 @@ const Search = () => {
  // getUserDetails();  
 // eslint-disable-next-line react-hooks/exhaustive-deps
 }, []);
-
-
 
 
   return (

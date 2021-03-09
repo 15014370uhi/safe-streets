@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
-import {auth, generateUserDocument} from '../firebase';
+import {generateUserDocument, createUserWithEmailAndPassword} from '../firebase';
+//import {auth, generateUserDocument, createUserWithEmailAndPassword} from '../firebase';
+
 import {Link, useHistory} from 'react-router-dom';
 
 
@@ -23,27 +25,18 @@ import {
 const Register = (props) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [displayName, setDisplayName] = useState('');
-	//const [username, setUsername] = useState('');
-
 	const [error, setError] = useState(null);
 
 	const history = useHistory();
 
+	
+	// TODO move this to firebase
 	const createUserWithEmailAndPasswordHandler = async (e) => {
-		//	const createUserWithEmailAndPasswordHandler = async (e,	email, password) => {
-
 		e.preventDefault();
 		try {
-			console.log("Calling createUser with email: " 
-			+ email + " and password: " 
-			+ password + " and displayName: " 
-			+ displayName);
-
-			const username = displayName;
-
-			const {user} = await auth.createUserWithEmailAndPassword(email, password);
-			generateUserDocument(user, {displayName, username});
+			const {user} = createUserWithEmailAndPassword(email, password);
+			//console.log("Created user with email: " + user.email);
+			generateUserDocument(user);
 		} catch (error) {
 			setError('Error creating user with email and password');
 		}	
@@ -52,16 +45,31 @@ const Register = (props) => {
 		history.push(path);	
 	};
 
+	// const createUserWithEmailAndPasswordHandler = async (e) => {
+	// 	e.preventDefault();
+	// 	try {
+	// 		const {user} = await auth.createUserWithEmailAndPassword(email, password);
+	// 		//console.log("Created user with email: " + user.email);
+	// 		generateUserDocument(user);
+	// 	} catch (error) {
+	// 		setError('Error creating user with email and password');
+	// 	}	
+	// 	// Redirect URL
+	// 	let path = `/search`; 
+	// 	history.push(path);	
+	// };
+
 
 	const onChangeHandler = (e) => {
 		const {name, value} = e.currentTarget;
-		if (name === 'email') {
+		if (name === 'email') 
+		{
 			setEmail(value);
-		} else if (name === 'password') {
+		} 
+		else if (name === 'password') 
+		{
 			setPassword(value);
-		} else if (name === 'displayName') {
-			setDisplayName(value);
-		}
+		} 		
 	};
 
 	return (
@@ -76,22 +84,7 @@ const Register = (props) => {
 								</h3>
 							</MDBCardHeader>
 							<form>
-								<div className="grey-text">
-									<MDBInput
-										label="Your Username"
-										icon="user"
-										group
-										type="text"
-										name="displayName"
-										value={displayName}
-										validate
-										error="wrong"
-										success="right"
-										onChange={(event) =>
-											onChangeHandler(event)
-										}
-									/>
-
+								<div className="grey-text">	
 									<MDBInput
 										label="Type your email"
 										icon="envelope"
@@ -106,12 +99,12 @@ const Register = (props) => {
 									/>
 
 									<MDBInput
-										label="Type your password"
+										label="Type your password"										
 										icon="lock"
 										group
 										type="password"
 										name="password"
-										validate
+										validate										
 										value={password}
 										onChange={(e) => onChangeHandler(e)}
 									/>
