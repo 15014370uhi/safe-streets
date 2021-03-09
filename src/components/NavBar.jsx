@@ -21,6 +21,7 @@ const NavBar = props => {
 	const [localDisplayName, setLocalDisplayName] = useState(null);
 
   
+  
 	useEffect(() => {  
       getUserDetails();  
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,6 +32,7 @@ const NavBar = props => {
  
 
 const getUserDetails = async () => {
+  console.log("Running getUserDetails in navbar");
   if (user){
     var userRef = await firebase.firestore().collection('users').doc(user.uid);
     userRef
@@ -41,6 +43,9 @@ const getUserDetails = async () => {
           setLocalUserName(doc.data().username);
           setLocalDisplayName(doc.data().displayName);
          // setLocalEmail(doc.data().displayName);
+         // TEST
+         //fetchedUsername = 
+         console.log("Navbar username: " + doc.data().username);
 
         } else {
           console.log('No favourites!');
@@ -86,7 +91,16 @@ const getUserDetails = async () => {
                 <Nav.Link as={NavLink} to="/search" onClick={closeMobileMenu}>
                   Search
                 </Nav.Link>
-              </li>            
+              </li>   
+
+              <li className="nav-item">
+                username: {user.username}
+              </li>   
+
+
+
+
+
               <NavDropdown
                 title={
                   <span>

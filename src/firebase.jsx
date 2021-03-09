@@ -36,7 +36,7 @@ const firebaseConfig = {
    // const { email} = user;   
        const {email} = user;  
        const displayName = additionalData.displayName;   
-        const username = additionalData.displayName;
+       const username = additionalData.username;
     
     try {
       await userRef.set({
