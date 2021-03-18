@@ -1,10 +1,35 @@
 const router = require ('express').Router ();
 
-
-router.post("/api", async (req, res) => {
+router.post("/", async (req, res) => {
    // res.send(req.title);
-    return res.status(201).json(req.title);
+   //const title = req.body.testData.title;
+   const body = req.body.title;
+   res.send({ receivedTitle: req.body.title });  
+   // return res.status(201).json(title);
 });
+
+
+//   // chk if new user already in db
+//   const emailExist = await User.findOne({ email: req.body.email });
+//   if (emailExist) {
+//     return res.status(400).send("Email already exists");
+//   }
+
+//   // create new user
+//   const user = new User({
+//     username: req.body.username,
+//     email: req.body.email,
+//     password: hashPassword
+//   });
+
+//   // save new user
+//   try {
+//     const savedUser = await user.save();
+//     res.send({ user: user._id });
+//   } catch (err) {
+//     res, status(400).send(err);
+//   }
+// });
 
 
 // router.post('/', async (req, res) => {

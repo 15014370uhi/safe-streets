@@ -48,7 +48,7 @@ const Search = () => {
       };
 
       await axios.post("http://localhost:5000/api/map", testData).then((res) => {
-				console.log(res.data);				
+				setMessage(res.data.receivedTitle);
 			})
 			.catch((error) => {
 				console.log('error in search getting response: ', error);
@@ -58,28 +58,28 @@ const Search = () => {
 
 
 
-	const testnew = async (e) => {
-		e.preventDefault();
-		console.log("Button clicked");
-		const title = 'aUserSearchTerm';
+	// const testnew = async (e) => {
+	// 	e.preventDefault();
+	// 	console.log("Button clicked");
+	// 	const title = 'aUserSearchTerm';
 		
-		const path = 'http://localhost:5000/api/map/';
-		//axios.get('http://localhost:5000/api/map/' + searchterms)
-		await axios.get(path, {
-				params: {
-					title: title,
-				},
-			})
-			.then((res) => {
-				setResponseData(res.data);
-				setMessage('');
-				console.log(res.data);
-			})
-			.catch((err) => {
-				setMessage('Error retrieving API data');
-				console.log(err);
-			});
-	};
+	// 	const path = 'http://localhost:5000/api/map/';
+	// 	//axios.get('http://localhost:5000/api/map/' + searchterms)
+	// 	await axios.get(path, {
+	// 			params: {
+	// 				title: title,
+	// 			},
+	// 		})
+	// 		.then((res) => {
+	// 			setResponseData(res.data);
+	// 			setMessage('');
+	// 			console.log(res.data);
+	// 		})
+	// 		.catch((err) => {
+	// 			setMessage('Error retrieving API data');
+	// 			console.log(err);
+	// 		});
+	// };
 
 
 	// const testnew2 = async (e) => {
