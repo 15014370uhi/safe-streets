@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {auth} from '../firebase';
-import {	
-	Link	
-} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
 // Style components
 import {
@@ -29,7 +27,7 @@ const Login = () => {
 
 		// Sign user in with firebase sign in method
 		auth.signInWithEmailAndPassword(email, password).catch((error) => {
-			setError("" + error);
+			setError('' + error);
 		});
 	};
 
@@ -45,6 +43,7 @@ const Login = () => {
 		}
 	};
 
+	// TODO match login and register forms button size, and distance within page from navbar
 	return (
 		<MDBContainer>
 			<MDBRow>

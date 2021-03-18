@@ -7,7 +7,9 @@ import Navbar from './NavBar';
 import Search from './Search';
 import Favourites from './Favourites';
 import AddFavourite from './AddFavourite';
-import {Route, Switch} from 'react-router-dom';
+import {Route, Switch, Redirect} from 'react-router-dom';
+
+// TODO rem pass props if needed - maybe user?
 
 function Application() {
 	const user = useContext(UserContext);
@@ -22,24 +24,47 @@ function Application() {
 					<br />
 					<Switch>
 						<Route exact path="/search" component={Search} />
-						<Route exact path="/addFavourite" component={AddFavourite} />
-						<Route exact path="/favourites" component={Favourites} />
+						<Route
+							exact
+							path="/addFavourite"
+							component={AddFavourite}
+						/>
+						<Route
+							exact
+							path="/favourites"
+							component={Favourites}
+						/>
 						<Route exact path="/profile" component={Profile} />
-						<Route exact path="/" component={Search} />
+						<Route exact path="/">
+							<Redirect to="/search" /> : <Search />
+						</Route>
 					</Switch>
-					</div>
+				</div>
 			) : (
 				<div>
 					<Switch>
 						<Route exact path="/" component={Login} />
-						<Route exact path="/register" component={Register} />
+
+						<Route exact path="/search">
+							<Redirect to="/" /> : <Login />
+						</Route>
+
+						<Route exact path="/favourites">
+							<Redirect to="/" /> : <Login />
+						</Route>
+
+						<Route exact path="/profile">
+							<Redirect to="/" /> : <Login />
+						</Route>
+
+						<Route exact path="/register">
+							<Redirect to="/register" /> : <Register />
+						</Route>
 					</Switch>
 				</div>
 			)}
 		</React.Fragment>
 	);
 }
-
-//<Route exact path="/favouritestest" render={(props) => <FavouritesTest {...props} user={user} />} />
 
 export default Application;

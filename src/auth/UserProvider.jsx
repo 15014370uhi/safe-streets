@@ -13,7 +13,6 @@ class UserProvider extends Component {
    
   // TODO The firebase version seems to work better than
   // TODO also try maybe using the authstatechanged in each component where its needed
-  // TODO to try get displayname that way>?
   
   componentDidMount = async () => {
     await auth.onAuthStateChanged(user => {
