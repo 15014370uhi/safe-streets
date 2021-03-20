@@ -7,12 +7,9 @@ import Container from 'react-bootstrap/Container';
 import firebase from 'firebase';
 import CardDeck from 'react-bootstrap/CardDeck';
 
-
 // TODO favourites as cards on this screen - or combine profile and favourites into single page?
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
-	//const [localUserName, setLocalUserName] = useState(null);
-	//const [localDisplayName, setLocalDisplayName] = useState(null);
 	const user = useContext(UserContext); // Get User Context for ID
 
 	// TODO TRY move the functions to the firebase - for favs etc
@@ -27,18 +24,20 @@ const Favourites = (props) => {
 	// TODO move getFavourites to firebase as a function
 	// Function which retrieves the favourites for a user
 	const getFavourites = async () => {
-		var userRef = await firebase.firestore().collection('users').doc(user.uid);
+		var userRef = await firebase
+			.firestore()
+			.collection('users')
+			.doc(user.uid);
 
 		// TODO Previous working
 		// const getFavourites = () => {
 		// 	var userRef = firebase.firestore().collection('users').doc(user.uid);
 
-
 		userRef
 			.get()
 			.then(function (doc) {
 				if (doc.exists) {
-					setLocalFavourites(doc.data().favourites);					
+					setLocalFavourites(doc.data().favourites);
 				} else {
 					console.log('No favourites!');
 				}
@@ -79,28 +78,32 @@ const Favourites = (props) => {
 	};
 
 	return (
-		<Container>		
+		<Container>
 			{localFavourites.length ? (
 				<Container id="favouritesContainer">
 					<br />
-					<h3>You have {localFavourites.length} favourites</h3>
-					<br />
-					<Container>
-						<CardDeck>
-							{localFavourites.map((favourite) => (
-								<Favourite
-									key={uuid()}
-									title={favourite.title}
-									mapURL={favourite.mapURL}
-									timestamp={favourite.timestamp}
-									deleteFavourite={deleteFavourite}
-								/>
-							))}
-						</CardDeck>
-					</Container>
+					<h3>
+						You have {localFavourites.length}{' '}
+						{localFavourites.length > 1
+							? 'favourites'
+							: 'favourite'}
+					</h3>
+					<CardDeck>
+						{localFavourites.map((favourite) => (
+							<Favourite
+								key={uuid()}
+								title={favourite.title}
+								mapURL={favourite.mapURL}
+								timestamp={favourite.timestamp}
+								deleteFavourite={deleteFavourite}
+							/>
+						))}
+					</CardDeck>
 				</Container>
 			) : (
-				<div>No favourites found</div>
+				<div>
+					<h1>No favourites found</h1>
+				</div>
 			)}
 		</Container>
 	);
