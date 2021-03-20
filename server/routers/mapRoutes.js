@@ -1,5 +1,8 @@
 const router = require ('express').Router ();
 
+
+//TODO maybe move to routes file instead 
+
 router.post ('/', async (req, res) => {
   
   const searchLocation = req.body.lon.searchlocation;

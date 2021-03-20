@@ -16,66 +16,67 @@ const NavBar = props => {
   const handleClick = () => setClick (!click);
   const closeMobileMenu = () => setClick (false);
 
-  //const [localFavouritesTotal, setLocalFavouritesTotal] = useState([]);
-	//const [localUserName, setLocalUserName] = useState(null);
-	//const [localDisplayName, setLocalDisplayName] = useState(null);
+  useEffect (() => {
+    // getUserDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  
-  
-	useEffect(() => {  
-     // getUserDetails();  
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+  // Function which retrieves the favourites for a user
+  // If user missing, exit
 
-// Function which retrieves the favourites for a user
- // If user missing, exit
- 
-
-// const getUserDetails = async () => {
-//   console.log("Running getUserDetails in navbar");
-//   if (user){
-//     var userRef = await firebase.firestore().collection('users').doc(user.uid);
-//     userRef
-//       .get()
-//       .then(function (doc) {
-//         if (doc.exists) {
-//           setLocalFavouritesTotal(doc.data().favourites.length);   
-//         } else {
-//           console.log('No favourites!');
-//         }
-//       })
-//       .catch(function (error) {
-//         console.log('Error getting favourites:', error);
-//       });  
-//     }  
-// };
-
-
+  // const getUserDetails = async () => {
+  //   console.log("Running getUserDetails in navbar");
+  //   if (user){
+  //     var userRef = await firebase.firestore().collection('users').doc(user.uid);
+  //     userRef
+  //       .get()
+  //       .then(function (doc) {
+  //         if (doc.exists) {
+  //           setLocalFavouritesTotal(doc.data().favourites.length);
+  //         } else {
+  //           console.log('No favourites!');
+  //         }
+  //       })
+  //       .catch(function (error) {
+  //         console.log('Error getting favourites:', error);
+  //       });
+  //     }
+  // };
 
   //TODO replace all with Navbar stuff
   return (
     <Navbar>
       <Navbar.Brand as={Link} to="/" className="navbar-logo">
-        <Logo />
+        <span className="navbar-logo-span">
+          <Logo />
+        </span>
         Safe Streets
       </Navbar.Brand>
 
-      {user ? (
-		  <Nav>
+      {user
+        ? <Nav>
             <div className="menu-icon" onClick={handleClick}>
               <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
             </div>
 
-            <ul className={click ? 'nav-menu active' : 'nav-menu'}>   
-                      
-             <li className="nav-item">
-                <Nav.Link as={NavLink} to="/favourites" onClick={closeMobileMenu}>
-                  Favourites 
-                </Nav.Link>               
+            <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+
+              <li className="nav-item">
+                <Nav.Link
+                  as={NavLink}
+                  to="/favourites"
+                  onClick={closeMobileMenu}
+                >
+                  Favourites{' '}
+                </Nav.Link>
               </li>
 
               <li className="nav-item">
-                <Nav.Link as={NavLink} to="/addFavourite" onClick={closeMobileMenu}>
+                <Nav.Link
+                  as={NavLink}
+                  to="/addFavourite"
+                  onClick={closeMobileMenu}
+                >
                   Add Favourite
                 </Nav.Link>
               </li>
@@ -84,51 +85,46 @@ const NavBar = props => {
                 <Nav.Link as={NavLink} to="/search" onClick={closeMobileMenu}>
                   Search
                 </Nav.Link>
-              </li>   
+              </li>
 
               <NavDropdown
                 title={
                   <span>
-                    <i className="fa fa-user fa-lg" />
+                    <i id="userIcon" className="fa fa-user fa-lg" />
                     {user.email}
                   </span>
-                }
-              >
+                }              >
                 <DropdownItem as={Link} to="/profile" onClick={closeMobileMenu}>
-                  <i className="fas fa-envelope fa-lg" />
-                  Profile
+                  <i id="dropdownProfileIcon" className="fas fa-envelope fa-2x" />
+                  <label className="dropdown-text">Profile</label>
                 </DropdownItem>
-                <Dropdown.Divider />
-                <DropdownItem as={Link} to="/" onClick={() => auth.signOut ()}>
-                  <i className="fas fa-sign-out-alt fa-lg" />
-                  Logout
-                </DropdownItem>
-
+                <Dropdown.Divider />               
+                <DropdownItem as={Link} to="/" onClick={() => auth.signOut ()}>               
+                  <i id="dropdownLogoutIcon" className="fas fa-sign-out-alt fa-2x" />
+                  <label className="dropdown-text">Logout</label>                   
+                </DropdownItem>              
               </NavDropdown>
             </ul>
           </Nav>
-	   ) : ( 
-		   
-		   <Nav>		  
+        : <Nav>
             <div className="menu-icon" onClick={handleClick}>
               <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
             </div>
 
-            <ul className={click ? 'nav-menu active' : 'nav-menu'}>             
-			 <li className="nav-item">
+            <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+              <li className="nav-item">
                 <Nav.Link as={NavLink} to="/register" onClick={closeMobileMenu}>
                   Register
                 </Nav.Link>
               </li>
 
-			  <li className="nav-item">
+              <li className="nav-item">
                 <Nav.Link as={NavLink} to="/" onClick={closeMobileMenu}>
                   Login
                 </Nav.Link>
               </li>
             </ul>
-          </Nav>
-	   )}
+          </Nav>}
     </Navbar>
   );
 };

@@ -270,7 +270,7 @@ textarea {
 [type="checkbox"],
 [type="radio"] {
   box-sizing: border-box; /* 1 */
-  padding: 0; /* 2 */
+  padding: 0; /* 2 */  
 }
 
 /**
@@ -41171,3 +41171,5 @@ video {
   }
 }
 
+   
+   

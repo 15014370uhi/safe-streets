@@ -4,17 +4,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.4rem;  
+  font-size: 1.4rem;
 }
 
 .navbar-logo {
   color: #fff;
   justify-self: start;
-  margin-left: 20px; 
+  margin-left: 20px;
   text-decoration: none;
-  font-size: 1.75rem;    
-  cursor: pointer; 
+  font-size: 1.75rem;
+  cursor: pointer;
   padding-right: 0.1rem;
+  transition: all 1s ease;
+}
+
+.navbar-logo-span {
+  padding-right: 15px;
 }
 
 .fa-firstdraft {
@@ -64,19 +69,48 @@
   color: #fff;
 }
 
-.fa, .fas {
+.fa,
+.fas {
   padding: 0.5rem;
 }
 
+#userIcon {
+  padding-right: 12px;
+}
 
-i.far.fa-trash-alt.fa-lg:hover{
+#dropdownLogoutIcon {
+  padding-right: 12px;
+  margin-top: 10px;
+}
+
+#dropdownProfileIcon {
+  padding-right: 12px;
+}
+
+.dropdown-text {
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+}
+
+.notSelectedFieldSet {
+  background-color: rgba(255, 255, 255, 0.911);
+}
+
+.selectedFieldSet {
+  background-color: rgba(47, 179, 42, 0.548);
+}
+
+.MDBInput > label {
+  font-size: 5rem;
+}
+
+i.far.fa-trash-alt.fa-lg:hover {
   cursor: pointer;
 }
 
-
 .mapPreview {
   width: 100%;
-  
+
 }
 
 .nav-links-mobile {
@@ -128,12 +162,12 @@ i.far.fa-trash-alt.fa-lg:hover{
     position: absolute;
     top: 0;
     left: 0;
-    transform: translate(25%, 50%);
-    padding-bottom: 1 rem;    
-    cursor: pointer; 
-  padding-right: 0.1rem;  
+    transition: all 1s ease;
+    transform: translate(80%, 15%);
+    padding-bottom: 1 rem;
+    cursor: pointer;
+    padding-right: 0.1rem;
   }
-
 
   .menu-icon {
     display: block;
@@ -173,8 +207,22 @@ i.far.fa-trash-alt.fa-lg:hover{
     display: none;
   }
 
-  i.far.fa-trash-alt.fa-lg:hover{
+  i.far.fa-trash-alt.fa-lg:hover {
     cursor: pointer;
   }
 
+}
+
+.searchRadio {
+  float: right;
+  margin: 10px;
+  box-shadow: none;
+  height: 1.3em;
+}
+
+.radiodiv {
+  margin-top: 3px;
+  margin-right: 2px;
+  display: inline-block;
+  overflow: hidden;
 }
