@@ -17,6 +17,12 @@ const Favourite = ({title, mapURL, timestamp, deleteFavourite}) => {
   //const date = timestamp.toDate();
   //const atTime = createdTimestamp.toLocaleTimeString();
 
+  const displayMap = e => {
+    // TODO redirect to display map - passing map url? from selected favourite
+
+    // TODO will need history and props passed 
+  }
+
   return (
     <Col className="container-fluid mt-4">
     <Card key={uuid ()}  border="info" style={{width: '20rem'}}>
@@ -27,7 +33,7 @@ const Favourite = ({title, mapURL, timestamp, deleteFavourite}) => {
           {mapURL} Later change this to a description by user.
           .. And include the image shrunk?
         </Card.Text>
-        <Button variant="primary">Display Map</Button>
+        <Button onClick={displayMap}variant="primary">Display Map</Button>
         <i className="far fa-trash-alt fa-lg" onClick={() => {deleteFavourite(title)}} />
       </Card.Body>
       <Card.Footer>

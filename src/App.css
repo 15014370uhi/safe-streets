@@ -94,10 +94,18 @@
 
 .notSelectedFieldSet {
   background-color: rgba(255, 255, 255, 0.911);
+  font-size:1.7rem;
 }
 
 .selectedFieldSet {
   background-color: rgba(47, 179, 42, 0.548);
+  font-size: 1.7rem;
+}
+
+.form-radio {
+  margin-left: 25px;
+  width:  0.7em;
+  height: 0.7em; 
 }
 
 .MDBInput > label {

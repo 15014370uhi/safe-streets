@@ -32,7 +32,7 @@ const Search = () => {
 	const [mapURL, setMapURL] = useState('');
 
 	// User input search parameters
-	const [radioButton, setRadioButton] = useState(1); // Radio button
+	const [radioButton, setRadioButton] = useState('0'); // Radio button
 
 	const [namedLocation, setNamedLocation] = useState('');
 	const [lat, setLat] = useState('');
@@ -52,8 +52,8 @@ const Search = () => {
 	useEffect(() => {}, []);
 
 	// Handler for radio button selection change
-	const radioClickedHandler = (buttonNumber) => {
-		setRadioButton(buttonNumber);
+	const radioClickedHandler = (radioSelected) => {
+		setRadioButton(radioSelected);
 	};
 
 	// Function to handle user form input
@@ -69,7 +69,7 @@ const Search = () => {
 			setLat(value);
 			//console.log("lat input: " + value);
 			console.log('lat state: ' + lat);
-		} else {
+		} else if (name === 'lon') {
 			// If longitude input, set lon state
 			setLon(value);
 			//	console.log("lon input: " + value);
@@ -111,76 +111,94 @@ const Search = () => {
 					<MDBCard>
 						<MDBCardBody>
 							<MDBCardHeader className="form-header bg-primary rounded">
-								<h3 className="my-3">
+								<h1 className="my-3">
 									<MDBIcon icon="globe" /> Search
-								</h3>
+								</h1>
 							</MDBCardHeader>
-							<form onSubmit={fetchData}>
-								<fieldset id="searchByStreet">										
-									<div className="radioDiv">
-										<legend className={radioButton === 1 ? 'selectedFieldSet': 'notSelectedFieldSet'}>
-											Search by street location
-										</legend>
-										
-										
-										<MDBInput											
-											gap
-											onClick={(e) => {radioClickedHandler(1);}}		
-											checked={radioButton === 1}
-											type="radio"
-											className="searchRadio"
-											containerClass="mr-5"	
-											id="searchRadioStreet"	
-											label ="Search by street location"
-										/>
-										
-									</div>
-									<MDBInput
-										label=" Street Address..."
-										size="lg"
-										icon="road"
-										group
-										type="text"
-										name="namedLocation"
-										value={namedLocation}
-										onChange={(e) => onChangeHandler(e)}
-									/>
-								</fieldset>
 
-								<fieldset id="searchByLatlon">
-									<legend className={radioButton === 0 ? 'selectedFieldSet': 'notSelectedFieldSet'}>
-										Search by latitude and longitude
-									</legend>
-									<MDBInput
-										label="Search by latitidue and longitude"
-										gap
-										onClick={(e) => {radioClickedHandler(0);}}											
-										checked={radioButton === 0}
+							<form onSubmit={fetchData}>
+								<label
+									className={
+										radioButton === '0'
+											? 'selectedFieldSet'
+											: 'notSelectedFieldSet'
+									}>
+									Search by street location
+									<input
+										className="form-radio"
 										type="radio"
-										className="searchRadio"
-										containerClass="mr-5"
-									/>
-									<MDBInput
-										label="latitude"
-										size="lg"
-										icon="map-marker-alt"
-										group
-										type="text"
-										name="lat"
-										value={lat}
+										checked={radioButton === '0'}
+										onClick={(e) =>
+											radioClickedHandler('0')
+										}
 										onChange={(e) => onChangeHandler(e)}
+										id="searchRadioStreet"
 									/>
-									<MDBInput
-										label="longitude"
-										size="lg"
-										icon="map-marker-alt"
-										group
-										type="text"
-										name="lon"
-										value={lon}
+								</label>
+
+								<MDBInput
+									autoFocus={
+										{radioButton} === '0' ? true : false
+									}
+									placeholder="Street Address..."
+									size="lg"
+									icon="road"
+									radiobuttontype="0"
+									group
+									type="text"
+									name="namedLocation"
+									value={namedLocation}
+									onChange={(e) => onChangeHandler(e)}
+									onClick={(e) => radioClickedHandler('0')}
+								/>
+
+								<label
+									className={
+										radioButton === '1'
+											? 'selectedFieldSet'
+											: 'notSelectedFieldSet'
+									}>
+									Search by latitude and longitude
+									<input
+										className="form-radio"
+										type="radio"
+										checked={radioButton === '1'}
+										onClick={(e) =>
+											radioClickedHandler('1')
+										}
 										onChange={(e) => onChangeHandler(e)}
+										id="searchRadioLatLon"
 									/>
-								</fieldset>
+								</label>
+
+								<MDBInput
+									autoFocus={
+										radioButton === '1' ? true : false
+									}
+									placeholder="latitude"
+									size="lg"
+									icon="map-marker-alt"
+									group
+									radiobuttontype="1"
+									type="text"
+									name="lat"
+									value={lat}
+									onChange={(e) => onChangeHandler(e)}
+									onClick={(e) => radioClickedHandler('1')}
+								/>
+								<MDBInput
+									placeholder="longitude"
+									size="lg"
+									icon="map-marker-alt"
+									group
+									radiobuttontype="1"
+									type="text"
+									name="lon"
+									value={lon}
+									onChange={(e) => onChangeHandler(e)}
+									onClick={(e) => radioClickedHandler('1')}
+								/>
+
 								<div className="text-center mt-4">
 									{error !== null && (
 										<div className="py-4 bg-red-600 w-full text-red text-center mb-3">
