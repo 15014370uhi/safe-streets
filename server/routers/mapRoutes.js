@@ -5,19 +5,37 @@ const router = require ('express').Router ();
 
 router.post ('/', async (req, res) => {
   
-  const searchLocation = req.body.lon.searchlocation;
-  const isNameSearch = req.body.lon.isnamesearch;
+
+  const isNameSearch = req.body.isnamesearch;
+  var mapURL = '';
+
+  // TEST 
+  mapURL = 'http://www.mapquestapi.com/staticmap/v5/map?key=HaI8dvLBtirhMstWmwrcbkRmltyyHAT2&locations=England&size=@2x';
+
+
+  if(isNameSearch){
+    // Named location search
+    //TODO convert named location to lat long etc
+    // TODO call function to get map URL
+  } else {
+    // LAT LON search
+     // TODO call function to get map URL
+  }
+
+  const namedLocation = req.body.namedlocation;
   const lat = req.body.lat;
   const lon = req.body.lon;
-  const mapURL =
-    'http://www.mapquestapi.com/staticmap/v5/map?key=HaI8dvLBtirhMstWmwrcbkRmltyyHAT2&locations=England&size=@2x';
+  const numberOfMonths = req.body.numberofmonths;
+  
+    //console.log("Server received location: " + namedLocation);
 
   res.send ({
-    lat: lat,
-    lon: lon,
-    searchlocation: searchLocation,
+    namedlocation: namedLocation,
     isnamesearch: isNameSearch,
+    lat: lat,
+    lon: lon,    
     mapurl: mapURL,
+    numberofmonths: numberOfMonths,
   });
 });
 

@@ -48,9 +48,7 @@ const Favourites = (props) => {
 	};
 
 	// Function to remove a favourite from a user's collection of favourites
-	const deleteFavourite = (aTitle) => {
-		//console.log('deleteFavourite function RUN for title: ');
-		//console.log(aTitle);
+	const deleteFavourite = (aTitle) => {	
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
@@ -67,7 +65,7 @@ const Favourites = (props) => {
 					});
 
 					// Update favourites state
-					setLocalFavourites(favouritesToKeep); // RETURN the favourites to keep then set here
+					setLocalFavourites(favouritesToKeep); 
 				} else {
 					console.log('No favourites!');
 				}

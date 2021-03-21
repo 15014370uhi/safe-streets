@@ -3,6 +3,8 @@ import {UserContext} from '../auth/UserProvider';
 //import firebase from 'firebase';
 import axios from 'axios';
 import Image from 'react-bootstrap/Image';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 import {useHistory} from 'react-router-dom';
 import {Route, Redirect} from 'react-router-dom';
 import MapDisplay from './MapDisplay';
@@ -33,10 +35,11 @@ const Search = () => {
 
 	// User input search parameters
 	const [radioButton, setRadioButton] = useState('0'); // Radio button
-
+	const [numberOfMonths, setNumberOfMonths] = useState(0);
 	const [namedLocation, setNamedLocation] = useState('');
 	const [lat, setLat] = useState('');
 	const [lon, setLon] = useState('');
+	const [dropdownTitle, setDropdownTitle] = useState('NUMBER OF MONTHS');
 
 	// Errors
 	const [error, setError] = useState(null);
@@ -51,54 +54,109 @@ const Search = () => {
 
 	useEffect(() => {}, []);
 
-	// Handler for radio button selection change
+	// Handler which records currently selected radio button
 	const radioClickedHandler = (radioSelected) => {
 		setRadioButton(radioSelected);
 	};
 
-	// Function to handle user form input
-	const onChangeHandler = (e) => {
+	// Handler which updates state with user form input
+	const formInputHandler = (e) => {
 		const {name, value} = e.currentTarget;
+
+		// TODO check types of input are correct etc. and set error if wrong
+		//setError(error);
 
 		// If namedLocation input set namedLocation
 		if (name === 'namedLocation') {
-			setNamedLocation(value);
-			console.log('namedlocation state: ' + namedLocation);
+			setNamedLocation(value);			
 		} else if (name === 'lat') {
 			// If latitude input, set lat state
-			setLat(value);
-			//console.log("lat input: " + value);
-			console.log('lat state: ' + lat);
+			setLat(value);			
 		} else if (name === 'lon') {
 			// If longitude input, set lon state
-			setLon(value);
-			//	console.log("lon input: " + value);
-			console.log('lon state: ' + lon);
-		}
+			setLon(value);				
+		} 
 	};
 
-	// fetches stock data based on parameters
+	// Dropdown handler
+	const dropHandler = (e) => {
+				setNumberOfMonths(e);
+				setDropdownTitle(e);
+			//console.log("Months set to: " + e + " >> " + numberOfMonths);
+			}
+
+			// TODO CSS for dropdown hover values
+
+	// Reset state values
+	const resetState = () => {
+		// API call successful, reset state
+		setNamedLocation('');
+		setLat('');
+		setLon('');
+		setRadioButton('0');
+		setNumberOfMonths(0)
+		setDropdownTitle('NUMBER OF MONTHS');
+	};
+
+	// Function which submits search to API
 	const fetchData = async (e) => {
 		e.preventDefault();
 		setMessage('Loading...');
 
+		const isNameSearch = radioButton === '0';
+
+		// Data passed to API
 		const payload = {
-			searchlocation: 'Perth',
-			isnamesearch: true,
-			lat: 14.566848,
-			lon: -11.25456,
+			namedlocation: namedLocation,
+			isnamesearch: isNameSearch,
+			lat: lat,
+			lon: -lon,
+			numberofmonths: numberOfMonths,
 		};
 
+		// TODO get the lat and long response and show on map screen as useful data?>
+		// TODO maybe have a special area for information about the map at side?
+
+		// API call for a new search
 		await axios
 			.post('http://localhost:5000/api/map', payload)
 			.then((res) => {
-				setMessage(res.data.lat);
-				// TODO get the lat and long response and show on map screen as useful data?>
-				// TODO maybe have a special area for information about the map at side?
+				// TEST response
+				const isNamedSearch = res.data.isnamesearch;
+				const namedlocation = res.data.namedlocation;
+				const latitude = res.data.lat;
+				const longitude = res.data.lon;
+				const numberOfMonths = res.data.numberofmonths;
+				const mapurl = res.data.mapurl;
+
+				setMessage(
+					'Name search?: ' +
+						isNamedSearch +
+						'......' +
+						'Location Name: ' +
+						namedlocation +
+						'...... ' +
+						'Latitude: ' +
+						latitude +
+						' ...... ' +
+						'Longitude: ' +
+						longitude +
+						'Months: ' +
+						numberOfMonths +
+						'......  ' +
+						'MapURL: ' +
+						mapurl
+				);
+
+				// Set mapURL state
 				setMapURL(res.data.mapurl);
+
+				// Reset state values
+				resetState();
 			})
 			.catch((error) => {
 				console.log('error in search getting response: ', error);
+				setError(error);
 			});
 	};
 
@@ -117,12 +175,13 @@ const Search = () => {
 							</MDBCardHeader>
 
 							<form onSubmit={fetchData}>
-								<label
-									className={
+							<fieldset className={
 										radioButton === '0'
 											? 'selectedFieldSet'
 											: 'notSelectedFieldSet'
 									}>
+								<label>
+									
 									Search by street location
 									<input
 										className="form-radio"
@@ -131,33 +190,33 @@ const Search = () => {
 										onClick={(e) =>
 											radioClickedHandler('0')
 										}
-										onChange={(e) => onChangeHandler(e)}
+										onChange={formInputHandler}
 										id="searchRadioStreet"
 									/>
 								</label>
+								
 
 								<MDBInput
 									autoFocus={
 										{radioButton} === '0' ? true : false
 									}
-									placeholder="Street Address..."
+									label="Street Address..."
 									size="lg"
-									icon="road"
-									radiobuttontype="0"
-									group
+									icon="road"								
 									type="text"
 									name="namedLocation"
 									value={namedLocation}
-									onChange={(e) => onChangeHandler(e)}
+									onChange={formInputHandler}
 									onClick={(e) => radioClickedHandler('0')}
 								/>
+								</fieldset>
 
-								<label
-									className={
+								<fieldset className={
 										radioButton === '1'
 											? 'selectedFieldSet'
 											: 'notSelectedFieldSet'
 									}>
+								<label>									
 									Search by latitude and longitude
 									<input
 										className="form-radio"
@@ -166,7 +225,7 @@ const Search = () => {
 										onClick={(e) =>
 											radioClickedHandler('1')
 										}
-										onChange={(e) => onChangeHandler(e)}
+										onChange={formInputHandler}
 										id="searchRadioLatLon"
 									/>
 								</label>
@@ -175,29 +234,51 @@ const Search = () => {
 									autoFocus={
 										radioButton === '1' ? true : false
 									}
-									placeholder="latitude"
+									label="Latitude..."
 									size="lg"
-									icon="map-marker-alt"
-									group
-									radiobuttontype="1"
+									icon="map-marker-alt"								
 									type="text"
 									name="lat"
 									value={lat}
-									onChange={(e) => onChangeHandler(e)}
+									onChange={formInputHandler}
 									onClick={(e) => radioClickedHandler('1')}
 								/>
 								<MDBInput
-									placeholder="longitude"
+									label="Longitude..."
 									size="lg"
-									icon="map-marker-alt"
-									group
-									radiobuttontype="1"
+									icon="map-marker-alt"																										
 									type="text"
 									name="lon"
 									value={lon}
-									onChange={(e) => onChangeHandler(e)}
+									onChange={formInputHandler}
 									onClick={(e) => radioClickedHandler('1')}
 								/>
+								</fieldset>
+								<p>Number of months selected: {numberOfMonths}</p>
+								
+
+								<Dropdown 
+								name="monthsDropdown"
+								id="dropdown-months-button" 
+								size="lg"								
+								onSelect={(e) => dropHandler(e)}>
+									<Dropdown.Toggle
+										variant="danger"
+										id="dropdown-months-toggle">
+										{dropdownTitle}
+									</Dropdown.Toggle>
+									<Dropdown.Menu>
+										<Dropdown.Item eventKey="3">3
+										</Dropdown.Item>
+										<Dropdown.Item eventKey="6">6
+										</Dropdown.Item>
+										<Dropdown.Item eventKey="12">12
+										</Dropdown.Item>
+										<Dropdown.Item eventKey="24">24
+										</Dropdown.Item>
+									</Dropdown.Menu>
+								</Dropdown>
+							
 
 								<div className="text-center mt-4">
 									{error !== null && (
@@ -206,16 +287,17 @@ const Search = () => {
 										</div>
 									)}
 									<MDBBtn
-										color="light-blue"
+										color="secondary"
 										className="mb-3"
+										block
+										size="lg"
 										type="submit">
 										Submit
 									</MDBBtn>
 								</div>
 							</form>
-							<br />
+							<br />							
 							<p>{message}</p>
-							<p>{mapURL}</p>
 							<Container>
 								<MapDisplay mapURL={mapURL} />
 							</Container>

@@ -9,14 +9,12 @@ import map_placeholder from '../images/map_placeholder.jpg';
  * A favourite for a user
  * 
  * @param {string} title - Title for this favourite  
- * @param {string} mapURL - URL for map image
+ * @param {string} mapURL - URL of map image
+ * @param {string} timestamp - Date the favourite was created
+ * @param {string} deleteFavourite - Reference to function which deletes the favourite from the user's favourites
  */
 const Favourite = ({title, mapURL, timestamp, deleteFavourite}) => {
-
-  //const createdTimestamp = new Date( timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000);
-  //const date = timestamp.toDate();
-  //const atTime = createdTimestamp.toLocaleTimeString();
-
+  
   const displayMap = e => {
     // TODO redirect to display map - passing map url? from selected favourite
 
