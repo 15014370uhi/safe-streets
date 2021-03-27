@@ -35,11 +35,10 @@ const Search = () => {
 
 	// User input search parameters
 	const [radioButton, setRadioButton] = useState('0'); // Radio button
-	const [numberOfMonths, setNumberOfMonths] = useState(0);
+	const [numberOfMonths, setNumberOfMonths] = useState(3);
 	const [namedLocation, setNamedLocation] = useState('');
 	const [lat, setLat] = useState('');
 	const [lon, setLon] = useState('');
-	const [dropdownTitle, setDropdownTitle] = useState('NUMBER OF MONTHS');
 
 	// Errors
 	const [error, setError] = useState(null);
@@ -56,11 +55,13 @@ const Search = () => {
 
 	// Handler which records currently selected radio button
 	const radioClickedHandler = (radioSelected) => {
+		//console.log("Radio button section clicked was: " + radioSelected);
 		setRadioButton(radioSelected);
 	};
 
 	// Handler which updates state with user form input
 	const formInputHandler = (e) => {
+		e.preventDefault();
 		const {name, value} = e.currentTarget;
 
 		// TODO check types of input are correct etc. and set error if wrong
@@ -79,38 +80,49 @@ const Search = () => {
 	};
 
 	// Dropdown handler
-	const dropHandler = (e) => {
-				setNumberOfMonths(e);
-				setDropdownTitle(e);
-			//console.log("Months set to: " + e + " >> " + numberOfMonths);
-			}
+	const dropHandler = (selectedNumberOfMonths) => {
+		
+		if (selectedNumberOfMonths === 0)
+		{
+			selectedNumberOfMonths = 3;
+		} 
+			setNumberOfMonths(selectedNumberOfMonths);				
+	}
 
-			// TODO CSS for dropdown hover values
+			
+	// TODO CSS for dropdown hover values
 
-	// Reset state values
+
+
+	// Function which resets the state values
 	const resetState = () => {
 		// API call successful, reset state
 		setNamedLocation('');
 		setLat('');
 		setLon('');
 		setRadioButton('0');
-		setNumberOfMonths(0)
-		setDropdownTitle('NUMBER OF MONTHS');
+		setNumberOfMonths(3)		
 	};
+
+
 
 	// Function which submits search to API
 	const fetchData = async (e) => {
 		e.preventDefault();
 		setMessage('Loading...');
 
-		const isNameSearch = radioButton === '0';
+		const isNameSearch = (radioButton === '0');
+
+		if(namedLocation === ''){
+			alert("Please enter a UK location!");
+		}
 
 		// Data passed to API
 		const payload = {
 			namedlocation: namedLocation,
 			isnamesearch: isNameSearch,
 			lat: lat,
-			lon: -lon,
+			lon: lon,
 			numberofmonths: numberOfMonths,
 		};
 
@@ -127,25 +139,28 @@ const Search = () => {
 				const latitude = res.data.lat;
 				const longitude = res.data.lon;
 				const numberOfMonths = res.data.numberofmonths;
-				const mapurl = res.data.mapurl;
+				const mapurl = res.data.mapurl;				
+
+				console.log("LAT LON: " + latitude + " " + longitude);
 
 				setMessage(
 					'Name search?: ' +
 						isNamedSearch +
-						'......' +
+						'\n' +
 						'Location Name: ' +
 						namedlocation +
-						'...... ' +
+						'\n' +
 						'Latitude: ' +
 						latitude +
-						' ...... ' +
+						'\n' +
 						'Longitude: ' +
 						longitude +
+						'\n' +
 						'Months: ' +
 						numberOfMonths +
-						'......  ' +
+						'\n' +
 						'MapURL: ' +
-						mapurl
+						mapurl		
 				);
 
 				// Set mapURL state
@@ -254,27 +269,25 @@ const Search = () => {
 									onClick={(e) => radioClickedHandler('1')}
 								/>
 								</fieldset>
-								<p>Number of months selected: {numberOfMonths}</p>
-								
-
+								<legend>Number of previous month's records to include?</legend>
 								<Dropdown 
-								name="monthsDropdown"
+								name="monthsDropdown"							
 								id="dropdown-months-button" 
 								size="lg"								
 								onSelect={(e) => dropHandler(e)}>
 									<Dropdown.Toggle
 										variant="danger"
 										id="dropdown-months-toggle">
-										{dropdownTitle}
+										{numberOfMonths} months
 									</Dropdown.Toggle>
 									<Dropdown.Menu>
-										<Dropdown.Item eventKey="3">3
+										<Dropdown.Item eventKey="3">3 Months
 										</Dropdown.Item>
-										<Dropdown.Item eventKey="6">6
+										<Dropdown.Item eventKey="6">6 Months
 										</Dropdown.Item>
-										<Dropdown.Item eventKey="12">12
+										<Dropdown.Item eventKey="12">12 Months
 										</Dropdown.Item>
-										<Dropdown.Item eventKey="24">24
+										<Dropdown.Item eventKey="24">24 Months
 										</Dropdown.Item>
 									</Dropdown.Menu>
 								</Dropdown>
@@ -287,6 +300,7 @@ const Search = () => {
 										</div>
 									)}
 									<MDBBtn
+										id="searchSubmitButton"
 										color="secondary"
 										className="mb-3"
 										block

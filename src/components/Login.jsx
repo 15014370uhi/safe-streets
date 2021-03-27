@@ -42,6 +42,8 @@ const Login = () => {
 			setPassword(value);
 		}
 	};
+// TODO - prop-types - check prop types where they are used!!!
+
 
 	// TODO match login and register forms button size, and distance within page from navbar
 	return (
