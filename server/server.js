@@ -1,8 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
-//const apiRoutes = require ('./routers/routes');
-const mapRoutes = require ('./routers/mapRoutes');
+const routes = require ('./routers/routes');
 const app = express();
 
 // Allow environmental variables
@@ -23,7 +22,6 @@ app.use(
   })
 );
 
-//app.use(cors(corsOptions));
 
 // Start server
 app.listen (PORT, () => {
@@ -33,7 +31,7 @@ app.listen (PORT, () => {
   app.get('/', (req, res) => res.send('Hello world!'));
 
 // Set api routes
-app.use('/api/map', mapRoutes);
+app.use('/api/map', routes);
 //app.use('/api/user', userRoute);
 
 //app.use ('/api', apiRoutes);
