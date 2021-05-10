@@ -31,7 +31,7 @@ const Favourite = ({title, mapURL, timestamp, deleteFavourite}) => {
           {mapURL} Later change this to a description by user.
           .. And include the image shrunk?
         </Card.Text>
-        <Button onClick={displayMap}variant="primary">Display Map</Button>
+        <Button onClick={displayMap} variant="primary">Display Map</Button>
         <i className="far fa-trash-alt fa-lg" onClick={() => {deleteFavourite(title)}} />
       </Card.Body>
       <Card.Footer>

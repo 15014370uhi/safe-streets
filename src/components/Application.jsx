@@ -7,12 +7,16 @@ import Navbar from './NavBar';
 import Search from './Search';
 import Favourites from './Favourites';
 import AddFavourite from './AddFavourite';
+import MapDisplay from './MapDisplay';
 import {Route, Switch, Redirect} from 'react-router-dom';
 
 // TODO rem pass props if needed - maybe user?
 
 function Application() {
 	const user = useContext(UserContext);
+
+
+//TODO TEST removal of extra path routes when user not logged in
 
 	return (
 		<React.Fragment>
@@ -23,6 +27,7 @@ function Application() {
 					<br />
 					<br />
 					<Switch>
+						<Route exact path="/results" component={MapDisplay} />
 						<Route exact path="/search" component={Search} />
 						<Route
 							exact
@@ -54,6 +59,10 @@ function Application() {
 						</Route>
 
 						<Route exact path="/profile">
+							<Redirect to="/" /> : <Login />
+						</Route>
+
+						<Route exact path="/results">
 							<Redirect to="/" /> : <Login />
 						</Route>
 

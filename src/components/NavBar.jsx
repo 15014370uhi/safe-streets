@@ -46,11 +46,11 @@ const NavBar = props => {
   //TODO replace all with Navbar stuff
   return (
     <Navbar>
-      <Navbar.Brand as={Link} to="/" className="navbar-logo">
-        <span className="navbar-logo-span">
-          <Logo />
-        </span>
-        Safe Streets
+      <Navbar.Brand as={NavLink} to="/" className="navbar-logo">
+        <Logo />
+        <div className="navbar-logo-text">
+          <h1>Safe Streets</h1>
+        </div>
       </Navbar.Brand>
 
       {user
@@ -59,52 +59,106 @@ const NavBar = props => {
               <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
             </div>
 
-            <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+            <div className="search-icon-mobile mobile-show">
+              <li className="nav-item">
+                <Nav.Link as={NavLink} to="/search" onClick={closeMobileMenu}>
+                <i className="fas fa-search fa-2x" />
+                  <label className="nav-icon-label search-icon-label">Search</label>
+                </Nav.Link>              
+              </li>
+            </div>
 
+            <ul className={click ? 'nav-menu active' : 'nav-menu'}> 
+
+           
+              <li className="nav-item mobile-hide">
+                <Nav.Link as={NavLink} to="/search" onClick={closeMobileMenu}>
+                <i className="fas fa-search fa-2x mobile-icon" />
+                  <label className="nav-icon-label search-icon-label">
+                  Search
+                  </label>
+                </Nav.Link>              
+              </li>
+                    
+             
               <li className="nav-item">
                 <Nav.Link
                   as={NavLink}
                   to="/favourites"
-                  onClick={closeMobileMenu}
-                >
-                  Favourites{' '}
+                  onClick={closeMobileMenu}>
+                  <i className="fas fa-bookmark fa-2x mobile-icon" />
+                  <label className="nav-icon-label">Favourites</label>
                 </Nav.Link>
               </li>
 
-              <li className="nav-item">
-                <Nav.Link
+              <li className="nav-item mobile-show">
+              <Nav.Link
+                  className="user-dropdown-button"
                   as={NavLink}
-                  to="/addFavourite"
+                  to="/profile"
                   onClick={closeMobileMenu}
                 >
-                  Add Favourite
-                </Nav.Link>
-              </li>
+                  <i                   
+                    className="fas fa-envelope fa-2x mobile-icon"
+                  />
+                  <label className="nav-icon-label">Profile</label>
+                  </Nav.Link>
+                </li>         
 
-              <li className="nav-item">
-                <Nav.Link as={NavLink} to="/search" onClick={closeMobileMenu}>
-                  Search
-                </Nav.Link>
-              </li>
+                <li className="nav-item mobile-show">
+              <Nav.Link
+                  className="user-dropdown-button"
+                  as={NavLink}
+                  to="/"
+                  onClick={() => auth.signOut ()}
+                >
+                  <i                   
+                    className="fas fa-sign-out-alt fa-2x mobile-icon"
+                  />
+                  <label className="nav-icon-label">Logout</label>
+                  </Nav.Link>
+                </li>               
 
-              <NavDropdown
+
+              <NavDropdown className="mobile-hide"
                 title={
                   <span>
-                    <i id="userIcon" className="fa fa-user fa-lg" />
-                    {user.email}
+                    <i className="fa fa-user fa-2x mobile-icon" />
+                    <label className="nav-icon-label">{user.email}</label>                    
                   </span>
-                }              >
-                <DropdownItem as={Link} to="/profile" onClick={closeMobileMenu}>
-                  <i id="dropdownProfileIcon" className="fas fa-envelope fa-2x" />
+                }
+              >
+                <DropdownItem
+                  className="dropdown-button"
+                  as={NavLink}
+                  to="/profile"
+                  onClick={closeMobileMenu}
+                >
+                  <i
+                    id="dropdownProfileIcon"
+                    className="fas fa-envelope fa-lg"
+                  />
                   <label className="dropdown-text">Profile</label>
                 </DropdownItem>
-                <Dropdown.Divider />               
-                <DropdownItem as={Link} to="/" onClick={() => auth.signOut ()}>               
-                  <i id="dropdownLogoutIcon" className="fas fa-sign-out-alt fa-2x" />
-                  <label className="dropdown-text">Logout</label>                   
-                </DropdownItem>              
-              </NavDropdown>
+
+                <Dropdown.Divider />
+
+                <DropdownItem
+                  className="dropdown-button"
+                  as={NavLink}
+                  to="/"
+                  onClick={() => auth.signOut ()}
+                >
+                  <i
+                    id="dropdownLogoutIcon"
+                    className="fas fa-sign-out-alt fa-2x"
+                  />
+                  <label className="dropdown-text">Logout</label>
+                </DropdownItem>
+              </NavDropdown>            
             </ul>
+          
+          
           </Nav>
         : <Nav>
             <div className="menu-icon" onClick={handleClick}>
@@ -132,3 +186,25 @@ const NavBar = props => {
 export default NavBar;
 
 // TODO favourites navbar link refreshes page, the search link works as intended
+
+//REMOVED from navbar - needs to be button on favourites page instead
+{
+  /* <li className="nav-item">
+<Nav.Link
+  as={NavLink}
+  to="/addFavourite"
+  onClick={closeMobileMenu}
+>
+  Add Favourite
+</Nav.Link>
+</li> */
+}
+
+//react boostrap dropdown
+// <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
+//         <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+//         <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
+//         <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+//         <NavDropdown.Divider />
+//         <NavDropdown.Item href="#action/3.4">Separated link</NavDropdown.Item>
+//       </NavDropdown>

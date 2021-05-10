@@ -1,6 +1,8 @@
 import React from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
-import UKMapImage from '../images/ukVectorGuide.svg';
+import UKMapImage from '../images/alternative/ukVectorGuide.svg';
+import UKIconImage from '../images/uk-icon.png';
+//import MapDisplay from './MapDisplay';
 
 // Style components
 import {MDBBtn, MDBInput} from 'mdbreact';
@@ -40,10 +42,12 @@ const Search = (props) => {
 						id="searchRadioStreet"
 					/>
 				</label>
-
+				<br />
+				<label className="inputLabels">
+					Street Address
+				</label>
 				<MDBInput
-					autoFocus={{radioButton} === '0' ? true : false}
-					label="Street Address..."
+					autoFocus={{radioButton} === '0' ? true : false}					
 					size="lg"
 					icon="road"
 					type="text"
@@ -72,10 +76,12 @@ const Search = (props) => {
 						id="searchRadioLatLon"
 					/>
 				</label>
-
+				<br />
+				<label className="inputLabels">
+					Latitude
+				</label>
 				<MDBInput
-					autoFocus={radioButton === '1' ? true : false}
-					label="Latitude..."
+					autoFocus={radioButton === '1' ? true : false}					
 					size="lg"
 					icon="map-marker-alt"
 					type="text"
@@ -84,8 +90,10 @@ const Search = (props) => {
 					onChange={formInputHandler}
 					onClick={(e) => radioClickedHandler('1')}
 				/>
-				<MDBInput
-					label="Longitude..."
+					<label className="inputLabels">
+					Longitude
+				</label>
+				<MDBInput					
 					size="lg"
 					icon="map-marker-alt"
 					type="text"
@@ -95,18 +103,26 @@ const Search = (props) => {
 					onClick={(e) => radioClickedHandler('1')}
 				/>
 
-				<MDBBtn
-					id="showMApGuide"
+				<MDBBtn					
+					id="showMapGuide"
 					color="warning"
 					className="mb-3"
 					block
 					size="lg"
 					onClick={handleShowImage}>
-					UK boundary guide
+
+					<img
+							className="mapicon"
+							src={UKIconImage}
+							onClick={handleShowImage}
+							alt="Outline of the UK Map"
+						/>
+
+					UK Map boundary guide
 				</MDBBtn>
 
 				{imageOpen && (
-					<dialog
+					<dialog										
 						className="dialog"
 						style={{position: 'absolute'}}
 						open
@@ -120,7 +136,9 @@ const Search = (props) => {
 					</dialog>
 				)}
 			</fieldset>
-			<legend>Number of previous month's records to include?</legend>
+			<label className="monthsInputLabel">
+			Number of previous month's records to include?
+				</label>			
 			<Dropdown
 				name="monthsDropdown"
 				id="dropdown-months-button"
