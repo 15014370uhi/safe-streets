@@ -22,10 +22,7 @@ function Application() {
 		<React.Fragment>
 			<Navbar />
 			{user ? (
-				<div>
-					User: {user.email}
-					<br />
-					<br />
+				<div>				
 					<Switch>
 						<Route exact path="/results" component={MapDisplay} />
 						<Route exact path="/search" component={Search} />

@@ -7,10 +7,17 @@ import Container from 'react-bootstrap/Container';
 import firebase from 'firebase';
 import CardDeck from 'react-bootstrap/CardDeck';
 
+import MapDisplay from './MapDisplay';
+
 // TODO favourites as cards on this screen - or combine profile and favourites into single page?
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
 	const user = useContext(UserContext); // Get User Context for ID
+	const [shouldDisplayMap, setShouldDisplayMap] = useState(false);
+	
+	const [mapURL, setMapURL] = useState("");
+	
+	const [displayMap, setDisplayMap] = useState (false);
 
 	// TODO TRY move the functions to the firebase - for favs etc
 	// TODO REM - only use useContext Usercontext to get current user ID nothing else
@@ -19,6 +26,18 @@ const Favourites = (props) => {
 		getFavourites();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+
+
+	//TODO TEST where to display the favourites full map
+	const displayFavouriteMap = (aMapURL) => {
+		setMapURL (aMapURL);
+		setShouldDisplayMap (true);				
+	}
+
+
+
+
 
 	// TODO change functions to consts
 	// TODO move getFavourites to firebase as a function
@@ -48,7 +67,8 @@ const Favourites = (props) => {
 	};
 
 	// Function to remove a favourite from a user's collection of favourites
-	const deleteFavourite = (aTitle) => {	
+	//TODO change to filter by map URL isntead of title incase same title is used
+	const deleteFavourite = (aTitle) => {
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
@@ -65,7 +85,7 @@ const Favourites = (props) => {
 					});
 
 					// Update favourites state
-					setLocalFavourites(favouritesToKeep); 
+					setLocalFavourites(favouritesToKeep);
 				} else {
 					console.log('No favourites!');
 				}
@@ -75,34 +95,62 @@ const Favourites = (props) => {
 			});
 	};
 
+	//TODO change argument setDisplayMap below - and props for MapDisplay to 
+	//TODO refer to a history object instead - so that back button returns user to 
+	//TODO correct page, either the search page of the favourites page they were actually
+	//TODO on
+
 	return (
 		<Container>
-			{localFavourites.length ? (
-				<Container id="favouritesContainer">
-					<br />
-					<h3>
-						You have {localFavourites.length}{' '}
-						{localFavourites.length > 1
-							? 'favourites'
-							: 'favourite'}
-					</h3>
-					<CardDeck>
-						{localFavourites.map((favourite) => (
-							<Favourite
-								key={uuid()}
-								title={favourite.title}
-								mapURL={favourite.mapURL}
-								timestamp={favourite.timestamp}
-								deleteFavourite={deleteFavourite}
-							/>
-						))}
-					</CardDeck>
-				</Container>
-			) : (
+		
+			{
+				shouldDisplayMap
+				?
+			(
 				<div>
-					<h1>No favourites found</h1>
+					<MapDisplay mapURL={mapURL} setDisplayMap={setDisplayMap} />
 				</div>
-			)}
+			)
+				: 
+			(
+				<Container>
+				{
+					localFavourites.length 
+				? 
+				(
+					<Container id="favouritesContainer">
+						<br />
+						<h3>
+							You have {localFavourites.length}{' '}
+							{localFavourites.length > 1
+								? 'favourites'
+								: 'favourite'}
+						</h3>
+						<CardDeck>
+							{localFavourites.map((favourite) => (
+								<Favourite
+									key={uuid()}
+									title={favourite.title}								
+									description={favourite.description}
+									mapURL={favourite.mapURL}
+									timestamp={favourite.timestamp}
+									deleteFavourite={deleteFavourite}
+									displayFavouriteMap={displayFavouriteMap}
+								/>
+							))}
+						</CardDeck>
+					</Container>
+				)
+				: 
+				(
+					<div>
+						<h1>No favourites found</h1>
+					</div>
+				)
+				}
+				</Container>
+			)
+			}
 		</Container>
 	);
 };

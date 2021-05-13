@@ -6,25 +6,25 @@
   align-items: center;
   font-weight: 500;
   color: rgba(0, 0, 0, .8);
-  text-decoration: none;  
+  text-decoration: none;
 }
 
 .navbar-logo {
   color: #fff;
-  cursor: pointer;    
+  cursor: pointer;
   padding-top: 0.3em;
   transition: all 0.5s ease;
   display: flex;
-  padding-left: 10px;
+  margin-left: 35px;
 }
 
-.navbar-logo-text>h1 {  
+.navbar-logo-text>h1 {
   font-weight: 600;
   color: rgba(0, 0, 0, .8);
   text-decoration: none;
-  font-size: 2.8rem;
+  font-size: 42px;
   padding-top: 4px;
-  margin-left: 20px;  
+  margin-left: 17px;
 }
 
 .fa-firstdraft {
@@ -32,35 +32,46 @@
   font-size: 1.6rem;
 }
 
+.fa-user {
+  padding-bottom: 15px;
+}
+
 ul {
-  padding-inline-start: 20px;
+  padding-inline-start: 0px;
 }
 
 .nav-menu {
   display: grid;
   grid-template-columns: repeat(5, auto);
-  grid-gap: 30px;
+  grid-gap: 28px;
   list-style: none;
   text-align: center;
   width: 70vw;
-  justify-content: end;  
+  justify-content: end;
 }
 
 .nav-item {
   display: flex;
-  align-items: center;   
-  font-size: 2rem;
+  align-items: center;
+  font-size: 1.6rem;
   margin-top: 25px;
 }
 
 /* navigation icon sizes */
-i.fas, i.fa{
-  font-size: 1.8em; 
+
+i.fas, i.fa {
+  font-size: 1.8em;
 }
 
 label.nav-icon-label {
-  cursor: pointer;  
-  padding-left: 8px;  
+  cursor: pointer;
+  padding-left: 5px;
+  font-size: 1.4em;
+}
+
+
+a.dropdown-toggle.nav-link {
+  margin-right: 20px;
 }
 
 .dropDownItem {
@@ -68,14 +79,8 @@ label.nav-icon-label {
 }
 
 
-.fa-bars {
-  color: rgb(5, 4, 4);
-  margin-top: -24px;
-  font-size: 5rem;
-}
-
 .mobile-icon {
-  padding-right: 12px;  
+  padding-right: 12px;
 }
 
 #dropdownLogoutIcon {
@@ -92,30 +97,54 @@ label.nav-icon-label {
   margin-bottom: 8px;
 }
 
+/* Styling of selected search type */
 .notSelectedFieldSet {
   padding: 10px;
   padding-top: 10px;
   background-color: rgba(255, 255, 255, 0.911);
-  font-size: 1.7rem;
+  font-size: 2rem;
+  border-style: ridge;
+  border-left: 20px solid #ffffff;
+  border-radius: 14px;
 }
 
 .selectedFieldSet {
   padding: 10px;
   background-color: rgba(151, 168, 150, 0.219);
-  font-size: 1.7rem;
+  font-size: 2rem;
   border-style: ridge;
-  border-left: 6px solid #1215b3;
-  border-radius: 3px;
+  border-left: 20px solid #1215b3;
+  border-radius: 14px;
 }
+
+
+i.fas.fa-globe {
+  font-size: 4em;  
+  margin-right: 30px;
+}
+
+.header-label {
+  font-size: 4em; 
+}
+
+
+
+
 
 #showMapGuide {
   color: rgb(182, 9, 9);
   font-weight: bold;
-  font-size: 0.8em;
+  font-size: 0.9em;
   max-width: 200px;
   min-width: 220px;
   padding: 2%;
-  border-radius: 10px;
+  border-radius: 15px;
+  transition: all 0.4s ease-out; 
+}
+
+#showMapGuide:hover, #showMapGuide:focus{   
+  box-shadow: 0 1em 1.5em -0.5em #072902;
+  transform: translateY(-0.15em);   
 }
 
 #dropdown-months-toggle {
@@ -152,8 +181,12 @@ i.far.fa-trash-alt.fa-lg:hover {
   display: none;
 }
 
-
 /* search form page */
+
+.form-card {
+  margin-top: 30px;
+  padding-left: 12%;
+}
 
 .searchRadio {
   float: right;
@@ -208,6 +241,7 @@ form>fieldset {
 }
 
 /* map display screen */
+
 .mapDisplay {
   display: block;
   max-width: 100%;
@@ -217,10 +251,14 @@ form>fieldset {
 
 .btn-favourites {
   font-size: 2em;
-  float: right;
+  float:inherit;
   padding: 10;
   border-bottom: 1px;
   margin: 0px;
+}
+
+.elementHide {
+  display: none;
 }
 
 .search-map-div>.container {
@@ -250,70 +288,90 @@ form>fieldset {
 }
 
 .dropdown-button.active {
-  color:#030320;
+  color: #030320;
   background-color: rgb(73, 202, 73);
-}
-
-.fa-times {
-  color: rgb(1, 1, 2);
-  font-size: 5rem;
-  margin-top: -30px; 
-  background-color:rgb(141,141,197);
-  padding-bottom: 10px;
-  padding-left: 25px;
-  padding-right: 25px;
-  margin-right: -34px;
 }
 
 .mobile-show {
   display: none;
 }
 
-
-
 /* MEDIA Queries */
 
-@media screen and (max-width: 1333px) {
-    
-/* navigation icon sizes */
-i.fas, i.fa{
-  font-size: 1.2em;
-  padding: 5px; 
-  transition: all 0.2s ease;   
-}
-
-label.nav-icon-label { 
-  padding-left: 4px;  
-}
-
-.navbar-expand, .navbar-nav, .nav-link {
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
-ul.nav-menu {
-  padding-left: 0px;
-  max-height: 100px;
-}
-
-
-}
-
-@media screen and (max-width: 1143px) {
+@media screen and (max-width: 1024px) {  
   
-.
-/* navigation icon sizes TODO ************** remove email name at small widths just leave head*/
-i.fas, i.fa{
-  font-size: 1.0em;
-  padding: 4px; 
-  transition: all 0.2s ease;   
+  /* navigation icon sizes */
+
+  
+  /*
+  i.fas, i.fa {
+    font-size: 1.6em;
+  }
+  label.nav-icon-label {
+    padding-left: 3px;
+  }
+  .navbar-expand, .navbar-nav, .nav-link {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  
+.navbar-logo-text>h1 {
+  font-weight: 550;  
+  font-size: 42px;
+}
+*/
+a.navbar-logo.navbar-brand.active { 
+  padding-left: 55px;
 }
 
+
+div.navbar-nav {
+ padding-right: 40px;
 }
 
 
+  /* 
+i.fas.mobile-icon::before
+/* navigation icon sizes 
+{
+  font-size: 1.7em;   
+} 
 
-@media screen and (max-width: 960px) {
+.label-dropdown{
+  font-size: 2.5em;
+  margin-left: 40px;
+} */
+}
+
+@media screen and (max-width: 900px) {
+  /* navigation icon sizes */
+
+  .mobile-icon {
+    font-size: 2.4em;
+  }
+
+  i.fas.fa-bars:before {
+    color: rgb(5, 4, 4);
+  font-size: 4rem;  
+    font-size: 0.9em;
+    margin-right: 65px;
+  }
+
+  
+i.fas.fa-times::before {  
+  color: rgb(1, 1, 2);
+  background-color: rgb(141, 141, 197);
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 60px;  
+}
+
+  i.fas.mobile-icon::before
+  /* navigation icon sizes */
+  {
+    font-size: 1.7em;
+  }
 
   .mobile-hide {
     display: none;
@@ -333,99 +391,138 @@ i.fas, i.fa{
     width: 100%;
     height: 90vh;
     position: absolute;
-    top: 80px;
     left: -100%;
     opacity: 1;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease;    
   }
-
   .nav-menu.active {
-    background: rgb(141,141,197);
+    background: rgb(141, 141, 197);
+    top: 97px;
     left: 0;
     opacity: 1;
     transition: all 0.3s ease;
     z-index: 1;
   }
-
   .nav-links {
-    text-align: center;   
+    text-align: center;
     width: 100%;
     display: table;
   }
-
   .nav-links:hover {
     background-color: #1888ff;
     border-radius: 0;
   }
-
   .navbar-logo {
     position: absolute;
-    top: 0;
+    top: 16px;
     left: 0;
-    transition: all 0.5s ease;
-    transform: translate(10%, 15%);
-    padding-bottom: 1rem;
-    cursor: pointer;    
-  }
-
+  }  
   .menu-icon {
     display: block;
     position: absolute;
     top: 0;
     right: 0;
-    transform: translate(-100%, 60%);
-    font-size: 1.8rem;
+    transform: translate(-10%, 15%);
+    font-size: 3rem;
     cursor: pointer;
   }
 
-  .search-icon-mobile {   
-    margin-left: 100px;
-    padding-bottom: 15px;
-    margin-right: -74px;
+  .mobile-nav-search {
+    position: absolute;
+    top: -15px;
+    right: 240px;
   }
 
   .search-icon-label {
     font-family: "Roboto", sans-serif;
     font-weight: 500;
-    font-size: 42px;
     color: rgba(0, 0, 0, .8);
-    float: right;
-    padding-left: 10px;
-    margin-bottom: 10px;
+    margin-left: 10px;
   }
+
+  .label-dropdown {
+    font-size: 2.5em;
+    margin-left: 40px;
+  }
+  ul.nav-menu {    
+    height: 1200px;
+    text-align: left;   
+    padding-top: 30px;
+  }  
+
   
-  .fa-times {
-    color: rgb(1, 1, 2);
-    font-size: 5rem;
-    margin-top: -30px;     
-    padding-bottom: 10px;
-    padding-left: 25px;
-    padding-right: 25px;
-    margin-right: -34px;
-  }
+label.nav-icon-label {  
+  font-size: 42px;
+}
+
+  
+a.navbar-logo.navbar-brand.active { 
+  padding-left: 5px;
+}
+
 
 }
 
-@media screen and (max-width: 736px) {
-
-  .search-icon i>h2 {
-    display: none;
-  }
-
-  
-  .search-icon-mobile i>h2 {
-    display: none;
-  }
+@media screen and (max-width: 815px) {  
 
   .fa-search {
-    transform: translate(120%, 0%);
-    transition: all 0.5s ease;
+    transform: translate(90%, 0%);
+    transition: all 0.4s ease;
+    padding-right: 0px;
+  }
+  
+  .mobile-nav-search {
+    position: absolute;
+    top: -15px;
+    right: 240px;
   }
 
+    
+label.nav-icon-label {
+  margin-left: 15px;   
+    transform: translate(25%, 0%);   
+}
+  
   .navbar-logo {
-    transform: translate(5%, 15%);
-    transition: all 0.5s ease;
-    padding-right: 0.1rem;
+    transform: translate(-4%, 0%);
+    transition: all 0.3s ease;
   }
+  
+}
 
+
+@media screen and (max-width: 815px) {
+
+  
+  .fa-search {
+    transform: translate(80%, 0%);
+    transition: all 0.4s ease;
+  }
+  
+.navbar-logo-text>h1 {
+  display: none;
+}
+
+
+.mobile-nav-search { 
+  top: -15px;
+  right: 350px;
+}
+
+
+.navbar-logo {
+  transform: translate(5%, 0%);
+  transition: all 0.3s ease;
+}
+    
+}
+
+
+@media screen and (max-width: 650px) {
+
+.mobile-nav-search { 
+  top: -15px;
+  right: 250px;
+  transition: all 0.3s ease;
+}
 }

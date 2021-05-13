@@ -24,6 +24,9 @@ import {
   MDBCardHeader,
 } from 'mdbreact';
 
+
+//TODO might need to add to history somewhere here - so I can return to this page after the
+//Todo viewing search reuslts map
 const Search = () => {
   //const user = useContext(UserContext); // Get User Context
   //const [responseData, setResponseData] = useState({});
@@ -42,12 +45,12 @@ const Search = () => {
   const [lat, setLat] = useState ('');
   const [lon, setLon] = useState ('');
 
-  const[displayMap, setDisplayMap] = useState (false);
+  const [displayMap, setDisplayMap] = useState (false);
 
   // Errors
   const [error, setError] = useState (null);
 
-//TODO TUES - reset displaymap state so that clicking on search - hides it again aFTER MAP IS SHOWN
+  //TODO TUES - reset displaymap state so that clicking on search - hides it again aFTER MAP IS SHOWN
 
   //const history = useHistory();
 
@@ -146,12 +149,11 @@ const Search = () => {
   const submitForm = async e => {
     e.preventDefault ();
 
-	//declare const boolean flag to determine whether this is a name search or not
+    //declare const boolean flag to determine whether this is a name search or not
     const isNameSearch = radioButton === '0';
 
-	//variable boolean flag to determine whether lat and lon coordinates are wthin the UK
-    let coordinatesWithinUK = isWithinUK (lat, lon);    
-
+    //variable boolean flag to determine whether lat and lon coordinates are wthin the UK
+    let coordinatesWithinUK = isWithinUK (lat, lon);
 
     //TODO block API call if any inputs are invalid
 
@@ -161,23 +163,17 @@ const Search = () => {
     if (isNameSearch && locationName === '') {
       alert ('The location is empty, please enter a location!');
 
-	//if lat and lon search but lat and lon input is empty
+      //if lat and lon search but lat and lon input is empty
     } else if (!isNameSearch && (lat === '' || lon === '')) {
       alert ('Please add coordinates for latitude and longitude!');
-	}	
-
-	//if lat and lon search but the lat or lon value is not a number
-	else if (!isNameSearch && (isNaN(lat) || isNaN(lon))) {	
-		alert('Your latitude and longitude coordinates must be numbers only!');
-    }
-
-	//if lat and lon search but user coordinates are outside the bounds of the UK
-    else if (!isNameSearch && !coordinatesWithinUK) {
+    } else if (!isNameSearch && (isNaN (lat) || isNaN (lon))) {
+      //if lat and lon search but the lat or lon value is not a number
+      alert ('Your latitude and longitude coordinates must be numbers only!');
+    } else if (!isNameSearch && !coordinatesWithinUK) {
+      //if lat and lon search but user coordinates are outside the bounds of the UK
       alert ('Your latitude and longitude coordinates are outside of the UK!');
-	}
-
-	//form input was validated
-     else {
+    } else {
+      //form input was validated
       setMessage ('Loading...'); // TODO change to spinner
 
       //TODO Only pass data that's correct?? if you can check other side for empty stuff
@@ -210,17 +206,17 @@ const Search = () => {
           //check for invalid lat and lon response, due to mispelled/invalid location name
           let isValidLocation = isWithinUK (latitude, longitude);
 
-		  //invalid search location
+          //invalid search location
           if (!isValidLocation) {
             alert (
               'Location name is not recognised!, please check your spelling'
             );
-		
-		//valid search
+
+            //valid search
           } else {
             // Set mapURL state
             setMapURL (res.data.mapurl);
-			setDisplayMap (true);
+            setDisplayMap (true);
           }
 
           // TEST
@@ -262,41 +258,41 @@ const Search = () => {
   // TODO Or copy what i did with other assignment and use tabs
   return (
     <div className="search-map-div">
-	{displayMap ? (
-		<div>
-                <MapDisplay mapURL={mapURL} setDisplayMap={setDisplayMap} />
-              </div>
-	): (
-		<MDBRow>
-        <MDBCol size="12" sm="10">
-          <MDBCard>
-            <MDBCardBody>
-              <MDBCardHeader className="form-header bg-primary rounded">
-                <h1 className="my-3">
-                  <MDBIcon icon="globe" /> Search
-                </h1>
-              </MDBCardHeader>
-              <Form
-                submitForm={submitForm}
-                formInputHandler={formInputHandler}
-                locationName={locationName}
-                lat={lat}
-                lon={lon}
-                numberOfMonths={numberOfMonths}
-                error={error}
-                dropHandler={dropHandler}
-                radioButton={radioButton}
-                radioClickedHandler={radioClickedHandler}
-                handleShowImage={handleShowImage}
-                imageOpen={imageOpen}
-              />
-              <br />
-              <p>{message}</p>             
-            </MDBCardBody>
-          </MDBCard>
-        </MDBCol>
-      </MDBRow>
-	)}       
+      {displayMap
+        ? <div>
+            <MapDisplay mapURL={mapURL} setDisplayMap={setDisplayMap} />
+          </div>
+        : <MDBRow>
+            <MDBCol size="12" sm="10" className="form-card">
+              <MDBCard>
+                <MDBCardBody>
+                  <MDBCardHeader className="form-header bg-primary rounded">
+                    <i className="fas fa-globe" />
+                    <label className="header-label">
+                      Search
+                    </label>
+
+                  </MDBCardHeader>
+                  <Form
+                    submitForm={submitForm}
+                    formInputHandler={formInputHandler}
+                    locationName={locationName}
+                    lat={lat}
+                    lon={lon}
+                    numberOfMonths={numberOfMonths}
+                    error={error}
+                    dropHandler={dropHandler}
+                    radioButton={radioButton}
+                    radioClickedHandler={radioClickedHandler}
+                    handleShowImage={handleShowImage}
+                    imageOpen={imageOpen}
+                  />
+                  <br />
+                  <p>{message}</p>
+                </MDBCardBody>
+              </MDBCard>
+            </MDBCol>
+          </MDBRow>}
     </div>
   );
 };

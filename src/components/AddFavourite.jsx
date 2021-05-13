@@ -16,8 +16,9 @@ import {
 	MDBInput,
 } from 'mdbreact';
 
-const AddFavourite = (props) => {
+const AddFavourite = ({shouldHide}) => {
 	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
 	const [mapURL, setMapURL] = useState('');
 	const [error, setError] = useState(null);
 
@@ -27,7 +28,7 @@ const AddFavourite = (props) => {
     const createNewFavourite = async (e) => {
 		e.preventDefault();		
 		try {			
-			await addUserFavourite(title, mapURL);	
+			await addUserFavourite(title, description, mapURL);	
         } 
         catch (error) {
 			setError('Adding favourite' + error);
