@@ -95,7 +95,7 @@ function getUserDocument (uid) {
 							<ListGroup.Item>								
 								<Favourite
 									title={aFavourite.title}
-									mapURL={aFavourite.mapURL}
+									mapurl={aFavourite.mapURL}
 								/>
 							</ListGroup.Item>							
 						</ListGroup>
@@ -113,7 +113,7 @@ function getUserDocument (uid) {
 							<ListGroup.Item>								
 								<Favourite
 									title={favourite.title}
-									mapURL={favourite.mapURL}
+									mapurl={favourite.mapURL}
 								/>
 							</ListGroup.Item>							
 						</ListGroup>

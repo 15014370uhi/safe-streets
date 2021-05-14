@@ -5,7 +5,7 @@ import axios from 'axios';
 //import Image from 'react-bootstrap/Image';
 //import Dropdown from 'react-bootstrap/Dropdown';
 //import DropdownButton from 'react-bootstrap/DropdownButton';
-//import {useHistory} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 //import {Route, Redirect} from 'react-router-dom';
 import MapDisplay from './MapDisplay';
 import Form from './Form';
@@ -24,14 +24,13 @@ import {
   MDBCardHeader,
 } from 'mdbreact';
 
-
 //TODO might need to add to history somewhere here - so I can return to this page after the
 //Todo viewing search reuslts map
 const Search = () => {
   //const user = useContext(UserContext); // Get User Context
   //const [responseData, setResponseData] = useState({});
   const [message, setMessage] = useState ('');
-  const [mapURL, setMapURL] = useState ('');
+  const [mapurl, setMapurl] = useState ('');
 
   //TEST STate for image popup test
   //const [show, setShow] = useState(false);
@@ -52,7 +51,7 @@ const Search = () => {
 
   //TODO TUES - reset displaymap state so that clicking on search - hides it again aFTER MAP IS SHOWN
 
-  //const history = useHistory();
+  const history = useHistory ();
 
   // TODO maybe push to map display page - or user a check mapResponse? ():() type of thing
 
@@ -215,8 +214,19 @@ const Search = () => {
             //valid search
           } else {
             // Set mapURL state
-            setMapURL (res.data.mapurl);
-            setDisplayMap (true);
+            setMapurl (res.data.mapurl);
+            //setDisplayMap (true); // REDIRECt to results page
+            // Redirect URL
+
+            //let path = `/results`;
+            //  history.push(path);
+            //history.push(`/results`, mapurl: mapurl }   })
+
+            //pass mapurl as props to MapDisplay component
+            history.push (`/results`, {mapurl: mapurl});
+            return <MapDisplay />;
+            //     setDisplayMap={true} />;
+            //   }
           }
 
           // TEST
@@ -254,45 +264,39 @@ const Search = () => {
     }
   };
 
-  // TODO maybe redirect to some map dispay component - OR - REPLACE form with map>?
-  // TODO Or copy what i did with other assignment and use tabs
   return (
     <div className="search-map-div">
-      {displayMap
-        ? <div>
-            <MapDisplay mapURL={mapURL} setDisplayMap={setDisplayMap} />
-          </div>
-        : <MDBRow>
-            <MDBCol size="12" sm="10" className="form-card">
-              <MDBCard>
-                <MDBCardBody>
-                  <MDBCardHeader className="form-header bg-primary rounded">
-                    <i className="fas fa-globe" />
-                    <label className="header-label">
-                      Search
-                    </label>
+      <MDBRow>
+        <MDBCol size="12" sm="10" className="form-card">
+          <MDBCard>
+            <MDBCardBody>
+              <MDBCardHeader className="form-header bg-primary rounded">
+                <i className="fas fa-globe" />
+                <label className="header-label">
+                  Search
+                </label>
 
-                  </MDBCardHeader>
-                  <Form
-                    submitForm={submitForm}
-                    formInputHandler={formInputHandler}
-                    locationName={locationName}
-                    lat={lat}
-                    lon={lon}
-                    numberOfMonths={numberOfMonths}
-                    error={error}
-                    dropHandler={dropHandler}
-                    radioButton={radioButton}
-                    radioClickedHandler={radioClickedHandler}
-                    handleShowImage={handleShowImage}
-                    imageOpen={imageOpen}
-                  />
-                  <br />
-                  <p>{message}</p>
-                </MDBCardBody>
-              </MDBCard>
-            </MDBCol>
-          </MDBRow>}
+              </MDBCardHeader>
+              <Form
+                submitForm={submitForm}
+                formInputHandler={formInputHandler}
+                locationName={locationName}
+                lat={lat}
+                lon={lon}
+                numberOfMonths={numberOfMonths}
+                error={error}
+                dropHandler={dropHandler}
+                radioButton={radioButton}
+                radioClickedHandler={radioClickedHandler}
+                handleShowImage={handleShowImage}
+                imageOpen={imageOpen}
+              />
+              <br />
+              <p>{message}</p>
+            </MDBCardBody>
+          </MDBCard>
+        </MDBCol>
+      </MDBRow>
     </div>
   );
 };

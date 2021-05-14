@@ -9,7 +9,7 @@ import {
 } from 'mdbreact';
 
 
-function AddFavouriteModal (props) {
+const AddFavouriteModal = (props) => {
   const [title, setTitle] = useState ('');  //TODO check for cross site scripting
   const [description, setDescription] = useState (''); //TODO check for cross site scripting
   const [error, setError] = useState (null);
@@ -17,7 +17,7 @@ function AddFavouriteModal (props) {
   //function which adds a new user favourite
   const createNewFavourite = async e => {
     try {
-      await addUserFavourite (title, description, props.mapURL);
+      await addUserFavourite (title, description, props.mapurl);
     } catch (error) {
       setError ('Adding favourite' + error);
     }   
@@ -43,7 +43,7 @@ function AddFavouriteModal (props) {
     console.log ('Add favourites button clicked with: ' 
     + title + "\n" 
     + description + "\n" 
-    + props.mapURL);
+    + props.mapurl);
 
     //create new favourite for user record
     createNewFavourite();

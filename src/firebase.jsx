@@ -59,7 +59,7 @@ export const generateUserDocument = async (user, additionalData) => {
 
 
 // Function to add a new favourite to user collection of favourites
-export const addUserFavourite = async (title, description, mapURL) => {
+export const addUserFavourite = async (title, description, mapurl) => {
 	var user = firebase.auth().currentUser;
 
 	// If no current user passed, exit
@@ -67,8 +67,8 @@ export const addUserFavourite = async (title, description, mapURL) => {
 		console.log('user missing');
 		return;
 	}
-	if (!mapURL) {
-		console.log('mapURL missing');
+	if (!mapurl) {
+		console.log('map URL missing');
 		return;
 	}
 	if (!title) {
@@ -90,7 +90,7 @@ export const addUserFavourite = async (title, description, mapURL) => {
 	var newFavourite = {
 		title: title,
 		description: description,
-		mapURL: mapURL,
+		mapURL: mapurl,
 		timestamp: timestamp,
 	};
 

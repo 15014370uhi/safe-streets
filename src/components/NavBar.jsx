@@ -190,18 +190,6 @@ export default NavBar;
 
 // TODO favourites navbar link refreshes page, the search link works as intended
 
-//REMOVED from navbar - needs to be button on favourites page instead
-{
-	/* <li className="nav-item">
-<Nav.Link
-  as={NavLink}
-  to="/addFavourite"
-  onClick={closeMobileMenu}
->
-  Add Favourite
-</Nav.Link>
-</li> */
-}
 
 //react boostrap dropdown
 // <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
