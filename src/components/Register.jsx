@@ -88,6 +88,7 @@ const Register = (props) => {
 									<MDBInput
 										label="Type your email"
 										icon="envelope"
+										autoComplete="email"
 										group
 										type="email"
 										name="email"
@@ -101,6 +102,7 @@ const Register = (props) => {
 									<MDBInput
 										label="Type your password"										
 										icon="lock"
+										autoComplete="new-password"
 										group
 										type="password"
 										name="password"

@@ -138,9 +138,6 @@ const NavBar = (props) => {
 								/>
 								<label className="dropdown-text">Profile</label>
 							</DropdownItem>
-
-							<Dropdown.Divider />
-
 							<DropdownItem
 								className="dropdown-button"
 								as={NavLink}
@@ -189,7 +186,6 @@ const NavBar = (props) => {
 export default NavBar;
 
 // TODO favourites navbar link refreshes page, the search link works as intended
-
 
 //react boostrap dropdown
 // <NavDropdown title="Dropdown" id="collasible-nav-dropdown">

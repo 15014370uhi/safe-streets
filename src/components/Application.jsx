@@ -8,6 +8,7 @@ import Search from './Search';
 import Favourites from './Favourites';
 import AddFavourite from './AddFavourite';
 import MapDisplay from './MapDisplay';
+import ShowFavourite from './ShowFavourite';
 import {Route, Switch, Redirect} from 'react-router-dom';
 
 // TODO rem pass props if needed - maybe user?
@@ -26,6 +27,7 @@ function Application() {
 					<Switch>
 						<Route exact path="/results" component={MapDisplay} />
 						<Route exact path="/search" component={Search} />
+						<Route exact path="/favourite" component={ShowFavourite} />
 						<Route
 							exact
 							path="/addFavourite"
@@ -60,6 +62,10 @@ function Application() {
 						</Route>
 
 						<Route exact path="/results">
+							<Redirect to="/" /> : <Login />
+						</Route>
+
+						<Route exact path="/favourite">
 							<Redirect to="/" /> : <Login />
 						</Route>
 

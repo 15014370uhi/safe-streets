@@ -63,6 +63,7 @@ const Login = () => {
 										label="Type your email"
 										size="lg"
 										icon="envelope"
+										autoComplete="email"
 										group
 										type="email"
 										name="email"
@@ -78,6 +79,7 @@ const Login = () => {
 										label="Type your password"
 										size="lg"
 										icon="lock"
+										autoComplete="current-password"
 										required
 										group
 										type="password"

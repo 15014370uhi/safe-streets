@@ -3,61 +3,76 @@ import Button from 'react-bootstrap/Button';
 import uuid from 'react-uuid';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/col';
-import map_placeholder from '../images/map_placeholder.jpg';
+import {useHistory} from 'react-router-dom';
 
+//TODO see about adding mapdisplay to routes - then less messing around with checks on search page
 /**
  * A favourite for a user
- * 
- * @param {string} title - Title for this favourite  
- * @param {string} description - Description for this favourite  
+ *
+ * @param {string} title - Title for this favourite
  * @param {string} mapurl - URL of map image
  * @param {string} timestamp - Date the favourite was created
  * @param {string} deleteFavourite - Reference to function which deletes the favourite from the user's favourites
  */
-const Favourite = ({title, 
-  description, 
-  mapurl, 
-  timestamp,  
-  deleteFavouriteByMapURL, 
-  displayFavouriteMap}) => {
-  
-  const displayMap = e => {
-    // TODO redirect to display map - passing map url? from selected favourite
-    // maybe call it saving a search - load it to search page
-    // TODO will need history and props passed 
-
-    //TODO shrink mapURL image to view like a preview - maybe even 
-    //TODO retrieve a smaller version of the map and use it as a preview
-    displayFavouriteMap(mapurl);
-    //TEST
+const Favourite = ({
+	title,
+	mapurl,
+	timestamp,
+	deleteFavourite,
+	displayFavouriteMap,
+}) => {
 
 
+	let history = useHistory ();
 
-    //<MapDisplay mapURL={mapURL} setDisplayMap={setDisplayMap} />
-  }
 
-  return (
-    <Col className="container-fluid mt-4">
-    <Card key={uuid ()}  border="info" style={{width: '20rem'}}>
-     <Card.Img variant="top" src={mapurl} onClick={() => {displayMap()}}/>
-      <Card.Header>{title}</Card.Header>
-      <Card.Body bg="light" >     
-        <Card.Text>
-          {description}
-        </Card.Text>    
-        <Button onClick={displayMap} variant="primary">Display Map</Button>        
-        <i className="far fa-trash-alt fa-lg" onClick={() => {deleteFavouriteByMapURL(title, mapurl)}} /> by url
+	//display map which was clicked on
+	const displayMap = (aMapURL) => {
+		history.push (`/results`, {
+			mapurl: aMapURL,
+			title: title,
+			isfavourite: 'true' //is map a previously favourited map or new search result
+		});   
+		
+		//TODO when viewing a favourite after clicking on it's map in favourites page - the user
+		//TODO icon overlay should be a delete symbol with confirmation dialogue to delete the favourites
+		//TODO instead of a plus symbol
+		
+	};
 
-      </Card.Body>
-      <Card.Footer>
-      <small className="text-muted">    
-     Date created: 
-    <h5>{timestamp}</h5>
-      </small>
-    </Card.Footer>
-    </Card>
-    </Col>
-  );
+
+	return (
+		<Col className="container-fluid mt-4">
+			<Card key={uuid()} border="info" style={{width: '20rem'}}>
+				<Card.Img
+					variant="top"
+					src={mapurl}
+					onClick={() => {
+						displayMap(mapurl);
+					}}
+				/>
+				<Card.Header>{title}</Card.Header>
+				<Card.Body bg="light">
+					<Button onClick={displayMap} variant="primary">
+						Display Map
+					</Button>
+					<i
+						className="far fa-trash-alt fa-lg"
+						onClick={() => {
+							deleteFavourite(title);
+						}}
+					/>{' '}
+					by url
+				</Card.Body>
+				<Card.Footer>
+					<small className="text-muted">						
+						Date created:
+						<h5>{timestamp}</h5>
+					</small>
+				</Card.Footer>
+			</Card>
+		</Col>
+	);
 };
 
 export default Favourite;

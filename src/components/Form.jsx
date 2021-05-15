@@ -43,11 +43,9 @@ const Search = (props) => {
 					/>
 				</label>
 				<br />
-				<label className="inputLabels">
-					Street Address
-				</label>
+				<label className="inputLabels">Street Address</label>
 				<MDBInput
-					autoFocus={{radioButton} === '0' ? true : false}					
+					autoFocus={{radioButton} === '0' ? true : false}
 					size="lg"
 					icon="road"
 					type="text"
@@ -57,7 +55,6 @@ const Search = (props) => {
 					onClick={(e) => radioClickedHandler('0')}
 				/>
 			</fieldset>
-
 			<fieldset
 				className={
 					radioButton === '1'
@@ -77,11 +74,9 @@ const Search = (props) => {
 					/>
 				</label>
 				<br />
-				<label className="inputLabels">
-					Latitude
-				</label>
+				<label className="inputLabels">Latitude</label>
 				<MDBInput
-					autoFocus={radioButton === '1' ? true : false}					
+					autoFocus={radioButton === '1' ? true : false}
 					size="lg"
 					icon="map-marker-alt"
 					type="text"
@@ -90,10 +85,8 @@ const Search = (props) => {
 					onChange={formInputHandler}
 					onClick={(e) => radioClickedHandler('1')}
 				/>
-					<label className="inputLabels">
-					Longitude
-				</label>
-				<MDBInput					
+				<label className="inputLabels">Longitude</label>
+				<MDBInput
 					size="lg"
 					icon="map-marker-alt"
 					type="text"
@@ -103,26 +96,24 @@ const Search = (props) => {
 					onClick={(e) => radioClickedHandler('1')}
 				/>
 
-				<MDBBtn					
+				<MDBBtn
 					id="showMapGuide"
 					color="warning"
 					className="mb-3"
 					block
 					size="lg"
 					onClick={handleShowImage}>
-
 					<img
-							className="mapicon"
-							src={UKIconImage}
-							onClick={handleShowImage}
-							alt="Outline of the UK Map"
-						/>
-
+						className="mapicon"
+						src={UKIconImage}
+						onClick={handleShowImage}
+						alt="Outline of the UK Map"
+					/>
 					UK Map boundary guide
 				</MDBBtn>
 
 				{imageOpen && (
-					<dialog										
+					<dialog
 						className="dialog"
 						style={{position: 'absolute'}}
 						open
@@ -137,8 +128,8 @@ const Search = (props) => {
 				)}
 			</fieldset>
 			<label className="monthsInputLabel">
-			Number of previous month's records to include?
-				</label>			
+				Number of month's records to include?
+			</label>
 			<Dropdown
 				name="monthsDropdown"
 				id="dropdown-months-button"

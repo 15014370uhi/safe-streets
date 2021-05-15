@@ -65,19 +65,23 @@ i.fas, i.fa {
 
 label.nav-icon-label {
   cursor: pointer;
-  padding-left: 5px;
+  padding-left: 10px;
   font-size: 1.4em;
 }
 
 
 a.dropdown-toggle.nav-link {
-  margin-right: 20px;
+  margin-right: 0px;
 }
+
+
+  div.dropdown-menu.show {
+    padding-top: 0px;
+  }
 
 .dropDownItem {
   font-size: 2rem;
 }
-
 
 .mobile-icon {
   padding-right: 12px;
@@ -126,10 +130,6 @@ i.fas.fa-globe {
 .header-label {
   font-size: 4em; 
 }
-
-
-
-
 
 #showMapGuide {
   color: rgb(182, 9, 9);
@@ -240,28 +240,12 @@ form>fieldset {
   margin-bottom: 40px;
 }
 
-/* map display screen */
-
-.mapDisplay {
-  display: block;
-  max-width: 100%;
-  margin-top: 10px;
-  padding: 0 1% 0 1%;
-}
-
-.btn-favourites {
-  font-size: 2em;
-  float:inherit;
-  padding: 10;
-  border-bottom: 1px;
-  margin: 0px;
-}
 
 .elementHide {
   display: none;
 }
 
-.search-map-div>.container {
+.search-map-div {
   margin-left: 0px;
   margin-right: 0px;
   padding-left: 0px;
@@ -296,6 +280,63 @@ form>fieldset {
   display: none;
 }
 
+
+/* map display screen */
+
+.mapDisplay {
+  display: block;
+  width: 100%;
+  margin-top: -24px;
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+}
+
+.btn-favourites {   
+  position: fixed;
+  font-size: 2em; 
+  padding-top: 12px!important;  
+  padding-bottom: 2px!important;  
+  padding-left: 1px!important; 
+  padding-right: 1px!important;    
+  border: 3px solid rgb(40, 46, 138);
+  border-radius: 50px;
+  box-shadow: 0 14px 18px rgb(4, 8, 56);
+  bottom: 10%;
+  right: 15%;
+}
+
+
+.btn-delete-favourite {   
+  position: fixed;
+  font-size: 2em; 
+  padding-top: 12px!important;  
+  padding-bottom: 2px!important;  
+  padding-left: 1px!important; 
+  padding-right: 1px!important;    
+  border: 3px solid rgb(61, 5, 7);
+  border-radius: 50px;
+  box-shadow: 0 14px 18px rgb(46, 1, 1);
+  bottom: 10%;
+  right: 15%;
+}
+
+.btn-back {
+  position: fixed;
+  font-size: 2em; 
+  padding-top: 12px!important;  
+  padding-bottom: 2px!important;  
+  padding-left: 9px!important; 
+  padding-right: 9px!important;    
+  border: 3px solid rgb(40, 46, 138);
+  border-radius: 10px;
+  box-shadow: 0 14px 18px rgb(4, 8, 56);  
+  top: 16%;
+  left: 5%;
+}
+
+
 /* MEDIA Queries */
 
 @media screen and (max-width: 1024px) {  
@@ -314,20 +355,19 @@ form>fieldset {
     padding-left: 0px;
     padding-right: 0px;
   }
-
+*/
   
 .navbar-logo-text>h1 {
   font-weight: 550;  
-  font-size: 42px;
-}
-*/
-a.navbar-logo.navbar-brand.active { 
-  padding-left: 55px;
+  font-size: 35px;
 }
 
+a.navbar-logo.navbar-brand.active { 
+  padding-left: 95px;
+}
 
 div.navbar-nav {
- padding-right: 40px;
+ padding-right: 10px;
 }
 
 
@@ -380,6 +420,7 @@ i.fas.fa-times::before {
   .mobile-show {
     display: block;
   }
+
 
   .NavbarItems {
     position: relative;
@@ -458,6 +499,22 @@ label.nav-icon-label {
   
 a.navbar-logo.navbar-brand.active { 
   padding-left: 5px;
+}
+
+
+.mapDisplay { 
+  margin-left: 0px;
+}
+
+.btn-favourites {   
+  font-size: 2em; 
+  bottom: 23%;
+  right: 10%;
+}
+
+.btn-back {
+  top: 14%;
+  left: 3%;
 }
 
 

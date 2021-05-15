@@ -13,20 +13,21 @@ const firebaseConfig = {
 
 // TODO https://firebase.google.com/docs/auth/web/manage-users - add more user features
 
-
-
 // Function to create a new user with email and password
 export const createUserWithEmailAndPassword = async (email, password) => {
-  try {
-    const {user} = await auth.createUserWithEmailAndPassword(email, password);
-    console.log("Created user with email: " + user.email); // TEST
-    return generateUserDocument(user);
-  } catch (error) {
-    console.log('Error creating user with email and password' + error.message);
-  }	  
+	try {
+		const {user} = await auth.createUserWithEmailAndPassword(
+			email,
+			password
+		);
+		console.log('Created user with email: ' + user.email); // TEST
+		return generateUserDocument(user);
+	} catch (error) {
+		console.log(
+			'Error creating user with email and password' + error.message
+		);
+	}
 };
-
-
 
 // Function to create a user document
 export const generateUserDocument = async (user, additionalData) => {
@@ -56,10 +57,8 @@ export const generateUserDocument = async (user, additionalData) => {
 	return getUserDocument(user.uid);
 };
 
-
-
 // Function to add a new favourite to user collection of favourites
-export const addUserFavourite = async (title, description, mapurl) => {
+export const addUserFavourite = async (title, mapurl) => {
 	var user = firebase.auth().currentUser;
 
 	// If no current user passed, exit
@@ -75,10 +74,6 @@ export const addUserFavourite = async (title, description, mapurl) => {
 		console.log('title missing');
 		return;
 	}
-	if (!description) {
-		console.log('description missing');
-		return;
-	}
 
 	// TODO get current date as string
 	//const timestamp = new Date().toLocaleString();
@@ -89,7 +84,6 @@ export const addUserFavourite = async (title, description, mapurl) => {
 	// Create a new favourite object
 	var newFavourite = {
 		title: title,
-		description: description,
 		mapURL: mapurl,
 		timestamp: timestamp,
 	};
@@ -112,17 +106,16 @@ export const addUserFavourite = async (title, description, mapurl) => {
 	return getUserDocument(user.uid); // TODO
 };
 
-
 // Async function to delete a user account
 // TODO Might not need this here can call from components
 export const deleteUser = async (password) => {
 	var user = firebase.auth().currentUser;
 
-  var credentials = firebase.auth.EmailAuthProvider.credential(
-    user.email,
-    password
-  );
-  user.reauthenticateWithCredential(credentials)
+	var credentials = firebase.auth.EmailAuthProvider.credential(
+		user.email,
+		password
+	);
+	user.reauthenticateWithCredential(credentials)
 		.then(function () {
 			// User re-authenticated - delete account
 			user.delete()
@@ -138,8 +131,6 @@ export const deleteUser = async (password) => {
 			return false; // Return false - meaning password is incorrect - prompt user of this in profile page
 		});
 };
-
-
 
 // TODO can delete this probably
 export const getCurrentUser = async () => {

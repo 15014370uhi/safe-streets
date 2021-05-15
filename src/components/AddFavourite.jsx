@@ -18,23 +18,21 @@ import {
 
 const AddFavourite = ({shouldHide}) => {
 	const [title, setTitle] = useState('');
-	const [description, setDescription] = useState('');
 	const [mapURL, setMapURL] = useState('');
 	const [error, setError] = useState(null);
 
-    //const user = useContext (UserContext); // Get User Context
+	//const user = useContext (UserContext); // Get User Context
 	const history = useHistory();
 
-    const createNewFavourite = async (e) => {
-		e.preventDefault();		
-		try {			
-			await addUserFavourite(title, description, mapURL);	
-        } 
-        catch (error) {
+	const createNewFavourite = async (e) => {
+		e.preventDefault();
+		try {
+			await addUserFavourite(title, mapURL);
+		} catch (error) {
 			setError('Adding favourite' + error);
-		}	
-		let path = `/favourites`; 
-		history.push(path);	
+		}
+		let path = `/favourites`;
+		history.push(path);
 	};
 
 	// Function to handle user form input
@@ -45,12 +43,12 @@ const AddFavourite = ({shouldHide}) => {
 			setMapURL(value);
 		} else if (name === 'title') {
 			// If title input, set title state
-			setTitle(value);           
+			setTitle(value);
 		}
 	};
 
 	return (
-		<MDBContainer>	
+		<MDBContainer>
 			<MDBRow>
 				<MDBCol md="6">
 					<MDBCard>
@@ -64,8 +62,8 @@ const AddFavourite = ({shouldHide}) => {
 								<div className="grey-text">
 									<MDBInput
 										required
-										label="Enter a title"	
-										size="lg"									
+										label="Enter a title"
+										size="lg"
 										group
 										type="text"
 										name="title"
@@ -74,12 +72,12 @@ const AddFavourite = ({shouldHide}) => {
 										success="right"
 										value={title}
 										onChange={(e) => onChangeHandler(e)}
-									/>								
+									/>
 
 									<MDBInput
 										required
-										label="Enter a mapURL"	
-										size="lg"								
+										label="Enter a mapURL"
+										size="lg"
 										group
 										type="text"
 										name="mapURL"
@@ -111,13 +109,12 @@ const AddFavourite = ({shouldHide}) => {
 										Add New Favourite
 									</MDBBtn>
 								</div>
-							</form>							
+							</form>
 						</MDBCardBody>
 					</MDBCard>
 				</MDBCol>
-			</MDBRow>           
-		</MDBContainer>       
+			</MDBRow>
+		</MDBContainer>
 	);
-
 };
 export default AddFavourite;

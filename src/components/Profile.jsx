@@ -16,7 +16,7 @@ import {
 	MDBCardFooter,
 	MDBCardText,
 	MDBBtn,
-	MDBContainer,	
+	MDBContainer,
 	MDBIcon,
 	MDBInput,
 } from 'mdb-react-ui-kit';
@@ -25,7 +25,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 const Profile = () => {
-	const [localFavouritesTotal, setLocalFavouritesTotal] = useState([]);
+	const [localFavourites, setLocalFavourites] = useState([]);
+
 	const user = useContext(UserContext); // Get User Context
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState(null);
@@ -55,8 +56,8 @@ const Profile = () => {
 				.get()
 				.then(function (doc) {
 					if (doc.exists) {
-						// Set favourites to user favourites
-						setLocalFavouritesTotal(doc.data().favourites.length);
+						// Set favourites to user favourites						
+						setLocalFavourites(doc.data().favourites);
 					} else {
 						console.log('No favourites!');
 					}
@@ -73,9 +74,8 @@ const Profile = () => {
 		setPassword(value);
 	};
 
-	
-  // TODO move to firebase if possible
-  // Sign out user
+	// TODO move to firebase if possible
+	// Sign out user
 	const onSignOutHandler = async () => {
 		console.log('onSignOutHandler clicked');
 		await auth
@@ -84,16 +84,15 @@ const Profile = () => {
 			.catch((err) => console.log(err));
 	};
 
-
 	// Function to delete the current user's account
 	const deleteUserHandler = async (e) => {
 		console.log('deleteUserHandler clicked');
 		deleteUser(password)
 			.then(function () {
-			//	handleClose();
+				//	handleClose();
 
-				// Redirect To home page
-				let path = `/search`;
+				// Redirect to home page
+				let path = `/register`;
 				history.push(path);
 				console.log('User ' + user.email + ' deleted!');
 			})
@@ -109,98 +108,101 @@ const Profile = () => {
 	// TODO logout using Auth
 	// TODO move logout to function
 
+	const loadFavourite = (aMapURL, title) => {
+		//TODO redirect to mapdisplay with history data
+		history.push (`/results`, {
+			mapurl: aMapURL,
+			title: title,
+			isfavourite: 'true' //is map a previously favourited map or new search result
+		});   
+	}
+
 	return (
 		<React.Fragment>
-			{user ? (			
-					<MDBCard style={{maxWidth: '22rem'}}>
-						<MDBCardHeader>
-							<h2>Profile</h2>
-						</MDBCardHeader>
-						<MDBCardBody>
-							<MDBCardText>Email: {user.email}</MDBCardText>
-						</MDBCardBody>
-						<MDBCardHeader>Favourites</MDBCardHeader>
-						<MDBListGroup flush>
+			{user ? (
+				<MDBCard style={{maxWidth: '22rem'}}>
+					<MDBCardHeader>
+						<h2>Profile</h2>
+					</MDBCardHeader>
+					<MDBCardBody>
+						<MDBCardText><h4>Email: {user.email}</h4></MDBCardText>
+					</MDBCardBody>
+					<MDBCardHeader><h3>Favourites</h3></MDBCardHeader>
+					<MDBListGroup flush>
+						{localFavourites.map((favourite) => (
 							<MDBListGroupItem key={uuid()}>
-								<MDBCardLink href="/">
-									Running Route
+								<MDBCardLink onClick={() => {
+					loadFavourite(favourite.mapURL, favourite.title);
+				}}>
+									<h2>{favourite.title}</h2>
 								</MDBCardLink>
 							</MDBListGroupItem>
-							<MDBListGroupItem>
-								<MDBCardLink href="/">
-									Walking Route
-								</MDBCardLink>
-							</MDBListGroupItem>
-							<MDBListGroupItem>
-								<MDBCardLink href="/">
-									New House Location
-								</MDBCardLink>
-							</MDBListGroupItem>
-						</MDBListGroup>
+						))}
+					</MDBListGroup>
 
-						<MDBCardFooter>
-							<MDBBtn
-								color="primary"
-								className="mb-3"
-								type="submit"
-								onClick={onSignOutHandler}>
-								Logout
-							</MDBBtn>
-							<MDBBtn
-								color="danger"
-								className="mb-3"
-								type="submit"
-								onClick={handleShow}>
-								Delete Account
-							</MDBBtn>
-						</MDBCardFooter>
+					<MDBCardFooter>
+						<MDBBtn
+							color="primary"
+							className="mb-3"
+							type="submit"
+							onClick={onSignOutHandler}>
+							Logout
+						</MDBBtn>
+						<MDBBtn
+							color="danger"
+							className="mb-3"
+							type="submit"
+							onClick={handleShow}>
+							Delete Account
+						</MDBBtn>
+					</MDBCardFooter>
 
-						<Modal show={show} onHide={handleClose} animation={false}>
+					<Modal show={show} onHide={handleClose} animation={false}>
 						<MDBContainer>
-              <MDBIcon size="3x" icon="user" /> 
-              <h4>{user.email}</h4>
-              < br/>
-								<Modal.Title>
-                <p>To permanently delete your account, please confirm your password.</p>
-								</Modal.Title>
-                </MDBContainer>					
+							<MDBIcon size="3x" icon="user" />
+							<h4>{user.email}</h4>
+							<br />
+							<Modal.Title>
+								<p>
+									To permanently delete your account, please
+									confirm your password.
+								</p>
+							</Modal.Title>
+						</MDBContainer>
 
-							<Modal.Body>
-								<div>
-									<MDBInput										
-										icon="lock"
-										type="password"
-										name="password"
-                    placeholder="Enter your password..."
-										value={password}
-										onChange={(e) => onChangeHandler(e)}
-									/>
-								</div>
+						<Modal.Body>
+							<div>
+								<MDBInput
+									icon="lock"
+									type="password"
+									name="password"
+									placeholder="Enter your password..."
+									value={password}
+									onChange={(e) => onChangeHandler(e)}
+								/>
+							</div>
 
-								<div className="text-center mt-4">
-									{error !== null && (
-										<div className="py-4 bg-red-600 w-full text-red text-center mb-3">
-											{error}
-										</div>
-									)}
-								</div>
-							</Modal.Body>
+							<div className="text-center mt-4">
+								{error !== null && (
+									<div className="py-4 bg-red-600 w-full text-red text-center mb-3">
+										{error}
+									</div>
+								)}
+							</div>
+						</Modal.Body>
 
-							<Modal.Footer>
-								<Button
-									variant="primary"
-									onClick={handleClose}>
-									Cancel
-								</Button>
-								<Button
-									variant="danger"
-									onClick={deleteUserHandler}>
-									Delete My Account
-								</Button>
-							</Modal.Footer>
-						</Modal>
-					</MDBCard>         
-				
+						<Modal.Footer>
+							<Button variant="primary" onClick={handleClose}>
+								Cancel
+							</Button>
+							<Button
+								variant="danger"
+								onClick={deleteUserHandler}>
+								Delete My Account
+							</Button>
+						</Modal.Footer>
+					</Modal>
+				</MDBCard>
 			) : (
 				<Redirect noThrow to="/" />
 			)}

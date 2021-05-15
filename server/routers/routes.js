@@ -257,7 +257,7 @@ function testGetMap(boundingBox)
 
           // Add url ending
   //URLMap += "&zoom=15&size=600,400@2x";
-  URLMap += "&zoom=16&size=600,600@2x";  //TODO TESTing taller map and zoomed closer
+  URLMap += "&zoom=16&size=550,420@2x";  //TODO TESTing taller map and zoomed closer
 
   // Return URL for static map with crime locations marked
   return URLMap;
@@ -431,32 +431,6 @@ function getMap(boundingBox, crimeNodes, latLocation, lonLocation)
 
 //   return boundingBox;
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router;
