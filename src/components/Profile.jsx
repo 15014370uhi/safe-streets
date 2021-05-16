@@ -26,7 +26,6 @@ import Button from 'react-bootstrap/Button';
 
 const Profile = () => {
 	const [localFavourites, setLocalFavourites] = useState([]);
-
 	const user = useContext(UserContext); // Get User Context
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState(null);
@@ -35,10 +34,7 @@ const Profile = () => {
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
-
 	const history = useHistory();
-
-	// TODO maybe get current user document manually
 
 	useEffect(() => {
 		getUserDetails();

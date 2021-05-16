@@ -208,8 +208,8 @@ const Search = () => {
 					resetState();
 				})
 				.catch((error) => {
-					console.log('error in search getting response: ', error);
-					setError(error);
+					console.log('error in search getting response: ', error.message); //TODO
+					//setError(error);
 				});
 		}
 	};
