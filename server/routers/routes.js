@@ -51,7 +51,7 @@ const getBoundingBox = (latLocation, lonLocation) => {
     precision
   );
 
-  // Add bounding box coordinates to array of bounding box coordinates
+  //add bounding box coordinates to array of bounding box coordinates
   boundingBox.push (
     latTopLeft,
     lonTopLeft,
@@ -106,29 +106,6 @@ const getGeocode = async locationName => {
   return geoCoords;
 };
 
-// TEST return a static map image URL at a bounding box lat lon locatio
-const testGetMap = boundingBox => {
-  //define base URL
-  let URLMap =
-    'https://www.mapquestapi.com/staticmap/v5/map?key=HaI8dvLBtirhMstWmwrcbkRmltyyHAT2&boundingBox=';
-
-  //get reference to bounding box lat and lon coordinates
-  const latTopLeft = boundingBox[0];
-  const lonTopLeft = boundingBox[1];
-  const latBotRight = boundingBox[2];
-  const lonBotRight = boundingBox[3];
-
-  //add bounding box lat and lon coordinates to base URL string
-  URLMap +=
-    latTopLeft + ',' + lonTopLeft + ',' + latBotRight + ',' + lonBotRight;
-
-  //add url ending
-  URLMap += '&zoom=16&size=550,420@2x'; //TODO TESTing taller map and zoomed closer
-
-  // Return URL for static map with crime locations marked
-  return URLMap;
-};
-
 /** Function which returns an array of dates in the format YYYY-MM 
  * for a given number of prior months, begining 1 month prior
  * to current month, since current months are not recorded.   
@@ -143,12 +120,8 @@ const populateCrimeDates = numberOfMonthsRequired => {
   //get current year in 4-digit format
   let currentYear = new Date ().getFullYear ();
 
-  console.log ('CURRENT YEAR: ' + currentYear);
-
   //get current month as int with no leading zero
   let currentMonth = new Date ().getMonth ();
-
-  console.log ('CURRENT MONTH: ' + currentMonth);
 
   //initialise variable to hold month to check for crimes
   let crimeMonth = 0;
@@ -160,7 +133,6 @@ const populateCrimeDates = numberOfMonthsRequired => {
    * Set initial crime month to the previous month,
    * since the current month's crimes are not usually listed. 
    */
-  console.log ('crimeMonth: ' + crimeMonth);
   //change month to previous month
   if (currentMonth === 1) {
     //January special case
@@ -170,8 +142,6 @@ const populateCrimeDates = numberOfMonthsRequired => {
     //just decrement month by 1
     crimeMonth = currentMonth--;
   }
-
-  console.log ('crimeMonth decremented to: ' + crimeMonth);
 
   //if month is single digit, add leading zero and store as format YYYY-MM
   if (crimeMonth < 10) {
@@ -221,12 +191,8 @@ const populateCrimeDates = numberOfMonthsRequired => {
   return dateArray;
 };
 
-//TODO
-// Function which returns a static map image URL containing crime locations centered at latLocation, lonLocation
+//function which returns a static map image URL containing crime locations centered at latLocation, lonLocation
 const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
-  //boolean to determine the initial lat and lon coordinates which are center point of map
-  let isFirstLocation = true;
-
   //define base URL
   let URLMap =
     'https://www.mapquestapi.com/staticmap/v5/map?key=HaI8dvLBtirhMstWmwrcbkRmltyyHAT2&boundingBox=';
@@ -242,7 +208,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   let colour = '';
   let symbol = '';
 
-  //add bounding box lat and lon coordinates to base URL string
+  //add bounding box coordinates, center point and center marker to base URL string
   URLMap =
     URLMap +
     latTopLeft +
@@ -252,20 +218,30 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
     latBotRight +
     ',' +
     lonBotRight +
-    '&locations=';
+    '&locations=' +
+    latLocation +
+    ',' +
+    lonLocation +
+    '|marker-7B0099'; //center point marker
 
   //iterate through array of all crime records and add lat, lon, crime category and map marker to URL string
-  for (const aCrimeRecord in crimeNodes) {
+  for (const aCrimeRecord of crimeNodes) {
     // Set specific display and URL format options based on crime type found
-    switch (aCrimeRecord['category']) {
-      //general Disorder
+    //TODO If no crimes - just add center marker and message no crimes of type
+    switch (aCrimeRecord.category) {
+      //anti-social
       case 'anti-social-behaviour':
         category = 'Anti';
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
-      //public Order Crimes
+      //criminal-damage and arson
       case 'criminal-damage-arson':
+        category = 'Arsn';
+        colour = 'FF0000';
+        symbol = 'flag-sm-';
+        break;
+      //generalised public order
       case 'public-order':
       case 'other-crime':
         category = 'Ordr';
@@ -285,9 +261,14 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
+      //shoplifting
+      case 'shoplifting':
+        category = 'Shop';
+        colour = '00FF00';
+        symbol = 'flag-sm-';
+        break;
       //general Theft
       case 'other-theft':
-      case 'shoplifting':
       case 'bicycle-theft':
         category = 'Theft';
         colour = '00FF00';
@@ -323,38 +304,30 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         //TODO some default symbol for uncarterognised version ***
         break;
     }
-
-    //if lat and lon coordinate is the center of search location marker
-    if (isFirstLocation) {
-      URLMap = URLMap + latLocation + ',' + lonLocation + '|marker-7B0099';
-      isFirstLocation = false;
-    } else {
-      //construct URL section for current crime
-      URLMap =
-        URLMap +
-        '||' +
-        aCrimeRecord['latitude'] +
-        ',' +
-        aCrimeRecord['longitude'] +
-        '|' +
-        symbol +
-        colour +
-        '-' +
-        category;
-    }
+    //construct additional URL string for current crime
+    URLMap =
+      URLMap +
+      '||' +
+      aCrimeRecord.latitude +
+      ',' +
+      aCrimeRecord.longitude +
+      '|' +
+      symbol +
+      colour +
+      '-' +
+      category;
   }
 
   //add URL ending string
-  URLMap = URLMap + '&zoom=15&size=600,400@2x';
+  URLMap = URLMap + '&zoom=8&size=600,650@2x'; //TODO zoom lower = closer,  width,length
 
   //return full URL for a static map with all crime locations marked
   return URLMap;
 };
 
 //function which returns crime data for a spcific month at
-//an approx 1 mile box at a geographical location
+//an approx 1 mile box at a geographical location  //TODO maybe change to center point rather than bounding
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
-  console.log ('getCrimeData params: ' + crimeDateCheck + ' ' + boundingBox);
   // Set lat and lon coordinates of bounding box
   let latTopLeft = boundingBox[0];
   let lonTopLeft = boundingBox[1];
@@ -367,10 +340,10 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
 
   let crimeData;
 
-  // Base URL for polygon search of police API
+  //base URL for polygon search of police API
   let baseURL = 'https://data.police.uk/api/crimes-street/all-crime?poly=';
 
-  // Generate URL for API
+  //generate URL for API
   let URLCrimes =
     baseURL +
     latTopLeft +
@@ -391,43 +364,46 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     '&date=' +
     crimeDateCheck;
 
-  //console.log ('Final crime URL: ' + URLCrimes);
-
   await axios
     .get (URLCrimes)
     .then (res => {
-      // console.log(res);
-      // TEST response
-      if (res.length === 0) { //TODO TEST
+      // console.log(res.data); //TEST
+      if (res.length === 0) {
         console.log ('Empty response from crime data');
       }
-      // console.log("RESPONSE DATA TEST ----------: " + JSON.stringify(res.data)); //TODO check for emtpy data here?
-
       crimeData = res.data;
-
-      // crimeDataJSON = JSON.stringify(res);
-
-      //console.log("crimeDataJSON \n");
-      //console.log(crimeDataJSON);
     })
     .catch (error => {
       console.log ('error retrieving crime data: ', error);
     });
 
   // Return the data
-  return crimeData; //TODO move to response section of axios?
+  return crimeData;
+};
+
+//function which randomly shuffles an array contents using the Fisher-Yates alogrithm
+/**
+ * Shuffles the contents of an array in place.
+ * @param {Array} An array of elements.
+ */
+const shuffleArray = anArray => {
+  var x, j, index;
+  for (index = anArray.length - 1; index > 0; index--) {
+    j = Math.floor (Math.random () * (index + 1));
+    x = anArray[index];
+    anArray[index] = anArray[j];
+    anArray[j] = x;
+  }
+  return anArray;
 };
 
 //POST route
 router.post ('/', async (req, res) => {
-  const isNameSearch = req.body.isnamesearch; // Boolean flag to determine if location name search
-  var mapURL = ''; // Static map image URL
-  var location = ''; // Variable to hold location
+  const isNameSearch = req.body.isnamesearch; //boolean flag to determine if location name search
+  var mapURL = ''; //static map image URL
+  var location = ''; //variable to hold location
   var crimes = [];
   var noCrimes = false;
-
-  // TEST
-  //mapURL ='http://www.mapquestapi.com/staticmap/v5/map?key=HaI8dvLBtirhMstWmwrcbkRmltyyHAT2&locations=England&size=@2x';
 
   const namedLocation = req.body.namedlocation;
   let latitude = req.body.lat;
@@ -438,7 +414,6 @@ router.post ('/', async (req, res) => {
   if (isNameSearch) {
     //call function to convert named location to a set of lat and lon coordinates
     const geoCoords = await getGeocode (namedLocation);
-
     latitude = geoCoords.latitude; //store returned lat coordinate
     longitude = geoCoords.longitude; //store returned lon coordinate
   } else {
@@ -447,12 +422,6 @@ router.post ('/', async (req, res) => {
     latitude = req.body.lat;
     longitude = req.body.lon;
   }
-
-  //TODO call function to get map URL
-  //TODO - now have lat and lon coords of location - whether manually entered or
-  //TODO or returned from function.
-  // Now need to TEST - by getting map image using the coordinates
-  // Then - TEST by getting the crime data for the months required - rem the two month thing
 
   //call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
   const boundingBox = getBoundingBox (latitude, longitude);
@@ -468,154 +437,115 @@ router.post ('/', async (req, res) => {
   //get crime data for location for all months required
   for (let aMonth of crimeMonthsArray) {
     crimesDuringMonth = await getCrimeData (aMonth, boundingBox);
-    // console.log("crimesDuringMonth length -----------  >> " + crimesDuringMonth.length);
-   // console.log ('RESPONSE for crimesDuringMonth-------------------->');
-   // console.log (crimesDuringMonth);
-   // console.log ('LENGTH: crimesDuringMonth.length');
-   // console.log (crimesDuringMonth.length);
 
-    // If crimes exist for month being checked, add them to collection of crimes
-    if (crimesDuringMonth.length > 3) {
+    //if crimes exist for month being checked, add them to collection of crimes
+    if (crimesDuringMonth.length > 0) {      
       crimes.push (crimesDuringMonth);
-      console.log ('crimes.push -> ' + crimesDuringMonth);
-    }
+    } 
   }
 
-  //TODO filters for crimes on map <<<<<<<<<<<<<<<<<<<<<<<<<
-  // Declare crime variables
-  let crimeNodes = []; // Array to hold all found crimes location and information
+  //declare crime variables#
+  //TODO crimes array might do the job of crimeNodes - willl depend on what machine learning needs
+  let crimeNodes = []; //array to hold all found crime locations and information
+  let displayCrimes = []; //array to hold only unique crime types and locations for map display
 
-  // Add category, and lat and lon locations for each crime
+  //add category, and lat and lon locations for each crime
   for (let crimeCollection of crimes) {
-    //console.log("crimeCollection for a month:")
-    //console.log(crimeCollection);
-
     for (let aCrime of crimeCollection) {
-      console.log ('Category: ' + aCrime.category);
-      console.log ('LAT: ' + aCrime.location.latitude);
-      console.log ('LON: ' + aCrime.location.longitude);
-
+      console.log ('STREET ------------ ' + aCrime.location.street.name);
+      //store details of current crime
       let aCrimeCategory = aCrime.category;
+      let aCrimeLat = aCrime.location.latitude;
+      let aCrimeLon = aCrime.location.longitude;
+      let aCrimeStreet = aCrime.location.street.name;
+      let aCrimeMonth = aCrime.month;
+
+      //TODO list of filters selected to display ---- TEST - get filters from UI
+      const filters = [
+        'vehicle-crime',
+        'anti-social-behaviour',
+        'violent-crime',
+        'shoplifting',
+        'other-crime',
+        'public-order',
+        'possession-of-weapons',
+        'other-theft',
+        'burglary',
+        'robbery',
+        'theft-from-the-person',
+        'criminal-damage-arson',
+        'bicycle-theft',
+        'drugs',
+      ];
 
       //TODO implement filters from interface
-      // Filter crimes for user selected filters
-      // if (!in_array(aCrimeCategory, filtered)) {
-      //   aCrimeLat = $aCrime->location->latitude;
-      //   aCrimeLon = $aCrime->location->longitude;
-      //   aCrimedetails = array(
-      //     'category' => aCrimeCategory,
-      //     'latitude' => aCrimeLat,
-      //     'longitude' => aCrimeLon
-      //   );
-      //   array_push(crimeNodes, aCrimedetails);
-      // }
+      // Filter crimes to include only user selected crime filters
+      for (let aFilter of filters) {
+        if (aCrimeCategory === aFilter) {
+          //create new object with crime details to add
+          const aCrimeDetails = {
+            category: aCrimeCategory,
+            latitude: aCrimeLat,
+            longitude: aCrimeLon,
+            street: aCrimeStreet,
+            month: aCrimeMonth,
+          };
 
-      // Store only first 98 crimes (mapquest API marker quantity imposed limit)
-      //slicedCrimes = crimeNodes.slice(0,98);
+          //TODO for machine learning save full crime data records to master record array
+          crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
+
+          //record only unique crime categories and locations for map display efficiency
+          let filteredCrimeNodes = displayCrimes.filter (
+            crime =>
+              crime.category !== aCrimeCategory ||
+              crime.latitude !== aCrimeLat ||
+              crime.longitude !== aCrimeLon
+          );
+
+          //set crimeNodes to filtered crimeNodes
+          displayCrimes = filteredCrimeNodes;
+
+          //add current crime to array of all crimes to display on map
+          displayCrimes.push (aCrimeDetails);
+        }
+      }
     }
   }
 
-  // If no crimes were found, set boolean flag
-  if (slicedCrimes.length < 1) {
-    noCrimes = true; //TODO send back if no crimes found to allow user alert in results page
+  //randomise crime order
+  displayCrimes = shuffleArray (displayCrimes);
+
+  //store max of 90 crimes to cater to mapquest marker quantity imposed limit
+  slicedCrimes = displayCrimes.slice (0, 90);
+
+  //TODO test
+  console.log (
+    'Total number of crimes included in map: ' + slicedCrimes.length
+  );
+
+  //if no crimes were found, set boolean flag
+  if (slicedCrimes.length === 0) {
+    noCrimes = true; //TODO send message back if no crimes found to allow user alert in results page
   }
 
-  // console.log("calling getMap with: boundingBox" + boundingBox + "\n"
-  // + "slicedCrimes: " + slicedCrimes + "\n"
-  // + "latitude: " + latitude + "\n"
-  // + "longitude: " + longitude);
-  // Get map image URL for lat and lon location
+  //call function which generates image URL with crime markers on map
   mapURL = getMap (boundingBox, slicedCrimes, latitude, longitude);
 
-  //invalidconsole.log("final mapURL:" + mapURL);
-  //call method to get static map image URL centered on bounding box area
-  //mapURL = testGetMap (boundingBox);
+  //TODO call machine learning functions with master record of crimes
+  //TODO e.g. machineLearning(crimeNodes);
 
-  //respond with data
+  //respond with data //TODO don't need as much response data once finalised
   res.send ({
     location: location,
     namedlocation: namedLocation,
     isnamesearch: isNameSearch,
     lat: latitude,
     lon: longitude,
-    mapurl: mapURL, //TODO send proper mapURL of location rather than test version
+    mapurl: mapURL,
     numberofmonths: numberOfMonths,
     boundingbox: boundingBox,
     nocrimes: noCrimes,
   });
 });
-
-//TODO
-// Function which calculates and returns lat and lon coordinates for a 1 mile square bounding box
-// centered on a pair of lat and long coordinates
-// function testgetBoundingBox(latLocation, lonLocation)
-// {
-//   boundingBox = [];
-
-//   // Expand a bounding box to encompass approx 1 mile area of crimes centred at location
-//   latBBTopLeft = round((float)latLocation + 0.004, 6); // Top left of bounding box
-//   lonBBTopLeft = round((float)lonLocation - 0.009, 6); // Top left of bounding box
-//   latBBBotRight = round((float)latLocation - 0.004, 6); // Bottom right of bounding box
-//   lonBBBotRight = round((float)lonLocation + 0.009, 6); // Bottom right of bounding box
-//   latBBTopRight = round((float)latLocation + 0.004, 6); // Top right of bounding box
-//   lonBBTopRight = round((float)lonLocation + 0.009, 6); // Top right of bounding box
-//   latBBBotLeft = round((float)latLocation - 0.004, 6); // Bottom left of bounding box
-//   lonBBBotLeft = round((float)lonLocation - 0.009, 6); // Bottom left of bounding box
-
-//   // Add bounding box coordinates to bounding box array
-//   array_push(boundingBox,
-//     latBBTopLeft,
-//     lonBBTopLeft,
-//     latBBBotRight,
-//     lonBBBotRight,
-//     latBBTopRight,
-//     lonBBTopRight,
-//     latBBBotLeft,
-//     lonBBBotLeft);
-
-//   return boundingBox;
-// }
-
-// const router = require ('express').Router ();
-
-// // /api/map
-// // GET map url
-
-// router.post('/map', async (req, res) => {
-
-//    console.log("req.body.title: " + req.body.title);
-//   try {
-//     const testResponse = "Working API";
-//     res.status(200).json(testResponse);
-//   } catch (e) {
-//     res.status(400).json({ msg: e.message });
-//   }
-// });
-
-// //router.route ('/map').get ((req, res) => {
-// router.get ('/map/:title', async (req, res, next) => {
-//       console.log("route /map triggered");
-//       console.log ('req.body.title holds: ', req.body.title);
-//   try {
-//     const title = req.body.title;
-//     //console.log(test);
-
-//     //
-//     //TEST
-//     const testResponse = {
-//      mapURL: 'https://www.mapquestapi.com/staticmap/v5/map?key=HaI8dvLBtirhMstWmwrcbkRmltyyHAT2&locations=England&size=@2x',
-//     };
-
-//     if (!req.body.title) {
-//       console.log ('title was missing');
-//       return res.json ('No map url');
-//     }
-//     res.send (testResponse); // Return value
-//   } catch (err) {
-//     res.json (err);
-//   }
-// });
-
-// module.exports = router;
 
 module.exports = router;

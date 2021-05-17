@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
 import Button from 'react-bootstrap/Button';
@@ -17,6 +17,10 @@ const MapDisplay = (props) => {
 	const [modalShow, setModalShow] = useState(false);
 	const [removeFavModalShow, setRemoveFavModalShow] = useState(false);
 	let history = useHistory();
+
+	useEffect(() => {
+		window.scrollTo(0, 20);
+	  }, [])
 
 	return (
 		<Col className="mt-4 pt-0 col-map-display">
