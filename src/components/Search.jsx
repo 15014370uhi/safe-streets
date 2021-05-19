@@ -2,15 +2,14 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import Form from './Form';
+import Spinner from 'react-bootstrap/Spinner';
 
 // Style components
 import {MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardHeader} from 'mdbreact';
 
-//TODO might need to add to history somewhere here - so I can return to this page after the
-//Todo viewing search reuslts map
 const Search = () => {
-	const [message, setMessage] = useState('');
-	const [imageOpen, setImageOpen] = useState(false);
+	const [submitText, setSubmitText] = useState('Submit');	
+	const [testText, setTestText] = useState('');			
 	const [radioButton, setRadioButton] = useState('0');
 	const [numberOfMonths, setNumberOfMonths] = useState(3);
 	const [locationName, setLocationName] = useState('');
@@ -22,12 +21,6 @@ const Search = () => {
 
 	// TODO Loading animation for map load -needs improvements for map loading
 
-	//map guide image popup for uk
-	const handleShowImage = (e) => {
-		e.preventDefault();
-		setImageOpen(!imageOpen);
-	};
-
 	// Handler which records currently selected radio button
 	const radioClickedHandler = (radioSelected) => {
 		setRadioButton(radioSelected);
@@ -36,12 +29,6 @@ const Search = () => {
 	// Handler which updates state with user form input
 	const formInputHandler = (e) => {
 		const {name, value} = e.currentTarget;
-
-		// TODO check types of input are correct etc. and set error if wrong
-		//setError(error);
-
-		//isNaN(123)
-
 		// If namedLocation selected, set namedLocation
 		if (name === 'namedLocation') {
 			setLocationName(value);
@@ -60,7 +47,6 @@ const Search = () => {
 			if (!isNaN(value)) {
 				setError('Latitude and Longitude must be numbers');
 			}
-
 			// If longitude input, set lon state
 			setLon(value);
 		}
@@ -76,15 +62,16 @@ const Search = () => {
 
 	// TODO CSS for dropdown hover values
 
-	//function which resets the state values
-	const resetState = () => {
-		//API call successful, reset state
-		setLocationName('');
-		setLat('');
-		setLon('');
-		setRadioButton('0');
-		setNumberOfMonths(3);
-	};
+	//TODO should be able to delete
+	// //function which resets the state values
+	// const resetState = () => {
+	// 	//API call successful, reset state   
+	// 	setLocationName('');
+	// 	setLat('');
+	// 	setLon('');
+	// 	setRadioButton('0');
+	// 	setNumberOfMonths(3);
+	// };
 
 	/**
 	 * Function to check that a set of latitude and longitude coordinates lie
@@ -135,7 +122,17 @@ const Search = () => {
 			);
 		} else {
 			//form input was validated
-			setMessage('Loading...'); // TODO change to spinner
+			setSubmitText(
+				<div>
+				<Spinner  
+				  as="span"
+				  animation="border"           
+				  role="status"
+				  aria-hidden="true"
+				  variant='dark'
+				/>  LOADING.... 
+				</div>)
+
 
 			//TODO Only pass data that's correct?? if you can check other side for empty stuff
 
@@ -152,7 +149,7 @@ const Search = () => {
 			// TODO maybe have a special area for information about the map at side?
 
 			// API call for a new search
-			await axios
+			await axios  //TODO move to separate funciton
 				.post('http://localhost:5000/api/map', payload)
 				.then((res) => {
 					// TEST response
@@ -180,7 +177,7 @@ const Search = () => {
 					}
 
 					// TEST
-					setMessage(
+					setTestText(
 						'Name search?: ' +
 							isNamedSearch +
 							'\n' +
@@ -205,11 +202,10 @@ const Search = () => {
 					);
 
 					// Reset state values
-					resetState();
+					//resetState(); //TODO should be able to delete this now
 				})
 				.catch((error) => {
 					console.log('error in search getting response: ', error.message); //TODO
-					//setError(error);
 				});
 		}
 	};
@@ -234,13 +230,11 @@ const Search = () => {
 								error={error}
 								dropHandler={dropHandler}
 								radioButton={radioButton}
-								radioClickedHandler={radioClickedHandler}
-								handleShowImage={handleShowImage}
-								imageOpen={imageOpen}
-							/>
-							<br />
-							<p>{message}</p>
+								radioClickedHandler={radioClickedHandler}	
+								submitText={submitText}														
+							/>							
 						</MDBCardBody>
+						{testText}
 					</MDBCard>
 				</MDBCol>
 			</MDBRow>

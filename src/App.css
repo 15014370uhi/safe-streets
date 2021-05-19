@@ -181,6 +181,63 @@ i.far.fa-trash-alt.fa-lg:hover {
   display: none;
 }
 
+.spinner-show {
+  display: inline;
+}
+
+/* profile page */
+
+.profile-card {
+  max-width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;  
+}
+
+.profile-heading {
+  background-color: rgb(34, 187, 111);
+  font-size: 2em;  
+}
+
+.profile-main-heading {  
+  font-weight: 500;  
+  font-size: 35px;
+}
+
+.profile-text {
+  padding-bottom: 2%;
+  padding-top: 2%;
+  font-size: 2em;
+}
+
+.profile-favourites-list {
+  background-color: rgba(38, 46, 117, 0.376); 
+}
+
+.profile-favourite-entry {
+ font-style: normal; /* TEST Change font */
+}
+
+ .profile-list-favourite-item:hover {
+  
+  box-shadow: 1px 4px 4px 5px rgba(7, 0, 27, 0.548);  
+  cursor: pointer;
+ }
+
+
+.profile-footer {
+  margin-top: 6%;  
+}
+
+.profile-footer-button {
+  font-size: 1.75em;
+  float: right;
+}
+
+.profile-footer-button:hover { 
+  box-shadow: 3px 3px 3px 4px rgba(7, 0, 27, 0.548);    
+}
+
 /* search form page */
 
 .form-card {
@@ -240,7 +297,6 @@ form>fieldset {
   margin-bottom: 40px;
 }
 
-
 .elementHide {
   display: none;
 }
@@ -294,8 +350,8 @@ form>fieldset {
 }
 
 .btn-favourites {   
-  position: fixed;
-  font-size: 2em; 
+  position: absolute;
+  font-size: 2.5em; 
   padding-top: 12px!important;  
   padding-bottom: 2px!important;  
   padding-left: 1px!important; 
@@ -303,14 +359,14 @@ form>fieldset {
   border: 3px solid rgb(40, 46, 138);
   border-radius: 50px;
   box-shadow: 0 14px 18px rgb(4, 8, 56);
-  bottom: 10%;
-  right: 15%;
+  bottom: 30%;
+  right: 4%;
 }
 
-
+/* position: fixed; */
 .btn-delete-favourite {   
-  position: fixed;
-  font-size: 2em; 
+  position: absolute;
+  font-size: 3em; 
   padding-top: 12px!important;  
   padding-bottom: 2px!important;  
   padding-left: 1px!important; 
@@ -318,13 +374,13 @@ form>fieldset {
   border: 3px solid rgb(61, 5, 7);
   border-radius: 50px;
   box-shadow: 0 14px 18px rgb(46, 1, 1);
-  bottom: 10%;
-  right: 15%;
+  bottom: 30%;
+  right: 4%;
 }
 
 .btn-back {
-  position: fixed;
-  font-size: 2em; 
+  position: absolute;
+  font-size: 3em; 
   padding-top: 12px!important;  
   padding-bottom: 2px!important;  
   padding-left: 9px!important; 
@@ -332,8 +388,22 @@ form>fieldset {
   border: 3px solid rgb(40, 46, 138);
   border-radius: 10px;
   box-shadow: 0 14px 18px rgb(4, 8, 56);  
-  top: 16%;
-  left: 5%;
+  top: 4px;
+  left: 2%;
+}
+
+.btn-open-filter {
+  position: absolute;
+  font-size: 3em; 
+  padding-top: 22px!important;  
+  padding-bottom: 10px!important;  
+  padding-left: 9px!important; 
+  padding-right: 9px!important;    
+  border: 3px solid rgb(68, 84, 88);
+  border-radius: 10px;
+  box-shadow: 0 14px 18px rgb(4, 8, 56);  
+  top: 4px;
+  right: 4.5%;
 }
 
 
@@ -505,18 +575,6 @@ a.navbar-logo.navbar-brand.active {
 .mapDisplay { 
   margin-left: 0px;
 }
-
-.btn-favourites {   
-  font-size: 2em; 
-  bottom: 23%;
-  right: 10%;
-}
-
-.btn-back {
-  top: 14%;
-  left: 3%;
-}
-
 
 }
 

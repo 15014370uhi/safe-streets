@@ -1,49 +1,19 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useState} from 'react';
 import {UserContext} from '../auth/UserProvider';
 import {ReactComponent as Logo} from '../images/logo.svg';
-import Dropdown from 'react-bootstrap/Dropdown';
 import {auth} from '../firebase';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Nav from 'react-bootstrap/Nav';
 import {NavLink} from 'react-router-dom';
-//import firebase from 'firebase';
 
 const NavBar = (props) => {
-	const user = useContext(UserContext); // Get User Context
+	const user = useContext(UserContext);
 	const [click, setClick] = useState(false);
 	const handleClick = () => setClick(!click);
 	const closeMobileMenu = () => setClick(false);
 
-	useEffect(() => {
-		// getUserDetails();
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	// Function which retrieves the favourites for a user
-	// If user missing, exit
-
-	// const getUserDetails = async () => {
-	//   console.log("Running getUserDetails in navbar");
-	//   if (user){
-	//     var userRef = await firebase.firestore().collection('users').doc(user.uid);
-	//     userRef
-	//       .get()
-	//       .then(function (doc) {
-	//         if (doc.exists) {
-	//           setLocalFavouritesTotal(doc.data().favourites.length);
-	//         } else {
-	//           console.log('No favourites!');
-	//         }
-	//       })
-	//       .catch(function (error) {
-	//         console.log('Error getting favourites:', error);
-	//       });
-	//     }
-	// };
-
-	//TODO replace all with Navbar stuff
 	return (
 		<Navbar>
 			<Navbar.Brand as={NavLink} to="/" className="navbar-logo">

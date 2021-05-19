@@ -16,12 +16,10 @@ import {
 	MDBInput,
 } from 'mdbreact';
 
-const AddFavourite = ({shouldHide}) => {
+const AddFavourite = props => {
 	const [title, setTitle] = useState('');
 	const [mapURL, setMapURL] = useState('');
 	const [error, setError] = useState(null);
-
-	//const user = useContext (UserContext); // Get User Context
 	const history = useHistory();
 
 	const createNewFavourite = async (e) => {

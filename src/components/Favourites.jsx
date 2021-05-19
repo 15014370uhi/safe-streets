@@ -71,7 +71,6 @@ const Favourites = (props) => {
 						'Argument returned after del by title: ' +
 							favouritesToKeep
 					);
-
 					// Update favourites state
 					setLocalFavourites(favouritesToKeep);
 				} else {
@@ -110,9 +109,7 @@ const Favourites = (props) => {
 										mapurl={favourite.mapURL}
 										timestamp={favourite.timestamp}
 										deleteFavourite={deleteFavourite}
-										displayFavouriteMap={
-											displayFavouriteMap
-										}
+										displayFavouriteMap={displayFavouriteMap}
 									/>
 								))}
 							</CardDeck>

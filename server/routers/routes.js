@@ -326,7 +326,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
 };
 
 //function which returns crime data for a spcific month at
-//an approx 1 mile box at a geographical location  //TODO maybe change to center point rather than bounding
+//an approx 1 mile box at a geographical location 
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
   // Set lat and lon coordinates of bounding box
   let latTopLeft = boundingBox[0];

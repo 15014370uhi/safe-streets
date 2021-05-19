@@ -1,7 +1,7 @@
 import TextField from "@material-ui/core/TextField";
 import { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
-import { firestore } from "../firebase";
+import 'firebase/firestore'; //firebase firestore
 import firebase from "firebase";
 //import TodoListItem from "./Todo";
 import ListGroup from 'react-bootstrap/ListGroup';
@@ -26,14 +26,14 @@ function FavouritesTest({user}) {
 
   function setFavourites() {
    // setLocalFavourites(user.favourites);
-    setAUser(firebase.auth().currentUser);
+    setAUser(auth().currentUser);
    // console.log("Current logged in user inside: " + firebase.auth().currentUser.email);
    // console.log("Local state user " + aUser.favourites);
    // console.log("Local state favourites " + localFavourites);
   }
 
   function getFavourites() {
-    const currentUser = firebase.auth().currentUser
+    const currentUser = auth().currentUser
     //firestore.collection("users").doc(user.uid).collection("favourites").onSnapshot(function (querySnapshot) {
     
       var userRef = firebase.firestore().collection('users').doc(currentUser.uid);

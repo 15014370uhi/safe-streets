@@ -8,21 +8,20 @@ import {MDBInput} from 'mdbreact';
 
 const AddFavouriteModal = props => {
   const [title, setTitle] = useState (''); //TODO check for cross site scripting
-  const [error, setError] = useState (null);
 
   //function which adds a new user favourite
   const createNewFavourite = async e => {
     try {
       await addUserFavourite (title, props.mapurl);
     } catch (error) {
-      setError ('Adding favourite' + error);
+      console.log('Adding favourite' + error);
     }
   };
 
-  // Function to handle user form input
+  //function to handle user form input
   const onChangeHandler = e => {
     const {name, value} = e.currentTarget;
-    // If title input, set title state
+    //if title input, set title state
     if (name === 'title') {
       setTitle (value);
     }
@@ -48,7 +47,7 @@ const AddFavouriteModal = props => {
         <div className="grey-text">
           <MDBInput
             required
-            label="Add a title"
+            label="Add a title..."
             size="lg"
             group
             type="text"

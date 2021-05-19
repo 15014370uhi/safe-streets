@@ -1,12 +1,8 @@
 import React, {useState} from 'react';
 import {generateUserDocument, createUserWithEmailAndPassword} from '../firebase';
-//import {auth, generateUserDocument, createUserWithEmailAndPassword} from '../firebase';
-
 import {Link, useHistory} from 'react-router-dom';
 
-
 // TODO get list of errors and show them properly
-
 
 // Style components
 import {
@@ -27,15 +23,12 @@ const Register = (props) => {
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState(null);
 
-	const history = useHistory();
-
+	const history = useHistory();	
 	
-	// TODO move this to firebase
 	const createUserWithEmailAndPasswordHandler = async (e) => {
 		e.preventDefault();
 		try {
 			const {user} = createUserWithEmailAndPassword(email, password);
-			//console.log("Created user with email: " + user.email);
 			generateUserDocument(user);
 		} catch (error) {
 			setError('Error creating user with email and password');
@@ -44,21 +37,6 @@ const Register = (props) => {
 		let path = `/search`; 
 		history.push(path);	
 	};
-
-	// const createUserWithEmailAndPasswordHandler = async (e) => {
-	// 	e.preventDefault();
-	// 	try {
-	// 		const {user} = await auth.createUserWithEmailAndPassword(email, password);
-	// 		//console.log("Created user with email: " + user.email);
-	// 		generateUserDocument(user);
-	// 	} catch (error) {
-	// 		setError('Error creating user with email and password');
-	// 	}	
-	// 	// Redirect URL
-	// 	let path = `/search`; 
-	// 	history.push(path);	
-	// };
-
 
 	const onChangeHandler = (e) => {
 		const {name, value} = e.currentTarget;

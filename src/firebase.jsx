@@ -1,6 +1,6 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import firebase from 'firebase/app'; //firebase
+import 'firebase/auth'; //firebase authentication
+import 'firebase/firestore'; //firebase firestore
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyBT4RoXDLZ505dMhCPkEuYPEeL1EUF_Wh0',
@@ -13,7 +13,7 @@ const firebaseConfig = {
 
 // TODO https://firebase.google.com/docs/auth/web/manage-users - add more user features
 
-// Function to create a new user with email and password
+//function to create a new user with email and password
 export const createUserWithEmailAndPassword = async (email, password) => {
 	try {
 		const {user} = await auth.createUserWithEmailAndPassword(
@@ -29,39 +29,39 @@ export const createUserWithEmailAndPassword = async (email, password) => {
 	}
 };
 
-// Function to create a user document
+//function to create a user document
 export const generateUserDocument = async (user, additionalData) => {
-	// If user missing, exit
+	//if user missing, exit
 	if (!user) {
 		return;
 	}
-	// Get reference to current user data in firestore by UID
+	//get reference to current user data in firestore by UID
 	const userRef = firestore.doc(`users/${user.uid}`);
 	const snapshot = await userRef.get();
 
-	// If user is logged in but no firestore document exists
+	//if user is logged in but no firestore document exists
 	if (!snapshot.exists) {
-		// Get email of currently logged in user
+		//get email of currently logged in user
 		const {email} = user;
 		try {
 			await userRef.set({
-				email, // Set user email
-				favourites: [], // Initialise empty favourites array
+				email, //set user email
+				favourites: [], //initialise empty favourites array
 				...additionalData,
 			});
 		} catch (error) {
 			console.error('Error creating user firestore document', error);
 		}
 	}
-	// Call getUserDocument function with user UID
+	//call getUserDocument function with user UID
 	return getUserDocument(user.uid);
 };
 
-// Function to add a new favourite to user collection of favourites
+//function to add a new favourite to user collection of favourites
 export const addUserFavourite = async (title, mapurl) => {
 	var user = firebase.auth().currentUser;
 
-	// If no current user passed, exit
+	//if no current user passed, exit
 	if (!user) {
 		console.log('user missing');
 		return;
