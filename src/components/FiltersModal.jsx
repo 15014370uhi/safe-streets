@@ -30,108 +30,114 @@ const FiltersModal = (props) => {
 	const [crimeButtons, setCrimeButtons] = useState([
 		{
 			label: 'Anti-Social Behaviour', //button label text
-			categories: ['anti-social-behaviour'], //element categories[0] used as button id		
-      isActive: true,		//boolean flag to determine whether to display this crime on map
+			categories: ['anti-social-behaviour'], //element categories[0] used as button id
+			isActive: true, //boolean flag to determine whether to display this crime on map
 		},
 		{
 			label: 'Arson',
 			categories: ['criminal-damage-arson'],
-      isActive: true,	
-		},	
+			isActive: true,
+		},
 		{
 			label: 'Public Order',
 			categories: ['public-order', 'other-crime'],
-      isActive: true,	
+			isActive: true,
 		},
 		{
 			label: 'Violent Crime',
 			categories: ['violent-crime', 'theft-from-the-person'],
-      isActive: true,	
+			isActive: true,
 		},
 		{
 			label: 'Weapons',
 			categories: ['possession-of-weapons'],
-      isActive: true,	
+			isActive: true,
 		},
 		{
 			label: 'Shoplifting',
 			categories: ['shoplifting'],
-      isActive: true,	
+			isActive: true,
 		},
 		{
 			label: 'Property Theft',
 			categories: ['other-theft', 'bicycle-theft'],
-      isActive: true,	
+			isActive: true,
 		},
 		{
 			label: 'Vehicle Crime',
 			categories: ['vehicle-crime'],
-      isActive: true,	
+			isActive: true,
 		},
 		{
 			label: 'Robbery',
 			categories: ['robbery'],
-      isActive: true,	
+			isActive: true,
 		},
 		{
 			label: 'Drugs',
 			categories: ['drugs'],
-      isActive: true,	
+			isActive: true,
 		},
 		{
 			label: 'Burglary',
 			categories: ['burglary'],
-      isActive: true,	
+			isActive: true,
 		},
 	]);
 
 	//function to handle user form input
-	const changeFilterState = (id, categories, isActive) => {
-
-    //TODO find button from label
-    //TODO add categories to list of categories to ignore from police data API
+	const changeFilterState = (id, categories, isActive, label) => {
+		//TODO find button from label
+		//TODO add categories to list of categories to ignore from police data API
 		console.log('id: ' + id);
 		console.log('categories: ' + categories); //GET from array in this component
-    console.log('isActive: ' + isActive);
+		console.log('isActive: ' + isActive);
+		
+			const indexOfButtonToUpdate = crimeButtons.findIndex((aButton) => aButton.label === label);
+			const updatedButtons = [...crimeButtons]; //create copy of array
+		
+			updatedButtons[indexOfButtonToUpdate].isActive = !updatedButtons[indexOfButtonToUpdate].isActive;
+			setCrimeButtons(updatedButtons);
+		 
 
 		//TODO either remove filter from list of all crimes - or add to list of crimes to hide
-
-    //  setCrimeButtons()  //TODO check how to change state for object state 
-
-
-		//if title input, set title state
-		// if (name === 'title') {
-		//   setTitle (value);
-		// }
+		//TODO don't save filters with favourite - too much hassle? see later
+	
 	};
+
 
 	const applyFilters = () => {
-		props.onHide(); //hide filter modal 
+		props.onHide(); //hide filter modal
+
 
 		//TODO pass new filters array to map display?
-    	//redirect to favourites page
-     // let path = `/results`; //TODO get path of calling page maybe as prop
-				//	history.push(path); //TODO pass new filters as history data
+		//redirect to favourites page
+		// let path = `/results`; //TODO get path of calling page maybe as prop
+		//	history.push(path); //TODO pass new filters as history data
+
+		//TODO option 1 - regex search and replace text from mapURL related to filters
+		//TODO option 2 - make API call - might be better putting the function code
+		//TODO for API call in parent component-mapDisplay - then calling it from here on
+		//TODO apply filters button press - that way maybe some info I need to make API call
+		//TODO will be in props and can be added to props
+		
+		// history.push (`/results`, {
+		// 	mapurl: aMapURL,
+		// 	title: title, //TODO needed?
+		// 	isfavourite: 'true', //TODO needed?? is map a previously favourited map or new search result
+		//   });
 	};
 
-  const resetFilters = () => {
-    props.onHide();
+	const resetFilters = () => {
+		props.onHide();
 
-    //TODO reset filters list & button active/inactive state
-    //TODO map over buttons state and set isACtive to true
-  }
+		//TODO reset filters list & button active/inactive state
+		//TODO map over buttons state and set isACtive to true
+	};
 
 	//TODO MAKE filters here
 
-  //TODO might be userful to update filters active state
-  // handleChange = (event) => {
-  //       this.setState(state => ({
-  //         editTodo: {
-  //           ...state.editTodo,
-  //           title: event.target.value,
-  //         },
-  //       }));
-  //   }
+	//TODO might be userful to update filters active state	
 	//TODO check old javascript from orignal version
 
 	return (
@@ -142,23 +148,27 @@ const FiltersModal = (props) => {
 				</Modal.Title>
 			</Modal.Header>
 
-			<Modal.Body className="filterButtonsGroup">			
+			<Modal.Body className="filterButtonsGroup">
 				{crimeButtons.map((aButton) => (
 					<ButtonFilterCrime
 						key={uuid()}
-            id={aButton.categories[0]}
-            label={aButton.label}
-            categories={aButton.categories}
-            isActive={aButton.isActive}
-            changeFilterState={changeFilterState}
+						id={aButton.categories[0]}
+						label={aButton.label}
+						categories={aButton.categories}
+						isActive={aButton.isActive}
+						changeFilterState={changeFilterState}
 					/>
-				))}			
+				))}
 			</Modal.Body>
 			<Modal.Footer>
-				<Button variant="red" onClick={resetFilters}>
+				<Button 
+				className='btn-footer' 
+				variant="red" 
+				onClick={resetFilters}>
 					Reset
 				</Button>
 				<Button
+				className='btn-footer'
 					variant="green"
 					type="submit"
 					onClick={() => applyFilters()}>

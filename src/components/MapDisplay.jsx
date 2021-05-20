@@ -36,8 +36,10 @@ const MapDisplay = (props) => {
 	//TODO once a map display has been favourited using the add to fav button, button should be
 	//TODO change to remove from favourites button
 
-	return (
-		<Col className="mt-4 pt-0 col-map-display">
+	//TODO  FRI - remove filters elements from URL manually?
+
+	return (	
+		<Col className="mt-4 pt-0 col-map-display">			
 			<AddFavouriteModal
 				mapurl={history.location.state?.mapurl}
 				show={showAddFavouriteModal}

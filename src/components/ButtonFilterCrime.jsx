@@ -5,10 +5,10 @@ const ButtonFilterCrime = props => {
   return (
     <Button     
       className={props.isActive ? 'btn-filter-active' : 'btn-filter-inactive'}
-      id={props.id}     
-      onClick={() => props.changeFilterState (props.id, props.categories, props.isActive)}              			 
+      id={props.id}       
+      onClick={() => props.changeFilterState (props.id, props.categories, props.isActive, props.label)}              			 
     >
-      <i className={props.isActive ? 'fa fas fa-check fa-lg' : 'fa fas fa-times fa-lg'} />
+      <i className={props.isActive ? 'fa fas fa-check fa-2x' : 'fa fas fa-times fa-2x'} />
       {props.label}
     </Button>
   );

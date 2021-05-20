@@ -103,11 +103,11 @@ const Profile = () => {
   // TODO move logout to function
 
   const loadFavourite = (aMapURL, title) => {
-    console.log("loading favourite with: " + aMapURL + " " + title);
+    //console.log("loading favourite with: " + aMapURL + " " + title);
     history.push (`/results`, {
       mapurl: aMapURL,
-      title: title,
-      isfavourite: 'true', //is map a previously favourited map or new search result
+      title: title, //TODO needed?
+      isfavourite: 'true', //TODO needed?? is map a previously favourited map or new search result
     });
   };
 

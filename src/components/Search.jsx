@@ -60,18 +60,6 @@ const Search = () => {
 		setNumberOfMonths(selectedNumberOfMonths);
 	};
 
-	// TODO CSS for dropdown hover values
-
-	//TODO should be able to delete
-	// //function which resets the state values
-	// const resetState = () => {
-	// 	//API call successful, reset state   
-	// 	setLocationName('');
-	// 	setLat('');
-	// 	setLon('');
-	// 	setRadioButton('0');
-	// 	setNumberOfMonths(3);
-	// };
 
 	/**
 	 * Function to check that a set of latitude and longitude coordinates lie
@@ -149,7 +137,7 @@ const Search = () => {
 			// TODO maybe have a special area for information about the map at side?
 
 			// API call for a new search
-			await axios  //TODO move to separate funciton
+			await axios  //TODO move to separate function
 				.post('http://localhost:5000/api/map', payload)
 				.then((res) => {
 					// TEST response
@@ -209,6 +197,8 @@ const Search = () => {
 				});
 		}
 	};
+
+
 
 	return (
 		<div className="search-map-div">

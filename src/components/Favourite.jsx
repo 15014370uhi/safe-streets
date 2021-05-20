@@ -19,7 +19,7 @@ const Favourite = ({
 	mapurl,
 	timestamp,
 	deleteFavourite,
-	displayFavouriteMap,
+	displayFavouriteMap, //TODO remove?
 }) => {
 
 
@@ -31,7 +31,7 @@ const Favourite = ({
 		history.push (`/results`, {
 			mapurl: aMapURL,
 			title: title,
-			isfavourite: 'true' //is map a previously favourited map or new search result
+			isfavourite: 'true' //boolean flag to determine if map a previously favourited map or new search result
 		});   
 		
 		//TODO when viewing a favourite after clicking on it's map in favourites page - the user
