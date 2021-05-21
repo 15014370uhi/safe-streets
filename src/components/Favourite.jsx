@@ -3,9 +3,7 @@ import Button from 'react-bootstrap/Button';
 import uuid from 'react-uuid';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/col';
-import {useHistory} from 'react-router-dom';
 
-//TODO see about adding mapdisplay to routes - then less messing around with checks on search page
 /**
  * A favourite for a user
  *
@@ -19,27 +17,8 @@ const Favourite = ({
 	mapurl,
 	timestamp,
 	deleteFavourite,
-	displayFavouriteMap, //TODO remove?
+	displayMap, 
 }) => {
-
-
-	let history = useHistory ();
-
-
-	//display map which was clicked on
-	const displayMap = (aMapURL) => {
-		history.push (`/results`, {
-			mapurl: aMapURL,
-			title: title,
-			isfavourite: 'true' //boolean flag to determine if map a previously favourited map or new search result
-		});   
-		
-		//TODO when viewing a favourite after clicking on it's map in favourites page - the user
-		//TODO icon overlay should be a delete symbol with confirmation dialogue to delete the favourites
-		//TODO instead of a plus symbol
-		
-	};
-
 
 	return (
 		<Col className="container-fluid mt-4">
@@ -53,13 +32,15 @@ const Favourite = ({
 				/>
 				<Card.Header>{title}</Card.Header>
 				<Card.Body bg="light">
-					<Button onClick={displayMap} variant="primary">
+					<Button onClick={() => {
+						displayMap(mapurl);
+					}} variant="primary">
 						Display Map
 					</Button>
 					<i
 						className="far fa-trash-alt fa-lg"
 						onClick={() => {
-							deleteFavourite(title);
+							deleteFavourite(mapurl);
 						}}
 					/>{' '}
 					by url

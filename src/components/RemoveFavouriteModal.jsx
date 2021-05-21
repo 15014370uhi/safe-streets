@@ -10,7 +10,7 @@ const RemoveFavouriteModal = (props) => {
 	let history = useHistory();
 
 	//function to remove a favourite from a user's collection of favourites based on title
-	const deleteFavourite = (aTitle) => {
+	const deleteFavourite = (aMapURL) => {
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
@@ -18,8 +18,8 @@ const RemoveFavouriteModal = (props) => {
 				if (doc.exists) {
 					const favouritesToKeep = doc
 						.data()
-						.favourites.filter(
-							(favourite) => favourite.title !== aTitle
+						.favourites.filter( //TODO check if filter is best method of comparing string
+							(favourite) => favourite.mapURL !== aMapURL
 						);
 					//update firestore doc with the filtered favourites
 					userRef.update({
@@ -53,7 +53,7 @@ const RemoveFavouriteModal = (props) => {
 				<Button
 					variant="red"
 					type="submit"
-					onClick={() => deleteFavourite(props.title)}>
+					onClick={() => deleteFavourite(props.mapurl)}>
 					Delete Favourite
 				</Button>
 			</Modal.Footer>

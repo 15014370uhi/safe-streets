@@ -105,7 +105,7 @@ const FiltersModal = (props) => {
 	
 	};
 
-
+//TODO FRI - API call (move to external file at some point) - then update mapurl context
 	const applyFilters = () => {
 		props.onHide(); //hide filter modal
 

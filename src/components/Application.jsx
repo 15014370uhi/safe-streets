@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useRef} from 'react';
 import Login from './Login';
 import Register from './Register';
 import Profile from './Profile';
@@ -13,10 +13,14 @@ import {Route, Switch, Redirect} from 'react-router-dom';
 
 // TODO rem pass props if needed - maybe user?
 
-function Application () {
+const Application = () => {
   const user = useContext (UserContext);
+  const mapURL = useRef('');
 
-  //TODO TEST removal of extra path routes when user not logged in
+  const setMapURL = (aMapURL) => {
+    console.log("application mapURL updated: " + aMapURL);
+    mapURL.current = aMapURL;
+  }
 
   return (
     <React.Fragment>
@@ -24,8 +28,8 @@ function Application () {
       {user
         ? <div>
             <Switch>
-              <Route exact path="/results" component={MapDisplay} />
-              <Route exact path="/search" component={Search} />
+            <Route exact path="/results" render={props => <MapDisplay mapurl={mapURL} setMapURL={setMapURL} />} />   
+            <Route exact path="/search" render={props => <Search setMapURL={setMapURL} />} />              
               <Route exact path="/favourite" component={ShowFavourite} />
               <Route exact path="/addFavourite" component={AddFavourite} />
               <Route exact path="/favourites" component={Favourites} />

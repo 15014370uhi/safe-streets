@@ -11,7 +11,6 @@ const firebaseConfig = {
 	appId: '1:400130243033:web:3439d32591167991e041c8',
 };
 
-// TODO https://firebase.google.com/docs/auth/web/manage-users - add more user features
 
 //function to create a new user with email and password
 export const createUserWithEmailAndPassword = async (email, password) => {
@@ -91,7 +90,7 @@ export const addUserFavourite = async (title, mapurl) => {
 	// Get reference to current user data in firestore by UID
 	const userRef = firestore.doc(`users/${user.uid}`);
 	const snapshot = await userRef.get();
-	// If firestore user document found
+	//if firestore user document found
 	if (snapshot.exists) {
 		try {
 			await userRef.update({

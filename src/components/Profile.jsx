@@ -1,5 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../auth/UserProvider';
+import {MapURL} from '.././contexts/MapContext';
 import {Redirect} from '@reach/router';
 import {auth, deleteUser} from '../firebase';
 import uuid from 'react-uuid';
@@ -29,6 +30,8 @@ const Profile = () => {
   const [password, setPassword] = useState ('');
   const [error, setError] = useState (null);  
   const user = useContext (UserContext); // Get User Context
+  const [mapURL, setMapURL] = useContext(MapURL);
+
 
   //TODO add icon choice for favourite - Long Term
 
@@ -102,14 +105,20 @@ const Profile = () => {
   // TODO logout using Auth
   // TODO move logout to function
 
-  const loadFavourite = (aMapURL, title) => {
-    //console.log("loading favourite with: " + aMapURL + " " + title);
-    history.push (`/results`, {
-      mapurl: aMapURL,
-      title: title, //TODO needed?
-      isfavourite: 'true', //TODO needed?? is map a previously favourited map or new search result
-    });
-  };
+
+//function which updates the mapURL context
+const updateMapURL = (aMapURL) => {
+	setMapURL(aMapURL);
+}
+
+//display favourited map which was clicked on
+const displayMap = (aMapURL) => {
+		updateMapURL(aMapURL);
+		history.push (`/results`, {			
+			isfavourite: 'true' //boolean flag to determine if map a previously favourited map or new search result
+		});   
+	}
+
 
   return (
     <React.Fragment>
@@ -125,7 +134,7 @@ const Profile = () => {
             <MDBListGroup flush>
               {localFavourites.map (favourite => (
                 <div key={uuid ()} className="profile-list-favourite-item" onClick={() => {
-                      loadFavourite (favourite.mapURL, favourite.title);
+                      displayMap (favourite.mapURL);
                     }}>
                 <MDBListGroupItem className="profile-favourites-list" >               
                 <MDBCardLink         

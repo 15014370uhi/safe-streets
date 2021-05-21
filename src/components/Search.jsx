@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import {MapURL} from '.././contexts/MapContext';
 import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import Form from './Form';
@@ -7,19 +8,25 @@ import Spinner from 'react-bootstrap/Spinner';
 // Style components
 import {MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardHeader} from 'mdbreact';
 
-const Search = () => {
-	const [submitText, setSubmitText] = useState('Submit');	
-	const [testText, setTestText] = useState('');			
+const Search = (props) => {
+	const [submitText, setSubmitText] = useState('Submit');
+	const [testText, setTestText] = useState('');
 	const [radioButton, setRadioButton] = useState('0');
 	const [numberOfMonths, setNumberOfMonths] = useState(3);
 	const [locationName, setLocationName] = useState('');
 	const [lat, setLat] = useState('');
 	const [lon, setLon] = useState('');
 	const [error, setError] = useState(null);
-
 	const history = useHistory();
 
 	// TODO Loading animation for map load -needs improvements for map loading
+
+	const [mapURL, setMapURL] = useContext(MapURL);
+
+	//function which updates the mapURL context
+	const updateMapURL = (aMapURL) => {
+		setMapURL(aMapURL);
+	};
 
 	// Handler which records currently selected radio button
 	const radioClickedHandler = (radioSelected) => {
@@ -59,7 +66,6 @@ const Search = () => {
 		}
 		setNumberOfMonths(selectedNumberOfMonths);
 	};
-
 
 	/**
 	 * Function to check that a set of latitude and longitude coordinates lie
@@ -112,15 +118,16 @@ const Search = () => {
 			//form input was validated
 			setSubmitText(
 				<div>
-				<Spinner  
-				  as="span"
-				  animation="border"           
-				  role="status"
-				  aria-hidden="true"
-				  variant='dark'
-				/>  LOADING.... 
-				</div>)
-
+					<Spinner
+						as="span"
+						animation="border"
+						role="status"
+						aria-hidden="true"
+						variant="dark"
+					/>{' '}
+					LOADING....{' '}
+				</div>
+			);
 
 			//TODO Only pass data that's correct?? if you can check other side for empty stuff
 
@@ -137,7 +144,7 @@ const Search = () => {
 			// TODO maybe have a special area for information about the map at side?
 
 			// API call for a new search
-			await axios  //TODO move to separate function
+			await axios //TODO move to separate function
 				.post('http://localhost:5000/api/map', payload)
 				.then((res) => {
 					// TEST response
@@ -160,8 +167,9 @@ const Search = () => {
 
 						//valid search
 					} else {
-						//pass mapurl to history data for use by MapDisplay component
-						history.push(`/results`, {mapurl: mapurl});
+						//pass mapurl to context
+						updateMapURL(mapurl);
+						history.push(`/results`);
 					}
 
 					// TEST
@@ -193,12 +201,13 @@ const Search = () => {
 					//resetState(); //TODO should be able to delete this now
 				})
 				.catch((error) => {
-					console.log('error in search getting response: ', error.message); //TODO
+					console.log(
+						'error in search getting response: ',
+						error.message
+					); //TODO
 				});
 		}
 	};
-
-
 
 	return (
 		<div className="search-map-div">
@@ -220,9 +229,9 @@ const Search = () => {
 								error={error}
 								dropHandler={dropHandler}
 								radioButton={radioButton}
-								radioClickedHandler={radioClickedHandler}	
-								submitText={submitText}														
-							/>							
+								radioClickedHandler={radioClickedHandler}
+								submitText={submitText}
+							/>
 						</MDBCardBody>
 						{testText}
 					</MDBCard>

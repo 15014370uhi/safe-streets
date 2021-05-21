@@ -1,41 +1,47 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Favourite from './Favourite';
+import {MapURL} from '.././contexts/MapContext';
 import {UserContext} from '../auth/UserProvider';
 import uuid from 'react-uuid';
 import Container from 'react-bootstrap/Container';
 import firebase from 'firebase';
 import CardDeck from 'react-bootstrap/CardDeck';
-import MapDisplay from './MapDisplay';
+import {useHistory} from 'react-router-dom';
 
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
-	const user = useContext(UserContext); // Get User Context for ID
-	const [shouldDisplayMap, setShouldDisplayMap] = useState(false);
-	const [mapURL, setMapURL] = useState('');
+	const user = useContext(UserContext); //get User Context for ID
+	const [mapURL, setMapURL] = useContext(MapURL); //mapURL context
 
 	// TODO TRY move the functions to the firebase - for favs etc
 	// TODO REM - only use useContext Usercontext to get current user ID nothing else
+
+	const history = useHistory();
 
 	useEffect(() => {
 		getFavourites();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	//TODO TEST where to display the favourites full map
-	const displayFavouriteMap = (aMapURL) => {
+	//updates the mapURL context
+	const updateMapURL = (aMapURL) => {
 		setMapURL(aMapURL);
-		setShouldDisplayMap(true);
 	};
 
-	// TODO change functions to consts
-	// TODO move getFavourites to firebase as a function
+	//display favourited map when clicked
+	const displayMap = (aMapURL) => {
+		updateMapURL(aMapURL);
+		history.push(`/results`, {
+			isfavourite: 'true', //boolean flag to determine if map a previously favourited map or new search result
+		});
+	};
+
 	//function which retrieves the favourites for a user
 	const getFavourites = async () => {
 		var userRef = await firebase
 			.firestore()
 			.collection('users')
 			.doc(user.uid);
-
 		userRef
 			.get()
 			.then(function (doc) {
@@ -49,9 +55,9 @@ const Favourites = (props) => {
 				console.log('Error getting favourites:', error);
 			});
 	};
-
-	// Function to remove a favourite from a user's collection of favourites based on favourite title
-	const deleteFavourite = (aTitle) => {
+	
+	//remove a favourite from a user's collection of all favourites 
+	const deleteFavourite = (aMapURL) => {
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
@@ -60,15 +66,15 @@ const Favourites = (props) => {
 					const favouritesToKeep = doc
 						.data()
 						.favourites.filter(
-							(favourite) => favourite.title !== aTitle
+							(favourite) => favourite.mapURL !== aMapURL
 						);
-					// Update firestore doc with the filtered favourites
+					//update firestore doc with the filtered favourites
 					userRef.update({
 						favourites: favouritesToKeep,
 					});
 
 					console.log(
-						'Argument returned after del by title: ' +
+						'Argument returned after deleting by mapURL: ' +
 							favouritesToKeep
 					);
 					// Update favourites state
@@ -82,45 +88,38 @@ const Favourites = (props) => {
 			});
 	};
 
-
 	return (
 		<Container>
-			{shouldDisplayMap ? (
-				<div className="map-display-div">
-					<MapDisplay mapurl={mapURL} />
-				</div>
-			) : (
-				<Container>
-					{localFavourites.length ? (
-						<Container id="favouritesContainer">
-							<br />
-							<h3>
-								You have {localFavourites.length}
-								{localFavourites.length > 1
-									? ' favourites'
-									: ' favourite'}
-							</h3>
-							<CardDeck>
-								{localFavourites.map((favourite) => (
-									<Favourite
-										key={uuid()}
-										title={favourite.title}
-										description={favourite.description}
-										mapurl={favourite.mapURL}
-										timestamp={favourite.timestamp}
-										deleteFavourite={deleteFavourite}
-										displayFavouriteMap={displayFavouriteMap}
-									/>
-								))}
-							</CardDeck>
-						</Container>
-					) : (
-						<div>
-							<h1>No favourites found</h1>
-						</div>
-					)}
-				</Container>
-			)}
+			<Container>
+				{localFavourites.length ? (
+					<Container id="favouritesContainer">
+						<br />
+						<h3>
+							You have {localFavourites.length}
+							{localFavourites.length > 1
+								? ' favourites'
+								: ' favourite'}
+						</h3>
+						<CardDeck>
+							{localFavourites.map((favourite) => (
+								<Favourite
+									key={uuid()}
+									title={favourite.title}
+									description={favourite.description}
+									mapurl={favourite.mapURL}
+									timestamp={favourite.timestamp}
+									deleteFavourite={deleteFavourite}
+									displayMap={displayMap}
+								/>
+							))}
+						</CardDeck>
+					</Container>
+				) : (
+					<div>
+						<h1>No favourites found</h1>
+					</div>
+				)}
+			</Container>
 		</Container>
 	);
 };

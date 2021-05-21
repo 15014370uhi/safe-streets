@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import {MapURL} from '.././contexts/MapContext';
 import {useHistory} from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
-import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/col';
 import Row from 'react-bootstrap/row';
 import AddFavouriteModal from './AddFavouriteModal';
@@ -12,8 +12,6 @@ import FiltersModal from './FiltersModal';
 import ButtonFilter from './ButtonFilter';
 import ButtonBack from './ButtonBack';
 
-//TODO need add favourites method passed as props maybe?
-//TODO OR api call to add it to favourties - check how favourites page did it
 // Functional component which displays the map image for a mapURL
 const MapDisplay = (props) => {
 	//state for modal screen
@@ -21,10 +19,14 @@ const MapDisplay = (props) => {
 	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
 		useState(false);
 	const [showFiltersModal, setShowFiltersModal] = useState(false);
+
+	//mapURL context
+	const [mapURL, setMapURL] = useContext(MapURL);
+
 	let history = useHistory();
 
 	useEffect(() => {
-		window.scrollTo(0, 20);
+		window.scrollTo(0, 10); //scroll map view down by 10
 	}, []);
 
 	const openFilter = (e) => {
@@ -38,16 +40,23 @@ const MapDisplay = (props) => {
 
 	//TODO  FRI - remove filters elements from URL manually?
 
-	return (	
-		<Col className="mt-4 pt-0 col-map-display">			
+	//function which updates the mapURL context
+	const updateMapURL = (aMapURL) => {
+		setMapURL(aMapURL);
+	};
+
+	//TODO get filters from filter modal - update filters state - 
+
+	return (
+		<Col className="mt-4 pt-0 col-map-display">
 			<AddFavouriteModal
-				mapurl={history.location.state?.mapurl}
+				mapurl={mapURL}
 				show={showAddFavouriteModal}
 				onHide={() => setShowAddFavouriteModal(false)}
 			/>
 
 			<RemoveFavouriteModal
-				title={history.location.state?.title}
+				mapurl={mapURL}
 				show={showRemoveFavouritesModal}
 				onHide={() => setShowRemoveFavouritesModal(false)}
 			/>
@@ -73,10 +82,7 @@ const MapDisplay = (props) => {
 					<ButtonAddToFavs setModalShow={setShowAddFavouriteModal} />
 				)}
 
-				<Image
-					className="mapDisplay"
-					src={history.location.state?.mapurl}
-				/>
+				<Image className="mapDisplay" src={mapURL} />
 			</Row>
 		</Col>
 	);
