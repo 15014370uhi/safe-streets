@@ -17,8 +17,8 @@ const Search = props => {
     error,
     dropHandler,
     radioButton,
-    radioClickedHandler,	
-	submitText,
+    radioClickedHandler,
+    submitText,
   } = props;
 
   let [imageOpen, setImageOpen] = useState (false);
@@ -54,7 +54,7 @@ const Search = props => {
           size="lg"
           icon="road"
           type="text"
-          name="namedLocation"
+          name="locationName"
           value={locationName}
           onChange={formInputHandler}
           onClick={e => radioClickedHandler ('0')}
@@ -163,8 +163,9 @@ const Search = props => {
           className="mb-3"
           block
           size="lg"
-          type="submit"		
-        > 	{submitText}
+          type="submit"
+        >
+          {' '} {submitText}
 
         </MDBBtn>
       </div>

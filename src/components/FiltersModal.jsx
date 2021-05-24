@@ -3,6 +3,10 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import ButtonFilterCrime from './ButtonFilterCrime';
 import uuid from 'react-uuid';
+import {getUpdatedMapURL} from './../util/GetMapURL';
+
+//array to hold crimes to remove from map display
+let filters = []; //TODO TEST outside of scope
 
 const FiltersModal = (props) => {
 	//full list of all police data API crime categories
@@ -23,9 +27,6 @@ const FiltersModal = (props) => {
 		'burglary',
 	]);
 
-	//array to hold crimes to remove from map display
-	const [APICrimesToHide, setAPICrimesToHide] = useState([]);
-
 	//filter buttons
 	const [crimeButtons, setCrimeButtons] = useState([
 		{
@@ -39,8 +40,38 @@ const FiltersModal = (props) => {
 			isActive: true,
 		},
 		{
+			label: 'Burglary',
+			categories: ['burglary'],
+			isActive: true,
+		},
+		{
+			label: 'Drugs',
+			categories: ['drugs'],
+			isActive: true,
+		},
+		{
+			label: 'Property Theft',
+			categories: ['other-theft', 'bicycle-theft'],
+			isActive: true,
+		},
+		{
 			label: 'Public Order',
 			categories: ['public-order', 'other-crime'],
+			isActive: true,
+		},
+		{
+			label: 'Robbery',
+			categories: ['robbery'],
+			isActive: true,
+		},
+		{
+			label: 'Shoplifting',
+			categories: ['shoplifting'],
+			isActive: true,
+		},
+		{
+			label: 'Vehicle Crime',
+			categories: ['vehicle-crime'],
 			isActive: true,
 		},
 		{
@@ -53,80 +84,84 @@ const FiltersModal = (props) => {
 			categories: ['possession-of-weapons'],
 			isActive: true,
 		},
-		{
-			label: 'Shoplifting',
-			categories: ['shoplifting'],
-			isActive: true,
-		},
-		{
-			label: 'Property Theft',
-			categories: ['other-theft', 'bicycle-theft'],
-			isActive: true,
-		},
-		{
-			label: 'Vehicle Crime',
-			categories: ['vehicle-crime'],
-			isActive: true,
-		},
-		{
-			label: 'Robbery',
-			categories: ['robbery'],
-			isActive: true,
-		},
-		{
-			label: 'Drugs',
-			categories: ['drugs'],
-			isActive: true,
-		},
-		{
-			label: 'Burglary',
-			categories: ['burglary'],
-			isActive: true,
-		},
 	]);
 
 	//function to handle user form input
-	const changeFilterState = (id, categories, isActive, label) => {
-		//TODO find button from label
-		//TODO add categories to list of categories to ignore from police data API
-		console.log('id: ' + id);
-		console.log('categories: ' + categories); //GET from array in this component
-		console.log('isActive: ' + isActive);
-		
-			const indexOfButtonToUpdate = crimeButtons.findIndex((aButton) => aButton.label === label);
-			const updatedButtons = [...crimeButtons]; //create copy of array
-		
-			updatedButtons[indexOfButtonToUpdate].isActive = !updatedButtons[indexOfButtonToUpdate].isActive;
-			setCrimeButtons(updatedButtons);
-		 
+	const changeFilterState = (label) => {
+		const indexOfButtonToUpdate = crimeButtons.findIndex(
+			(aButton) => aButton.label === label
+		);
+		const updatedButtons = [...crimeButtons]; //create copy of array
 
-		//TODO either remove filter from list of all crimes - or add to list of crimes to hide
-		//TODO don't save filters with favourite - too much hassle? see later
-	
+		let newIsActiveStatus = !updatedButtons[indexOfButtonToUpdate].isActive;
+		updatedButtons[indexOfButtonToUpdate].isActive = newIsActiveStatus;
+		let categories = updatedButtons[indexOfButtonToUpdate].categories;
+
+		//if button is now active, remove crime categories from filtered crimes list
+		if (newIsActiveStatus) {
+			for (let category of updatedButtons[indexOfButtonToUpdate]
+				.categories) {
+					filters = filters.filter(
+					(crimeFilter) => crimeFilter !== category
+				);
+			}
+		} else {
+			//else add crime categories to list of crimes to filter
+			for (let category of categories) {
+				filters.push(category); //TODO might need loop to push
+			}
+		}
+		//update set of buttons with new state
+		setCrimeButtons(updatedButtons);
+
+		//console.log("ALL filters created: " + filters);
+		
+		//TODO update map details context with filters - call API from external file - also include filters during api call
+		// props.setmapdetails(prevState => ({
+		// 	...prevState.mapURL,
+		// 	...prevState.isnameSearch,
+		// 	...prevState.lat,
+		// 	...prevState.lon,
+		// 	...prevState.numberOfMonths,
+		// 	filters: filters,
+		// }));
+
 	};
 
-//TODO FRI - API call (move to external file at some point) - then update mapurl context
-	const applyFilters = () => {
+
+	const applyFilters = async () => {
 		props.onHide(); //hide filter modal
 
+		 const payload = 
+		 	{
+		 		locationname: props.mapdetails.locationname,
+		 		isnamesearch: props.mapdetails.isnamesearch,
+		 		lat: props.mapdetails.lat,
+		 		lon: props.mapdetails.lon,
+		 		numberofmonths: props.mapdetails.numberofmonths,
+		 		filters: filters,
+		 	};		
+		
+			props.updateMapURL(payload);
 
-		//TODO pass new filters array to map display?
-		//redirect to favourites page
-		// let path = `/results`; //TODO get path of calling page maybe as prop
-		//	history.push(path); //TODO pass new filters as history data
+//			const response = await getUpdatedMapURL(payload); //do this from mapdisplay?
+//			//props.updateMapURL(filters);
+		
+			//console.log("Res in SEARCH.............." + response.mapurl);
+			//TODO set map details with new url
+
+		//TODO 1. call API with filters
+		//TODO 2. update mapURL context
+		//TODO 3. If needed - push history to map display - ensuring history props is favourite is correct
 
 		//TODO option 1 - regex search and replace text from mapURL related to filters
 		//TODO option 2 - make API call - might be better putting the function code
 		//TODO for API call in parent component-mapDisplay - then calling it from here on
 		//TODO apply filters button press - that way maybe some info I need to make API call
-		//TODO will be in props and can be added to props
-		
-		// history.push (`/results`, {
-		// 	mapurl: aMapURL,
-		// 	title: title, //TODO needed?
-		// 	isfavourite: 'true', //TODO needed?? is map a previously favourited map or new search result
-		//   });
+		//TODO will be in props and can be added to props	
 	};
+
+
 
 	const resetFilters = () => {
 		props.onHide();
@@ -137,11 +172,11 @@ const FiltersModal = (props) => {
 
 	//TODO MAKE filters here
 
-	//TODO might be userful to update filters active state	
+	//TODO might be userful to update filters active state
 	//TODO check old javascript from orignal version
 
 	return (
-		<Modal {...props} size="lg" centered>
+		<Modal show={props.show} onHide={props.onHide} animation={false} size="lg" centered>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
 					Crime Filters
@@ -161,14 +196,14 @@ const FiltersModal = (props) => {
 				))}
 			</Modal.Body>
 			<Modal.Footer>
-				<Button 
-				className='btn-footer' 
-				variant="red" 
-				onClick={resetFilters}>
+				<Button
+					className="btn-footer"
+					variant="red"
+					onClick={resetFilters}>
 					Reset
 				</Button>
 				<Button
-				className='btn-footer'
+					className="btn-footer"
 					variant="green"
 					type="submit"
 					onClick={() => applyFilters()}>

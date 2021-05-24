@@ -326,7 +326,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
 };
 
 //function which returns crime data for a spcific month at
-//an approx 1 mile box at a geographical location 
+//an approx 1 mile box at a geographical location
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
   // Set lat and lon coordinates of bounding box
   let latTopLeft = boundingBox[0];
@@ -400,22 +400,60 @@ const shuffleArray = anArray => {
 //POST route
 router.post ('/', async (req, res) => {
   const isNameSearch = req.body.isnamesearch; //boolean flag to determine if location name search
+  const locationName = req.body.locationname;
+  let latitude = req.body.lat;
+  let longitude = req.body.lat;
+  const numberOfMonths = req.body.numberofmonths;
+
+  let filters = [];
+  if(req.body.filters !== undefined){
+    console.log("FILTERS in ROUTES: " + req.body.filters);
+    filters = req.body.filters;
+  }
+
   var mapURL = ''; //static map image URL
   var location = ''; //variable to hold location
   var crimes = [];
   var noCrimes = false;
 
-  const namedLocation = req.body.namedlocation;
-  let latitude = req.body.lat;
-  let longitude = req.body.lat;
-  const numberOfMonths = req.body.numberofmonths;
+  //TEST
+  //var data = req.body;  
+  //console.log("req.body.data >>  ");
+  //console.log(data);
+
+  // //TODO test
+  // console.log (
+  //   'SERVER REQUEST: ' +
+  //     'isNameSearch' +
+  //     isNameSearch +
+  //     '\n' +
+  //     'locationName' +
+  //     locationName +
+  //     '\n' +
+  //     'latitude' +
+  //     latitude +
+  //     '\n' +
+  //     'longitude: ' +
+  //     longitude +
+  //     '\n' +
+  //     'numberOfMonths: ' +
+  //     numberOfMonths +
+  //     '\n' +
+  //     'filters: ' +
+  //     filters +
+  //     '\n' +
+  //     'filters-TYPE' +
+  //     typeof filters
+  // );
 
   //named location search used
   if (isNameSearch) {
     //call function to convert named location to a set of lat and lon coordinates
-    const geoCoords = await getGeocode (namedLocation);
+    const geoCoords = await getGeocode (locationName);
     latitude = geoCoords.latitude; //store returned lat coordinate
     longitude = geoCoords.longitude; //store returned lon coordinate
+    //console.log("latitude set as: " + latitude);
+    //console.log("longitude set as: " + longitude);
   } else {
     //a latitude and longitude search was performed with coords input by user
     //get latitude and longitude from request body
@@ -423,11 +461,14 @@ router.post ('/', async (req, res) => {
     longitude = req.body.lon;
   }
 
+  console.log("creating bounding box with: " + latitude + " " + longitude);
   //call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
   const boundingBox = getBoundingBox (latitude, longitude);
+  console.log("Bounding box set as: " + boundingBox);
 
   //populate array with all dates to check
   var crimeMonthsArray = populateCrimeDates (numberOfMonths); //TEST
+  console.log("crimeMonthsArray set as: " + crimeMonthsArray);
 
   //TODO -----------------
   //array to hold crimes to display on map
@@ -438,10 +479,13 @@ router.post ('/', async (req, res) => {
   for (let aMonth of crimeMonthsArray) {
     crimesDuringMonth = await getCrimeData (aMonth, boundingBox);
 
+
     //if crimes exist for month being checked, add them to collection of crimes
-    if (crimesDuringMonth.length > 0) {      
+    if (crimesDuringMonth !== undefined && crimesDuringMonth.length > 0) {
+      console.log("crimesDuringMonth for month: " + aMonth + " \n " + crimesDuringMonth.length);
+
       crimes.push (crimesDuringMonth);
-    } 
+    }
   }
 
   //declare crime variables#
@@ -452,7 +496,6 @@ router.post ('/', async (req, res) => {
   //add category, and lat and lon locations for each crime
   for (let crimeCollection of crimes) {
     for (let aCrime of crimeCollection) {
-      console.log ('STREET ------------ ' + aCrime.location.street.name);
       //store details of current crime
       let aCrimeCategory = aCrime.category;
       let aCrimeLat = aCrime.location.latitude;
@@ -460,54 +503,78 @@ router.post ('/', async (req, res) => {
       let aCrimeStreet = aCrime.location.street.name;
       let aCrimeMonth = aCrime.month;
 
-      //TODO list of filters selected to display ---- TEST - get filters from UI
-      const filters = [
-        'vehicle-crime',
-        'anti-social-behaviour',
-        'violent-crime',
-        'shoplifting',
-        'other-crime',
-        'public-order',
-        'possession-of-weapons',
-        'other-theft',
-        'burglary',
-        'robbery',
-        'theft-from-the-person',
-        'criminal-damage-arson',
-        'bicycle-theft',
-        'drugs',
-      ];
+      //TODO maybe change filters to be included instead of excluded?
+      // Filter crimes to exclude filtered categories
 
-      //TODO implement filters from interface
-      // Filter crimes to include only user selected crime filters
-      for (let aFilter of filters) {
-        if (aCrimeCategory === aFilter) {
-          //create new object with crime details to add
-          const aCrimeDetails = {
-            category: aCrimeCategory,
-            latitude: aCrimeLat,
-            longitude: aCrimeLon,
-            street: aCrimeStreet,
-            month: aCrimeMonth,
-          };
+      //TODO need to change how filters work - or rewrite the following to
+      //TODO code so that it removes crimes that match filters rather than includes them
+      //TODO also need to check for empty array - as is presented during search
+      //TODO might be easier to change filters to be inclusive rather then not - but still need check
+      //TODO for empty array even in that case anuyway
 
-          //TODO for machine learning save full crime data records to master record array
-          crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
-
-          //record only unique crime categories and locations for map display efficiency
-          let filteredCrimeNodes = displayCrimes.filter (
-            crime =>
-              crime.category !== aCrimeCategory ||
-              crime.latitude !== aCrimeLat ||
-              crime.longitude !== aCrimeLon
-          );
-
-          //set crimeNodes to filtered crimeNodes
-          displayCrimes = filteredCrimeNodes;
-
-          //add current crime to array of all crimes to display on map
-          displayCrimes.push (aCrimeDetails);
+      if(filters.length > 0){   
+       // console.log("filters must contain something");
+        for (let aFilter of filters) {
+          if (aCrimeCategory === aFilter) {
+            //create new object with crime details to add
+            const aCrimeDetails = {
+              category: aCrimeCategory,
+              latitude: aCrimeLat,
+              longitude: aCrimeLon,
+              street: aCrimeStreet,
+              month: aCrimeMonth,
+            };
+  
+            //TODO for machine learning save full crime data records to master record array
+            crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
+  
+            //record only unique crime categories and locations for map display efficiency
+            let uniqueCrimeNodes = displayCrimes.filter (
+              crime =>
+                crime.category !== aCrimeCategory ||
+                crime.latitude !== aCrimeLat ||
+                crime.longitude !== aCrimeLon
+            );
+  
+            //set crimeNodes to filtered crimeNodes
+            displayCrimes = uniqueCrimeNodes;
+  
+            //add current crime to array of all crimes to display on map
+            displayCrimes.push (aCrimeDetails);
+          }
         }
+      }
+      else //no filters supplied to API
+      {
+        //console.log("\nNo filters supplied");
+            //create new object with crime details to add
+            const aCrimeDetails = {
+              category: aCrimeCategory,
+              latitude: aCrimeLat,
+              longitude: aCrimeLon,
+              street: aCrimeStreet,
+              month: aCrimeMonth,
+            };
+
+            //console.log("aCrimeDetails being pushed to crimeNodes: " + aCrimeDetails.category);
+  
+            crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
+  
+            //record only unique crime categories and locations for map display efficiency
+            let uniqueCrimeNodes = displayCrimes.filter (
+              crime =>
+                crime.category !== aCrimeCategory ||
+                crime.latitude !== aCrimeLat ||
+                crime.longitude !== aCrimeLon
+            );
+  
+            //set crimeNodes to filtered crimeNodes
+            displayCrimes = uniqueCrimeNodes;           
+  
+            //add current crime to array of all crimes to display on map
+            displayCrimes.push (aCrimeDetails);
+
+           // console.log("displayCrimes contains: " + displayCrimes.length);
       }
     }
   }
@@ -519,17 +586,17 @@ router.post ('/', async (req, res) => {
   slicedCrimes = displayCrimes.slice (0, 90);
 
   //TODO test
-  console.log (
-    'Total number of crimes included in map: ' + slicedCrimes.length
-  );
+  //console.log ('Total number of crimes included in map: ' + slicedCrimes.length);
 
   //if no crimes were found, set boolean flag
   if (slicedCrimes.length === 0) {
     noCrimes = true; //TODO send message back if no crimes found to allow user alert in results page
+    console.log("no crimes detected");
   }
 
   //call function which generates image URL with crime markers on map
   mapURL = getMap (boundingBox, slicedCrimes, latitude, longitude);
+  console.log("SERVER getting map with lat and lon: " + latitude + " " + longitude);
 
   //TODO call machine learning functions with master record of crimes
   //TODO e.g. machineLearning(crimeNodes);
@@ -537,7 +604,7 @@ router.post ('/', async (req, res) => {
   //respond with data //TODO don't need as much response data once finalised
   res.send ({
     location: location,
-    namedlocation: namedLocation,
+    locationname: locationName,
     isnamesearch: isNameSearch,
     lat: latitude,
     lon: longitude,
@@ -545,6 +612,7 @@ router.post ('/', async (req, res) => {
     numberofmonths: numberOfMonths,
     boundingbox: boundingBox,
     nocrimes: noCrimes,
+    filters: filters,
   });
 });
 

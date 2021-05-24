@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-const ButtonFilter = ({setModalShow}) => {
+const ButtonShowFilters = ({setModalShow}) => {
   return (
     <Button
       className="btn-open-filter"
@@ -13,4 +13,4 @@ const ButtonFilter = ({setModalShow}) => {
   );
 };
 
-export default ButtonFilter;
+export default ButtonShowFilters;

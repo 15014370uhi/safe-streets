@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Favourite from './Favourite';
 import {MapURL} from '.././contexts/MapContext';
+import {MapDetails} from '.././contexts/MapDetailsContext';
+
 import {UserContext} from '../auth/UserProvider';
 import uuid from 'react-uuid';
 import Container from 'react-bootstrap/Container';
@@ -12,6 +14,8 @@ const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
 	const user = useContext(UserContext); //get User Context for ID
 	const [mapURL, setMapURL] = useContext(MapURL); //mapURL context
+	const [mapDetails, setMapDetails] = useContext (MapDetails);
+
 
 	// TODO TRY move the functions to the firebase - for favs etc
 	// TODO REM - only use useContext Usercontext to get current user ID nothing else
@@ -25,7 +29,16 @@ const Favourites = (props) => {
 
 	//updates the mapURL context
 	const updateMapURL = (aMapURL) => {
-		setMapURL(aMapURL);
+		//setMapURL(aMapURL);
+		//update context to latest data
+		setMapDetails(prevState => ({
+			mapURL: aMapURL,
+			...prevState.isnameSearch,
+			...prevState.lat,
+			...prevState.lon,
+			...prevState.numberOfMonths,
+			filters: [],
+		}));		
 	};
 
 	//display favourited map when clicked

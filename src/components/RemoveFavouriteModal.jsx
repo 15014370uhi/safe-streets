@@ -39,7 +39,7 @@ const RemoveFavouriteModal = (props) => {
 	};
 
 	return (
-		<Modal {...props} size="lg" centered>
+		<Modal show={props.show} onHide={props.onHide} animation={false} size="lg" centered>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
 					Are you sure you want to delete this favourite?

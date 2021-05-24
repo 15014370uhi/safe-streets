@@ -1,9 +1,11 @@
 import React, {useState, useContext} from 'react';
 import {MapURL} from '.././contexts/MapContext';
-import axios from 'axios';
+import {MapDetails} from '.././contexts/MapDetailsContext';
+//import axios from 'axios';
 import {useHistory} from 'react-router-dom';
 import Form from './Form';
 import Spinner from 'react-bootstrap/Spinner';
+import {getMapURL, TESTAPICall} from './../util/GetMapURL';
 
 // Style components
 import {MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardHeader} from 'mdbreact';
@@ -14,6 +16,7 @@ const Search = (props) => {
 	const [radioButton, setRadioButton] = useState('0');
 	const [numberOfMonths, setNumberOfMonths] = useState(3);
 	const [locationName, setLocationName] = useState('');
+	const [isNameSearch, setIsNameSearch] = useState('0');
 	const [lat, setLat] = useState('');
 	const [lon, setLon] = useState('');
 	const [error, setError] = useState(null);
@@ -21,40 +24,82 @@ const Search = (props) => {
 
 	// TODO Loading animation for map load -needs improvements for map loading
 
-	const [mapURL, setMapURL] = useContext(MapURL);
+	const [mapURL, setMapURL] = useContext(MapURL);	
+	const [mapDetails, setMapDetails] = useContext (MapDetails);
+
+	// const filters = [
+    //     'vehicle-crime',
+    //     'anti-social-behaviour',
+    //     'violent-crime',
+    //     'shoplifting',
+    //     'other-crime',
+    //     'public-order',
+    //     'possession-of-weapons',
+    //     'other-theft',
+    //     'burglary',
+    //     'robbery',
+    //     'theft-from-the-person',
+    //     'criminal-damage-arson',
+    //     'bicycle-theft',
+    //     'drugs',
+    //   ];
+
+
 
 	//function which updates the mapURL context
-	const updateMapURL = (aMapURL) => {
-		setMapURL(aMapURL);
+	
+	const updateMapURL = (aMapURL, aLat, aLon) => {
+		//setMapURL(aMapURL); //
+		
+		//TODO trace order of things after filters are applied
+		
+		console.log("SEARCH: updating mapDetails context with: " 
+		 + "aMapURL: " + aMapURL
+		 + "\nisNameSearch: " + isNameSearch
+		 + "\nnumberofmonths: " + numberOfMonths
+		 + "\nlat: " + aLat
+		 + "\nlon: " + aLon
+		 + "\n");
+
+	//setMapDetails(prevState => ({
+		setMapDetails({
+			mapURL: aMapURL,
+			//...prevState.isnameSearch, //TODO TEST
+			locationname: locationName,
+			isnamesearch: isNameSearch,
+			lat: aLat,
+			lon: aLon,
+			numberofmonths: numberOfMonths,
+			filters: [],
+		});
 	};
 
-	// Handler which records currently selected radio button
+	//handler which records currently selected radio button
 	const radioClickedHandler = (radioSelected) => {
 		setRadioButton(radioSelected);
 	};
 
-	// Handler which updates state with user form input
+	//handler which updates state with user form input
 	const formInputHandler = (e) => {
 		const {name, value} = e.currentTarget;
-		// If namedLocation selected, set namedLocation
-		if (name === 'namedLocation') {
+		//if locationName selected, set locationName
+		if (name === 'locationName') {
 			setLocationName(value);
 		} else if (name === 'lat') {
 			//check that lat is a number
 			if (!isNaN(value)) {
 				setError('Latitude and Longitude must be numbers');
 			}
-
 			//TODO alert warning and don't submit
 
-			// If latitude input, set lat state
+			//if latitude input, set lat state
 			setLat(value);
 		} else if (name === 'lon') {
 			//check that lon is a number
 			if (!isNaN(value)) {
 				setError('Latitude and Longitude must be numbers');
 			}
-			// If longitude input, set lon state
+			//if longitude input, set lon state
 			setLon(value);
 		}
 	};
@@ -84,11 +129,13 @@ const Search = (props) => {
 	};
 
 	//function which submits search to API
-	const submitForm = async (e) => {
+	const submitForm = async e => {
+	//const submitForm = async (e) => {
 		e.preventDefault();
 
 		//declare const boolean flag to determine whether this is a name search or not
-		const isNameSearch = radioButton === '0';
+		//const isNameSearch = radioButton === '0';
+		setIsNameSearch(radioButton === '0')
 
 		//variable boolean flag to determine whether lat and lon coordinates are wthin the UK
 		let coordinatesWithinUK = isWithinUK(lat, lon);
@@ -98,25 +145,65 @@ const Search = (props) => {
 		// Form validation
 
 		//if named location search was selected but form input is empty
-		if (isNameSearch && locationName === '') {
+		if (isNameSearch && locationName === '') 
+		{
 			alert('The location is empty, please enter a location!');
-
 			//if lat and lon search but lat and lon input is empty
-		} else if (!isNameSearch && (lat === '' || lon === '')) {
+		} 
+		else if (!isNameSearch && (lat === '' || lon === '')) {
 			alert('Please add coordinates for latitude and longitude!');
-		} else if (!isNameSearch && (isNaN(lat) || isNaN(lon))) {
+		} 
+		else if (!isNameSearch && (isNaN(lat) || isNaN(lon))) {
 			//if lat and lon search but the lat or lon value is not a number
 			alert(
 				'Your latitude and longitude coordinates must be numbers only!'
 			);
-		} else if (!isNameSearch && !coordinatesWithinUK) {
+		} 
+		else if (!isNameSearch && !coordinatesWithinUK) 
+		{
 			//if lat and lon search but user coordinates are outside the bounds of the UK
 			alert(
 				'Your latitude and longitude coordinates are outside of the UK!'
 			);
-		} else {
-			//form input was validated
-			setSubmitText(
+		} 
+		else //form input was validated
+		{	
+			//data to pass to API
+			const payload = 
+			{
+							locationname: locationName,
+							isnamesearch: isNameSearch,
+							lat: lat,
+							lon: lon,
+							numberofmonths: numberOfMonths,
+							filters: [],
+			};
+
+			// TODO get the lat and long response and show on map screen as useful data?>
+			// TODO maybe have a special area for information about the map at side?
+		
+			//const response = await getMapURL(payload);	
+			const response = await getMapURL(payload);			
+			//console.log("Res in SEARCH.............." + response.mapurl);
+		
+			//check for invalid lat and lon response, due to mispelled/invalid location name
+			let isValidLocation = isWithinUK(response.lat, response.lon);
+
+			//TODO set mapdetails for lat and lon?  
+			//invalid search location
+			if (!isValidLocation)
+			{
+				alert('Location name is not recognised!, please check your spelling'				);
+			} 
+			else 
+			{ 
+				
+				//set lat and lon values	
+				setLat(response.latitude); 
+				setLon(response.longitude);
+
+				//TODO submit text no longer working for loading animation
+				setSubmitText(
 				<div>
 					<Spinner
 						as="span"
@@ -126,87 +213,13 @@ const Search = (props) => {
 						variant="dark"
 					/>{' '}
 					LOADING....{' '}
-				</div>
-			);
-
-			//TODO Only pass data that's correct?? if you can check other side for empty stuff
-
-			// Data passed to API
-			const payload = {
-				namedlocation: locationName,
-				isnamesearch: isNameSearch,
-				lat: lat,
-				lon: lon,
-				numberofmonths: numberOfMonths,
-			};
-
-			// TODO get the lat and long response and show on map screen as useful data?>
-			// TODO maybe have a special area for information about the map at side?
-
-			// API call for a new search
-			await axios //TODO move to separate function
-				.post('http://localhost:5000/api/map', payload)
-				.then((res) => {
-					// TEST response
-					const isNamedSearch = res.data.isnamesearch;
-					const namedlocation = res.data.namedlocation;
-					const latitude = res.data.lat;
-					const longitude = res.data.lon;
-					const numberOfMonths = res.data.numberofmonths;
-					const mapurl = res.data.mapurl;
-					const boundingbox = res.data.boundingbox;
-
-					//check for invalid lat and lon response, due to mispelled/invalid location name
-					let isValidLocation = isWithinUK(latitude, longitude);
-
-					//invalid search location
-					if (!isValidLocation) {
-						alert(
-							'Location name is not recognised!, please check your spelling'
-						);
-
-						//valid search
-					} else {
-						//pass mapurl to context
-						updateMapURL(mapurl);
-						history.push(`/results`);
-					}
-
-					// TEST
-					setTestText(
-						'Name search?: ' +
-							isNamedSearch +
-							'\n' +
-							'Location Name: ' +
-							namedlocation +
-							'\n' +
-							'Latitude: ' +
-							latitude +
-							'\n' +
-							'Longitude: ' +
-							longitude +
-							'\n' +
-							'Months: ' +
-							numberOfMonths +
-							'\n' +
-							'MapURL: ' + //TODO get proper mapurl rather than this test one of all uk
-							mapurl +
-							'\n' +
-							'\n' +
-							'Bounding Box: ' + //TODO get proper mapurl rather than this test one of all uk
-							boundingbox
-					);
-
-					// Reset state values
-					//resetState(); //TODO should be able to delete this now
-				})
-				.catch((error) => {
-					console.log(
-						'error in search getting response: ',
-						error.message
-					); //TODO
-				});
-		}
+					</div>);
+					
+					//pass mapurl to context
+					updateMapURL(response.mapurl, response.latitude, response.longitude);  //TODO check how to pass more
+					history.push(`/results`);
+			}			
+		}					
 	};
 
 	return (

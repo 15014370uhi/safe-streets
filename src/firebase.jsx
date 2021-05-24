@@ -57,34 +57,40 @@ export const generateUserDocument = async (user, additionalData) => {
 };
 
 //function to add a new favourite to user collection of favourites
-export const addUserFavourite = async (title, mapurl) => {
+export const addUserFavourite = async (
+	title, 
+	mapurl, 
+	locationname, 
+	isnamesearch, 
+	lat, 
+	lon,
+	numberofmonths
+	) => {
+
+		// console.log(">>>>>>>>>>>>>>>>  createNewFavourite args: " 
+		// + "Title: " + title + "\n"
+		// + "Mapurl: " + mapurl + "\n" 
+		// + "locationname: " + locationname + "\n"
+		// + "isnamesearch: " + isnamesearch + "\n"
+		// + "lat: " + lat + "\n"
+		// + "lon: " + lon + "\n"
+		// + "numberofmonths: " + numberofmonths + "\n");
+		
+	
 	var user = firebase.auth().currentUser;
-
-	//if no current user passed, exit
-	if (!user) {
-		console.log('user missing');
-		return;
-	}
-	if (!mapurl) {
-		console.log('map URL missing');
-		return;
-	}
-	if (!title) {
-		console.log('title missing');
-		return;
-	}
-
-	// TODO get current date as string
-	//const timestamp = new Date().toLocaleString();
 	var options = {year: 'numeric', month: 'long', day: 'numeric'};
 	const timestamp = new Date().toLocaleDateString([], options);
-	//const timestamp = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate();
 
 	// Create a new favourite object
 	var newFavourite = {
 		title: title,
 		mapURL: mapurl,
-		timestamp: timestamp,
+		locationname: locationname,
+		isnamesearch: isnamesearch,
+		lat: lat,
+		lon: lon,
+		numberofmonths: numberofmonths,
+		timestamp: timestamp
 	};
 
 	// Get reference to current user data in firestore by UID
