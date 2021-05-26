@@ -18,95 +18,61 @@ import ButtonBack from './ButtonBack';
 const MapDisplay = (props) => {
 	//state for modal screen
 	const [showAddFavouriteModal, setShowAddFavouriteModal] = useState(false);
-	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] = useState(false);
+	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
+		useState(false);
 	const [showFiltersModal, setShowFiltersModal] = useState(false);
 
 	//mapURL context
-	const [mapURL, setMapURL] = useContext(MapURL);	
-	const [mapDetails, setMapDetails] = useContext (MapDetails); //TODO
+	//const [mapURL, setMapURL] = useContext(MapURL); //TODO remove
+	const [mapDetails, setMapDetails] = useContext(MapDetails); 
 
 	let history = useHistory();
 
 	useEffect(() => {
-		window.scrollTo(0, 10); //scroll map view down by 10
+		window.scrollTo(0, 10); //scroll map view down
 	}, []);
 
 	const openFilter = (e) => {
 		//TODO filter icons on map
 	};
 
-
 	//function which updates the mapURL context
-	const updateMapURL = async (filters) => {	
+	const updateMapURL = async (filters) => {
 		
-		// const isNameSearch = false;
-		// const lat = mapDetails.lat;
-		// const lon = mapDetails.lon; 
-		// const numberOfMonths = mapDetails.numberOfMonths;
-
-		console.log("MapDetails updateMapURL payload to hold: " 
-		 + "aMapURL: " + mapDetails.mapURL
-		 + "\nisNameSearch: " + mapDetails.isnamesearch
-		 + "\nnumberofmonths: " + mapDetails.numberofmonths
-		 + "\nlat: " + mapDetails.lat
-		 + "\nlon: " + mapDetails.lon
-		 + "\nfilters: " + filters);
-
-		const payload = 
-		{
+		const payload = {
 			locationname: mapDetails.locationname,
 			isnamesearch: mapDetails.isnamesearch,
 			lat: mapDetails.lat,
 			lon: mapDetails.lon,
 			numberofmonths: mapDetails.numberofmonths,
 			filters: filters,
-		};		
-	
+		};
+
 		//call API function in external file
-		const updatedMapURL = await getUpdatedMapURL(payload); //TODO check data getting to api	
-
-		//update context to latest data //TODO check if this version works
-		setMapDetails(prevState => ({
-			mapURL: updatedMapURL,			
-			filters: filters,
-		}));		
-
-		// //update context to latest data
-		// setMapDetails(prevState => ({
-		// 	mapURL: updatedMapURL,
-		// 	...prevState.isnameSearch,
-		// 	...prevState.lat,
-		// 	...prevState.lon,
-		// 	...prevState.numberOfMonths,
-		// 	filters: filters,
-		// }));		
+		const response = await getUpdatedMapURL(payload); //TODO check data getting to api
+	
+		await setMapDetails(mapDetails => ({
+			mapURL: response.mapurl,
+			locationname: response.locationname,
+			isnamesearch: response.isnamesearch,
+		 	lat: response.lat,
+		 	lon: response.lon,
+		 	numberofmonths: response.numberofmonths,
+			filters: response.filters,		
+		}))
 	};
 
-	//TODO get filters from filter modal - update filters state - 
-
 	return (
-		<Col className="mt-4 pt-0 col-map-display">
-<br />  
-		<div>
-		-----------------------------------------------------------------		
-			URL: {mapDetails.mapURL}
-			isNameSearch: {mapDetails.isnamesearch}
-			numberOfMonths: {mapDetails.numberofmonths}
-				lat: {mapDetails.lat}
-				lon: {mapDetails.lon}					
-		-----------------------------------------------------------------				
-		</div>
-		<br />  
-
+		<Col className="mt-4 pt-0 col-map-display">		
 			<AddFavouriteModal
-				mapurl={mapURL}				
+				mapurl={mapDetails.mapURL}
 				show={showAddFavouriteModal}
 				onHide={() => setShowAddFavouriteModal(false)}
 				mapdetails={mapDetails}
 			/>
 
 			<RemoveFavouriteModal
-				mapurl={mapURL}
+				mapurl={mapDetails.mapURL}
 				show={showRemoveFavouritesModal}
 				onHide={() => setShowRemoveFavouritesModal(false)}
 			/>
@@ -121,7 +87,6 @@ const MapDisplay = (props) => {
 
 			<Row className="row-map">
 				<ButtonBack />
-
 				<ButtonShowFilters
 					openFilter={openFilter}
 					setModalShow={setShowFiltersModal}

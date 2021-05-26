@@ -21,7 +21,7 @@ const Favourite = ({
 }) => {
 
 	return (
-		<Col className="container-fluid mt-4">
+		<Col className="container-fluid mt-4">		
 			<Card key={uuid()} border="info" style={{width: '20rem'}}>
 				<Card.Img
 					variant="top"

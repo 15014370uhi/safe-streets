@@ -64,8 +64,10 @@ export const addUserFavourite = async (
 	isnamesearch, 
 	lat, 
 	lon,
-	numberofmonths
+	numberofmonths,
+	filters,
 	) => {
+		
 
 		// console.log(">>>>>>>>>>>>>>>>  createNewFavourite args: " 
 		// + "Title: " + title + "\n"
@@ -90,7 +92,8 @@ export const addUserFavourite = async (
 		lat: lat,
 		lon: lon,
 		numberofmonths: numberofmonths,
-		timestamp: timestamp
+		timestamp: timestamp,
+		filters: filters,
 	};
 
 	// Get reference to current user data in firestore by UID

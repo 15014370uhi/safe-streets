@@ -9,6 +9,8 @@ import {MDBInput} from 'mdbreact';
 const AddFavouriteModal = (props) => {
 	const [title, setTitle] = useState(''); //TODO check for cross site scripting
 
+	//TODO move context to here instead of props??? check how i did filters modal
+
 	//function which adds a new user favourite
 	const createNewFavourite = async (e) => {
 
@@ -23,20 +25,17 @@ const AddFavouriteModal = (props) => {
 		// + "props.mapdetails.numberofmonths: " + props.mapdetails.numberofmonths + "\n");
 
 
-		//TODO fix
 		props.onHide();
-		try {				
-			//await addUserFavourite(title, props.mapurl); 
-			//await addUserFavourite(title, props.mapurl); 
-			
-			  await addUserFavourite(
+		try {		
+			  await addUserFavourite( //TODO may need to fill in default values for undefined
 			 	title, 
 			  	props.mapdetails.mapURL,
 			  	props.mapdetails.locationname,
 			  	props.mapdetails.isnamesearch,
 			  	props.mapdetails.lat,
 			  	props.mapdetails.lon,
-			  	props.mapdetails.numberofmonths
+			  	props.mapdetails.numberofmonths,
+				props.mapdetails.filters,
 			  ); //TODO include all details in favourite 
 
 		} catch (error) {

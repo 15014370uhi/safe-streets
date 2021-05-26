@@ -86,7 +86,6 @@ const getGeocode = async locationName => {
     .get (URLGeocode)
     .then (function (res) {
       //TODO check for not found location etc is there an error code?
-      // console.log (res.data);
 
       //record returned latitude and longitude coordinates for named location
       const latitude = res.data.results[0].locations[0].displayLatLng.lat;
@@ -99,7 +98,7 @@ const getGeocode = async locationName => {
       };
     })
     .catch (error => {
-      // console.log ('error getting crime data: ', error);
+      console.log ('error getting crime data: ', error);
     });
 
   //return coords object;
@@ -146,12 +145,8 @@ const populateCrimeDates = numberOfMonthsRequired => {
   //if month is single digit, add leading zero and store as format YYYY-MM
   if (crimeMonth < 10) {
     crimeDateToCheck = currentYear + '-0' + crimeMonth; //add leading zero to month value
-    console.log (
-      'crimeDateToCheck less than 10 changed to : ' + crimeDateToCheck
-    );
   } else {
     crimeDateToCheck = currentYear + '-' + crimeMonth; //leading zero not required
-    console.log ('crimeDateToCheck greater than 10 now: ' + crimeDateToCheck);
   }
 
   //push date to array of all dates to check
@@ -364,10 +359,11 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     '&date=' +
     crimeDateCheck;
 
+    console.log("\nCALL CRIME URL: " + URLCrimes + "\n");
+
   await axios
     .get (URLCrimes)
     .then (res => {
-      // console.log(res.data); //TEST
       if (res.length === 0) {
         console.log ('Empty response from crime data');
       }
@@ -397,17 +393,50 @@ const shuffleArray = anArray => {
   return anArray;
 };
 
+const applyFilters = filters => {
+  const allCategories = [
+    'anti-social-behaviour',
+    'criminal-damage-arson',
+    'public-order',
+    'other-crime',
+    'violent-crime',
+    'theft-from-the-person',
+    'possession-of-weapons',
+    'shoplifting',
+    'other-theft',
+    'bicycle-theft',
+    'vehicle-crime',
+    'robbery',
+    'drugs',
+    'burglary',
+  ];
+
+  const categoriesToInclude = allCategories.filter (
+    aCategory => !filters.includes (aCategory)
+  );
+  return categoriesToInclude;
+};
+
 //POST route
 router.post ('/', async (req, res) => {
   const isNameSearch = req.body.isnamesearch; //boolean flag to determine if location name search
   const locationName = req.body.locationname;
-  let latitude = req.body.lat;
-  let longitude = req.body.lat;
   const numberOfMonths = req.body.numberofmonths;
-
+  let latitude = req.body.lat;
+  let longitude = req.body.lon;
   let filters = [];
-  if(req.body.filters !== undefined){
-    console.log("FILTERS in ROUTES: " + req.body.filters);
+  
+
+//TODO TEST 
+console.log("SERVER API RECEIVED req.body args>>> " 
+  + "\nlocationname: " + req.body.locationname
+  + "\nisnamesearch: " + req.body.isnamesearch
+  + "\nlatitude: " + req.body.lat 
+  + "\nlongitude: " + req.body.lon
+  + "\nnumberofmonths: " + req.body.numberofmonths 
+  + "\nfilters: " + req.body.filters);
+
+  if (req.body.filters !== undefined) {
     filters = req.body.filters;
   }
 
@@ -416,61 +445,20 @@ router.post ('/', async (req, res) => {
   var crimes = [];
   var noCrimes = false;
 
-  //TEST
-  //var data = req.body;  
-  //console.log("req.body.data >>  ");
-  //console.log(data);
-
-  // //TODO test
-  // console.log (
-  //   'SERVER REQUEST: ' +
-  //     'isNameSearch' +
-  //     isNameSearch +
-  //     '\n' +
-  //     'locationName' +
-  //     locationName +
-  //     '\n' +
-  //     'latitude' +
-  //     latitude +
-  //     '\n' +
-  //     'longitude: ' +
-  //     longitude +
-  //     '\n' +
-  //     'numberOfMonths: ' +
-  //     numberOfMonths +
-  //     '\n' +
-  //     'filters: ' +
-  //     filters +
-  //     '\n' +
-  //     'filters-TYPE' +
-  //     typeof filters
-  // );
-
   //named location search used
-  if (isNameSearch) {
+  if (isNameSearch) { //TODO this is set to false on filter apply - should stay true
     //call function to convert named location to a set of lat and lon coordinates
     const geoCoords = await getGeocode (locationName);
     latitude = geoCoords.latitude; //store returned lat coordinate
     longitude = geoCoords.longitude; //store returned lon coordinate
-    //console.log("latitude set as: " + latitude);
-    //console.log("longitude set as: " + longitude);
-  } else {
-    //a latitude and longitude search was performed with coords input by user
-    //get latitude and longitude from request body
-    latitude = req.body.lat;
-    longitude = req.body.lon;
   }
 
-  console.log("creating bounding box with: " + latitude + " " + longitude);
   //call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
   const boundingBox = getBoundingBox (latitude, longitude);
-  console.log("Bounding box set as: " + boundingBox);
 
   //populate array with all dates to check
-  var crimeMonthsArray = populateCrimeDates (numberOfMonths); //TEST
-  console.log("crimeMonthsArray set as: " + crimeMonthsArray);
+  var crimeMonthsArray = populateCrimeDates (numberOfMonths);
 
-  //TODO -----------------
   //array to hold crimes to display on map
   let slicedCrimes = [];
   let crimesDuringMonth = [];
@@ -479,11 +467,8 @@ router.post ('/', async (req, res) => {
   for (let aMonth of crimeMonthsArray) {
     crimesDuringMonth = await getCrimeData (aMonth, boundingBox);
 
-
     //if crimes exist for month being checked, add them to collection of crimes
     if (crimesDuringMonth !== undefined && crimesDuringMonth.length > 0) {
-      console.log("crimesDuringMonth for month: " + aMonth + " \n " + crimesDuringMonth.length);
-
       crimes.push (crimesDuringMonth);
     }
   }
@@ -503,19 +488,15 @@ router.post ('/', async (req, res) => {
       let aCrimeStreet = aCrime.location.street.name;
       let aCrimeMonth = aCrime.month;
 
-      //TODO maybe change filters to be included instead of excluded?
-      // Filter crimes to exclude filtered categories
+      if (filters.length > 0) {
+        //call function which removes unwanted crime category filters
+        const categoriesToInclude = applyFilters (filters);
+        
+      //console.log("SUPPLIED FILTERS: " + filters);
+      //console.log("FILTERED: " + categoriesToInclude);
 
-      //TODO need to change how filters work - or rewrite the following to
-      //TODO code so that it removes crimes that match filters rather than includes them
-      //TODO also need to check for empty array - as is presented during search
-      //TODO might be easier to change filters to be inclusive rather then not - but still need check
-      //TODO for empty array even in that case anuyway
-
-      if(filters.length > 0){   
-       // console.log("filters must contain something");
-        for (let aFilter of filters) {
-          if (aCrimeCategory === aFilter) {
+        for (let aCategory of categoriesToInclude) {
+          if (aCrimeCategory === aCategory) {
             //create new object with crime details to add
             const aCrimeDetails = {
               category: aCrimeCategory,
@@ -524,10 +505,10 @@ router.post ('/', async (req, res) => {
               street: aCrimeStreet,
               month: aCrimeMonth,
             };
-  
+
             //TODO for machine learning save full crime data records to master record array
             crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
-  
+
             //record only unique crime categories and locations for map display efficiency
             let uniqueCrimeNodes = displayCrimes.filter (
               crime =>
@@ -535,46 +516,41 @@ router.post ('/', async (req, res) => {
                 crime.latitude !== aCrimeLat ||
                 crime.longitude !== aCrimeLon
             );
-  
+
             //set crimeNodes to filtered crimeNodes
             displayCrimes = uniqueCrimeNodes;
-  
+
             //add current crime to array of all crimes to display on map
             displayCrimes.push (aCrimeDetails);
           }
         }
-      }
-      else //no filters supplied to API
-      {
-        //console.log("\nNo filters supplied");
-            //create new object with crime details to add
-            const aCrimeDetails = {
-              category: aCrimeCategory,
-              latitude: aCrimeLat,
-              longitude: aCrimeLon,
-              street: aCrimeStreet,
-              month: aCrimeMonth,
-            };
+      } else {
+        //no filters supplied to API
+        //create new object with crime details to add
+        const aCrimeDetails = {
+          category: aCrimeCategory,
+          latitude: aCrimeLat,
+          longitude: aCrimeLon,
+          street: aCrimeStreet,
+          month: aCrimeMonth,
+        };
 
-            //console.log("aCrimeDetails being pushed to crimeNodes: " + aCrimeDetails.category);
-  
-            crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
-  
-            //record only unique crime categories and locations for map display efficiency
-            let uniqueCrimeNodes = displayCrimes.filter (
-              crime =>
-                crime.category !== aCrimeCategory ||
-                crime.latitude !== aCrimeLat ||
-                crime.longitude !== aCrimeLon
-            );
-  
-            //set crimeNodes to filtered crimeNodes
-            displayCrimes = uniqueCrimeNodes;           
-  
-            //add current crime to array of all crimes to display on map
-            displayCrimes.push (aCrimeDetails);
+        //add crime to master record of all crimes
+        crimeNodes.push (aCrimeDetails);
 
-           // console.log("displayCrimes contains: " + displayCrimes.length);
+        //record only unique crime categories and locations for map display efficiency
+        let uniqueCrimeNodes = displayCrimes.filter (
+          crime =>
+            crime.category !== aCrimeCategory ||
+            crime.latitude !== aCrimeLat ||
+            crime.longitude !== aCrimeLon
+        );
+
+        //set crimeNodes to filtered crimeNodes
+        displayCrimes = uniqueCrimeNodes;
+
+        //add current crime to array of all crimes to display on map
+        displayCrimes.push (aCrimeDetails);
       }
     }
   }
@@ -585,18 +561,13 @@ router.post ('/', async (req, res) => {
   //store max of 90 crimes to cater to mapquest marker quantity imposed limit
   slicedCrimes = displayCrimes.slice (0, 90);
 
-  //TODO test
-  //console.log ('Total number of crimes included in map: ' + slicedCrimes.length);
-
   //if no crimes were found, set boolean flag
   if (slicedCrimes.length === 0) {
     noCrimes = true; //TODO send message back if no crimes found to allow user alert in results page
-    console.log("no crimes detected");
   }
 
   //call function which generates image URL with crime markers on map
   mapURL = getMap (boundingBox, slicedCrimes, latitude, longitude);
-  console.log("SERVER getting map with lat and lon: " + latitude + " " + longitude);
 
   //TODO call machine learning functions with master record of crimes
   //TODO e.g. machineLearning(crimeNodes);

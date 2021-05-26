@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import Favourite from './Favourite';
 import {MapURL} from '.././contexts/MapContext';
 import {MapDetails} from '.././contexts/MapDetailsContext';
-
 import {UserContext} from '../auth/UserProvider';
 import uuid from 'react-uuid';
 import Container from 'react-bootstrap/Container';
@@ -13,13 +12,8 @@ import {useHistory} from 'react-router-dom';
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
 	const user = useContext(UserContext); //get User Context for ID
-	const [mapURL, setMapURL] = useContext(MapURL); //mapURL context
-	const [mapDetails, setMapDetails] = useContext (MapDetails);
-
-
-	// TODO TRY move the functions to the firebase - for favs etc
-	// TODO REM - only use useContext Usercontext to get current user ID nothing else
-
+	const [mapURL, setMapURL] = useContext(MapURL); //mapURL context //TODO do i still need this context?
+	const [mapDetails, setMapDetails] = useContext(MapDetails);
 	const history = useHistory();
 
 	useEffect(() => {
@@ -27,23 +21,42 @@ const Favourites = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	//updates the mapURL context
-	const updateMapURL = (aMapURL) => {
-		//setMapURL(aMapURL);
-		//update context to latest data
-		setMapDetails(prevState => ({
-			mapURL: aMapURL,
-			...prevState.isnameSearch,
-			...prevState.lat,
-			...prevState.lon,
-			...prevState.numberOfMonths,
-			filters: [],
-		}));		
+	//function which gets data for a single saved favourite
+	const getFavourite = async (aMapURL) => {
+		var userRef = firebase.firestore().collection('users').doc(user.uid);
+		await userRef
+			.get()
+			.then(function (doc) {
+				if (doc.exists) {
+					const aFavourite = doc
+						.data()
+						.favourites.find(({mapURL}) => mapURL === aMapURL); 					
+					updateMapURL(aFavourite);
+				} else {
+					console.log('No Matching favourite!');
+				}
+			})
+			.catch(function (error) {
+				console.log('Error getting favourites:', error);
+			});
+	};
+
+	//updates the mapDetails context
+	const updateMapURL = (aFavourite) => {	
+		//update context to latest data 
+		setMapDetails((mapDetails) => ({
+			mapURL: aFavourite.mapURL,
+			locationname: aFavourite.isnamesearch,
+			lat: aFavourite.lat,
+			lon: aFavourite.lon,
+			numberofmonths: aFavourite.numberofmonths,
+			filters: aFavourite.filters,
+		}));
 	};
 
 	//display favourited map when clicked
-	const displayMap = (aMapURL) => {
-		updateMapURL(aMapURL);
+	const displayMap = async (aMapURL) => {
+		await getFavourite(aMapURL);		
 		history.push(`/results`, {
 			isfavourite: 'true', //boolean flag to determine if map a previously favourited map or new search result
 		});
@@ -68,8 +81,8 @@ const Favourites = (props) => {
 				console.log('Error getting favourites:', error);
 			});
 	};
-	
-	//remove a favourite from a user's collection of all favourites 
+
+	//remove a favourite from a user's collection of all favourites
 	const deleteFavourite = (aMapURL) => {
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
@@ -90,7 +103,7 @@ const Favourites = (props) => {
 						'Argument returned after deleting by mapURL: ' +
 							favouritesToKeep
 					);
-					// Update favourites state
+					//update favourites state
 					setLocalFavourites(favouritesToKeep);
 				} else {
 					console.log('No favourites!');

@@ -53,21 +53,20 @@ const Search = (props) => {
 		
 		//TODO trace order of things after filters are applied
 		
-		console.log("SEARCH: updating mapDetails context with: " 
-		 + "aMapURL: " + aMapURL
-		 + "\nisNameSearch: " + isNameSearch
-		 + "\nnumberofmonths: " + numberOfMonths
-		 + "\nlat: " + aLat
-		 + "\nlon: " + aLon
-		 + "\n");
+		// console.log("SEARCH: updating mapDetails context with: " 
+		//  + "aMapURL: " + aMapURL
+		//  + "\nisNameSearch: " + isNameSearch
+		//  + "\nnumberofmonths: " + numberOfMonths
+		//  + "\nlat: " + aLat
+		//  + "\nlon: " + aLon
+		//  + "\n");
 
 	//setMapDetails(prevState => ({
-		setMapDetails({
-			mapURL: aMapURL,
-			//...prevState.isnameSearch, //TODO TEST
+		setMapDetails({ //TODO check - should filters be emtpy?
+			mapURL: aMapURL,		
 			locationname: locationName,
 			isnamesearch: isNameSearch,
-			lat: aLat,
+			lat: aLat, //TODO needs to be from response or is it already?
 			lon: aLon,
 			numberofmonths: numberOfMonths,
 			filters: [],
@@ -182,25 +181,28 @@ const Search = (props) => {
 			// TODO get the lat and long response and show on map screen as useful data?>
 			// TODO maybe have a special area for information about the map at side?
 		
-			//const response = await getMapURL(payload);	
 			const response = await getMapURL(payload);			
-			//console.log("Res in SEARCH.............." + response.mapurl);
 		
 			//check for invalid lat and lon response, due to mispelled/invalid location name
 			let isValidLocation = isWithinUK(response.lat, response.lon);
 
-			//TODO set mapdetails for lat and lon?  
+			//TODO set mapdetails 
+			 
 			//invalid search location
 			if (!isValidLocation)
 			{
 				alert('Location name is not recognised!, please check your spelling'				);
 			} 
 			else 
-			{ 
-				
+			{ 				
 				//set lat and lon values	
-				setLat(response.latitude); 
-				setLon(response.longitude);
+				setLat(response.lat); 
+				setLon(response.lon);
+
+
+				//TODO update all mapDetails fields with server response lat lon etc
+				//console.log("RESPONSE normal search lat and long: " + response.latitud)
+
 
 				//TODO submit text no longer working for loading animation
 				setSubmitText(
@@ -215,8 +217,8 @@ const Search = (props) => {
 					LOADING....{' '}
 					</div>);
 					
-					//pass mapurl to context
-					updateMapURL(response.mapurl, response.latitude, response.longitude);  //TODO check how to pass more
+					//pass mapurl to context //TODO just pass resopnse object?
+					updateMapURL(response.mapurl, response.lat, response.lon);  //TODO check how to pass more
 					history.push(`/results`);
 			}			
 		}					
