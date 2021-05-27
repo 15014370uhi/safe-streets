@@ -11,9 +11,6 @@ class UserProvider extends Component {
     user: null
   };
    
-  // TODO The firebase version seems to work better than
-  // TODO also try maybe using the authstatechanged in each component where its needed
-  
   componentDidMount = async () => {
     await auth.onAuthStateChanged(user => {
       this.setState({ user: user});

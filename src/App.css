@@ -102,6 +102,19 @@ div.dropdown-menu.show {
   margin-bottom: 8px;
 }
 
+.login-container {
+  margin-top: 24px;
+}
+
+.login-sign-header {
+  margin-bottom: 25px;
+}
+
+.login-sign-topinput {
+  margin-top:25px !important;
+}
+
+
 /* Styling of selected search type */
 .notSelectedFieldSet {
   padding: 10px;

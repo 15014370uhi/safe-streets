@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import {generateUserDocument, createUserWithEmailAndPassword} from '../firebase';
+import {
+	createUserWithEmailAndPassword,
+} from '../firebase';
 import {Link, useHistory} from 'react-router-dom';
-
-// TODO get list of errors and show them properly
 
 // Style components
 import {
@@ -21,50 +21,48 @@ import {
 const Register = (props) => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [error, setError] = useState(null);
+	const [formError, setFormError] = useState(null);
+	const history = useHistory();
 
-	const history = useHistory();	
-	
 	const createUserWithEmailAndPasswordHandler = async (e) => {
 		e.preventDefault();
-		try {
-			const {user} = createUserWithEmailAndPassword(email, password);
-			generateUserDocument(user);
-		} catch (error) {
-			setError('Error creating user with email and password');
-		}	
-		// Redirect URL
-		let path = `/search`; 
-		history.push(path);	
+
+		createUserWithEmailAndPassword(email, password).then((res) => {
+			if (res !== true) {
+				//error creating user
+				setFormError(res); //set error message
+			} else {
+				let path = `/search`; //success, redirect to search page
+				history.push(path);
+			}
+		});
 	};
 
 	const onChangeHandler = (e) => {
 		const {name, value} = e.currentTarget;
-		if (name === 'email') 
-		{
+		if (name === 'email') {
 			setEmail(value);
-		} 
-		else if (name === 'password') 
-		{
+		} else if (name === 'password') {
 			setPassword(value);
-		} 		
+		}
 	};
 
 	return (
 		<MDBContainer>
 			<MDBRow>
-				<MDBCol md="6">
+				<MDBCol md="7">
 					<MDBCard>
 						<MDBCardBody>
 							<MDBCardHeader className="form-header bg-primary rounded">
-								<h3 className="my-3">
-									<MDBIcon icon="user-circle" /> Sign Up:
-								</h3>
+								<h1 className="my-3">
+									<MDBIcon icon="user-circle" /> Sign Up
+								</h1>
 							</MDBCardHeader>
-							<form>
-								<div className="grey-text">	
+							<form className="login-sign-header">
+								<div className="grey-text login-sign-topinput">
 									<MDBInput
 										label="Type your email"
+										size="lg"
 										icon="envelope"
 										autoComplete="email"
 										group
@@ -78,27 +76,28 @@ const Register = (props) => {
 									/>
 
 									<MDBInput
-										label="Type your password"										
+										label="Type your password"
+										size="lg"
 										icon="lock"
 										autoComplete="new-password"
 										group
 										type="password"
 										name="password"
-										validate										
+										validate
 										value={password}
 										onChange={(e) => onChangeHandler(e)}
 									/>
 								</div>
 
 								<div className="text-center mt-4">
-									{error !== null && (
+									{formError !== null && (
 										<div className="py-4 bg-red-600 w-full text-red text-center mb-3">
-											{error}
+											{formError}
 										</div>
 									)}
 
 									<MDBBtn
-										color="light-blue"
+										color="blue"
 										className="mb-3"
 										type="submit"
 										onClick={(event) => {

@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../auth/UserProvider';
-import {MapURL} from '.././contexts/MapContext';
+import {MapDetails} from '.././contexts/MapDetailsContext';
 import {Redirect} from '@reach/router';
 import {auth, deleteUser} from '../firebase';
 import uuid from 'react-uuid';
@@ -29,8 +29,8 @@ const Profile = () => {
   const [localFavourites, setLocalFavourites] = useState ([]);
   const [password, setPassword] = useState ('');
   const [error, setError] = useState (null);  
-  const user = useContext (UserContext); // Get User Context
-  const [mapURL, setMapURL] = useContext(MapURL);
+  const user = useContext (UserContext); 
+	const [mapDetails, setMapDetails] = useContext(MapDetails);
 
 
   //TODO add icon choice for favourite - Long Term
@@ -43,10 +43,10 @@ const Profile = () => {
 
   useEffect (() => {
     getUserDetails ();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Function which retrieves the favourites for a user
+  //function which retrieves the favourites for a user
   const getUserDetails = async () => {
     if (user) {
       var userRef = await firebase
@@ -57,7 +57,7 @@ const Profile = () => {
         .get ()
         .then (function (doc) {
           if (doc.exists) {
-            // Set favourites to user favourites
+            //set favourites to all user favourites
             setLocalFavourites (doc.data ().favourites);
           } else {
             console.log ('No favourites!');
@@ -75,8 +75,7 @@ const Profile = () => {
     setPassword (value);
   };
 
-  // TODO move to firebase if possible
-  // Sign out user
+  //sign out user
   const onSignOutHandler = async () => {
     await auth
       .signOut ()
@@ -84,7 +83,7 @@ const Profile = () => {
       .catch (err => console.log (err));
   };
 
-  // Function to delete the current user's account
+  //function to delete the current user's account
   const deleteUserHandler = async e => {
     deleteUser (password)
       .then (function () {
@@ -99,23 +98,21 @@ const Profile = () => {
       });
   };
 
-  // TODO also get favourites array from user
-  // TODO move signout to a function
-  // TODO delete account from
-  // TODO logout using Auth
-  // TODO move logout to function
-
-
-//function which updates the mapURL context
-const updateMapURL = (aMapURL) => {
-	setMapURL(aMapURL);
-}
-
 //display favourited map which was clicked on
-const displayMap = (aMapURL) => {
-		updateMapURL(aMapURL);
-		history.push (`/results`, {			
-			isfavourite: 'true' //boolean flag to determine if map a previously favourited map or new search result
+const displayMap = (aFavourite) => {
+
+  setMapDetails({ 
+    mapURL: aFavourite.mapURL,		
+    locationname: aFavourite.locationname,
+    isnamesearch: aFavourite.isnamesearch,
+    lat: aFavourite.lat, 
+    lon: aFavourite.lon,
+    numberofmonths: aFavourite.numberofmonths,
+    filters: aFavourite.filters,
+  });
+    //redirect to register user page
+    history.push (`/results`, {			
+		isfavourite: 'true' //boolean flag to determine if map a previously favourited or new search
 		});   
 	}
 
@@ -134,7 +131,7 @@ const displayMap = (aMapURL) => {
             <MDBListGroup flush>
               {localFavourites.map (favourite => (
                 <div key={uuid ()} className="profile-list-favourite-item" onClick={() => {
-                      displayMap (favourite.mapURL);
+                      displayMap (favourite);
                     }}>
                 <MDBListGroupItem className="profile-favourites-list" >               
                 <MDBCardLink         

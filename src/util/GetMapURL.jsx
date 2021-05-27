@@ -26,7 +26,7 @@ export const getUpdatedMapURL = async (aPayload) => {
 const APICall = async (payload) => {
 
  console.log("ACTUAL API payload >>>>>>>>>>>> " 
-	 + "\nlocationname: " + payload.locationname //TEST ??????????????
+	 + "\nlocationname: " + payload.locationname 
 	 + "\nisnamesearch: " + payload.isnamesearch
 	 + "\nlat: " + payload.lat
 	 + "\nlon: " + payload.lon

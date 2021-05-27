@@ -19,12 +19,11 @@ export const createUserWithEmailAndPassword = async (email, password) => {
 			email,
 			password
 		);
-		console.log('Created user with email: ' + user.email); // TEST
-		return generateUserDocument(user);
-	} catch (error) {
-		console.log(
-			'Error creating user with email and password' + error.message
-		);
+		console.log('User created with email: ' + user.email + "\nUID: " + user.uid); // TEST
+		generateUserDocument(user);
+		return true;
+	} catch (error) {		
+		return error.message;	
 	}
 };
 
@@ -49,7 +48,7 @@ export const generateUserDocument = async (user, additionalData) => {
 				...additionalData,
 			});
 		} catch (error) {
-			console.error('Error creating user firestore document', error);
+			console.error('Firebase errorL: ', error.message);
 		}
 	}
 	//call getUserDocument function with user UID
@@ -67,23 +66,12 @@ export const addUserFavourite = async (
 	numberofmonths,
 	filters,
 	) => {
-		
-
-		// console.log(">>>>>>>>>>>>>>>>  createNewFavourite args: " 
-		// + "Title: " + title + "\n"
-		// + "Mapurl: " + mapurl + "\n" 
-		// + "locationname: " + locationname + "\n"
-		// + "isnamesearch: " + isnamesearch + "\n"
-		// + "lat: " + lat + "\n"
-		// + "lon: " + lon + "\n"
-		// + "numberofmonths: " + numberofmonths + "\n");
-		
 	
 	var user = firebase.auth().currentUser;
 	var options = {year: 'numeric', month: 'long', day: 'numeric'};
 	const timestamp = new Date().toLocaleDateString([], options);
 
-	// Create a new favourite object
+	//create a new favourite object
 	var newFavourite = {
 		title: title,
 		mapURL: mapurl,
@@ -96,7 +84,7 @@ export const addUserFavourite = async (
 		filters: filters,
 	};
 
-	// Get reference to current user data in firestore by UID
+	//get reference to current user data in firestore by UID
 	const userRef = firestore.doc(`users/${user.uid}`);
 	const snapshot = await userRef.get();
 	//if firestore user document found
@@ -111,11 +99,10 @@ export const addUserFavourite = async (
 			console.error('Error adding favourite', error);
 		}
 	}
-	return getUserDocument(user.uid); // TODO
+	return getUserDocument(user.uid); 
 };
 
-// Async function to delete a user account
-// TODO Might not need this here can call from components
+//async function to delete a user account
 export const deleteUser = async (password) => {
 	var user = firebase.auth().currentUser;
 
@@ -125,7 +112,7 @@ export const deleteUser = async (password) => {
 	);
 	user.reauthenticateWithCredential(credentials)
 		.then(function () {
-			// User re-authenticated - delete account
+			//user re-authenticated successfully - delete account
 			user.delete()
 				.then(function () {
 					console.log('User ' + user.email + ' deleted!');
@@ -136,7 +123,7 @@ export const deleteUser = async (password) => {
 		})
 		.catch(function (error) {
 			console.log('Error reauthenticating user account', error); // user Password input incorrect wrong?
-			return false; // Return false - meaning password is incorrect - prompt user of this in profile page
+			return false; //TODO return false - password incorrect - prompt user of this in profile page
 		});
 };
 
@@ -150,15 +137,15 @@ export const getCurrentUser = async () => {
 	}
 };
 
-// Async function which returns the latest user document from firestore
+//async function which returns the latest user document from firestore
 const getUserDocument = async (uid) => {
 	// No UID supplied, return null
 	if (!uid) {
 		return null;
 	}
-	// Else user UID supplied for logged in user
+	//else user UID supplied for logged in user
 	try {
-		// Get reference to current user document
+		//get reference to current user document
 		const userDocument = await firestore.doc(`users/${uid}`).get();
 		return {
 			uid,
@@ -169,11 +156,11 @@ const getUserDocument = async (uid) => {
 	}
 };
 
-// Initialise firebase
+//initialise firebase
 if (!firebase.apps.length) {
 	firebase.initializeApp(firebaseConfig);
 } else {
-	firebase.app(); // if already initialized, use that one
+	firebase.app(); //if already initialized, use that one
 }
 
 //firebase.initializeApp(firebaseConfig);

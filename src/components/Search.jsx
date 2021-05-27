@@ -5,7 +5,7 @@ import {MapDetails} from '.././contexts/MapDetailsContext';
 import {useHistory} from 'react-router-dom';
 import Form from './Form';
 import Spinner from 'react-bootstrap/Spinner';
-import {getMapURL, TESTAPICall} from './../util/GetMapURL';
+import {getMapURL} from './../util/GetMapURL';
 
 // Style components
 import {MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardHeader} from 'mdbreact';
@@ -27,32 +27,8 @@ const Search = (props) => {
 	const [mapURL, setMapURL] = useContext(MapURL);	
 	const [mapDetails, setMapDetails] = useContext (MapDetails);
 
-	// const filters = [
-    //     'vehicle-crime',
-    //     'anti-social-behaviour',
-    //     'violent-crime',
-    //     'shoplifting',
-    //     'other-crime',
-    //     'public-order',
-    //     'possession-of-weapons',
-    //     'other-theft',
-    //     'burglary',
-    //     'robbery',
-    //     'theft-from-the-person',
-    //     'criminal-damage-arson',
-    //     'bicycle-theft',
-    //     'drugs',
-    //   ];
-
-
-
-	//function which updates the mapURL context
-	
-	const updateMapURL = (aMapURL, aLat, aLon) => {
-		//setMapURL(aMapURL); //
-		
-		//TODO trace order of things after filters are applied
-		
+	//function which updates the mapURL context	
+	const updateMapURL = (aMapURL, aLat, aLon) => {		
 		// console.log("SEARCH: updating mapDetails context with: " 
 		//  + "aMapURL: " + aMapURL
 		//  + "\nisNameSearch: " + isNameSearch
@@ -61,7 +37,6 @@ const Search = (props) => {
 		//  + "\nlon: " + aLon
 		//  + "\n");
 
-	//setMapDetails(prevState => ({
 		setMapDetails({ //TODO check - should filters be emtpy?
 			mapURL: aMapURL,		
 			locationname: locationName,
@@ -129,11 +104,9 @@ const Search = (props) => {
 
 	//function which submits search to API
 	const submitForm = async e => {
-	//const submitForm = async (e) => {
 		e.preventDefault();
 
 		//declare const boolean flag to determine whether this is a name search or not
-		//const isNameSearch = radioButton === '0';
 		setIsNameSearch(radioButton === '0')
 
 		//variable boolean flag to determine whether lat and lon coordinates are wthin the UK
@@ -142,7 +115,6 @@ const Search = (props) => {
 		//TODO block API call if any inputs are invalid
 
 		// Form validation
-
 		//if named location search was selected but form input is empty
 		if (isNameSearch && locationName === '') 
 		{
@@ -177,16 +149,11 @@ const Search = (props) => {
 							numberofmonths: numberOfMonths,
 							filters: [],
 			};
-
-			// TODO get the lat and long response and show on map screen as useful data?>
-			// TODO maybe have a special area for information about the map at side?
 		
 			const response = await getMapURL(payload);			
 		
 			//check for invalid lat and lon response, due to mispelled/invalid location name
-			let isValidLocation = isWithinUK(response.lat, response.lon);
-
-			//TODO set mapdetails 
+			let isValidLocation = isWithinUK(response.lat, response.lon);			
 			 
 			//invalid search location
 			if (!isValidLocation)
@@ -198,11 +165,6 @@ const Search = (props) => {
 				//set lat and lon values	
 				setLat(response.lat); 
 				setLon(response.lon);
-
-
-				//TODO update all mapDetails fields with server response lat lon etc
-				//console.log("RESPONSE normal search lat and long: " + response.latitud)
-
 
 				//TODO submit text no longer working for loading animation
 				setSubmitText(
