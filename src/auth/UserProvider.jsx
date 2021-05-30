@@ -1,12 +1,12 @@
 import React, { Component, createContext } from "react";
 import {auth} from '../firebase'; //firebase authentication
 
-// Context for user 
+//context for user 
 export const UserContext = createContext({ user: null });
 
 class UserProvider extends Component {
 
-  // State to hold a reference to the currently logged in user
+  //state to hold a reference to the currently logged in user
   state = {
     user: null
   };

@@ -4,7 +4,7 @@ import {
 } from '../firebase';
 import {Link, useHistory} from 'react-router-dom';
 
-// Style components
+//style components
 import {
 	MDBContainer,
 	MDBRow,
