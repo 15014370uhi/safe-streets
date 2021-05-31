@@ -20,42 +20,37 @@ const ShowFavourite = ({
 	deleteFavouriteByMapURL,
 	displayFavouriteMap,
 }) => {
+	let history = useHistory();
 
-    let history = useHistory ();
+	const removeFavourite = (e) => {};
 
-    const removeFavourite = e => {
+	return (
+		<Col className="mt-4 pt-0 col-map-display">
+			<Col>
+				<Button variant="secondary" onClick={() => history.goBack()}>
+					<i className="fa fa-arrow-left fa-lg mx-2" />
+					<label>
+						<h2>BACK</h2>
+					</label>
+				</Button>
+			</Col>
 
-    }
-	
-    return (
-    <Col className="mt-4 pt-0 col-map-display">  
-   
-      <Col>      
-        <Button variant="secondary" onClick={() => history.goBack ()}>
-          <i className="fa fa-arrow-left fa-lg mx-2" />
-          <label>
-            <h2>BACK</h2>
-          </label>
-        </Button>
-      </Col>
-      
+			<Button
+				className="w-full py-3 bg-blue-500 btn-favourites"
+				variant="primary"
+				onClick={() => removeFavourite(mapurl)}>
+				<i className="fa fa-plus fa-lg mx-4" aria-hidden="true" />
+				Delete Favourite
+			</Button>
 
-      <Button
-        className="w-full py-3 bg-blue-500 btn-favourites"
-        variant="primary"
-        onClick={() => removeFavourite(mapurl)}
-      >
-        <i className="fa fa-plus fa-lg mx-4" aria-hidden="true" />
-        Delete Favourite
-      </Button>
-
-      
-      <Row className="row-map">
-        <Image className="mapDisplay" src={history.location.state?.mapurl} />
-      </Row>
-    </Col>
-  );
-		
+			<Row className="row-map">
+				<Image
+					className="mapDisplay"
+					src={history.location.state?.mapurl}
+				/>
+			</Row>
+		</Col>
+	);
 };
 
 export default ShowFavourite;

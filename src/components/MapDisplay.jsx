@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {MapURL} from '.././contexts/MapContext';
 import {MapDetails} from '.././contexts/MapDetailsContext';
 import {getUpdatedMapURL} from './../util/GetMapURL';
 import {useHistory} from 'react-router-dom';
@@ -14,18 +13,14 @@ import FiltersModal from './FiltersModal';
 import ButtonShowFilters from './ButtonShowFilters';
 import ButtonBack from './ButtonBack';
 
-// Functional component which displays the map image for a mapURL
+//component which displays the map image for a mapURL
 const MapDisplay = (props) => {
 	//state for modal screen
 	const [showAddFavouriteModal, setShowAddFavouriteModal] = useState(false);
 	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
 		useState(false);
 	const [showFiltersModal, setShowFiltersModal] = useState(false);
-
-	//mapURL context
-	//const [mapURL, setMapURL] = useContext(MapURL); //TODO remove
-	const [mapDetails, setMapDetails] = useContext(MapDetails); 
-
+	const [mapDetails, setMapDetails] = useContext(MapDetails);
 	let history = useHistory();
 
 	useEffect(() => {
@@ -38,7 +33,6 @@ const MapDisplay = (props) => {
 
 	//function which updates the mapURL context
 	const updateMapURL = async (filters) => {
-		
 		const payload = {
 			locationname: mapDetails.locationname,
 			isnamesearch: mapDetails.isnamesearch,
@@ -50,20 +44,20 @@ const MapDisplay = (props) => {
 
 		//call API function in external file
 		const response = await getUpdatedMapURL(payload); //TODO check data getting to api
-	
-		await setMapDetails(mapDetails => ({
+
+		await setMapDetails((mapDetails) => ({
 			mapURL: response.mapurl,
 			locationname: response.locationname,
 			isnamesearch: response.isnamesearch,
-		 	lat: response.lat,
-		 	lon: response.lon,
-		 	numberofmonths: response.numberofmonths,
-			filters: response.filters,		
-		}))
+			lat: response.lat,
+			lon: response.lon,
+			numberofmonths: response.numberofmonths,
+			filters: response.filters,
+		}));
 	};
 
 	return (
-		<Col className="mt-4 pt-0 col-map-display">		
+		<Col className="mt-4 pt-0 col-map-display">
 			<AddFavouriteModal
 				mapurl={mapDetails.mapURL}
 				show={showAddFavouriteModal}
@@ -84,7 +78,6 @@ const MapDisplay = (props) => {
 				mapdetails={mapDetails}
 				setmapdetails={setMapDetails}
 			/>
-
 			<Row className="row-map">
 				<ButtonBack />
 				<ButtonShowFilters

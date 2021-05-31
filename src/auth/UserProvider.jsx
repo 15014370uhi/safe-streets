@@ -6,7 +6,7 @@ export const UserContext = createContext({ user: null });
 
 class UserProvider extends Component {
 
-  //state to hold a reference to the currently logged in user
+  //hold a reference to the currently logged in user
   state = {
     user: null
   };

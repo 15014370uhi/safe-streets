@@ -114,7 +114,6 @@ div.dropdown-menu.show {
   margin-top:25px !important;
 }
 
-
 /* Styling of selected search type */
 .notSelectedFieldSet {
   padding: 10px;
@@ -134,7 +133,6 @@ div.dropdown-menu.show {
   border-left: 20px solid #1215b3;
   border-radius: 14px;
 }
-
 
 i.fas.fa-globe {
   font-size: 4em;
@@ -230,15 +228,13 @@ i.far.fa-trash-alt.fa-lg:hover {
 }
 
 .profile-favourite-entry {
-  font-style: normal;
-  /* TEST Change font */
+  font-style: normal;  
 }
 
 .profile-list-favourite-item:hover {
   box-shadow: 1px 4px 4px 5px rgba(7, 0, 27, 0.548);
   cursor: pointer;
 }
-
 
 .profile-footer {
   margin-top: 6%;
@@ -251,6 +247,12 @@ i.far.fa-trash-alt.fa-lg:hover {
 
 .profile-footer-button:hover {
   box-shadow: 3px 3px 3px 4px rgba(7, 0, 27, 0.548);
+}
+
+/* favourites page */
+.card-img, .card-img-top{
+  max-height: 275px;
+  max-width: 100%;
 }
 
 /* search form page */
@@ -628,11 +630,9 @@ i.fas.mobile-icon::before
     font-size: 42px;
   }
 
-
   a.navbar-logo.navbar-brand.active {
     padding-left: 5px;
   }
-
 
   .mapDisplay {
     margin-left: 0px;
@@ -654,7 +654,6 @@ i.fas.mobile-icon::before
     right: 240px;
   }
 
-
   label.nav-icon-label {
     margin-left: 15px;
     transform: translate(25%, 0%);
@@ -670,7 +669,6 @@ i.fas.mobile-icon::before
 
 @media screen and (max-width: 815px) {
 
-
   .fa-search {
     transform: translate(80%, 0%);
     transition: all 0.4s ease;
@@ -680,20 +678,16 @@ i.fas.mobile-icon::before
     display: none;
   }
 
-
   .mobile-nav-search {
     top: -15px;
     right: 350px;
   }
 
-
   .navbar-logo {
     transform: translate(5%, 0%);
     transition: all 0.3s ease;
   }
-
 }
-
 
 @media screen and (max-width: 650px) {
 

@@ -11,7 +11,6 @@ const firebaseConfig = {
 	appId: '1:400130243033:web:3439d32591167991e041c8',
 };
 
-
 //function to create a new user with email and password
 export const createUserWithEmailAndPassword = async (email, password) => {
 	try {
@@ -19,11 +18,13 @@ export const createUserWithEmailAndPassword = async (email, password) => {
 			email,
 			password
 		);
-		console.log('User created with email: ' + user.email + "\nUID: " + user.uid); // TEST
+		console.log(
+			'User created with email: ' + user.email + '\nUID: ' + user.uid
+		); // TEST
 		generateUserDocument(user);
 		return true;
-	} catch (error) {		
-		return error.message;	
+	} catch (error) {
+		return error.message;
 	}
 };
 
@@ -57,16 +58,15 @@ export const generateUserDocument = async (user, additionalData) => {
 
 //function to add a new favourite to user collection of favourites
 export const addUserFavourite = async (
-	title, 
-	mapurl, 
-	locationname, 
-	isnamesearch, 
-	lat, 
+	title,
+	mapurl,
+	locationname,
+	isnamesearch,
+	lat,
 	lon,
 	numberofmonths,
-	filters,
-	) => {
-	
+	filters
+) => {
 	var user = firebase.auth().currentUser;
 	var options = {year: 'numeric', month: 'long', day: 'numeric'};
 	const timestamp = new Date().toLocaleDateString([], options);
@@ -99,47 +99,40 @@ export const addUserFavourite = async (
 			console.error('Error adding favourite', error);
 		}
 	}
-	return getUserDocument(user.uid); 
+	return getUserDocument(user.uid);
 };
 
-//async function to delete a user account
-export const deleteUser = async (password) => {
-	var user = firebase.auth().currentUser;
+//async function to delete a user account from firebase authentication list
+export const deleteUserAccount = async () => {
+	var user = firebase.auth().currentUser; //get reference to currently logged in user
+	user.delete(); //delete user authentication account record
+};
 
+//async function to delete a user document in firestore
+export const deleteUserDocument = async () => {
+	var user = firebase.auth().currentUser; //get reference to currently logged in user
+
+	//get reference to current user data in firestore by UID
+	const userDocumentRef = firestore.doc(`users/${user.uid}`);
+
+	//delete user document from firestore
+	userDocumentRef.delete(); 
+};
+
+//reauthenticate a user with password
+export const reauthenticateUser = async (password) => {
+	var user = firebase.auth().currentUser; //get reference to currently logged in user
 	var credentials = firebase.auth.EmailAuthProvider.credential(
 		user.email,
 		password
 	);
-	user.reauthenticateWithCredential(credentials)
-		.then(function () {
-			//user re-authenticated successfully - delete account
-			user.delete()
-				.then(function () {
-					console.log('User ' + user.email + ' deleted!');
-				})
-				.catch(function (error) {
-					console.log('Error deleting user account', error);
-				});
-		})
-		.catch(function (error) {
-			console.log('Error reauthenticating user account', error); // user Password input incorrect wrong?
-			return false; //TODO return false - password incorrect - prompt user of this in profile page
-		});
+	await user.reauthenticateWithCredential(credentials);
 };
 
-// TODO can delete this probably
-export const getCurrentUser = async () => {
-	var user = firebase.auth().currentUser;
-	if (!user) {
-		return null;
-	} else {
-		return user;
-	}
-};
 
 //async function which returns the latest user document from firestore
 const getUserDocument = async (uid) => {
-	// No UID supplied, return null
+	//no UID supplied, return null
 	if (!uid) {
 		return null;
 	}

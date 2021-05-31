@@ -314,7 +314,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   }
 
   //add URL ending string
-  URLMap = URLMap + '&zoom=8&size=600,650@2x'; //TODO zoom lower = closer,  width,length
+  URLMap = URLMap + '&zoom=8&size=600,600@2x'; //TODO zoom value lower = closer,  width,length
 
   //return full URL for a static map with all crime locations marked
   return URLMap;
@@ -419,7 +419,7 @@ const applyFilters = filters => {
 
 //POST route
 router.post ('/', async (req, res) => {
-  const isNameSearch = req.body.isnamesearch; //boolean flag to determine if location name search
+  const isNameSearch = req.body.isnamesearch; 
   const locationName = req.body.locationname;
   const numberOfMonths = req.body.numberofmonths;
   let latitude = req.body.lat;
@@ -490,10 +490,7 @@ console.log("SERVER API RECEIVED req.body args>>> "
 
       if (filters.length > 0) {
         //call function which removes unwanted crime category filters
-        const categoriesToInclude = applyFilters (filters);
-        
-      //console.log("SUPPLIED FILTERS: " + filters);
-      //console.log("FILTERED: " + categoriesToInclude);
+        const categoriesToInclude = applyFilters (filters);       
 
         for (let aCategory of categoriesToInclude) {
           if (aCrimeCategory === aCategory) {
