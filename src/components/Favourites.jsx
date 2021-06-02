@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
 import Favourite from './Favourite';
-import {MapURL} from '.././contexts/MapContext';
 import {MapDetails} from '.././contexts/MapDetailsContext';
 import {UserContext} from '../auth/UserProvider';
 import uuid from 'react-uuid';
@@ -12,7 +11,6 @@ import {useHistory} from 'react-router-dom';
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
 	const user = useContext(UserContext); //get User Context for ID
-	const [mapURL, setMapURL] = useContext(MapURL); //mapURL context //TODO do i still need this context?
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
 	const history = useHistory();
 
@@ -142,7 +140,9 @@ const Favourites = (props) => {
 					</Container>
 				) : (
 					<div>
-						<h1>No favourites found</h1>
+					<br />
+					<br />
+						<h1>You have no favourites yet.</h1>
 					</div>
 				)}
 			</Container>
@@ -152,4 +152,3 @@ const Favourites = (props) => {
 
 export default Favourites;
 
-//TODO implement Favourite component to display favourite information

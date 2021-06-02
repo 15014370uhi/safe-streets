@@ -51,7 +51,7 @@ const Login = () => {
 						<MDBCardBody>
 							<MDBCardHeader className="form-header bg-primary rounded">
 								<h1 className="my-3">
-									<MDBIcon icon="lock" />   Login
+									<MDBIcon className='login-icon-lock' icon="lock" size="lg" />Login
 								</h1>
 							</MDBCardHeader>
 							<form className="login-sign-header">
@@ -61,6 +61,7 @@ const Login = () => {
 										size="lg"								
 										icon="envelope"
 										autoComplete="email"
+										autoFocus
 										group
 										type="email"
 										name="email"

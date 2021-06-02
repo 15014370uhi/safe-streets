@@ -42,10 +42,20 @@ const MapDisplay = (props) => {
 			filters: filters,
 		};
 
+		console.log("After FILTERS - sending PAYLOAD: " 
+		+ "\nlocationname: " + mapDetails.locationname 
+		+ "\nisnamesearch: " + mapDetails.isnamesearch
+		+ "\nlat: " + mapDetails.lat
+		+ "\nlon: " + mapDetails.lon
+		+ "\nnumberofmonths: " + mapDetails.numberofmonths
+		+ "\nfilters: " + filters);
+
 		//call API function in external file
 		const response = await getUpdatedMapURL(payload); //TODO check data getting to api
 
-		await setMapDetails((mapDetails) => ({
+		console.log("Mapdisplay RESPONSE LAT, lon: " + response.lat + ", " + response.lon);
+
+		await setMapDetails((mapDetails) => ({ //dont need AWAIT // TODO
 			mapURL: response.mapurl,
 			locationname: response.locationname,
 			isnamesearch: response.isnamesearch,

@@ -53,7 +53,7 @@ const Register = (props) => {
 						<MDBCardBody>
 							<MDBCardHeader className="form-header bg-primary rounded">
 								<h1 className="my-3">
-									<MDBIcon icon="user-circle" /> Sign Up
+									<MDBIcon className='register-icon-user' icon="user-circle" size='lg'/> Sign Up
 								</h1>
 							</MDBCardHeader>
 							<form className="login-sign-header">
@@ -63,6 +63,7 @@ const Register = (props) => {
 										size="lg"
 										icon="envelope"
 										autoComplete="email"
+										autoFocus
 										group
 										type="email"
 										name="email"

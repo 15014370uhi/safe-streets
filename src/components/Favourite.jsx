@@ -31,19 +31,22 @@ const Favourite = ({
 					}}
 				/>
 				<Card.Header>{title}</Card.Header>
-				<Card.Body bg="light">
-					<Button onClick={() => {
+				<Card.Body 
+				className="favourite-card-body"
+				bg="light">
+					<Button 
+					className="favourite-card-display-button"
+					onClick={() => {
 						displayMap(mapurl);
 					}} variant="primary">
 						Display Map
 					</Button>
 					<i
-						className="far fa-trash-alt fa-lg"
+						className="far fa-trash-alt fa-lg trash-favourites"
 						onClick={() => {
 							deleteFavourite(mapurl);
 						}}
-					/>{' '}
-					by url
+					/>			
 				</Card.Body>
 				<Card.Footer>
 					<small className="text-muted">						

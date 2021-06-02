@@ -11,6 +11,25 @@ const firebaseConfig = {
 	appId: '1:400130243033:web:3439d32591167991e041c8',
 };
 
+//async function which returns the latest user document from firestore
+const getUserDocument = async (uid) => {
+	//no UID supplied, return null
+	if (!uid) {
+		return null;
+	}
+	//else user UID supplied for logged in user
+	try {
+		//get reference to current user document
+		const userDocument = await firestore.doc(`users/${uid}`).get();
+		return {
+			uid,
+			...userDocument.data(),
+		};
+	} catch (error) {
+		console.error('Error fetching user', error);
+	}
+};
+
 //function to create a new user with email and password
 export const createUserWithEmailAndPassword = async (email, password) => {
 	try {
@@ -102,10 +121,16 @@ export const addUserFavourite = async (
 	return getUserDocument(user.uid);
 };
 
-//async function to delete a user account from firebase authentication list
-export const deleteUserAccount = async () => {
+//reauthenticate a user with password
+export const reauthenticateUser = async (password) => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
-	user.delete(); //delete user authentication account record
+	var credentials = firebase.auth.EmailAuthProvider.credential(
+		user.email,
+		password
+	);
+	//TODO TEST
+	//console.log('reauthenticateUser --- user: ' + user + ' credentials: ' + credentials);
+	await user.reauthenticateWithCredential(credentials);
 };
 
 //async function to delete a user document in firestore
@@ -115,38 +140,21 @@ export const deleteUserDocument = async () => {
 	//get reference to current user data in firestore by UID
 	const userDocumentRef = firestore.doc(`users/${user.uid}`);
 
+		//TODO TEST
+		//console.log('deleteUserDocument --- user: ' + user + ' userDocumentRef: ' + userDocumentRef);
+
 	//delete user document from firestore
-	userDocumentRef.delete(); 
+	await userDocumentRef.delete(); 
 };
 
-//reauthenticate a user with password
-export const reauthenticateUser = async (password) => {
+//async function to delete a user account from firebase authentication list
+export const deleteUserAccount = async () => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
-	var credentials = firebase.auth.EmailAuthProvider.credential(
-		user.email,
-		password
-	);
-	await user.reauthenticateWithCredential(credentials);
-};
 
+	//TODO TEST
+	//console.log('deleteUserAccount --- user: ' + user);
 
-//async function which returns the latest user document from firestore
-const getUserDocument = async (uid) => {
-	//no UID supplied, return null
-	if (!uid) {
-		return null;
-	}
-	//else user UID supplied for logged in user
-	try {
-		//get reference to current user document
-		const userDocument = await firestore.doc(`users/${uid}`).get();
-		return {
-			uid,
-			...userDocument.data(),
-		};
-	} catch (error) {
-		console.error('Error fetching user', error);
-	}
+	await user.delete(); //delete user authentication account record
 };
 
 //initialise firebase
@@ -156,6 +164,5 @@ if (!firebase.apps.length) {
 	firebase.app(); //if already initialized, use that one
 }
 
-//firebase.initializeApp(firebaseConfig);
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

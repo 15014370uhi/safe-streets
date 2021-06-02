@@ -11,7 +11,6 @@ import {
 import uuid from 'react-uuid';
 import firebase from 'firebase';
 import {useHistory} from 'react-router-dom';
-
 import {
 	MDBCard,
 	MDBCardBody,
@@ -26,7 +25,6 @@ import {
 	MDBIcon,
 	MDBInput,
 } from 'mdb-react-ui-kit';
-
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
@@ -37,9 +35,9 @@ const Profile = () => {
 	const user = useContext(UserContext);
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
 
-	//TODO add icon choice for favourite - Long Term ?????????
+	//TODO maybe add icon choice for favourite ?????
 
-	// Modal dialog state for user account deletion
+	//modal dialog state for user account deletion
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
@@ -49,6 +47,36 @@ const Profile = () => {
 		getUserDetails();
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	//remove a favourite from a user's collection of all favourites
+	const deleteFavourite = (aFavourite) => {
+		
+		var userRef = firebase.firestore().collection('users').doc(user.uid);
+		userRef
+			.get()
+			.then(function (doc) {
+				if (doc.exists) {
+					const favouritesToKeep = doc
+						.data()
+						.favourites.filter(
+							(favourite) =>
+								favourite.mapURL !== aFavourite.mapURL
+						);
+					//update firestore doc with the filtered favourites
+					userRef.update({
+						favourites: favouritesToKeep,
+					});
+
+					//update favourites state
+					setLocalFavourites(favouritesToKeep);
+				} else {
+					console.log('No favourites!');
+				}
+			})
+			.catch(function (error) {
+				console.log('Error getting favourites:', error);
+			});
+	};
 
 	//function which retrieves the favourites for a user
 	const getUserDetails = async () => {
@@ -73,7 +101,7 @@ const Profile = () => {
 		}
 	};
 
-	// Function which handles user input changes
+	//function which handles user input changes
 	const onChangeHandler = (e) => {
 		const {value} = e.currentTarget;
 		setPassword(value);
@@ -90,7 +118,7 @@ const Profile = () => {
 	//function to delete the current user's account
 	const deleteUserHandler = async (e) => {
 		//reauthenticate user with password input
-		await reauthenticateUser(password) //TODO added await here <<< wait for success message before redirecting to register
+		await reauthenticateUser(password)
 			.then((res) => {
 				console.log('User reauthenticated successfully: ', res);
 
@@ -102,6 +130,14 @@ const Profile = () => {
 						//delete user authentication account entry from firebase
 						deleteUserAccount()
 							.then((res) => {
+								console.log(
+									'User Authentication Account successfully deleted'
+								);
+
+								alert(
+									'Your account and saved data has been sucessfully deleted.'
+								);
+
 								//redirect to register page
 								let path = `/register`;
 								history.push(path);
@@ -132,6 +168,7 @@ const Profile = () => {
 			numberofmonths: aFavourite.numberofmonths,
 			filters: aFavourite.filters,
 		});
+
 		//redirect to register user page
 		history.push(`/results`, {
 			isfavourite: 'true', //boolean flag to determine if map a previously favourited or new search
@@ -153,27 +190,36 @@ const Profile = () => {
 						</MDBCardText>
 					</MDBCardBody>
 					<MDBCardHeader className="profile-heading">
-						<h2 className="profile-main-heading">Favourites</h2>
+						<h2 className="profile-main-heading">
+							Favourites ({localFavourites.length})
+						</h2>
 					</MDBCardHeader>
 					<MDBListGroup flush>
 						{localFavourites.map((favourite) => (
 							<div
 								key={uuid()}
-								className="profile-list-favourite-item"
-								onClick={() => {
-									displayMap(favourite);
-								}}>
-								<MDBListGroupItem className="profile-favourites-list">
+								className="profile-list-favourite-item">
+								<MDBListGroupItem
+									className="profile-favourites-list"
+									>
 									<MDBCardLink>
-										<label className="profile-text  profile-favourite-entry">
+										<label className="profile-text profile-favourite-entry"
+										onClick={() => {
+											displayMap(favourite);
+									}}>
 											{favourite.title}
 										</label>
 									</MDBCardLink>
+									<i
+										className="far fa-trash-alt fa-lg trash-profile"
+										onClick={() => {
+											deleteFavourite(favourite)
+										}}
+									/>
 								</MDBListGroupItem>
 							</div>
 						))}
 					</MDBListGroup>
-
 					<MDBCardFooter className="profile-footer">
 						<MDBBtn
 							color="primary"
@@ -190,12 +236,16 @@ const Profile = () => {
 							Delete Account
 						</MDBBtn>
 					</MDBCardFooter>
-
 					<Modal show={show} onHide={handleClose} animation={false}>
 						<MDBContainer>
-							<MDBIcon size="3x" icon="user" />
-							{user.email}
-							<br />
+							<MDBIcon
+								className="iconDeleteAccount"
+								size="md"
+								icon="user"
+							/>
+							<label className="deleteAccountEmail">
+								{user.email}
+							</label>
 							<Modal.Title>
 								<p>
 									To permanently delete your account, please
@@ -203,7 +253,6 @@ const Profile = () => {
 								</p>
 							</Modal.Title>
 						</MDBContainer>
-
 						<Modal.Body>
 							<div>
 								<MDBInput
@@ -211,12 +260,12 @@ const Profile = () => {
 									type="password"
 									name="password"
 									placeholder="Enter your password..."
+									autoFocus
 									value={password}
 									onChange={(e) => onChangeHandler(e)}
 								/>
 							</div>
-
-							<div className="text-center mt-4">
+							<div className="text-center mt-4 delete-profile-error">
 								{error !== null && (
 									<div className="py-4 bg-red-600 w-full text-red text-center mb-3">
 										{error}
@@ -224,7 +273,6 @@ const Profile = () => {
 								)}
 							</div>
 						</Modal.Body>
-
 						<Modal.Footer>
 							<Button variant="primary" onClick={handleClose}>
 								Cancel
@@ -244,5 +292,3 @@ const Profile = () => {
 	);
 };
 export default Profile;
-
-// TODO add favourites using actual favourites list

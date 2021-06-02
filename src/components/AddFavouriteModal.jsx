@@ -5,7 +5,7 @@ import {addUserFavourite} from '../firebase';
 import {useHistory} from 'react-router-dom';
 
 //style components
-import {MDBInput} from 'mdbreact';
+import {MDBInput, MDBIcon} from 'mdbreact';
 
 const AddFavouriteModal = (props) => {
 	const [title, setTitle] = useState('');
@@ -17,7 +17,6 @@ const AddFavouriteModal = (props) => {
 
 		try {
 			await addUserFavourite(
-				//TODO may need to fill in default values for undefined
 				title,
 				props.mapdetails.mapURL,
 				props.mapdetails.locationname,
@@ -55,16 +54,20 @@ const AddFavouriteModal = (props) => {
 			centered>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
-					Add New Favourite Location
+					<h3 className="my-3">
+						<MDBIcon className='addFavModal-icon' icon="bookmark" />Add New Favourite Location
+					</h3>					
 				</Modal.Title>
 			</Modal.Header>
 
 			<Modal.Body>
 				<div className="grey-text">
-					<MDBInput
+					<MDBInput					 	
+						className="favourite-input-title"
 						required
-						label="Add a title..."
-						size="lg"
+						label="Enter a title..."
+						background size="lg"
+						autoFocus
 						group
 						type="text"
 						name="title"

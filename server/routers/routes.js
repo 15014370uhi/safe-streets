@@ -13,16 +13,24 @@ mapquest.key = process.env.MAPQUEST_API_KEY;
  *
  * @return {Array} boundingBox
  */
-const getBoundingBox = (latLocation, lonLocation) => {
+const getBoundingBox = (latLocation, lonLocation) => {  
+
+  latLocation= parseFloat(latLocation);
+  lonLocation= parseFloat(lonLocation);
+
   var boundingBox = []; //initialise array to hold bounding box coordinates
   const latCorrection = 0.004; //offset adjustment for latitude coordinate
   const lonCorrection = 0.009; //offset adjustment for longitude coordinate
   const precision = 6; //significant figures accuracy for Lat, lon coordinates
 
+
   //top left coordinate of bounding box
   const latTopLeft = parseFloat (latLocation + latCorrection).toPrecision (
     precision
   );
+
+  console.log("BB latTopLeft: " + latTopLeft);
+
   const lonTopLeft = parseFloat (lonLocation - lonCorrection).toPrecision (
     precision
   );
@@ -314,7 +322,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   }
 
   //add URL ending string
-  URLMap = URLMap + '&zoom=8&size=600,600@2x'; //TODO zoom value lower = closer,  width,length
+  URLMap = URLMap + '&zoom=8&size=600,600@2x'; //TODO NOTE: zoom value: lower = closer,  width,length
 
   //return full URL for a static map with all crime locations marked
   return URLMap;
@@ -365,7 +373,7 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     .get (URLCrimes)
     .then (res => {
       if (res.length === 0) {
-        console.log ('Empty response from crime data');
+        console.log ('No crimes for this search');
       }
       crimeData = res.data;
     })
@@ -447,6 +455,8 @@ console.log("SERVER API RECEIVED req.body args>>> "
 
   //named location search used
   if (isNameSearch) { //TODO this is set to false on filter apply - should stay true
+
+    console.log("Was NAME search ------------------ ");
     //call function to convert named location to a set of lat and lon coordinates
     const geoCoords = await getGeocode (locationName);
     latitude = geoCoords.latitude; //store returned lat coordinate
@@ -454,7 +464,9 @@ console.log("SERVER API RECEIVED req.body args>>> "
   }
 
   //call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
-  const boundingBox = getBoundingBox (latitude, longitude);
+   const boundingBox = getBoundingBox (latitude, longitude);
+
+  console.log("boundingBox returned as: " + boundingBox);
 
   //populate array with all dates to check
   var crimeMonthsArray = populateCrimeDates (numberOfMonths);

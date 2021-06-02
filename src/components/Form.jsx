@@ -32,6 +32,7 @@ const Search = (props) => {
 	return (
 		<form onSubmit={submitForm}>
 			<fieldset
+				onClick={(e) => radioClickedHandler('0')}
 				className={
 					radioButton === '0'
 						? 'selectedFieldSet'
@@ -51,17 +52,18 @@ const Search = (props) => {
 				<br />
 				<label className="inputLabels">Street Address</label>
 				<MDBInput
-					autoFocus={{radioButton} === '0' ? true : false}
-					size="lg"
-					icon="road"
-					type="text"
-					name="locationName"
+					autoFocus={radioButton === '0' ? true : false}
+					size='lg'
+					icon='road'
+					type='text'
+					name='locationName'				
 					value={locationName}
 					onChange={formInputHandler}
 					onClick={(e) => radioClickedHandler('0')}
 				/>
 			</fieldset>
 			<fieldset
+			onClick={(e) => radioClickedHandler('1')}
 				className={
 					radioButton === '1'
 						? 'selectedFieldSet'
@@ -71,12 +73,12 @@ const Search = (props) => {
 					{' '}
 					Search by latitude and longitude
 					<input
-						className="form-radio"
-						type="radio"
+						className='form-radio'
+						type='radio'
 						checked={radioButton === '1'}
 						onClick={(e) => radioClickedHandler('1')}
 						onChange={formInputHandler}
-						id="searchRadioLatLon"
+						id='searchRadioLatLon'
 					/>
 				</label>
 				<br />
@@ -157,7 +159,7 @@ const Search = (props) => {
 					<div className="py-4 bg-red-600 w-full text-red text-center mb-3">
 						{error}
 					</div>
-				)}
+				)}			
 				<MDBBtn
 					id="searchSubmitButton"
 					color="secondary"

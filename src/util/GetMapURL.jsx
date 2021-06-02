@@ -25,15 +25,6 @@ export const getUpdatedMapURL = async (aPayload) => {
 //function which completes an API call
 const APICall = async (payload) => {
 
- console.log("ACTUAL API payload >>>>>>>>>>>> " 
-	 + "\nlocationname: " + payload.locationname 
-	 + "\nisnamesearch: " + payload.isnamesearch
-	 + "\nlat: " + payload.lat
-	 + "\nlon: " + payload.lon
-	 + "\nnumberofmonths: " + payload.numberofmonths
-	  + "\nfilters: " + payload.filters);
-
-
 	return new Promise((resolve) => {
 		axios
 			.post('http://localhost:5000/api/map', payload)

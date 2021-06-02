@@ -102,79 +102,16 @@ const FiltersModal = (props) => {
 	};
 
 	const applyFilters = async () => {
-		props.onHide(); //hide filter modal interface
-
-		//TODO TEST data
-		// // console.log("TESTING DATA APPLYFILTERS---------------" 
-		// // + "\nlocationname:" + mapDetails.locationname
-		// // 	+ "\nisnamesearch: " + mapDetails.isnamesearch
-		// // 	+ "\nlat: " + mapDetails.lat
-		// // 	+ "\nlon: " + mapDetails.lon
-		// // 	+ "\nnumberofmonths: " + mapDetails.numberofmonths
-		// // 	+ "\nfilters: " + filters);
-
-
-
-		// const payload = {
-		// 	locationname: mapDetails.locationname, //TODO ERROR with details
-		// 	isnamesearch: mapDetails.isnamesearch,
-		// 	lat: mapDetails.lat,
-		// 	lon: mapDetails.lon,
-		// 	numberofmonths: mapDetails.numberofmonths,
-		// 	filters: filters,
-		// };
-
-		// console.log("Payload in FILTERSMODAL SENT to getUpdatedMapURL---->>>>>>>>>>>>>>>>>>>>>>-" 
-		// + "\nlocationname:" + mapDetails.locationname
-		// 	+ "\nisnamesearch: " + mapDetails.isnamesearch
-		// 	+ "\nlat: " + mapDetails.lat
-		// 	+ "\nlon: " + mapDetails.lon
-		// 	+ "\nnumberofmonths: " + mapDetails.numberofmonths
-		// 	+ "\nfilters: " + filters);
-
-		//call API function in external file
-		
-		
-		//const responseObject = await getUpdatedMapURL(payload); //PREVIOUS 
+		props.onHide(); //hide filter modal interface		
 		props.updateMapURL(filters);
-
-
-		// console.log(
-		// 	'>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>' +
-		// 		'\nlatitude: ' +
-		// 		responseObject.latitude +
-		// 		'\nlongitude: ' +
-		// 		responseObject.longitude +
-		// 		'\nisNameSearch: ' +
-		// 		responseObject.isNameSearch +
-		// 		'\nnumberOfMonths' +
-		// 		responseObject.numberOfMonths +
-		// 		'\nmapurl: ' +
-		// 		responseObject.mapurl +
-		// 		'\nfilters: ' +
-		// 		responseObject.filters +
-		// 		'\n>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'
-		// );
-
-		// setMapDetails((prevState) => ({ //TODO may be cause of error PREVIOUS
-		// 	mapURL: responseObject.mapurl,
-		// 	...prevState.isnameSearch,
-		// 	...prevState.lat,
-		// 	...prevState.lon,
-		// 	...prevState.numberOfMonths,
-		// 	filters: filters,
-		// }));
 	};
 
 	const resetFilters = () => { //TODO causes breaking of map
 		filters = [];
-		//const resetButtons = [...crimeButtons]; //create copy of buttons array
 
 		for (let aButton of crimeButtons) {
 			aButton.isActive = true; 
 		}
-		//setCrimeButtons(resetButtons);
-		//props.onHide();
 		applyFilters();
 	};
 

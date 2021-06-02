@@ -224,16 +224,46 @@ i.far.fa-trash-alt.fa-lg:hover {
 }
 
 .profile-favourites-list {
-  background-color: rgba(38, 46, 117, 0.376);
+  background-color: rgba(38, 46, 117, 0.376);    
+}
+
+.profile-favourites-list:hover {
+  z-index: 10;
+  box-shadow: 3px 3px 3px 4px rgba(7, 0, 27, 0.548);
+}
+
+li.list-group-item.profile-favourites-list {
+  padding: 0px;
+}
+
+li.list-group-item.profile-favourites-list:hover {
+  font-weight: bold;  
+  color: rgb(7, 3, 3);
 }
 
 .profile-favourite-entry {
-  font-style: normal;  
+  font-style: normal;   
+  padding-left: 14px;
+  width: 88%; 
+  background-color: rgb(173,176,203);
+  margin-bottom: 0px;
+  cursor: pointer;
 }
 
-.profile-list-favourite-item:hover {
-  box-shadow: 1px 4px 4px 5px rgba(7, 0, 27, 0.548);
-  cursor: pointer;
+.profile-favourite-entry:hover {
+  
+}
+
+.trash-profile {
+  font-size: 3em;
+  float: right;
+  padding-top: 0.4em;
+  padding-right: 17px;
+}
+
+.trash-profile:hover {
+  font-weight: bold;
+  color: rgb(250, 0, 0);
 }
 
 .profile-footer {
@@ -249,14 +279,54 @@ i.far.fa-trash-alt.fa-lg:hover {
   box-shadow: 3px 3px 3px 4px rgba(7, 0, 27, 0.548);
 }
 
+.deleteAccountEmail {
+ font-size: 1.75em;
+}
+
+.iconDeleteAccount {  
+  margin-top: 3%;
+  margin-right: 4%;
+}
+
+.delete-profile-error {
+  min-height: 50px;
+}
+
 /* favourites page */
 .card-img, .card-img-top{
   max-height: 275px;
   max-width: 100%;
 }
 
-/* search form page */
+.fa-bookmark:before {  
+  margin-right: 15px;
+}
 
+.favourite-input-title {
+  background-color: #abadca2f !important;
+}
+
+.login-icon-lock, .register-icon-user {
+  margin-right: 25px;
+}
+
+.favourite-card-display-button {
+  font-size: 1em;
+}
+
+.favourite-card-body > .fa-trash-alt:before {
+  position: relative;
+  font-size: 1.7em;
+  padding-left: 100%;
+  top: 8px;  
+}
+
+.favourite-card-body > .fa-trash-alt:hover {
+ font-weight: bold;
+}
+
+
+/* search form page */
 .form-card {
   margin-top: 30px;
   padding-left: 12%;
@@ -353,9 +423,7 @@ form>fieldset {
   display: none;
 }
 
-
 /* map display screen */
-
 .mapDisplay {
   display: block;
   width: 100%;
@@ -423,7 +491,6 @@ form>fieldset {
   right: 4.5%;
 }
 
-
 .btn-filter-active,
 .btn-filter-inactive {
   font-size: 1.75em;
@@ -456,34 +523,15 @@ form>fieldset {
   font-size: 1.5em;
 }
 
-
 .btn-footer:hover {
   font-size: 1.5em;
   box-shadow: 3px 3px 3px 4px rgba(7, 0, 27, 0.548);
 }
 
-
-
 /* MEDIA Queries */
-
 @media screen and (max-width: 1024px) {
 
   /* navigation icon sizes */
-
-
-  /*
-  i.fas, i.fa {
-    font-size: 1.6em;
-  }
-  label.nav-icon-label {
-    padding-left: 3px;
-  }
-  .navbar-expand, .navbar-nav, .nav-link {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-*/
-
   .navbar-logo-text>h1 {
     font-weight: 550;
     font-size: 35px;
@@ -496,24 +544,11 @@ form>fieldset {
   div.navbar-nav {
     padding-right: 10px;
   }
-
-
-  /* 
-i.fas.mobile-icon::before
-/* navigation icon sizes 
-{
-  font-size: 1.7em;   
-} 
-
-.label-dropdown{
-  font-size: 2.5em;
-  margin-left: 40px;
-} */
 }
 
 @media screen and (max-width: 900px) {
-  /* navigation icon sizes */
 
+  /* navigation icon sizes */
   .mobile-icon {
     font-size: 2.4em;
   }
@@ -525,7 +560,6 @@ i.fas.mobile-icon::before
     margin-right: 65px;
   }
 
-
   i.fas.fa-times::before {
     color: rgb(1, 1, 2);
     background-color: rgb(141, 141, 197);
@@ -534,10 +568,8 @@ i.fas.mobile-icon::before
     margin-right: 60px;
   }
 
-  i.fas.mobile-icon::before
-
   /* navigation icon sizes */
-    {
+  i.fas.mobile-icon::before {
     font-size: 1.7em;
   }
 
@@ -548,7 +580,6 @@ i.fas.mobile-icon::before
   .mobile-show {
     display: block;
   }
-
 
   .NavbarItems {
     position: relative;
@@ -625,7 +656,6 @@ i.fas.mobile-icon::before
     padding-top: 30px;
   }
 
-
   label.nav-icon-label {
     font-size: 42px;
   }
@@ -637,7 +667,6 @@ i.fas.mobile-icon::before
   .mapDisplay {
     margin-left: 0px;
   }
-
 }
 
 @media screen and (max-width: 815px) {
@@ -663,9 +692,7 @@ i.fas.mobile-icon::before
     transform: translate(-4%, 0%);
     transition: all 0.3s ease;
   }
-
 }
-
 
 @media screen and (max-width: 815px) {
 
