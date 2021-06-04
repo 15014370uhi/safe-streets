@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../auth/UserProvider';
-import {MapDetails} from '.././contexts/MapDetailsContext';
+import {MapDetails} from '../contexts/MapDetailsContext';
 import {Redirect} from '@reach/router';
 import {
 	auth,
@@ -35,8 +35,6 @@ const Profile = () => {
 	const user = useContext(UserContext);
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
 
-	//TODO maybe add icon choice for favourite ?????
-
 	//modal dialog state for user account deletion
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
@@ -50,7 +48,6 @@ const Profile = () => {
 
 	//remove a favourite from a user's collection of all favourites
 	const deleteFavourite = (aFavourite) => {
-		
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
@@ -199,21 +196,20 @@ const Profile = () => {
 							<div
 								key={uuid()}
 								className="profile-list-favourite-item">
-								<MDBListGroupItem
-									className="profile-favourites-list"
-									>
+								<MDBListGroupItem className="profile-favourites-list">
 									<MDBCardLink>
-										<label className="profile-text profile-favourite-entry"
-										onClick={() => {
-											displayMap(favourite);
-									}}>
+										<label
+											className="profile-text profile-favourite-entry"
+											onClick={() => {
+												displayMap(favourite);
+											}}>
 											{favourite.title}
 										</label>
 									</MDBCardLink>
 									<i
 										className="far fa-trash-alt fa-lg trash-profile"
 										onClick={() => {
-											deleteFavourite(favourite)
+											deleteFavourite(favourite);
 										}}
 									/>
 								</MDBListGroupItem>

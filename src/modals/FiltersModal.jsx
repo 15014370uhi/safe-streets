@@ -1,15 +1,13 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import Modal from 'react-bootstrap/Modal';
-import {MapDetails} from '.././contexts/MapDetailsContext';
 import Button from 'react-bootstrap/Button';
-import ButtonFilterCrime from './ButtonFilterCrime';
+import ButtonFilterCrime from '../components/ButtonFilterCrime';
 import uuid from 'react-uuid';
-import {getUpdatedMapURL} from './../util/GetMapURL';
 
 //array to hold crimes to remove from map display
 let filters = []; //TODO TEST outside of scope
 
-const FiltersModal = (props) => {	
+const FiltersModal = (props) => {
 
 	//filter buttons
 	const [crimeButtons, setCrimeButtons] = useState([
@@ -34,7 +32,7 @@ const FiltersModal = (props) => {
 			isActive: true,
 		},
 		{
-			label: 'Property Theft',
+			label: 'Theft',
 			categories: ['other-theft', 'bicycle-theft'],
 			isActive: true,
 		},
@@ -70,7 +68,23 @@ const FiltersModal = (props) => {
 		},
 	]);
 
-	const [mapDetails, setMapDetails] = useContext(MapDetails);
+	const [appliedFilters, setAppliedFilters] = useState([]);
+
+	useEffect(() => {
+		setPreviousFilters(props.mapdetails.filters);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	//apply any filters supplied as props from previously filtered favourite
+	const setPreviousFilters = (filtersToApply) => {	
+		setAppliedFilters(filtersToApply); //set filters state to loaded filters		
+		filtersToApply.forEach((aFilterCategory) => {
+			const indexOfButtonToUpdate = crimeButtons.findIndex(
+				(aButton) => aButton.categories.includes(aFilterCategory)				
+			);
+			changeFilterState(crimeButtons[indexOfButtonToUpdate].label); //call function with label of corresponding button
+		});
+	};
 
 	//function to handle user form input
 	const changeFilterState = (label) => {
@@ -101,18 +115,27 @@ const FiltersModal = (props) => {
 		setCrimeButtons(updatedButtons);
 	};
 
+	//function to apply selected filters to map display
 	const applyFilters = async () => {
-		props.onHide(); //hide filter modal interface		
+		//TODO animate apply filters button - to give time for new filtered map to arrive
+		//TODO dont close modal until button states show they are dropHandler
+		//TODO might need another button like - apply - after filters reset
+
+		//TODO whatever causes them to cahange state when clicking on filter buttons - reverse that for
+		//TODO the reset button - just do same thing
+		props.onHide(); //hide filter modal interface
 		props.updateMapURL(filters);
 	};
 
-	const resetFilters = () => { //TODO causes breaking of map
+	const resetFilters = () => {
 		filters = [];
 
+		//iterate over all buttons and call the change state function for each
 		for (let aButton of crimeButtons) {
-			aButton.isActive = true; 
+			if (!aButton.isActive) {
+				changeFilterState(aButton.label);
+			}			
 		}
-		applyFilters();
 	};
 
 	return (
@@ -152,7 +175,7 @@ const FiltersModal = (props) => {
 					variant="green"
 					type="submit"
 					onClick={() => applyFilters()}>
-					Apply Filters
+					Apply
 				</Button>
 			</Modal.Footer>
 		</Modal>

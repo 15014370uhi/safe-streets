@@ -36,7 +36,7 @@ const ShowFavourite = ({
 			</Col>
 
 			<Button
-				className="w-full py-3 bg-blue-500 btn-favourites"
+				className="w-full py-3 bg-blue-500 btn-add-to-favourites"
 				variant="primary"
 				onClick={() => removeFavourite(mapurl)}>
 				<i className="fa fa-plus fa-lg mx-4" aria-hidden="true" />

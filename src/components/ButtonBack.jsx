@@ -4,6 +4,15 @@ import {useHistory} from 'react-router-dom';
 
 const ButtonFilter = props => {
   let history = useHistory ();
+//<i className="fa fa-arrow-left fa-lg mx-2" />
+
+// <Button
+// className="btn-back"
+// variant="secondary"
+// onClick={() => history.goBack ()}
+// >
+// <i className="fa fa-arrow-left fa-lg mx-2" />
+// </Button>
 
   return (
     <Button

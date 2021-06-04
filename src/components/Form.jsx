@@ -13,8 +13,7 @@ const Search = (props) => {
 		locationName,
 		lat,
 		lon,
-		numberOfMonths,
-		error,
+		numberOfMonths,		
 		dropHandler,
 		radioButton,
 		radioClickedHandler,
@@ -39,7 +38,7 @@ const Search = (props) => {
 						: 'notSelectedFieldSet'
 				}>
 				<label>
-					Search by street location
+					Search by location
 					<input
 						className="form-radio"
 						type="radio"
@@ -50,7 +49,7 @@ const Search = (props) => {
 					/>
 				</label>
 				<br />
-				<label className="inputLabels">Street Address</label>
+				<label className="inputLabels">Street address or town</label>
 				<MDBInput
 					autoFocus={radioButton === '0' ? true : false}
 					size='lg'
@@ -154,20 +153,14 @@ const Search = (props) => {
 				</Dropdown.Menu>
 			</Dropdown>
 
-			<div className="text-center mt-4">
-				{error !== null && (
-					<div className="py-4 bg-red-600 w-full text-red text-center mb-3">
-						{error}
-					</div>
-				)}			
+			<div className="text-center mt-4">	
 				<MDBBtn
 					id="searchSubmitButton"
 					color="secondary"
-					className="mb-3"
+					className="mb-3 submit-search-btn"
 					block
 					size="lg"
-					type="submit">
-					{' '}
+					type="submit">				
 					{submitText}
 				</MDBBtn>
 			</div>

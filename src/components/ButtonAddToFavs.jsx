@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 const ButtonAddToFavs = ({setModalShow}) => {
   return (
     <Button
-      className="w-full py-3 btn-favourites"
+      className="w-full py-3 btn-add-to-favourites"
       variant="success"
       title="Add to favourites"
       onClick={() => setModalShow (true)}

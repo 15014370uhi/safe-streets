@@ -30,14 +30,16 @@ const APICall = async (payload) => {
 			.post('http://localhost:5000/api/map', payload)
 			.then((res) => {
 				const response = {
-					mapurl: res.data.mapurl,
-					isnamesearch: res.data.isnamesearch,
-					locationname: res.data.locationname,
-					lat: res.data.lat,
-					lon: res.data.lon,
-					numberofmonths: res.data.numberofmonths, 
 					boundingbox: res.data.boundingbox, 
 					filters: res.data.filters, 
+					isnamesearch: res.data.isnamesearch,
+					lat: res.data.lat,
+					lon: res.data.lon,
+					location: res.data.location,
+					locationname: res.data.locationname,
+					mapurl: res.data.mapurl,					
+					numberofmonths: res.data.numberofmonths, 					
+					nocrimes: res.data.nocrimes,					
 				};
 				resolve(response);
 			})

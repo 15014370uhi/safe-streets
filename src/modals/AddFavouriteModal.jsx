@@ -9,6 +9,7 @@ import {MDBInput, MDBIcon} from 'mdbreact';
 
 const AddFavouriteModal = (props) => {
 	const [title, setTitle] = useState('');
+	const [charCount, setCharCount] = useState(50);
 	const history = useHistory();
 
 	//function which adds a new user favourite
@@ -42,6 +43,7 @@ const AddFavouriteModal = (props) => {
 		//if title input, set title state
 		if (name === 'title') {
 			setTitle(value);
+			setCharCount(50 - value.length);
 		}
 	};
 
@@ -55,18 +57,21 @@ const AddFavouriteModal = (props) => {
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
 					<h3 className="my-3">
-						<MDBIcon className='addFavModal-icon' icon="bookmark" />Add New Favourite Location
-					</h3>					
+						<MDBIcon className="addFavModal-icon" icon="bookmark" />
+						Add New Favourite Location
+					</h3>
 				</Modal.Title>
 			</Modal.Header>
 
 			<Modal.Body>
 				<div className="grey-text">
-					<MDBInput					 	
+					<MDBInput
 						className="favourite-input-title"
 						required
 						label="Enter a title..."
-						background size="lg"
+						maxLength="50"
+						background
+						size="lg"
 						autoFocus
 						group
 						type="text"
@@ -77,6 +82,7 @@ const AddFavouriteModal = (props) => {
 						value={title}
 						onChange={(e) => onChangeHandler(e)}
 					/>
+					<label>({charCount} Characters Remaining)</label>
 				</div>
 			</Modal.Body>
 

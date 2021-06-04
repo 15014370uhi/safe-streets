@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
-import Favourite from './Favourite';
-import {MapDetails} from '.././contexts/MapDetailsContext';
+import Favourite from '../components/Favourite';
+import {MapDetails} from '../contexts/MapDetailsContext';
 import {UserContext} from '../auth/UserProvider';
 import uuid from 'react-uuid';
 import Container from 'react-bootstrap/Container';

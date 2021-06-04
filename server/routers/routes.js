@@ -13,23 +13,19 @@ mapquest.key = process.env.MAPQUEST_API_KEY;
  *
  * @return {Array} boundingBox
  */
-const getBoundingBox = (latLocation, lonLocation) => {  
-
-  latLocation= parseFloat(latLocation);
-  lonLocation= parseFloat(lonLocation);
+const getBoundingBox = (latLocation, lonLocation) => {
+  latLocation = parseFloat (latLocation);
+  lonLocation = parseFloat (lonLocation);
 
   var boundingBox = []; //initialise array to hold bounding box coordinates
   const latCorrection = 0.004; //offset adjustment for latitude coordinate
   const lonCorrection = 0.009; //offset adjustment for longitude coordinate
   const precision = 6; //significant figures accuracy for Lat, lon coordinates
 
-
   //top left coordinate of bounding box
   const latTopLeft = parseFloat (latLocation + latCorrection).toPrecision (
     precision
   );
-
-  console.log("BB latTopLeft: " + latTopLeft);
 
   const lonTopLeft = parseFloat (lonLocation - lonCorrection).toPrecision (
     precision
@@ -286,7 +282,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         break;
       //robbery
       case 'robbery':
-        category = 'Robber';
+        category = 'Rob';
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
@@ -303,8 +299,8 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         symbol = 'flag-sm-';
         break;
 
-      default:
-        //TODO some default symbol for uncarterognised version ***
+      default:    
+      //intentially blank        
         break;
     }
     //construct additional URL string for current crime
@@ -322,7 +318,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   }
 
   //add URL ending string
-  URLMap = URLMap + '&zoom=8&size=600,600@2x'; //TODO NOTE: zoom value: lower = closer,  width,length
+  URLMap = URLMap + '&zoom=8&size=600,600@2x'; //TODO NOTES: zoom=lower value is closer,  size=width,length
 
   //return full URL for a static map with all crime locations marked
   return URLMap;
@@ -340,7 +336,6 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
   let lonTopRight = boundingBox[5];
   let latBotLeft = boundingBox[6];
   let lonBotLeft = boundingBox[7];
-
   let crimeData;
 
   //base URL for polygon search of police API
@@ -366,8 +361,6 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     lonBotLeft +
     '&date=' +
     crimeDateCheck;
-
-    console.log("\nCALL CRIME URL: " + URLCrimes + "\n");
 
   await axios
     .get (URLCrimes)
@@ -427,22 +420,29 @@ const applyFilters = filters => {
 
 //POST route
 router.post ('/', async (req, res) => {
-  const isNameSearch = req.body.isnamesearch; 
+  const isNameSearch = req.body.isnamesearch;
   const locationName = req.body.locationname;
   const numberOfMonths = req.body.numberofmonths;
   let latitude = req.body.lat;
   let longitude = req.body.lon;
   let filters = [];
-  
 
-//TODO TEST 
-console.log("SERVER API RECEIVED req.body args>>> " 
-  + "\nlocationname: " + req.body.locationname
-  + "\nisnamesearch: " + req.body.isnamesearch
-  + "\nlatitude: " + req.body.lat 
-  + "\nlongitude: " + req.body.lon
-  + "\nnumberofmonths: " + req.body.numberofmonths 
-  + "\nfilters: " + req.body.filters);
+  //TODO TEST
+  // console.log (
+  //   'SERVER API RECEIVED req.body args>>> ' +
+  //     '\nlocationname: ' +
+  //     req.body.locationname +
+  //     '\nisnamesearch: ' +
+  //     req.body.isnamesearch +
+  //     '\nlatitude: ' +
+  //     req.body.lat +
+  //     '\nlongitude: ' +
+  //     req.body.lon +
+  //     '\nnumberofmonths: ' +
+  //     req.body.numberofmonths +
+  //     '\nfilters: ' +
+  //     req.body.filters
+  // );
 
   if (req.body.filters !== undefined) {
     filters = req.body.filters;
@@ -454,19 +454,15 @@ console.log("SERVER API RECEIVED req.body args>>> "
   var noCrimes = false;
 
   //named location search used
-  if (isNameSearch) { //TODO this is set to false on filter apply - should stay true
+  if (isNameSearch) {
 
-    console.log("Was NAME search ------------------ ");
     //call function to convert named location to a set of lat and lon coordinates
     const geoCoords = await getGeocode (locationName);
     latitude = geoCoords.latitude; //store returned lat coordinate
     longitude = geoCoords.longitude; //store returned lon coordinate
   }
-
   //call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
-   const boundingBox = getBoundingBox (latitude, longitude);
-
-  console.log("boundingBox returned as: " + boundingBox);
+  const boundingBox = getBoundingBox (latitude, longitude);
 
   //populate array with all dates to check
   var crimeMonthsArray = populateCrimeDates (numberOfMonths);
@@ -502,7 +498,7 @@ console.log("SERVER API RECEIVED req.body args>>> "
 
       if (filters.length > 0) {
         //call function which removes unwanted crime category filters
-        const categoriesToInclude = applyFilters (filters);       
+        const categoriesToInclude = applyFilters (filters);
 
         for (let aCategory of categoriesToInclude) {
           if (aCrimeCategory === aCategory) {
@@ -515,8 +511,15 @@ console.log("SERVER API RECEIVED req.body args>>> "
               month: aCrimeMonth,
             };
 
+            //------------------------------------------------------------//
+            //TODO MACHINE LEARNING DATA
             //TODO for machine learning save full crime data records to master record array
             crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
+
+            //randomise crime order //TODO TEST shuffle data
+            crimeNodes = shuffleArray (crimeNodes);
+            //TODO for machine learning randomise <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+            //------------------------------------------------------------//
 
             //record only unique crime categories and locations for map display efficiency
             let uniqueCrimeNodes = displayCrimes.filter (
@@ -564,15 +567,17 @@ console.log("SERVER API RECEIVED req.body args>>> "
     }
   }
 
-  //randomise crime order
-  displayCrimes = shuffleArray (displayCrimes);
+  // //randomise crime order //TODO TEST shuffle data 
+  //TODO removed shuffle
+  // displayCrimes = shuffleArray (displayCrimes);
 
   //store max of 90 crimes to cater to mapquest marker quantity imposed limit
   slicedCrimes = displayCrimes.slice (0, 90);
 
+
   //if no crimes were found, set boolean flag
   if (slicedCrimes.length === 0) {
-    noCrimes = true; //TODO send message back if no crimes found to allow user alert in results page
+    noCrimes = true;
   }
 
   //call function which generates image URL with crime markers on map
@@ -583,16 +588,16 @@ console.log("SERVER API RECEIVED req.body args>>> "
 
   //respond with data //TODO don't need as much response data once finalised
   res.send ({
-    location: location,
-    locationname: locationName,
+    boundingbox: boundingBox,
+    filters: filters,
     isnamesearch: isNameSearch,
     lat: latitude,
     lon: longitude,
+    location: location,
+    locationname: locationName, 
     mapurl: mapURL,
-    numberofmonths: numberOfMonths,
-    boundingbox: boundingBox,
-    nocrimes: noCrimes,
-    filters: filters,
+    numberofmonths: numberOfMonths,    
+    nocrimes: noCrimes,    
   });
 });
 

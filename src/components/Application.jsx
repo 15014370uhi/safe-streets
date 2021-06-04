@@ -1,24 +1,21 @@
 import React, {useContext, useRef} from 'react';
-import Login from './Login';
-import Register from './Register';
-import Profile from './Profile';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import Profile from '../pages/Profile';
 import {UserContext} from '../auth/UserProvider';
-import Navbar from './NavBar';
-import Search from './Search';
-import Favourites from './Favourites';
+import Navbar from '../navigation/NavBar';
+import Search from '../pages/Search';
+import Favourites from '../pages/Favourites';
 import AddFavourite from './AddFavourite';
 import MapDisplay from './MapDisplay';
 import ShowFavourite from './ShowFavourite';
 import {Route, Switch, Redirect} from 'react-router-dom';
-
-// TODO rem pass props if needed - maybe user?
 
 const Application = () => {
   const user = useContext (UserContext);
   const mapURL = useRef('');
 
   const setMapURL = (aMapURL) => {
-    console.log("application mapURL updated: " + aMapURL);
     mapURL.current = aMapURL;
   }
 

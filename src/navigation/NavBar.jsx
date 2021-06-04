@@ -22,7 +22,6 @@ const NavBar = (props) => {
 					<h1>Safe Streets</h1>
 				</div>
 			</Navbar.Brand>
-
 			{user ? (
 				<Nav>
 					<div className="menu-icon" onClick={handleClick}>
@@ -32,7 +31,7 @@ const NavBar = (props) => {
 					<li className="nav-item mobile-show mobile-nav-search">
 						<Nav.Link
 							as={NavLink}
-							to="/search"
+							to="/search"							
 							onClick={closeMobileMenu}>
 							<i className="fas fa-search fa-2x mobile-search" />
 							<label className="nav-icon-label search-icon-label">

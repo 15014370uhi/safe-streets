@@ -1,15 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {MapDetails} from '.././contexts/MapDetailsContext';
-import {getUpdatedMapURL} from './../util/GetMapURL';
+import {MapDetails} from '../contexts/MapDetailsContext';
+import {getUpdatedMapURL} from '../util/GetMapURL';
 import {useHistory} from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
-import Col from 'react-bootstrap/col';
-import Row from 'react-bootstrap/row';
-import AddFavouriteModal from './AddFavouriteModal';
+import AddFavouriteModal from '../modals/AddFavouriteModal';
 import ButtonAddToFavs from './ButtonAddToFavs';
-import RemoveFavouriteModal from './RemoveFavouriteModal';
+import RemoveFavouriteModal from '../modals/RemoveFavouriteModal';
 import ButtonRemoveFromFavs from './ButtonRemoveFromFavs';
-import FiltersModal from './FiltersModal';
+import FiltersModal from '../modals/FiltersModal';
 import ButtonShowFilters from './ButtonShowFilters';
 import ButtonBack from './ButtonBack';
 
@@ -41,19 +39,8 @@ const MapDisplay = (props) => {
 			numberofmonths: mapDetails.numberofmonths,
 			filters: filters,
 		};
-
-		console.log("After FILTERS - sending PAYLOAD: " 
-		+ "\nlocationname: " + mapDetails.locationname 
-		+ "\nisnamesearch: " + mapDetails.isnamesearch
-		+ "\nlat: " + mapDetails.lat
-		+ "\nlon: " + mapDetails.lon
-		+ "\nnumberofmonths: " + mapDetails.numberofmonths
-		+ "\nfilters: " + filters);
-
 		//call API function in external file
 		const response = await getUpdatedMapURL(payload); //TODO check data getting to api
-
-		console.log("Mapdisplay RESPONSE LAT, lon: " + response.lat + ", " + response.lon);
 
 		await setMapDetails((mapDetails) => ({ //dont need AWAIT // TODO
 			mapURL: response.mapurl,
@@ -66,46 +53,91 @@ const MapDisplay = (props) => {
 		}));
 	};
 
+	//TODO try removing the col and row stuff to help buttons?
+	// <button type="button" class="btn btn-primary btn-floating">
+	// 				<i class="fas fa-download"></i>
+	// 			</button>
+	//<div class="sticky-top">
+
+// 	return (
+// 		<Col className="mt-4 pt-0 col-map-display">
+// 			<AddFavouriteModal
+// 				mapurl={mapDetails.mapURL}
+// 				show={showAddFavouriteModal}
+// 				onHide={() => setShowAddFavouriteModal(false)}
+// 				mapdetails={mapDetails}
+// 			/>
+
+// 			<RemoveFavouriteModal
+// 				mapurl={mapDetails.mapURL}
+// 				show={showRemoveFavouritesModal}
+// 				onHide={() => setShowRemoveFavouritesModal(false)}
+// 			/>
+
+// 			<FiltersModal
+// 				show={showFiltersModal}
+// 				onHide={() => setShowFiltersModal(false)}
+// 				updateMapURL={updateMapURL}
+// 				mapdetails={mapDetails}
+// 				setmapdetails={setMapDetails}
+// 			/>			
+
+// 			<Row className="row-map">			
+// 				<ButtonBack />
+// 				<ButtonShowFilters
+// 					openFilter={openFilter}
+// 					setModalShow={setShowFiltersModal}
+// 				/>	
+					
+					
+// 				{history.location.state?.isfavourite === 'true' ? (
+// 					<ButtonRemoveFromFavs
+// 						setModalShow={setShowRemoveFavouritesModal}
+// 					/>
+// 				) : (
+// 					<ButtonAddToFavs setModalShow={setShowAddFavouriteModal} />
+// 				)}			
+// 				<Image className="mapDisplay" src={mapDetails.mapURL} />				
+// 			</Row>			
+// 		</Col>
+// 	);
+// };
+
+
 	return (
-		<Col className="mt-4 pt-0 col-map-display">
+		<div className='map-container'>
+
 			<AddFavouriteModal
 				mapurl={mapDetails.mapURL}
 				show={showAddFavouriteModal}
 				onHide={() => setShowAddFavouriteModal(false)}
-				mapdetails={mapDetails}
-			/>
+				mapdetails={mapDetails}	/>
 
 			<RemoveFavouriteModal
 				mapurl={mapDetails.mapURL}
 				show={showRemoveFavouritesModal}
-				onHide={() => setShowRemoveFavouritesModal(false)}
-			/>
+				onHide={() => setShowRemoveFavouritesModal(false)}/>
 
 			<FiltersModal
 				show={showFiltersModal}
 				onHide={() => setShowFiltersModal(false)}
 				updateMapURL={updateMapURL}
 				mapdetails={mapDetails}
-				setmapdetails={setMapDetails}
-			/>
-			<Row className="row-map">
-				<ButtonBack />
-				<ButtonShowFilters
-					openFilter={openFilter}
-					setModalShow={setShowFiltersModal}
-				/>
+				setmapdetails={setMapDetails}/>		
 
-				{history.location.state?.isfavourite === 'true' ? (
-					<ButtonRemoveFromFavs
-						setModalShow={setShowRemoveFavouritesModal}
-					/>
-				) : (
-					<ButtonAddToFavs setModalShow={setShowAddFavouriteModal} />
-				)}
-
-				<Image className="mapDisplay" src={mapDetails.mapURL} />
-			</Row>
-		</Col>
+			<ButtonBack />
+			<ButtonShowFilters
+				openFilter={openFilter}
+				setModalShow={setShowFiltersModal}/>	
+					
+			{history.location.state?.isfavourite === 'true' ? (
+				<ButtonRemoveFromFavs
+					setModalShow={setShowRemoveFavouritesModal}/>
+			) : (
+				<ButtonAddToFavs setModalShow={setShowAddFavouriteModal} />
+			)}			
+				<Image className="mapDisplay" src={mapDetails.mapURL} />				
+		</div>
 	);
 };
 export default MapDisplay;

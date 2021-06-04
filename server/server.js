@@ -4,13 +4,13 @@ const cors = require('cors');
 const routes = require ('./routers/routes');
 const app = express();
 
-// Allow environmental variables
+//allow environmental variables
 dotenv.config();
 
-// Set port for local testing and enviornmental variable
+//set port for local testing and enviornmental variable
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+//middleware
 app.use (express.json ()); // Body parser json
 app.use(
   cors({
@@ -22,18 +22,12 @@ app.use(
   })
 );
 
-
-// Start server
+//start server
 app.listen (PORT, () => {
     console.log (`Server is running on port ${PORT}`);
   });
 
   app.get('/', (req, res) => res.send('Hello world!'));
 
-// Set api routes
+//set api route
 app.use('/api/map', routes);
-//app.use('/api/user', userRoute);
-
-//app.use ('/api', apiRoutes);
-
-
