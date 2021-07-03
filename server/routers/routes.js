@@ -1,17 +1,28 @@
 const router = require ('express').Router ();
 const mapquest = require ('mapquest');
 const axios = require ('axios');
+const {generateCSV, editCSV} = require('../util/csv-util');
+
 mapquest.key = process.env.MAPQUEST_API_KEY;
+
+//TODO TEST creation of csv file
+//generateCSV();
+
+//TODO TEST calling external function and supplying a file path
+//let aFilePath = '../server/crime-data/output.csv';
+//editCSV(aFilePath);
+
+
 
 /**
  * Returns an array of latitude and longitutde coordinates 
- * forming a 1 mile square bounding box centered on 
- * a pair of lat and lon coordinates.
+ * forming approx 1 mile square bounding box centered on 
+ * a pair of latitude and longitude coordinates.
  *
- * @param {Number} latLocation
- * @param {Number} lonLocation
+ * @param {string} latLocation The center point latitude coordinate
+ * @param {string} lonLocation The center point longitude coordinate
  *
- * @return {Array} boundingBox
+ * @return {array} Bounding box of map area
  */
 const getBoundingBox = (latLocation, lonLocation) => {
   latLocation = parseFloat (latLocation);
@@ -71,7 +82,6 @@ const getBoundingBox = (latLocation, lonLocation) => {
   return boundingBox;
 };
 
-
 /**   
  * function which returns the latitude and longitude of a named UK street location
  * 
@@ -118,8 +128,8 @@ const getGeocode = async locationName => {
 
 /** 
  * Function which returns an array of dates in the format YYYY-MM 
- * for a given number of prior months, begining 1 month prior
- * to current month, since current months are not recorded.   
+ * for a given number of months, begining 1 month prior
+ * to the current month   
  * 
  * @param {number} numberOfMonthsRequired The number of months to check for crimes
  * 
@@ -145,11 +155,10 @@ const populateCrimeDates = numberOfMonthsRequired => {
    * Set initial crime month to the previous month,
    * since the current month's crimes are not usually listed. 
    */
-  //change month to previous month
   if (currentMonth === 1) {
     //January special case
-    crimeMonth = 12; // Set crime month to December
-    currentYear--; // Decrement year
+    crimeMonth = 12; //set crime month to December
+    currentYear--; //decrement year
   } else {
     //just decrement month by 1
     crimeMonth = currentMonth--;
@@ -198,7 +207,6 @@ const populateCrimeDates = numberOfMonthsRequired => {
   //return array of all dates to check for crimes
   return dateArray;
 };
-
 
 /**   
  * function which returns a static map image URL containing 
@@ -343,10 +351,8 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   return URLMap;
 };
 
-
-
 /**   
- * function which returns crime data for a spcific month 
+ * Function which returns crime data for a spcific month 
  * within a bounding box map area for a geographical location
  * 
  * @param {string} crimeDateCheck The month to check for recorded crimes
@@ -355,7 +361,6 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
  * @return {array} crime data for all crimes commited within bounding box map area for a given month  
  */
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
-  
   //set lat and lon coordinates of bounding box
   let latTopLeft = boundingBox[0];
   let lonTopLeft = boundingBox[1];
@@ -393,7 +398,7 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     '&date=' +
     crimeDateCheck;
 
-    //call police data API to retieve crimes for specified month and area
+  //call police data API to retieve crimes for specified month and area
   await axios
     .get (URLCrimes)
     .then (res => {
@@ -410,7 +415,7 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
   return crimeData;
 };
 
-//TODO Is this still useful???
+//TODO Is this still useful??? - keep for machine learning?
 /** 
  * function which randomly shuffles an array of crime data 
  * using the Fisher-Yates alogrithm
@@ -470,6 +475,11 @@ router.post ('/', async (req, res) => {
   let longitude = req.body.lon;
   let filters = [];
 
+
+//TEST CSV files
+generateCSV();
+
+
   //TODO TEST
   // console.log (
   //   'SERVER API RECEIVED req.body args>>> ' +
@@ -487,13 +497,14 @@ router.post ('/', async (req, res) => {
   //     req.body.filters
   // );
 
+  //if user has selected filters to apply
   if (req.body.filters !== undefined) {
     filters = req.body.filters;
   }
 
   var mapURL = ''; //static map image URL
   var location = ''; //variable to hold location
-  var crimes = [];
+  var crimes = []; //array to hold crime data
   var noCrimes = false;
 
   //named location search used
@@ -579,8 +590,7 @@ router.post ('/', async (req, res) => {
           }
         }
       } else {
-        //no filters supplied to API
-        //create new object with crime details to add
+        //no filters supplied to API, create new object with crime details to add
         const aCrimeDetails = {
           category: aCrimeCategory,
           latitude: aCrimeLat,
@@ -613,10 +623,11 @@ router.post ('/', async (req, res) => {
   //TODO removed shuffle to improve consistency of crimes displayed
   // displayCrimes = shuffleArray (displayCrimes);
 
+  //TODO might be able to remove upper limit since already removing duplicates above
   //store max of 90 crimes to cater to mapquest marker quantity imposed limit
   slicedCrimes = displayCrimes.slice (0, 90);
 
-  //if no crimes were found, set boolean flag
+  //if no crimes were found, set boolean flag to true
   if (slicedCrimes.length === 0) {
     noCrimes = true;
   }
