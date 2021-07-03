@@ -28,6 +28,7 @@ const MapDisplay = (props) => {
 	const openFilter = (e) => {
 		//TODO filter icons on map
 	};
+	
 
 	//function which updates the mapURL context
 	const updateMapURL = async (filters) => {
@@ -52,57 +53,6 @@ const MapDisplay = (props) => {
 			filters: response.filters,
 		}));
 	};
-
-	//TODO try removing the col and row stuff to help buttons?
-	// <button type="button" class="btn btn-primary btn-floating">
-	// 				<i class="fas fa-download"></i>
-	// 			</button>
-	//<div class="sticky-top">
-
-// 	return (
-// 		<Col className="mt-4 pt-0 col-map-display">
-// 			<AddFavouriteModal
-// 				mapurl={mapDetails.mapURL}
-// 				show={showAddFavouriteModal}
-// 				onHide={() => setShowAddFavouriteModal(false)}
-// 				mapdetails={mapDetails}
-// 			/>
-
-// 			<RemoveFavouriteModal
-// 				mapurl={mapDetails.mapURL}
-// 				show={showRemoveFavouritesModal}
-// 				onHide={() => setShowRemoveFavouritesModal(false)}
-// 			/>
-
-// 			<FiltersModal
-// 				show={showFiltersModal}
-// 				onHide={() => setShowFiltersModal(false)}
-// 				updateMapURL={updateMapURL}
-// 				mapdetails={mapDetails}
-// 				setmapdetails={setMapDetails}
-// 			/>			
-
-// 			<Row className="row-map">			
-// 				<ButtonBack />
-// 				<ButtonShowFilters
-// 					openFilter={openFilter}
-// 					setModalShow={setShowFiltersModal}
-// 				/>	
-					
-					
-// 				{history.location.state?.isfavourite === 'true' ? (
-// 					<ButtonRemoveFromFavs
-// 						setModalShow={setShowRemoveFavouritesModal}
-// 					/>
-// 				) : (
-// 					<ButtonAddToFavs setModalShow={setShowAddFavouriteModal} />
-// 				)}			
-// 				<Image className="mapDisplay" src={mapDetails.mapURL} />				
-// 			</Row>			
-// 		</Col>
-// 	);
-// };
-
 
 	return (
 		<div className='map-container'>

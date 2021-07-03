@@ -1,5 +1,5 @@
 const router = require ('express').Router ();
-const mapquest = require ('mapquest'); // Mapquest
+const mapquest = require ('mapquest');
 const axios = require ('axios');
 mapquest.key = process.env.MAPQUEST_API_KEY;
 
@@ -71,7 +71,14 @@ const getBoundingBox = (latLocation, lonLocation) => {
   return boundingBox;
 };
 
-//function which returns the latitude and longitude of a named UK street location
+
+/**   
+ * function which returns the latitude and longitude of a named UK street location
+ * 
+ * @param {string} locationName The location name
+ * 
+ * @return {object} latitude and longitude coordinates object
+ */
 const getGeocode = async locationName => {
   //declare array to hold results
   var geoCoords = {};
@@ -109,12 +116,14 @@ const getGeocode = async locationName => {
   return geoCoords;
 };
 
-/** Function which returns an array of dates in the format YYYY-MM 
+/** 
+ * Function which returns an array of dates in the format YYYY-MM 
  * for a given number of prior months, begining 1 month prior
  * to current month, since current months are not recorded.   
  * 
- * @param int The number of months to check for crimes
- * @return array dateArray The array of dates to check for crimes  
+ * @param {number} numberOfMonthsRequired The number of months to check for crimes
+ * 
+ * @return {array} The array of dates to check for crimes  
  */
 const populateCrimeDates = numberOfMonthsRequired => {
   //initialise an array to hold dates of months and year(s) to check for crimes
@@ -190,7 +199,18 @@ const populateCrimeDates = numberOfMonthsRequired => {
   return dateArray;
 };
 
-//function which returns a static map image URL containing crime locations centered at latLocation, lonLocation
+
+/**   
+ * function which returns a static map image URL containing 
+ * crime locations centered at latLocation, lonLocation
+ * 
+ * @param {array} boundingBox The bounding box coordinates of map area
+ * @param {array} crimeNodes All crime locations and type within map area
+ * @param {string} latLocation The latitude of center point of map area
+ * @param {string} lonLocation The longitude of center point of map area
+ * 
+ * @return {string} The URL of static map image with crime markers for each crime and center point  
+ */
 const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   //define base URL
   let URLMap =
@@ -226,7 +246,6 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   //iterate through array of all crime records and add lat, lon, crime category and map marker to URL string
   for (const aCrimeRecord of crimeNodes) {
     // Set specific display and URL format options based on crime type found
-    //TODO If no crimes - just add center marker and message no crimes of type
     switch (aCrimeRecord.category) {
       //anti-social
       case 'anti-social-behaviour':
@@ -299,8 +318,8 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         symbol = 'flag-sm-';
         break;
 
-      default:    
-      //intentially blank        
+      default:
+        //intentially blank
         break;
     }
     //construct additional URL string for current crime
@@ -324,10 +343,20 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   return URLMap;
 };
 
-//function which returns crime data for a spcific month at
-//an approx 1 mile box at a geographical location
+
+
+/**   
+ * function which returns crime data for a spcific month 
+ * within a bounding box map area for a geographical location
+ * 
+ * @param {string} crimeDateCheck The month to check for recorded crimes
+ * @param {array} boundingBox The map area bounding box coordinates to check for crimes
+ * 
+ * @return {array} crime data for all crimes commited within bounding box map area for a given month  
+ */
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
-  // Set lat and lon coordinates of bounding box
+  
+  //set lat and lon coordinates of bounding box
   let latTopLeft = boundingBox[0];
   let lonTopLeft = boundingBox[1];
   let latBotRight = boundingBox[2];
@@ -336,12 +365,14 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
   let lonTopRight = boundingBox[5];
   let latBotLeft = boundingBox[6];
   let lonBotLeft = boundingBox[7];
+
+  //variable to hold crime data
   let crimeData;
 
   //base URL for polygon search of police API
   let baseURL = 'https://data.police.uk/api/crimes-street/all-crime?poly=';
 
-  //generate URL for API
+  //generate URL for API with bounding box area and month
   let URLCrimes =
     baseURL +
     latTopLeft +
@@ -362,6 +393,7 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     '&date=' +
     crimeDateCheck;
 
+    //call police data API to retieve crimes for specified month and area
   await axios
     .get (URLCrimes)
     .then (res => {
@@ -378,10 +410,14 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
   return crimeData;
 };
 
-//function which randomly shuffles an array contents using the Fisher-Yates alogrithm
-/**
- * Shuffles the contents of an array in place.
- * @param {Array} An array of elements.
+//TODO Is this still useful???
+/** 
+ * function which randomly shuffles an array of crime data 
+ * using the Fisher-Yates alogrithm
+ *
+ * @param {Array} anArray The array of elements to shuffle.
+ * 
+ * @return {Array} The shuffled array of crime data 
  */
 const shuffleArray = anArray => {
   var x, j, index;
@@ -394,6 +430,13 @@ const shuffleArray = anArray => {
   return anArray;
 };
 
+/**
+ * Function which returns an array of all user selected crime filters to apply
+ * 
+ * @param {array} filters All user selected filters
+ * 
+ * @return {array} All the selected filters to apply to crimes
+ */
 const applyFilters = filters => {
   const allCategories = [
     'anti-social-behaviour',
@@ -455,7 +498,6 @@ router.post ('/', async (req, res) => {
 
   //named location search used
   if (isNameSearch) {
-
     //call function to convert named location to a set of lat and lon coordinates
     const geoCoords = await getGeocode (locationName);
     latitude = geoCoords.latitude; //store returned lat coordinate
@@ -567,13 +609,12 @@ router.post ('/', async (req, res) => {
     }
   }
 
-  // //randomise crime order //TODO TEST shuffle data 
-  //TODO removed shuffle
+  // //randomise crime order //TODO TEST shuffle data
+  //TODO removed shuffle to improve consistency of crimes displayed
   // displayCrimes = shuffleArray (displayCrimes);
 
   //store max of 90 crimes to cater to mapquest marker quantity imposed limit
   slicedCrimes = displayCrimes.slice (0, 90);
-
 
   //if no crimes were found, set boolean flag
   if (slicedCrimes.length === 0) {
@@ -594,10 +635,10 @@ router.post ('/', async (req, res) => {
     lat: latitude,
     lon: longitude,
     location: location,
-    locationname: locationName, 
+    locationname: locationName,
     mapurl: mapURL,
-    numberofmonths: numberOfMonths,    
-    nocrimes: noCrimes,    
+    numberofmonths: numberOfMonths,
+    nocrimes: noCrimes,
   });
 });
 

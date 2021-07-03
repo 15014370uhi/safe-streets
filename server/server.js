@@ -27,7 +27,7 @@ app.listen (PORT, () => {
     console.log (`Server is running on port ${PORT}`);
   });
 
-  app.get('/', (req, res) => res.send('Hello world!'));
+  //app.get('/', (req, res) => res.send('Hello world!'));
 
 //set api route
 app.use('/api/map', routes);
