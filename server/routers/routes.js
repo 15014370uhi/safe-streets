@@ -1,7 +1,7 @@
 const router = require ('express').Router ();
 const mapquest = require ('mapquest');
 const axios = require ('axios');
-const {generateCSV, editCSV} = require('../util/csv-util');
+const {generateCSV, editCSV} = require ('../util/csv-util');
 
 mapquest.key = process.env.MAPQUEST_API_KEY;
 
@@ -11,8 +11,6 @@ mapquest.key = process.env.MAPQUEST_API_KEY;
 //TODO TEST calling external function and supplying a file path
 //let aFilePath = '../server/crime-data/output.csv';
 //editCSV(aFilePath);
-
-
 
 /**
  * Returns an array of latitude and longitutde coordinates 
@@ -102,28 +100,64 @@ const getGeocode = async locationName => {
   //construct final URL
   const URLGeocode = baseURL + apiKey + '&location=' + locationName + ',UK';
 
+  let postcode;
+  let latitude;
+  let longitude;
+
   //async call to mapquest geocode API with URL
   await axios
     .get (URLGeocode)
     .then (function (res) {
-      //TODO check for not found location etc is there an error code?
+      //record returned latitude, longitude coordinates and postcode for named location
 
-      //record returned latitude and longitude coordinates for named location
-      const latitude = res.data.results[0].locations[0].displayLatLng.lat;
-      const longitude = res.data.results[0].locations[0].displayLatLng.lng;
-
-      //create results object for geo coordinates
-      geoCoords = {
-        latitude: latitude,
-        longitude: longitude,
-      };
+      postcode = res.data.results[0].locations[0].postalCode;
+      latitude = res.data.results[0].locations[0].displayLatLng.lat;
+      longitude = res.data.results[0].locations[0].displayLatLng.lng;
     })
     .catch (error => {
-      console.log ('error getting crime data: ', error);
+      console.log ('error getting geocoding data: ', error);
     });
+
+  //TODO get LSOA code for postcode area to use with machine learning
+  let LSOA = await getLSOA (postcode);
+
+  //create results object for geo coordinates
+  geoCoords = {
+    latitude: latitude,
+    longitude: longitude,
+    postcode: postcode,
+    lsoa: LSOA,
+  };
 
   //return coords object;
   return geoCoords;
+};
+
+/**   
+ * function which returns the LSOA code for a postcode 
+ * 
+ * @param {string} locationName The location name
+ * 
+ * @return {string} LSOA code
+ */
+const getLSOA = async postcode => {
+  //declare array to hold results
+  var LSOA;
+
+  //construct base URL
+  const baseURL = 'https://api.postcodes.io/postcodes/' + postcode;
+
+  //async call to postcode API to get LSOA code from postcode
+  await axios
+    .get (baseURL)
+    .then (function (res) {
+      LSOA = res.data.result.codes.lsoa;
+    })
+    .catch (error => {
+      console.log ('error retrieving LSOA code: ', error);
+    });
+
+  return LSOA; //return LSOA result
 };
 
 /** 
@@ -472,13 +506,12 @@ router.post ('/', async (req, res) => {
   const locationName = req.body.locationname;
   const numberOfMonths = req.body.numberofmonths;
   let latitude = req.body.lat;
-  let longitude = req.body.lon;
+  let longitude = req.body.lon;  
   let filters = [];
+  let LSOA;
 
-
-//TEST CSV files
-generateCSV();
-
+  //TEST CSV files
+  generateCSV ();
 
   //TODO TEST
   // console.log (
@@ -510,9 +543,13 @@ generateCSV();
   //named location search used
   if (isNameSearch) {
     //call function to convert named location to a set of lat and lon coordinates
+    //TODO get postcode for lat and lon
+    //TODO get LSOA code for postcode
+
     const geoCoords = await getGeocode (locationName);
     latitude = geoCoords.latitude; //store returned lat coordinate
     longitude = geoCoords.longitude; //store returned lon coordinate
+    LSOA = geoCoords.lsoa; //store LSOA code //TODO TEST 
   }
   //call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
   const boundingBox = getBoundingBox (latitude, longitude);
@@ -523,6 +560,8 @@ generateCSV();
   //array to hold crimes to display on map
   let slicedCrimes = [];
   let crimesDuringMonth = [];
+
+  //TODO count crimes per LSO per month
 
   //get crime data for location for all months required
   for (let aMonth of crimeMonthsArray) {
