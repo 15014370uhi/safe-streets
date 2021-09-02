@@ -2,6 +2,7 @@ const router = require ('express').Router ();
 const mapquest = require ('mapquest');
 const axios = require ('axios');
 const {generateCSV, editCSV} = require ('../util/csv-util');
+const {generateCrimeCSV, editCrimeCSV} = require ('../util/generateCrimeCSV');
 
 mapquest.key = process.env.MAPQUEST_API_KEY;
 
@@ -85,11 +86,11 @@ const getBoundingBox = (latLocation, lonLocation) => {
  * 
  * @param {string} locationName The location name
  * 
- * @return {object} latitude and longitude coordinates object
+ * @return {object} Object containing latitude and longitude
  */
-const getGeocode = async locationName => {
+const getLatLon = async locationName => {
   //declare array to hold results
-  var geoCoords = {};
+  var geoLocationData = {};
 
   //API key
   const apiKey = process.env.MAPQUEST_API_KEY;
@@ -100,7 +101,6 @@ const getGeocode = async locationName => {
   //construct final URL
   const URLGeocode = baseURL + apiKey + '&location=' + locationName + ',UK';
 
-  let postcode;
   let latitude;
   let longitude;
 
@@ -108,29 +108,77 @@ const getGeocode = async locationName => {
   await axios
     .get (URLGeocode)
     .then (function (res) {
-      //record returned latitude, longitude coordinates and postcode for named location
-
-      postcode = res.data.results[0].locations[0].postalCode;
+      //record returned latitude, longitude coordinates
       latitude = res.data.results[0].locations[0].displayLatLng.lat;
       longitude = res.data.results[0].locations[0].displayLatLng.lng;
     })
     .catch (error => {
-      console.log ('error getting geocoding data: ', error);
+      console.log (
+        'error getting geocoding lat lon data for location name: ',
+        error
+      );
     });
 
-  //TODO get LSOA code for postcode area to use with machine learning
-  let LSOA = await getLSOA (postcode);
-
   //create results object for geo coordinates
-  geoCoords = {
+  geoLocationData = {
     latitude: latitude,
     longitude: longitude,
-    postcode: postcode,
-    lsoa: LSOA,
   };
 
   //return coords object;
-  return geoCoords;
+  return geoLocationData;
+};
+
+/**
+ * 
+ * @param {latitude} latitude 
+ * @param {longitude} latitude 
+ * 
+ * @return {object} Object containing postcode and LSOA data
+ */
+const getGeoData = async (lat, lon) => {
+  //declare array to hold results
+  var geoData = {};
+
+  //declare variable to hold postcode and
+  let postcode;
+
+  //API key
+  const apiKey = process.env.MAPQUEST_API_KEY;
+
+  //construct base URL
+  const baseURL = 'http://www.mapquestapi.com/geocoding/v1/reverse?key=';
+
+  //construct API options string
+  const URLOptions =
+    '&includeRoadMetadata=false&includeNearestIntersection=false';
+
+  //construct final URL
+  const URLGeocode =
+    baseURL + apiKey + '&location=' + lat + ',' + lon + URLOptions;
+
+  //async call to mapquest geocode API with URL
+  await axios
+    .get (URLGeocode)
+    .then (function (res) {
+      //record returned postcode for lat lon location
+      postcode = res.data.results[0].locations[0].postalCode;
+    })
+    .catch (error => {
+      console.log ('error getting postcode data from lat lon: ', error);
+    });
+
+  let LSOAData = await getLSOA (postcode);
+
+  //create results object for geo data
+  geoData = {
+    postcode: postcode,
+    lsoa: LSOAData.lsoa,
+    lsoa_name: LSOAData.lsoa_name,
+  };
+
+  //return geoData object;
+  return geoData;
 };
 
 /**   
@@ -143,6 +191,8 @@ const getGeocode = async locationName => {
 const getLSOA = async postcode => {
   //declare array to hold results
   var LSOA;
+  var LSOA_name;
+  var LSOAData = {};
 
   //construct base URL
   const baseURL = 'https://api.postcodes.io/postcodes/' + postcode;
@@ -151,13 +201,19 @@ const getLSOA = async postcode => {
   await axios
     .get (baseURL)
     .then (function (res) {
-      LSOA = res.data.result.codes.lsoa;
+      LSOA = res.data.result.codes.lsoa; //get LSOA code
+      LSOA_name = res.data.result.admin_district; //get LSOA name
+
+      LSOAData = {
+        lsoa: LSOA,
+        lsoa_name: LSOA_name,
+      };
     })
     .catch (error => {
       console.log ('error retrieving LSOA code: ', error);
     });
 
-  return LSOA; //return LSOA result
+  return LSOAData; //return LSOA result
 };
 
 /** 
@@ -288,10 +344,23 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   //iterate through array of all crime records and add lat, lon, crime category and map marker to URL string
   for (const aCrimeRecord of crimeNodes) {
     // Set specific display and URL format options based on crime type found
-    switch (aCrimeRecord.category) {
+    switch (aCrimeRecord.category) { //TODO check that ML and CSV output crime categories all match
       //anti-social
       case 'anti-social-behaviour':
         category = 'Anti';
+        colour = '7B0099';
+        symbol = 'flag-sm-';
+        break;
+      //general Theft
+      case 'bicycle-theft':
+      case 'other-theft':
+        category = 'Theft';
+        colour = '00FF00';
+        symbol = 'flag-sm-';
+        break;
+      //burglary
+      case 'burglary':
+        category = 'Burg';
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
@@ -301,18 +370,17 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         colour = 'FF0000';
         symbol = 'flag-sm-';
         break;
-      //generalised public order
-      case 'public-order':
-      case 'other-crime':
-        category = 'Ordr';
-        colour = '7B0099';
+      //drugs
+      case 'drugs':
+        category = 'Drugs';
+        colour = 'FFFF00';
         symbol = 'flag-sm-';
         break;
-      //violent Crime
-      case 'violent-crime':
-      case 'theft-from-the-person':
-        category = 'Viol';
-        colour = 'FF0000';
+      //generalised public order
+      case 'other-crime':
+      case 'public-order':
+        category = 'Other';
+        colour = '7B0099';
         symbol = 'flag-sm-';
         break;
       //weapons
@@ -321,16 +389,17 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
+      //violent Crime
+      case 'violent-crime':
+      case 'theft-from-the-person':
+      case 'robbery':
+        category = 'Viol';
+        colour = 'FF0000';
+        symbol = 'flag-sm-';
+        break;
       //shoplifting
       case 'shoplifting':
         category = 'Shop';
-        colour = '00FF00';
-        symbol = 'flag-sm-';
-        break;
-      //general Theft
-      case 'other-theft':
-      case 'bicycle-theft':
-        category = 'Theft';
         colour = '00FF00';
         symbol = 'flag-sm-';
         break;
@@ -338,24 +407,6 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
       case 'vehicle-crime':
         category = 'Vehic';
         colour = '3B5998-22407F';
-        colour = '7B0099';
-        symbol = 'flag-sm-';
-        break;
-      //robbery
-      case 'robbery':
-        category = 'Rob';
-        colour = '7B0099';
-        symbol = 'flag-sm-';
-        break;
-      //drugs
-      case 'drugs':
-        category = 'Drugs';
-        colour = 'FFFF00';
-        symbol = 'flag-sm-';
-        break;
-      //burglary
-      case 'burglary':
-        category = 'Burg';
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
@@ -500,57 +551,72 @@ const applyFilters = filters => {
   return categoriesToInclude;
 };
 
+/**
+ * Function which creates a CSV of criteria for machine learnign prediction
+ * 
+ * @param {int} predictionYear The year for the prediction
+ * @param {int} predictionMonth The year for the prediction
+ * @param {string} lat The year for the prediction
+ * @param {string} lon The year for the prediction
+ * @param {string} LSOA_code The year for the prediction
+ * @param {string} LSOA_name The year for the prediction
+ * @param {string} postcode The year for the prediction
+ * 
+ * //@return {object} Machine learning prediction object data
+ */
+const generateMLData = (
+  predictionYear,
+  predictionMonth,
+  lat,
+  lon,
+  LSOA_code,
+  LSOA_name,
+  postcode
+) => {
+  const data = {
+    year: predictionYear,
+    month_num: predictionMonth,
+    lat: lat,
+    lon: lon,
+    LSOA_code: LSOA_code,
+    LSOA_name: LSOA_name,
+    postcode: postcode,
+  };
+
+  generateCrimeCSV (data);
+
+  //TODO call machine learning to get prediction
+
+  return true;
+};
+
 //POST route
 router.post ('/', async (req, res) => {
-  const isNameSearch = req.body.isnamesearch;
-  const locationName = req.body.locationname;
-  const numberOfMonths = req.body.numberofmonths;
-  let latitude = req.body.lat;
-  let longitude = req.body.lon;  
-  let filters = [];
-  let LSOA;
-
-  //TEST CSV files
-  generateCSV ();
-
-  //TODO TEST
-  // console.log (
-  //   'SERVER API RECEIVED req.body args>>> ' +
-  //     '\nlocationname: ' +
-  //     req.body.locationname +
-  //     '\nisnamesearch: ' +
-  //     req.body.isnamesearch +
-  //     '\nlatitude: ' +
-  //     req.body.lat +
-  //     '\nlongitude: ' +
-  //     req.body.lon +
-  //     '\nnumberofmonths: ' +
-  //     req.body.numberofmonths +
-  //     '\nfilters: ' +
-  //     req.body.filters
-  // );
+  const isNameSearch = req.body.isnamesearch; //boolean if name search
+  const locationName = req.body.locationname; //the name of location searched
+  const numberOfMonths = req.body.numberofmonths; //number of months searched
+  let latitude = req.body.lat; //latitude searched for
+  let longitude = req.body.lon; //longitude searched for
+  let filters = []; //to hold crime filters
+  var mapURL = ''; //static map image URL
+  var location = ''; //variable to hold location
+  var crimes = []; //array to hold crime data
+  var noCrimes = false; //if no crimes found
+  var geoData = {}; //geo data object
 
   //if user has selected filters to apply
   if (req.body.filters !== undefined) {
     filters = req.body.filters;
   }
 
-  var mapURL = ''; //static map image URL
-  var location = ''; //variable to hold location
-  var crimes = []; //array to hold crime data
-  var noCrimes = false;
-
   //named location search used
   if (isNameSearch) {
     //call function to convert named location to a set of lat and lon coordinates
-    //TODO get postcode for lat and lon
-    //TODO get LSOA code for postcode
-
-    const geoCoords = await getGeocode (locationName);
-    latitude = geoCoords.latitude; //store returned lat coordinate
-    longitude = geoCoords.longitude; //store returned lon coordinate
-    LSOA = geoCoords.lsoa; //store LSOA code //TODO TEST 
+    var locationData = await getLatLon (locationName);
+    latitude = locationData.latitude; //store lat coordinate of named location
+    longitude = locationData.longitude; //store lon coordinate of named location
   }
+
   //call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
   const boundingBox = getBoundingBox (latitude, longitude);
 
@@ -558,10 +624,10 @@ router.post ('/', async (req, res) => {
   var crimeMonthsArray = populateCrimeDates (numberOfMonths);
 
   //array to hold crimes to display on map
-  let slicedCrimes = [];
-  let crimesDuringMonth = [];
+  let slicedCrimes = []; //array to hold all crimes to display on map
+  let crimesDuringMonth = []; //array to hold a specific month's crimes
 
-  //TODO count crimes per LSO per month
+  //TODO count crimes per LSO per month - useful for info display stats etc or
 
   //get crime data for location for all months required
   for (let aMonth of crimeMonthsArray) {
@@ -578,7 +644,7 @@ router.post ('/', async (req, res) => {
   let crimeNodes = []; //array to hold all found crime locations and information
   let displayCrimes = []; //array to hold only unique crime types and locations for map display
 
-  //add category, and lat and lon locations for each crime
+  //add crime details for each crime
   for (let crimeCollection of crimes) {
     for (let aCrime of crimeCollection) {
       //store details of current crime
@@ -588,14 +654,16 @@ router.post ('/', async (req, res) => {
       let aCrimeStreet = aCrime.location.street.name;
       let aCrimeMonth = aCrime.month;
 
+      //if filters were selected
       if (filters.length > 0) {
-        //call function which removes unwanted crime category filters
+        //call function which removes unwanted/unselected crime filters
         const categoriesToInclude = applyFilters (filters);
 
         for (let aCategory of categoriesToInclude) {
           if (aCrimeCategory === aCategory) {
             //create new object with crime details to add
             const aCrimeDetails = {
+              //TODO SHOULD add postcode and LSOA stuff???????????-------------
               category: aCrimeCategory,
               latitude: aCrimeLat,
               longitude: aCrimeLon,
@@ -603,15 +671,13 @@ router.post ('/', async (req, res) => {
               month: aCrimeMonth,
             };
 
-            //------------------------------------------------------------//
+            //TODO================================------------------------------------------------------------//
             //TODO MACHINE LEARNING DATA
             //TODO for machine learning save full crime data records to master record array
             crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
-
             //randomise crime order //TODO TEST shuffle data
-            crimeNodes = shuffleArray (crimeNodes);
-            //TODO for machine learning randomise <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-            //------------------------------------------------------------//
+            // crimeNodes = shuffleArray (crimeNodes);
+            //TODO ===============for machine learning randomise <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
             //record only unique crime categories and locations for map display efficiency
             let uniqueCrimeNodes = displayCrimes.filter (
@@ -621,7 +687,7 @@ router.post ('/', async (req, res) => {
                 crime.longitude !== aCrimeLon
             );
 
-            //set crimeNodes to filtered crimeNodes
+            //set crimeNodes to filtered unique crimeNodes
             displayCrimes = uniqueCrimeNodes;
 
             //add current crime to array of all crimes to display on map
@@ -638,8 +704,10 @@ router.post ('/', async (req, res) => {
           month: aCrimeMonth,
         };
 
-        //add crime to master record of all crimes
-        crimeNodes.push (aCrimeDetails);
+        //TODO machine learning-=============================-------------------------------
+        //add crime to master record of all crimes without filtering
+        crimeNodes.push (aCrimeDetails); //TODO is needed? - may be able to remove the crimeNodes
+        //TODO ----=====================================------------------------------------------
 
         //record only unique crime categories and locations for map display efficiency
         let uniqueCrimeNodes = displayCrimes.filter (
@@ -658,11 +726,6 @@ router.post ('/', async (req, res) => {
     }
   }
 
-  // //randomise crime order //TODO TEST shuffle data
-  //TODO removed shuffle to improve consistency of crimes displayed
-  // displayCrimes = shuffleArray (displayCrimes);
-
-  //TODO might be able to remove upper limit since already removing duplicates above
   //store max of 90 crimes to cater to mapquest marker quantity imposed limit
   slicedCrimes = displayCrimes.slice (0, 90);
 
@@ -674,8 +737,36 @@ router.post ('/', async (req, res) => {
   //call function which generates image URL with crime markers on map
   mapURL = getMap (boundingBox, slicedCrimes, latitude, longitude);
 
-  //TODO call machine learning functions with master record of crimes
-  //TODO e.g. machineLearning(crimeNodes);
+
+
+
+  //TODO ----------------  Machine learning --------===================------------------------
+  const today = new Date ();
+  const predictionYear = today.getFullYear ();
+  const predictionMonth = today.getMonth () + 1;
+  //get geo location data for search area
+  geoData = await getGeoData (latitude, longitude);
+  var postcode = geoData.postcode; //postcode
+  var LSOA_code = geoData.lsoa; //store LSOA code //TODO TEST separate out lsoa fetching
+  var LSOA_name = geoData.lsoa_name; //store returned LSOA name
+  //TODO if moving machine learning model to node with tensorflowJS, pass CSV to it
+
+  //call ML modelling model with required data
+  var prediction = generateMLData (
+    predictionYear,
+    predictionMonth,
+    latitude,
+    longitude,
+    LSOA_code,
+    LSOA_name,
+    postcode
+  );
+  //TODO ----------------------------------------================================----------------------
+
+
+
+  
+
 
   //respond with data //TODO don't need as much response data once finalised
   res.send ({
