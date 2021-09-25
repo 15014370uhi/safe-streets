@@ -782,48 +782,100 @@ router.post ('/', async (req, res) => {
   );
   //TODO ----------------------------------------================================----------------------
 
-  var flaskData;
+  var flaskData = 'none';
+  const locationtest = 'blackpool';
 
-  //TODO TEST FLASK
-  await axios
-    .request ({
-      method: 'get',
-      url: 'http://localhost:5000/time',
-    })
-    .then (response => {
-      //console.log (response);
-      const data = response.data;
-      // console.log('DATA from FLASK: ')
-      // console.log(data.time);
-      flaskData = data.time;
-    })
-    .catch (reason => {
-      console.log (reason);
-    });
+  // // //TODO TEST FLASK
+    await axios
+      .request ({
+       method: 'POST',
+       url: 'http://localhost:5000/bob',
+       data: {
+         'name': locationtest
+       }
+      })
+     .then (response => {
+        //console.log (response);
+       const data = response.data;
+       console.log('DATA from FLASK: ')
+       console.log(data);
+       flaskData = data;
+      })
+      .catch (reason => {
+       console.log (reason);
+      });
 
     
-    const locationtest = 'blackpool';
+   
   
+  //   var data = { 
+  //     name: "foo",
+  //     surname: "bar"
+  //   }
 
-  //TODO TEST FLASK POST DATA
-  await axios ({
-      method: 'post',
-      url: 'http://localhost:5000/locations',
-      data: {
-        firstName: 'Fred',
-        lastName: 'Flintstone'
-      }
-    })
-    .then (response => {
-      //console.log (response);
-      const data = response.data;
-      console.log ('DATA from DATA TEST FLASK: ');
-      console.log (data.testloc);
-      //    flaskData = data;
-    })
-    .catch (reason => {
-      console.log (reason);
-    });
+  //   var options = {
+  //     method: 'POST',
+  //     url: 'http://localhost:5000/locations',
+  //     body: data,
+  //     json: true // Automatically stringifies the body to JSON
+  // };
+
+  // axios(options)
+  //     .then(response => {
+  //         console.log(response);          
+  //     })
+  //     .catch(error => {
+  //         console.log("Error in the axios call:" + error);
+  //     })
+
+    //   await axios
+    //   .request ({
+    //    method: 'get',
+    //    url: 'http://localhost:5000/bob',
+    //   })
+    //  .then (response => {
+    //     //console.log (response);
+    //    const data = response.data;
+    //    console.log('DATA from FLASK: ')
+    //     console.log(data.time);
+    //    flaskData = data.time;
+    //   })
+    //   .catch (reason => {
+    //    console.log (reason);
+    //   });
+
+    // axios.post('http://localhost:5000/locations', {
+    //   location: 'blackpool'     
+    // })
+    // .then(function (response) {
+    //   console.log(response)
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+
+
+
+
+  // await axios
+  //    .request ({
+  //      method: 'get',
+  //      url: 'http://localhost:5000/locations',
+  //      data: {
+  //        'location': locationtest
+  //      }
+  //    })
+  //    .then (response => {
+  //      //console.log (response);
+  //      const data = response.data;
+  //      console.log('DATA from FLASK: ')
+  //      console.log(data.message);
+  //      flaskData = data.message;
+  //    })
+  //    .catch (reason => {
+  //      console.log (reason);
+  //    });
+
 
   //respond with data //TODO don't need as much response data once finalised
   res.send ({

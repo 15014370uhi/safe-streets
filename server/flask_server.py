@@ -1,26 +1,36 @@
 #within myenv conda, inside server folder..   flask run
 
-import time
+#import time
 from flask import Flask, request
-#import jsonify # Import flask libraries
+from flask_cors import CORS
+import json 
 
 app = Flask(__name__)
+CORS(app)
 
 
-@app.route('/locations')
-#@app.route('/test', methods=['GET', 'POST'])
-def get_test():
-     return {'time': time.time()}
+@app.route('/')
+def index():
+  return "Flask server"
+  
 
-#@app.route('/time')
-#def get_current_time():
-#    return {'time': time.time()}
+@app.route('/locations/')
+def get_test(): 
+  print(request.json)    
+  return 'hello'
 
 
-@app.route('/times')
-def get_current_time():
-    return {'time': time.time()}
+@app.route('/postdata/', methods = ['POST'])
+def postdata():
+    data = request.get_json()
+    print(data)
+    # do something with this data variable that contains the data from the node server
+    return json.dumps({"newdata":"hereisthenewdatayouwanttosend"})
 
+
+@app.errorhandler(404) 
+def invalid_route(e): 
+    return "Invalid route was found."
 
  #location: testlocation,
  #       testlat: testlat,
@@ -32,5 +42,9 @@ def get_current_time():
 
 
 # Run the Flask server
-if(__name__=='__main__'):
-    app.run(debug=True)        
+#if(__name__=='__main__'):
+#    app.run(debug=True)      
+
+
+if __name__ == "__main__":
+    app.run(port=5000)  
