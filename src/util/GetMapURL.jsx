@@ -27,9 +27,10 @@ const APICall = async (payload) => {
 
 	return new Promise((resolve) => {
 		axios
-			.post('http://localhost:5000/api/map', payload)
+			.post('http://localhost:4000/api/map', payload)
 			.then((res) => {
 				const response = {
+					flaskdata: res.data.flaskdata,
 					boundingbox: res.data.boundingbox, 
 					filters: res.data.filters, 
 					isnamesearch: res.data.isnamesearch,

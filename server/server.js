@@ -7,8 +7,8 @@ const app = express();
 //allow environmental variables
 dotenv.config();
 
-//set port for local testing and enviornmental variable
-const PORT = process.env.PORT || 5000; //TODO Changed from 5000 to 4000
+//set port to server env variable or port 4000 
+const PORT = process.env.PORT || 4000; 
 
 //middleware
 app.use (express.json ()); // Body parser json

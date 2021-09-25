@@ -142,6 +142,10 @@ const Search = (props) => {
 				//check if no crimes were recorded for search criteria
 				const noCrimesDetected = response.nocrimes;
 
+				//TODO TEST 
+				//const flaskData = response.flaskdata;				
+				alert('flaskdata: ' + response.flaskdata);
+
 				//check for invalid lat and lon response, due to mispelled/invalid location name
 				let isValidLocation = isWithinUK(response.lat, response.lon);
 

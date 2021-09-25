@@ -346,9 +346,8 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
     // Set specific display and URL format options based on crime type found
     switch (aCrimeRecord.category) { //TODO check that ML and CSV output crime categories all match
       //TODO check why the cases string are lower case and different from CSV file
-      
-//TODO Violence and sexual offences  ????????????
 
+      //TODO Violence and sexual offences  ????????????
 
       //anti-social
       case 'anti-social-behaviour':
@@ -595,6 +594,23 @@ const generateMLData = (
   return true;
 };
 
+//TEST FLASK
+router.get ('/flask', async (req, res) => {
+  await axios
+    .request ({
+      method: 'get',
+      url: '/flask/test',
+      port: 5000, // port options is not valid - this does not have the desired result
+    })
+    .then (response => {
+      console.log (response);
+      const data = response.data;
+      console.log (data);
+    })
+    .catch (reason => {
+      console.log (reason);
+    });
+});
 
 //POST route
 router.post ('/', async (req, res) => {
@@ -743,9 +759,6 @@ router.post ('/', async (req, res) => {
   //call function which generates image URL with crime markers on map
   mapURL = getMap (boundingBox, slicedCrimes, latitude, longitude);
 
-
-
-
   //TODO ----------------  Machine learning --------===================------------------------
   const today = new Date ();
   const predictionYear = today.getFullYear ();
@@ -769,13 +782,52 @@ router.post ('/', async (req, res) => {
   );
   //TODO ----------------------------------------================================----------------------
 
+  var flaskData;
 
+  //TODO TEST FLASK
+  await axios
+    .request ({
+      method: 'get',
+      url: 'http://localhost:5000/time',
+    })
+    .then (response => {
+      //console.log (response);
+      const data = response.data;
+      // console.log('DATA from FLASK: ')
+      // console.log(data.time);
+      flaskData = data.time;
+    })
+    .catch (reason => {
+      console.log (reason);
+    });
 
+    
+    const locationtest = 'blackpool';
   
 
+  //TODO TEST FLASK POST DATA
+  await axios ({
+      method: 'post',
+      url: 'http://localhost:5000/locations',
+      data: {
+        firstName: 'Fred',
+        lastName: 'Flintstone'
+      }
+    })
+    .then (response => {
+      //console.log (response);
+      const data = response.data;
+      console.log ('DATA from DATA TEST FLASK: ');
+      console.log (data.testloc);
+      //    flaskData = data;
+    })
+    .catch (reason => {
+      console.log (reason);
+    });
 
   //respond with data //TODO don't need as much response data once finalised
   res.send ({
+    flaskdata: flaskData, //TEST
     boundingbox: boundingBox,
     filters: filters,
     isnamesearch: isNameSearch,
@@ -788,7 +840,5 @@ router.post ('/', async (req, res) => {
     nocrimes: noCrimes,
   });
 });
-
-
 
 module.exports = router;

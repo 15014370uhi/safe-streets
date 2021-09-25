@@ -1,0 +1,12 @@
+
+https://blog.miguelgrinberg.com/post/how-to-create-a-react--flask-project
+
+(Within server flask folder)
+
+python3 -m venv venv
+venv\Scripts\activate
+
+
+
+
+pip install flask python-dotenv
