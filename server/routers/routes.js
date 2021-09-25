@@ -345,6 +345,11 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   for (const aCrimeRecord of crimeNodes) {
     // Set specific display and URL format options based on crime type found
     switch (aCrimeRecord.category) { //TODO check that ML and CSV output crime categories all match
+      //TODO check why the cases string are lower case and different from CSV file
+      
+//TODO Violence and sexual offences  ????????????
+
+
       //anti-social
       case 'anti-social-behaviour':
         category = 'Anti';
@@ -590,6 +595,7 @@ const generateMLData = (
   return true;
 };
 
+
 //POST route
 router.post ('/', async (req, res) => {
   const isNameSearch = req.body.isnamesearch; //boolean if name search
@@ -782,5 +788,7 @@ router.post ('/', async (req, res) => {
     nocrimes: noCrimes,
   });
 });
+
+
 
 module.exports = router;

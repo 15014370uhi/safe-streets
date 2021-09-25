@@ -9,6 +9,7 @@ let filters = []; //TODO TEST outside of scope
 
 const FiltersModal = (props) => {
 
+	//TODO check how filters works with nodeJS filters/groupings and python code - consistency throughout
 	//filter buttons
 	const [crimeButtons, setCrimeButtons] = useState([
 		{

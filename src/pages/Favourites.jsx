@@ -90,7 +90,7 @@ const Favourites = (props) => {
 					const favouritesToKeep = doc
 						.data()
 						.favourites.filter(
-							(favourite) => favourite.mapURL !== aMapURL
+							(favourite) => favourite.mapURL !== aMapURL //TODO check how favs are deleted - needs to be unique so as not to delete several
 						);
 					//update firestore doc with the filtered favourites
 					userRef.update({
