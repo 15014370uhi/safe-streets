@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
-
+#from sklearn import *
 import numpy as np
 #from classifier.location_filtering import is_within_m25
 import joblib
@@ -57,6 +57,14 @@ def getResult(data):
     
 #function which returns the probablity of crime types occuring for a month and location
 def getProbability(month, year, lat, lon):    
+    
+    print('getProbability RECEVED: ')
+    print(str(month))
+    print(str(year))
+    print(str(lat))
+    print(str(lon))
+    print('-------------------------------------------')
+
 
     #check location lat and lon is within bounds of area
     #if not is_within_m25(parsed_address.latitude, parsed_address.longitude):
@@ -80,28 +88,39 @@ def getProbability(month, year, lat, lon):
     
     #get cluster value for current search location lat and lon using cluster model
     cluster = cluster_model.predict([[aLat, aLon]])
+    print('\n===CLUSTER==VALUE===')
+    print(cluster.item(0))
+    print('-------------------------------------------')
 
     #create X featuresarray month, year, cluster value
     X = np.array([[month, year, cluster.item(0)]], dtype=np.float64)
+    print('\n===X should hold month, year, cluster===')
+    print(X)
+    print('-------------------------------------------')
+
+
 
     #scale data
     X = randomForestModel.scaler.transform(X) #scale feature data
 
-    #one-hot encoding of cluster value    
+    #one-hot encoding of cluster value  
+    #print('\n===X should hold month, year, cluster===')
+  
     cluster_col = X[:, [2]]
+    #print(cluster_col)
     
     #get one-hot version of location
     oneHotEncodedCluster = randomForestModel.encoder.transform(cluster_col).toarray()
     
     #combine data back into array
     X = np.hstack((X[:, :2], oneHotEncodedCluster))
-
+    print(X)
     #get percentages in decimal form for y categories of theft, serious crime, 
     #minor and other crime,for provided X values supplied
     
     #get probability for crime categories
-    prediction = randomForestModel.model.predict_proba(X)[0] 
-    #possibly randomForestModel.predict_proba(X)[0] 
+    #prediction = randomForestModel.model.predict_proba(X)[0] 
+    prediction = randomForestModel.predict_proba(X)[0] 
 
     print('\n') 
     print('prediction value is: ' + str(prediction)) 

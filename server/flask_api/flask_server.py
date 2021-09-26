@@ -11,14 +11,14 @@ def index():
   return "Flask server running"
 
 @app.route('/testrf', methods = ['POST'])
-def postdata():    
+def runmodel():    
     data = request.get_json(silent=True)  
     month = data.get('month')
     year = data.get('year')     
     lat = data.get('lat')
     lon = data.get('lon')    
     result = getProbability(month, year, lat, lon)
-    print(result)      
+    #print(result)      
     return json.dumps({
       'month': month,
       'year': year,
