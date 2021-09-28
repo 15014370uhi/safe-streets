@@ -822,19 +822,22 @@ router.post ('/', async (req, res) => {
       },
     })
     .then (response => {
-      const data = response.data;
-      console.log(data)
-      //flaskData = {
+      const allData = response.data
+      //const data = response.data.Drugs;
+
+      //const data = response.data[0];
+      //console.log('DATA received back from flask to routes:')
+      //console.log(allData)
+      flaskData = {
+        data: allData
+        //data
       //  lat: data.lat,
       //  lon: data.lon,
-      //};
+      };
     })
     .catch (reason => {
       console.log (reason);
     });
-
-
-
 
 
   //respond with data //TODO don't need as much response data once finalised

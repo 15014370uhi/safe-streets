@@ -141,19 +141,30 @@ const Search = (props) => {
 
 				//check if no crimes were recorded for search criteria
 				const noCrimesDetected = response.nocrimes;
+								
+				//TODO FLASK DATA
+				//console.log(response.flaskdata.data);
+				const anti_social_behaviour = response.flaskdata.data.Anti_social_behaviour;
+				const burglary = response.flaskdata.data.Burglary;
+				const criminal_damage_and_arson = response.flaskdata.data.Criminal_damage_and_arson;
+				const drugs = response.flaskdata.data.Drugs;
+				const possession_of_weapons = response.flaskdata.data.Possession_of_weapons;
+				const public_order = response.flaskdata.data.Public_order;
+				const theft = response.flaskdata.data.Theft;
+				const vehicle_crime = response.flaskdata.data.Vehicle_crime;
+				const violent_crime = response.flaskdata.data.Violent_crime;
 
-
-
+				alert('Crime Probability in this area: \n\n'
+					+ 'Anti-Social = ' + anti_social_behaviour + '\n'
+					+ 'Burglary = ' + burglary + '\n'
+					+ 'Criminal Damage & Arson = ' + criminal_damage_and_arson + '\n'
+					+ 'Drugs = ' + drugs + '\n'
+					+ 'Possession of Weapons = ' + possession_of_weapons + '\n'
+					+ 'Public Order = ' + public_order + '\n'
+					+ 'Theft = ' + theft + '\n'
+					+ 'Vehicle Crime = ' + vehicle_crime + '\n'
+					+ 'Violent Crime = ' + violent_crime + '\n');
 				
-				//TODO TEST FLASK DATA
-				//const flaskLat = response.flaskdata.lat;			
-				//const flaskLon = response.flaskdata.lon;				
-				
-				//alert('flaskdata: ' + flaskLat + '  ' + flaskLon);
-				alert(response.flaskdata)
-
-
-
 
 				//check for invalid lat and lon response, due to mispelled/invalid location name
 				let isValidLocation = isWithinUK(response.lat, response.lon);

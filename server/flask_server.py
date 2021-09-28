@@ -1,4 +1,3 @@
-#within myenv conda, inside server folder..   flask run
 
 #import time
 from flask import Flask, request

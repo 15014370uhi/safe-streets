@@ -18,13 +18,13 @@ def runmodel():
     lat = data.get('lat')
     lon = data.get('lon')    
     result = getProbability(month, year, lat, lon)
-    #print(result)      
-    return json.dumps({
-      'month': month,
-      'year': year,
-      'lat': lat, 
-      'lon': lon    
-      })
+    #print(result.get('Drugs') )      
+   
+    results_JSON = json.dumps(result)  
+    #print(results_JSON)
+   # return json.dumps({'result': result})
+    return results_JSON
+
   
   
 @app.route('/testflask', methods = ['POST'])
