@@ -8,34 +8,33 @@ CORS(app)
 
 @app.route('/')
 def index():
-  return "Flask server running"
+  return 'Welcome to safe streets machine learning flask server'
 
-@app.route('/testrf', methods = ['POST'])
-def runmodel():    
+@app.route('/randomforest', methods = ['POST'])
+def runRFModel():    
     data = request.get_json(silent=True)  
     month = data.get('month')
     year = data.get('year')     
     lat = data.get('lat')
     lon = data.get('lon')    
-    result = getProbability(month, year, lat, lon)
+    result = getProbability(month, year, lat, lon) #invoke RF model
     #print(result.get('Drugs') )      
    
     results_JSON = json.dumps(result)  
     #print(results_JSON)
-   # return json.dumps({'result': result})
+    #return json.dumps({'result': result})
     return results_JSON
 
+    
+#@app.route('/testflask', methods = ['POST'])
+#def postdata():    
+#    data = request.get_json(silent=True)  
+#    lat = data.get('lat')
+#    lon = data.get('lon')       
+#    return json.dumps({'lat': lat, 'lon': lon})
   
   
-@app.route('/testflask', methods = ['POST'])
-def postdata():    
-    data = request.get_json(silent=True)  
-    lat = data.get('lat')
-    lon = data.get('lon')       
-    return json.dumps({'lat': lat, 'lon': lon})
-  
-  
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(port=5000)  
     
     # Get the output from the classification model

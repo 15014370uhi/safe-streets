@@ -7,17 +7,14 @@ import json
 app = Flask(__name__)
 CORS(app)
 
-
 @app.route('/')
 def index():
   return "Flask server"
   
-
 @app.route('/locations/')
 def get_test(): 
   print(request.json)    
   return 'hello'
-
 
 @app.route('/postdata/', methods = ['POST'])
 def postdata():
@@ -25,7 +22,6 @@ def postdata():
     print(data)
     # do something with this data variable that contains the data from the node server
     return json.dumps({"newdata":"hereisthenewdatayouwanttosend"})
-
 
 @app.errorhandler(404) 
 def invalid_route(e): 

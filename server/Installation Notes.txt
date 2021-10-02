@@ -1,0 +1,33 @@
+==  Work books & Model Building ==
+
+1. Install Anaconda Python Virtual Environment
+
+https://docs.anaconda.com/anaconda/install/windows/
+
+2. Install dependencies
+
+conda create --name mlenv python=3.9.7
+conda activate mlenv
+
+pip install pywin32==225
+conda install -c anaconda pandas
+pip install -U scikit-learn
+conda install jmespath
+
+conda install -c conda-forge folium
+conda install -c districtdatalabs yellowbrick
+conda install -c conda-forge shapely
+conda install seaborn
+conda install -c conda-forge matplotlib
+
+
+import geopandas as gpd
+
+
+=================
+FLASK VENV in server folder
+
+cd server
+cd flask_api
+venv\Scripts\activate
+flask run

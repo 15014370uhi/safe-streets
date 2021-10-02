@@ -762,7 +762,7 @@ router.post ('/', async (req, res) => {
   //TODO ----------------  Machine learning --------===================------------------------
   const today = new Date ();
   const predictionYear = today.getFullYear ();
-  const predictionMonth = today.getMonth () + 1;
+  const predictionMonth = today.getMonth () + 1; //TODO why add 1? should predict current month? or next?
   //get geo location data for search area
   geoData = await getGeoData (latitude, longitude);
   var postcode = geoData.postcode; //postcode
@@ -809,30 +809,48 @@ router.post ('/', async (req, res) => {
   //     console.log (reason);
   //   });
 
+  //latitude
+  //longitude
+  //month
+  //year
+
+
+  //await axios
+   // .request ({
+    //  method: 'POST',
+     // url: 'http://localhost:5000/testrf',
+      //data: {
+       // month: 5,
+      //  year: 2021,
+      //  lat: searchLat,
+       // lon: searchLon,
+      //},
+    //})
+
+  //latitude
+  //longitude
+  //month
+  //year
+  
+  //predictionYear
+  //predictionMonth
+
 
   await axios
     .request ({
       method: 'POST',
-      url: 'http://localhost:5000/testrf',
+      url: 'http://localhost:5000/randomforest',
       data: {
-        month: 5,
-        year: 2021,
-        lat: searchLat,
-        lon: searchLon,
+        month: predictionMonth, //TODO check which month I want to use
+        year: predictionYear,
+        lat: latitude,
+        lon: longitude,
       },
     })
     .then (response => {
       const allData = response.data
-      //const data = response.data.Drugs;
-
-      //const data = response.data[0];
-      //console.log('DATA received back from flask to routes:')
-      //console.log(allData)
       flaskData = {
-        data: allData
-        //data
-      //  lat: data.lat,
-      //  lon: data.lon,
+        data: allData        
       };
     })
     .catch (reason => {

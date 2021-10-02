@@ -1,0 +1,24 @@
+array(
+{
+	'type': 'FeatureCollection', 
+	'name': 'Counties_(December_2020)_EN_BFC', 
+	'crs': {
+		'type': 'name', 
+		'properties': {'name': 'urn:ogc:def:crs:OGC:1.3:CRS84'}
+		}, 
+	'features': [
+		{
+			'type': 'Feature', 
+			'properties': 
+			{
+				'OBJECTID': 1, 
+				'CTY20CD': 'E10000003', 
+				'CTY20NM': 'Cambridgeshire', 
+				'BNG_E': 520312, 'BNG_N': 273864, 
+				'LONG': -0.23506, 'LAT': 52.34966, 
+				'Shape__Area': 3052514925.55877, 
+				'Shape__Length': 507389.725615805
+			},
+			'geometry': {
+				'type':	'MultiPolygon', 
+				'coordinates': [[[[-0.085192876339934, 								 	 52.5828183029586], 
