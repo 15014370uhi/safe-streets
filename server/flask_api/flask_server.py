@@ -1,7 +1,8 @@
 from flask import Flask, request
 from flask_cors import CORS
 import json 
-from myRandomForest import getProbability
+from myRandomForest import getProbability #only use best model
+#from myLogisticRegression import getProbability
 
 app = Flask(__name__)
 CORS(app)
@@ -10,14 +11,15 @@ CORS(app)
 def index():
   return 'Welcome to safe streets machine learning flask server'
 
-@app.route('/randomforest', methods = ['POST'])
+@app.route('/predict', methods = ['POST'])
 def runRFModel():    
     data = request.get_json(silent=True)  
     month = data.get('month')
     year = data.get('year')     
     lat = data.get('lat')
-    lon = data.get('lon')    
-    result = getProbability(month, year, lat, lon) #invoke RF model
+    lon = data.get('lon')  
+    sector = data.get('sector')  #TODO
+    result = getProbability(month, year, lat, lon, sector) #invoke best model
     #print(result.get('Drugs') )      
    
     results_JSON = json.dumps(result)  

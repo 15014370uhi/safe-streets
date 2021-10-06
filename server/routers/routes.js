@@ -782,8 +782,7 @@ router.post ('/', async (req, res) => {
   );
 
 
-//TODO FLASK
-
+//TODO FLASK TESTING
   var searchLat = 53.765762;
   var searchLon = -2.692337;
 
@@ -835,16 +834,67 @@ router.post ('/', async (req, res) => {
   //predictionYear
   //predictionMonth
 
+/**
+ * Function which gets the sector for current search location
+ *  
+ * @param {int} predictionMonth The year for the prediction //TODO
+ * 
+ * @return {string} All the selected filters to apply to crimes 
+ */
+const getSector = () => {
+      
+  const sectors = [
+    //6 * police forces - cleveland, cumbria, durham, lancashire, northumbria, n.yorkshire
+    { 
+        'sector': 'Sector1'        
+    },
+    //9 * police forces - cheshire, derbyshire, greater manchester, humberside, 
+            //lincolnshire, merseyside, nottinghamshire, s.yorkshire, w.yorkshire
+    { 
+        'sector': 'Sector2'        
+    },
+    //7 * police forces - gloucestershire, leicestershire, northamptonshire, staffordshire, 
+            //warwickshire, west mercia, west midlands 
+    { 
+        'sector': 'Sector3'        
+    },
+    { //7 * police forces - bedfordshire, cambridgeshire, essex, hertfordshire, norfolk, suffolk, thames valleuy
+        'sector': 'Sector4'        
+    },
+    //2 * police forces - (london) - city of london, metropolitan
+    { 
+        'sector': 'Sector5'       
+    },
+     //8 * police forces - wiltshire, sussex, surrey, kent, hampshire, dorset, devon and cornwall, 
+                   //avon and sumerset
+    {
+        'sector': 'Sector6'        
+    }    
+  ]
 
+  //TODO find sector
+
+   var sector = ''; 
+
+  return sector
+ };
+   
+
+//TODO get sector for current location - check if force name can be 
+//TODO found from returned data from police API
+var sector = getSector();
+
+//TODO get sector - store sectors and compare region, send sector to flask
   await axios
     .request ({
       method: 'POST',
-      url: 'http://localhost:5000/randomforest',
+      url: 'http://localhost:5000/predict',
       data: {
         month: predictionMonth, //TODO check which month I want to use
         year: predictionYear,
         lat: latitude,
         lon: longitude,
+        sector: sector,
       },
     })
     .then (response => {
@@ -860,7 +910,7 @@ router.post ('/', async (req, res) => {
 
   //respond with data //TODO don't need as much response data once finalised
   res.send ({
-    flaskdata: flaskData,
+    flaskdata: flaskData, //TODO change name - and sort out this data being returned
     boundingbox: boundingBox,
     filters: filters,
     isnamesearch: isNameSearch,

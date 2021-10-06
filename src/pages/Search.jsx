@@ -143,6 +143,8 @@ const Search = (props) => {
 				const noCrimesDetected = response.nocrimes;
 								
 				//TODO FLASK DATA
+
+				//TODO switch to leaflet !!!!
 				//console.log(response.flaskdata.data);
 				const anti_social_behaviour = response.flaskdata.data.Anti_social_behaviour;
 				const burglary = response.flaskdata.data.Burglary;

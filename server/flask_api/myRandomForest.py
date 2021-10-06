@@ -1,15 +1,5 @@
-#!/usr/bin/env python
-# coding: utf-8
-#from sklearn import *
 import numpy as np
-#from classifier.location_filtering import is_within_m25
 import joblib
-import json
-#from datetime import datetime
-
-#from shapely.geometry import Point
-#from shapely.geometry.polygon import Polygon
-#import matplotlib.pyplot as plt
 
 #TODO this string may not aline with node js routes js - align all crimes and values
 #returns the crime category for a given crime value
@@ -35,15 +25,8 @@ def getCrimeCategory(aCrimeValue):
 
 
 #function which returns a crime probablity prediction score
-# for a given location and month
+#for a given location and month
 def getResult(data):    
-
-    #set filename of model
-   # filename = 'RandomForestModel.sav'
-    
-    #load the model from the file 
-   # myClassifier = joblib.load(filename)
-   # predictions = myClassifier.predict_proba(data)[0]
 
     results = {} #to be returned to web app
     counter = 0
@@ -59,24 +42,20 @@ def getResult(data):
     
     
 #function which returns the probablity of crime types occuring for a month and location
-def getProbability(month, year, lat, lon):    
-    
-     #check location lat and lon is within bounds of area
-    #if not is_within_m25(parsed_address.latitude, parsed_address.longitude):
-       # raise ValueError('The provided address is not within the London/M25 region')
+def getProbability(month, year, lat, lon, sector):  
 
     #load models
     aLat = lat  #TODO NEEDS WORK
     aLon = lon
     
-    #load previsouly saved KMeans cluster model 
-    clusterFile = 'KMeansCluster.sav'
+    #load KMeans cluster model for current sector
+    clusterFile = 'KMini_' + sector + '.sav'    
     
     # Load the model from the file
     cluster_model = joblib.load(clusterFile)
     
-    # Save the model as a file
-    randomForestFile = 'RandomForestModel.sav'
+    #load the model as a file
+    randomForestFile = 'RandomForestModel_' + sector + '.sav'
  
     # Load the model from the file
     randomForestModel = joblib.load(randomForestFile)
@@ -84,9 +63,9 @@ def getProbability(month, year, lat, lon):
     #get cluster value for current search location lat and lon using cluster model
     cluster = cluster_model.predict([[aLat, aLon]])
    
-    #create X featuresarray month, year, cluster value
-    X = np.array([[year, month, cluster.item(0)]], dtype=np.float64)       
-
+    #create X features array month, year, cluster value
+    X = np.array([[year, month, cluster.item(0)]], dtype=np.float32)   
+    
     #scale data
     X = randomForestModel.scaler.transform(X) #scale feature data
    
@@ -103,7 +82,6 @@ def getProbability(month, year, lat, lon):
     #minor and other crime,for provided X values supplied
     
     #get probability for crime categories
-    #prediction = randomForestModel.model.predict_proba(X)[0] 
     prediction = randomForestModel.predict_proba(X)[0] 
        
     print('prediction value is: ' + str(prediction)) 
