@@ -1,0 +1,230 @@
+
+
+=========== Sector1 ===========
+Reading Sector1 CSV files...
+Complete in: 7.45 seconds
+
+loaded KMini_Sector1.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 424.88 seconds
+
+Storing X,y features and values...
+Complete in: 2.01 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.09 seconds
+
+One-Hot encoding X features...
+Complete in: 4.28 seconds
+
+Test/train data splitting...
+Complete in: 2.27 seconds
+
+Training model with X_train / y_train...
+Complete in: 291.18 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.3476941698608029
+Complete in: 2.14 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 2.01 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 29.17%
+{'Anti-social behaviour': '15.29%', 'Theft': '18.06%', 'Burglary': '7.20%', 'Criminal damage and arson': '11.63%', 'Drugs': '1.28%', 'Public order': '10.58%', 'Possession of weapons': '0.50%', 'Violent crime': '29.17%', 'Vehicle crime': '6.30%'}
+Saved model: MultilayerPerceptron_Sector1.sav
+
+
+=========== Sector2 ===========
+Reading Sector2 CSV files...
+Complete in: 11.40 seconds
+
+loaded KMini_Sector2.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 752.38 seconds
+
+Storing X,y features and values...
+Complete in: 4.08 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.19 seconds
+
+One-Hot encoding X features...
+Complete in: 14.98 seconds
+
+Test/train data splitting...
+Complete in: 51.40 seconds
+
+Training model with X_train / y_train...
+Complete in: 600.75 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.3368440845991206
+Complete in: 3.72 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 3.49 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 33.50%
+{'Anti-social behaviour': '18.00%', 'Theft': '6.86%', 'Burglary': '10.04%', 'Criminal damage and arson': '11.14%', 'Drugs': '1.19%', 'Public order': '10.59%', 'Possession of weapons': '0.52%', 'Violent crime': '33.50%', 'Vehicle crime': '8.17%'}
+Saved model: MultilayerPerceptron_Sector2.sav
+
+
+=========== Sector3 ===========
+Reading Sector3 CSV files...
+Complete in: 8.43 seconds
+
+loaded KMini_Sector3.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 456.20 seconds
+
+Storing X,y features and values...
+Complete in: 2.89 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.11 seconds
+
+One-Hot encoding X features...
+Complete in: 4.33 seconds
+
+Test/train data splitting...
+Complete in: 17.54 seconds
+
+Training model with X_train / y_train...
+Complete in: 329.09 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.36190863806481866
+Complete in: 2.36 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 2.25 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 34.76%
+{'Anti-social behaviour': '9.44%', 'Theft': '21.71%', 'Burglary': '5.16%', 'Criminal damage and arson': '7.30%', 'Drugs': '3.42%', 'Public order': '10.18%', 'Possession of weapons': '1.09%', 'Violent crime': '34.76%', 'Vehicle crime': '6.94%'}
+Saved model: MultilayerPerceptron_Sector3.sav
+
+
+=========== Sector4 ===========
+Reading Sector4 CSV files...
+Complete in: 8.29 seconds
+
+loaded KMini_Sector4.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 424.41 seconds
+
+Storing X,y features and values...
+Complete in: 2.65 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.09 seconds
+
+One-Hot encoding X features...
+Complete in: 4.03 seconds
+
+Test/train data splitting...
+Complete in: 2.19 seconds
+
+Training model with X_train / y_train...
+Complete in: 308.21 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.3422882517698516
+Complete in: 2.08 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 2.08 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 30.21%
+{'Anti-social behaviour': '16.60%', 'Theft': '8.14%', 'Burglary': '11.44%', 'Criminal damage and arson': '9.77%', 'Drugs': '1.51%', 'Public order': '6.99%', 'Possession of weapons': '0.43%', 'Violent crime': '30.21%', 'Vehicle crime': '14.91%'}
+Saved model: MultilayerPerceptron_Sector4.sav
+
+
+=========== Sector5 ===========
+Reading Sector5 CSV files...
+Complete in: 6.70 seconds
+
+loaded KMini_Sector5.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 648.56 seconds
+
+Storing X,y features and values...
+Complete in: 3.56 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.14 seconds
+
+One-Hot encoding X features...
+Complete in: 66.13 seconds
+
+Test/train data splitting...
+Complete in: 20.63 seconds
+
+Training model with X_train / y_train...
+Complete in: 734.18 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.3229887369016674
+Complete in: 4.88 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 3.14 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Anti-social behaviour 32.19%
+{'Anti-social behaviour': '32.19%', 'Theft': '8.49%', 'Burglary': '6.96%', 'Criminal damage and arson': '5.05%', 'Drugs': '3.64%', 'Public order': '5.48%', 'Possession of weapons': '0.45%', 'Violent crime': '23.70%', 'Vehicle crime': '14.04%'}
+Saved model: MultilayerPerceptron_Sector5.sav
+
+
+=========== Sector6 ===========
+Reading Sector6 CSV files...
+Complete in: 9.70 seconds
+
+loaded KMini_Sector6.sav KMini model, with clusters:400
+Formatting data...
+Complete in: 597.29 seconds
+
+Storing X,y features and values...
+Complete in: 3.75 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.15 seconds
+
+One-Hot encoding X features...
+Complete in: 5.63 seconds
+
+Test/train data splitting...
+Complete in: 17.51 seconds
+
+Training model with X_train / y_train...
+Complete in: 353.29 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.33601053342227505
+Complete in: 2.75 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 2.62 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 32.63%
+{'Anti-social behaviour': '32.60%', 'Theft': '9.44%', 'Burglary': '2.74%', 'Criminal damage and arson': '8.84%', 'Drugs': '3.07%', 'Public order': '7.13%', 'Possession of weapons': '0.71%', 'Violent crime': '32.63%', 'Vehicle crime': '2.82%'}
+Saved model: MultilayerPerceptron_Sector6.sav
+========--- FINISHED ---========
+

@@ -1,0 +1,514 @@
+RANDOM FOREST
+
+=========== Sector1 ===========
+
+Read sector CSV files...
+Complete in: 4.0240294 seconds
+
+Load correct KMini cluster model...
+loaded KMini_Sector1.sav with clusters:450
+Complete in: 0.060196299999999425 seconds
+
+Format data...
+Complete in: 404.7739351 seconds
+
+Store X,y features and values...
+Complete in: 1.8893509999999765 seconds
+
+Create classifier and scale X values...
+Complete in: 0.08845420000000104 seconds
+
+One-Hot encoding...
+Complete in: 3.695659400000011 seconds
+
+Test/train data split...
+Complete in: 11.264676800000018 seconds
+
+Train model with X_train / y_train...
+Complete in: 189.21842420000007 seconds
+
+Get predict percentage score using test data...
+Accuracy score using test data: 0.3321726850917894
+Complete in: 5.6751626000000215 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 5.454166800000053 seconds
+
+Most likely crime: Anti-social behaviour 31.64%
+Crime prediction percentages for this month:
+
+{'Anti-social behaviour': '31.64%', 'Theft': '11.18%', 'Burglary': '4.25%', 'Criminal damage and arson': '9.30%', 'Drugs': '1.74%', 'Public order': '8.56%', 'Possession of weapons': '0.54%', 'Violent crime': '29.31%', 'Vehicle crime': '3.49%'}
+Saved random forest: RandomForest_Sector1.sav
+=========== Sector2 ===========
+
+Read sector CSV files...
+Complete in: 11.637253699999974 seconds
+
+Load correct KMini cluster model...
+loaded KMini_Sector2.sav with clusters:450
+Complete in: 0.08950829999992038 seconds
+
+Format data...
+Complete in: 727.3021924000001 seconds
+
+Store X,y features and values...
+Complete in: 4.282375300000012 seconds
+
+Create classifier and scale X values...
+Complete in: 0.16221999999993386 seconds
+
+One-Hot encoding...
+Complete in: 14.848788199999944 seconds
+
+Test/train data split...
+Complete in: 59.98400409999999 seconds
+
+Train model with X_train / y_train...
+Complete in: 367.9499558 seconds
+
+Get predict percentage score using test data...
+Accuracy score using test data: 0.33355234532323763
+Complete in: 12.308666700000003 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 11.248801300000196 seconds
+
+Most likely crime: Anti-social behaviour 33.13%
+Crime prediction percentages for this month:
+
+{'Anti-social behaviour': '19.43%', 'Theft': '12.52%', 'Burglary': '6.08%', 'Criminal damage and arson': '9.06%', 'Drugs': '2.68%', 'Public order': '10.59%', 'Possession of weapons': '0.73%', 'Violent crime': '33.13%', 'Vehicle crime': '5.78%'}
+Saved random forest: RandomForest_Sector2.sav
+=========== Sector3 ===========
+
+Read sector CSV files...
+Complete in: 8.851699199999985 seconds
+
+Load correct KMini cluster model...
+loaded KMini_Sector3.sav with clusters:450
+Complete in: 0.062969700000167 seconds
+
+Format data...
+Complete in: 451.91922410000006 seconds
+
+Store X,y features and values...
+Complete in: 2.5128030000000763 seconds
+
+Create classifier and scale X values...
+Complete in: 0.10366120000026058 seconds
+
+One-Hot encoding...
+Complete in: 6.205484199999773 seconds
+
+Test/train data split...
+Complete in: 11.301170300000194 seconds
+
+Train model with X_train / y_train...
+Complete in: 207.91809680000006 seconds
+
+Get predict percentage score using test data...
+Accuracy score using test data: 0.3454624280013803
+Complete in: 6.9939549000000625 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 7.219851500000004 seconds
+
+Most likely crime: Anti-social behaviour 35.26%
+Crime prediction percentages for this month:
+
+{'Anti-social behaviour': '21.99%', 'Theft': '11.48%', 'Burglary': '5.63%', 'Criminal damage and arson': '7.94%', 'Drugs': '2.12%', 'Public order': '7.81%', 'Possession of weapons': '0.81%', 'Violent crime': '35.26%', 'Vehicle crime': '6.96%'}
+Saved random forest: RandomForest_Sector3.sav
+=========== Sector4 ===========
+
+Read sector CSV files...
+Complete in: 7.769556299999749 seconds
+
+Load correct KMini cluster model...
+loaded KMini_Sector4.sav with clusters:450
+Complete in: 0.06183659999987867 seconds
+
+Format data...
+Complete in: 407.0739069000001 seconds
+
+Store X,y features and values...
+Complete in: 2.820762100000138 seconds
+
+Create classifier and scale X values...
+Complete in: 0.095314000000144 seconds
+
+One-Hot encoding...
+Complete in: 4.291949299999942 seconds
+
+Test/train data split...
+Complete in: 4.3565098999997645 seconds
+
+Train model with X_train / y_train...
+Complete in: 190.65808730000026 seconds
+
+Get predict percentage score using test data...
+Accuracy score using test data: 0.34038922435407326
+Complete in: 6.431771900000058 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 6.24885119999999 seconds
+
+Most likely crime: Anti-social behaviour 34.64%
+Crime prediction percentages for this month:
+
+{'Anti-social behaviour': '20.04%', 'Theft': '12.88%', 'Burglary': '4.57%', 'Criminal damage and arson': '8.43%', 'Drugs': '2.96%', 'Public order': '9.24%', 'Possession of weapons': '0.73%', 'Violent crime': '34.64%', 'Vehicle crime': '6.51%'}
+Saved random forest: RandomForest_Sector4.sav
+=========== Sector5 ===========
+
+Read sector CSV files...
+Complete in: 6.3866219999999885 seconds
+
+Load correct KMini cluster model...
+loaded KMini_Sector5.sav with clusters:450
+Complete in: 0.0981047000000217 seconds
+
+Format data...
+Complete in: 627.3683650000003 seconds
+
+Store X,y features and values...
+Complete in: 3.740012200000365 seconds
+
+Create classifier and scale X values...
+Complete in: 0.13859560000037163 seconds
+
+One-Hot encoding...
+Complete in: 12.320191400000112 seconds
+
+Test/train data split...
+Complete in: 15.899745900000198 seconds
+
+Train model with X_train / y_train...
+Complete in: 321.3000271000001 seconds
+
+Get predict percentage score using test data...
+Accuracy score using test data: 0.30977579976492015
+Complete in: 10.564673899999434 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 9.664074899999832 seconds
+
+Most likely crime: Anti-social behaviour 27.27%
+Crime prediction percentages for this month:
+
+{'Anti-social behaviour': '26.16%', 'Theft': '14.89%', 'Burglary': '6.61%', 'Criminal damage and arson': '4.80%', 'Drugs': '3.93%', 'Public order': '5.50%', 'Possession of weapons': '0.54%', 'Violent crime': '27.27%', 'Vehicle crime': '10.30%'}
+Saved random forest: RandomForest_Sector5.sav
+=========== Sector6 ===========
+
+Read sector CSV files...
+Complete in: 10.098625800000264 seconds
+
+Load correct KMini cluster model...
+loaded KMini_Sector6.sav with clusters:400
+Complete in: 0.08221390000016982 seconds
+
+Format data...
+Complete in: 584.3849562000005 seconds
+
+Store X,y features and values...
+Complete in: 3.6455002000002423 seconds
+
+Create classifier and scale X values...
+Complete in: 0.1303752000003442 seconds
+
+One-Hot encoding...
+Complete in: 5.068380099999558 seconds
+
+Test/train data split...
+Complete in: 13.643900300000496 seconds
+
+Train model with X_train / y_train...
+Complete in: 306.23592439999993 seconds
+
+Get predict percentage score using test data...
+Accuracy score using test data: 0.3293976165581962
+Complete in: 8.777286099999401 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 8.597834199999852 seconds
+
+Most likely crime: Anti-social behaviour 32.81%
+Crime prediction percentages for this month:
+
+{'Anti-social behaviour': '23.51%', 'Theft': '12.60%', 'Burglary': '4.60%', 'Criminal damage and arson': '9.13%', 'Drugs': '2.34%', 'Public order': '9.13%', 'Possession of weapons': '0.74%', 'Violent crime': '32.81%', 'Vehicle crime': '5.14%'}
+Saved random forest: RandomForest_Sector6.sav
+
+-----------------------------------
+
+Logistic Regression
+
+
+=========== Sector1 ===========
+Reading Sector1 CSV files...
+Complete in: 6.59 seconds
+
+loaded KMini_Sector1.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 411.81 seconds
+
+Storing X,y features and values...
+Complete in: 1.96 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.09 seconds
+
+One-Hot encoding X features...
+Complete in: 3.99 seconds
+
+Test/train data splitting...
+Complete in: 2.42 seconds
+
+Training model with X_train / y_train...
+Complete in: 1053.26 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.34742384506758117
+Complete in: 3.56 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 3.07 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 29.93%
+{'Anti-social behaviour': '28.37%', 'Theft': '10.74%', 'Burglary': '2.80%', 'Criminal damage and arson': '10.51%', 'Drugs': '1.45%', 'Public order': '12.92%', 'Possession of weapons': '0.59%', 'Violent crime': '29.93%', 'Vehicle crime': '2.68%'}
+Saved logistic regression model: LogisticRegression_Sector1.sav
+
+
+=========== Sector2 ===========
+Reading Sector2 CSV files...
+Complete in: 10.85 seconds
+
+loaded KMini_Sector2.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 748.67 seconds
+
+Storing X,y features and values...
+Complete in: 4.23 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.21 seconds
+
+One-Hot encoding X features...
+Complete in: 12.37 seconds
+
+Test/train data splitting...
+Complete in: 40.04 seconds
+
+Training model with X_train / y_train...
+Complete in: 1571.07 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.33772851404920007
+Complete in: 6.73 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 5.58 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Anti-social behaviour 29.64%
+{'Anti-social behaviour': '29.64%', 'Theft': '11.09%', 'Burglary': '4.58%', 'Criminal damage and arson': '8.67%', 'Drugs': '3.25%', 'Public order': '7.80%', 'Possession of weapons': '0.91%', 'Violent crime': '29.43%', 'Vehicle crime': '4.63%'}
+Saved logistic regression model: LogisticRegression_Sector2.sav
+
+
+=========== Sector3 ===========
+Reading Sector3 CSV files...
+Complete in: 8.93 seconds
+
+loaded KMini_Sector3.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 459.97 seconds
+
+Storing X,y features and values...
+Complete in: 2.61 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.11 seconds
+
+One-Hot encoding X features...
+Complete in: 5.39 seconds
+
+Test/train data splitting...
+Complete in: 3.49 seconds
+
+Training model with X_train / y_train...
+Complete in: 1211.04 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.3604469886660237
+Complete in: 4.13 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 3.49 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 36.66%
+{'Anti-social behaviour': '13.41%', 'Theft': '12.14%', 'Burglary': '8.08%', 'Criminal damage and arson': '8.19%', 'Drugs': '1.71%', 'Public order': '10.14%', 'Possession of weapons': '0.99%', 'Violent crime': '36.66%', 'Vehicle crime': '8.67%'}
+Saved logistic regression model: LogisticRegression_Sector3.sav
+
+
+=========== Sector4 ===========
+Reading Sector4 CSV files...
+Complete in: 8.19 seconds
+
+loaded KMini_Sector4.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 427.46 seconds
+
+Storing X,y features and values...
+Complete in: 2.77 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.09 seconds
+
+One-Hot encoding X features...
+Complete in: 4.29 seconds
+
+Test/train data splitting...
+Complete in: 4.51 seconds
+
+Training model with X_train / y_train...
+Complete in: 1001.82 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.3433388181414318
+Complete in: 3.88 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 3.18 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 31.50%
+{'Anti-social behaviour': '26.14%', 'Theft': '9.14%', 'Burglary': '4.18%', 'Criminal damage and arson': '5.99%', 'Drugs': '3.09%', 'Public order': '11.05%', 'Possession of weapons': '0.24%', 'Violent crime': '31.50%', 'Vehicle crime': '8.67%'}
+Saved logistic regression model: LogisticRegression_Sector4.sav
+
+
+=========== Sector5 ===========
+Reading Sector5 CSV files...
+Complete in: 6.91 seconds
+
+loaded KMini_Sector5.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 657.26 seconds
+
+Storing X,y features and values...
+Complete in: 3.84 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.14 seconds
+
+One-Hot encoding X features...
+Complete in: 9.99 seconds
+
+Test/train data splitting...
+Complete in: 15.97 seconds
+
+Training model with X_train / y_train...
+Complete in: 1191.03 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.3229887369016674
+Complete in: 6.93 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 5.07 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Anti-social behaviour 36.60%
+{'Anti-social behaviour': '36.60%', 'Theft': '12.04%', 'Burglary': '6.83%', 'Criminal damage and arson': '4.10%', 'Drugs': '1.93%', 'Public order': '4.83%', 'Possession of weapons': '0.36%', 'Violent crime': '22.41%', 'Vehicle crime': '10.91%'}
+Saved logistic regression model: LogisticRegression_Sector5.sav
+
+
+=========== Sector6 ===========
+Reading Sector6 CSV files...
+Complete in: 10.26 seconds
+
+loaded KMini_Sector6.sav KMini model, with clusters:400
+Formatting data...
+Complete in: 586.11 seconds
+
+Storing X,y features and values...
+Complete in: 3.50 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.14 seconds
+
+One-Hot encoding X features...
+Complete in: 9.63 seconds
+
+Test/train data splitting...
+Complete in: 10.72 seconds
+
+Training model with X_train / y_train...
+Complete in: 960.55 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.3361635418498182
+Complete in: 4.19 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 4.05 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Violent crime 31.28%
+{'Anti-social behaviour': '12.86%', 'Theft': '17.19%', 'Burglary': '8.26%', 'Criminal damage and arson': '8.30%', 'Drugs': '2.88%', 'Public order': '10.96%', 'Possession of weapons': '0.59%', 'Violent crime': '31.28%', 'Vehicle crime': '7.69%'}
+Saved logistic regression model: LogisticRegression_Sector6.sav
+========--- FINISHED ---========
+
+
+------------ with cross validation ----
+
+
+=========== Sector1 ===========
+Reading Sector1 CSV files...
+Complete in: 4.62 seconds
+
+loaded KMini_Sector1.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 410.14 seconds
+
+Storing X,y features and values...
+Complete in: 1.97 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.08 seconds
+
+One-Hot encoding X features...
+Complete in: 4.03 seconds
+
+Test/train data splitting...
+Complete in: 2.30 seconds
+
+Training model with X_train / y_train...
+Complete in: 1065.95 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.34727657857575145
+Complete in: 3.06 seconds
+
+Calculating cross validation score...
+0.3461261851926568
+Complete in: 5763.88 seconds
+
+Predict probabilities for crime types using X_test data
+Complete in: 4.25 seconds
+
+Crime prediction percentages for this month:
+
+
+Most likely crime: Anti-social behaviour 29.60%
+{'Anti-social behaviour': '29.60%', 'Theft': '23.69%', 'Burglary': '4.42%', 'Criminal damage and arson': '4.83%', 'Drugs': '2.00%', 'Public order': '7.35%', 'Possession of weapons': '0.92%', 'Violent crime': '25.59%', 'Vehicle crime': '1.60%'}
+Saved logistic regression model: LogisticRegression_Sector1.sav

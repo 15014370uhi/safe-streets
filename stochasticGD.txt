@@ -1,0 +1,183 @@
+
+(mlenv) S:\Documents\UHI Dissertation\test1\myprecrime\app\machine_learning>python stochasticGradientDescent.py
+
+
+=========== Sector1 ===========
+Reading Sector1 CSV files...
+Complete in: 5.15 seconds
+
+loaded KMini_Sector1.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 418.52 seconds
+
+Storing X,y features and values...
+Complete in: 1.96 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.08 seconds
+
+One-Hot encoding X features...
+Complete in: 4.14 seconds
+
+Test/train data splitting...
+Complete in: 2.37 seconds
+
+Training model with X_train / y_train...
+Complete in: 233.61 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.2656828727052653
+Complete in: 3.09 seconds
+
+Saved model: StochasticGD_Sector1.sav
+
+
+=========== Sector2 ===========
+Reading Sector2 CSV files...
+Complete in: 11.79 seconds
+
+loaded KMini_Sector2.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 770.04 seconds
+
+Storing X,y features and values...
+Complete in: 4.26 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.21 seconds
+
+One-Hot encoding X features...
+Complete in: 16.24 seconds
+
+Test/train data splitting...
+Complete in: 52.14 seconds
+
+Training model with X_train / y_train...
+Complete in: 381.57 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.24683999588942554
+Complete in: 6.77 seconds
+
+Saved model: StochasticGD_Sector2.sav
+
+
+=========== Sector3 ===========
+Reading Sector3 CSV files...
+Complete in: 12.07 seconds
+
+loaded KMini_Sector3.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 476.36 seconds
+
+Storing X,y features and values...
+Complete in: 2.95 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.11 seconds
+
+One-Hot encoding X features...
+Complete in: 21.03 seconds
+
+Test/train data splitting...
+Complete in: 14.33 seconds
+
+Training model with X_train / y_train...
+Complete in: 267.11 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.2717022199021438
+Complete in: 4.08 seconds
+
+Saved model: StochasticGD_Sector3.sav
+
+
+=========== Sector4 ===========
+Reading Sector4 CSV files...
+Complete in: 10.98 seconds
+
+loaded KMini_Sector4.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 426.23 seconds
+
+Storing X,y features and values...
+Complete in: 2.85 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.09 seconds
+
+One-Hot encoding X features...
+Complete in: 5.24 seconds
+
+Test/train data splitting...
+Complete in: 7.18 seconds
+
+Training model with X_train / y_train...
+Complete in: 249.90 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.23661767201356013
+Complete in: 3.23 seconds
+
+Saved model: StochasticGD_Sector4.sav
+
+
+=========== Sector5 ===========
+Reading Sector5 CSV files...
+Complete in: 7.44 seconds
+
+loaded KMini_Sector5.sav KMini model, with clusters:450
+Formatting data...
+Complete in: 659.38 seconds
+
+Storing X,y features and values...
+Complete in: 3.97 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.15 seconds
+
+One-Hot encoding X features...
+Complete in: 10.86 seconds
+
+Test/train data splitting...
+Complete in: 19.34 seconds
+
+Training model with X_train / y_train...
+Complete in: 356.95 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.22368061115767462
+Complete in: 5.75 seconds
+
+Saved model: StochasticGD_Sector5.sav
+
+
+=========== Sector6 ===========
+Reading Sector6 CSV files...
+Complete in: 15.06 seconds
+
+loaded KMini_Sector6.sav KMini model, with clusters:400
+Formatting data...
+Complete in: 629.66 seconds
+
+Storing X,y features and values...
+Complete in: 3.85 seconds
+
+Creating classifier and scaling X values...
+Complete in: 0.14 seconds
+
+One-Hot encoding X features...
+Complete in: 8.53 seconds
+
+Test/train data splitting...
+Complete in: 16.82 seconds
+
+Training model with X_train / y_train...
+Complete in: 311.62 seconds
+
+Getting prediction percentage score using test data...
+Accuracy score using test data: 0.25465165752418945
+Complete in: 4.55 seconds
+
+Saved model: StochasticGD_Sector6.sav
+========--- FINISHED ---========
