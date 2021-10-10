@@ -11,19 +11,24 @@ def index():
   return 'Welcome to safe streets machine learning flask server'
 
 @app.route('/predict', methods = ['POST'])
-def runRFModel():    
+def runPredictionModel():    
     data = request.get_json(silent=True)  
     month = data.get('month')
     year = data.get('year')     
     lat = data.get('lat')
     lon = data.get('lon')  
     sector = data.get('sector') 
+    
+    print('Flask received sector: ' + sector);
     result = getProbability(month, year, lat, lon, sector) #invoke best model
     
-    #print(result.get('Drugs') ) 
+    #print(result.get('Drugs') )      
+   
     results_JSON = json.dumps(result)  
-    print(results_JSON)
-    return json.dumps({'result': result})
+    
+    #print(results_JSON)
+    #return json.dumps({'result': result})
+    
     return results_JSON
 
     

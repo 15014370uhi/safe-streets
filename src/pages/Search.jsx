@@ -148,27 +148,27 @@ const Search = (props) => {
 								
 
 				//TODO switch to leaflet !!!!
-				//console.log(response.flaskdata.data);
-				//const anti_social_behaviour = response.flaskdata.data.Anti_social_behaviour;
-				//const burglary = response.flaskdata.data.Burglary;
-				//const criminal_damage_and_arson = response.flaskdata.data.Criminal_damage_and_arson;
-				//const drugs = response.flaskdata.data.Drugs;
-				//const possession_of_weapons = response.flaskdata.data.Possession_of_weapons;
-				//const public_order = response.flaskdata.data.Public_order;
-				//const theft = response.flaskdata.data.Theft;
-				//const vehicle_crime = response.flaskdata.data.Vehicle_crime;
-				//const violent_crime = response.flaskdata.data.Violent_crime;
+				console.log(response.flaskdata.data);
+				const anti_social_behaviour = response.flaskdata.data.Anti_social_behaviour;
+				const burglary = response.flaskdata.data.Burglary;
+				const criminal_damage_and_arson = response.flaskdata.data.Criminal_damage_and_arson;
+				const drugs = response.flaskdata.data.Drugs;
+				const possession_of_weapons = response.flaskdata.data.Possession_of_weapons;
+				const public_order = response.flaskdata.data.Public_order;
+				const theft = response.flaskdata.data.Theft;
+				const vehicle_crime = response.flaskdata.data.Vehicle_crime;
+				const violent_crime = response.flaskdata.data.Violent_crime;
 
-				//alert('Crime Probability in this area: \n\n'
-				//	+ 'Anti-Social = ' + anti_social_behaviour + '\n'
-				//	+ 'Burglary = ' + burglary + '\n'
-				//	+ 'Criminal Damage & Arson = ' + criminal_damage_and_arson + '\n'
-				//	+ 'Drugs = ' + drugs + '\n'
-				//	+ 'Possession of Weapons = ' + possession_of_weapons + '\n'
-				//	+ 'Public Order = ' + public_order + '\n'
-				//	+ 'Theft = ' + theft + '\n'
-				//	+ 'Vehicle Crime = ' + vehicle_crime + '\n'
-				//	+ 'Violent Crime = ' + violent_crime + '\n');
+				alert('Crime Probability for this week: \n\n'
+					+ 'Anti-Social = ' + anti_social_behaviour/4 + '\n'
+					+ 'Burglary = ' + burglary/4 + '\n'
+					+ 'Criminal Damage & Arson = ' + criminal_damage_and_arson/4 + '\n'
+					+ 'Drugs = ' + drugs/4 + '\n'
+					+ 'Possession of Weapons = ' + possession_of_weapons/4 + '\n'
+					+ 'Public Order = ' + public_order/4 + '\n'
+					+ 'Theft = ' + theft/4 + '\n'
+					+ 'Vehicle Crime = ' + vehicle_crime/4 + '\n'
+					+ 'Violent Crime = ' + violent_crime/4 + '\n');
 				
 
 				//check for invalid lat and lon response, due to mispelled/invalid location name
