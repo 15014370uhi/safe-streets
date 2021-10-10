@@ -500,6 +500,10 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
       console.log ('error retrieving crime data: ', error);
     });
 
+  //TODO pas lat and lon of search/center to get police sector?
+  console.log ('=============crimeData from police====================');
+  console.log (crimeData);
+  console.log ('=================================');
   // Return the data
   return crimeData;
 };
@@ -559,12 +563,12 @@ const applyFilters = filters => {
  * Function which creates a CSV of criteria for machine learnign prediction
  * 
  * @param {int} predictionYear The year for the prediction
- * @param {int} predictionMonth The year for the prediction
- * @param {string} lat The year for the prediction
- * @param {string} lon The year for the prediction
- * @param {string} LSOA_code The year for the prediction
- * @param {string} LSOA_name The year for the prediction
- * @param {string} postcode The year for the prediction
+ * @param {int} predictionMonth The month for the prediction
+ * @param {string} lat The lat for the prediction
+ * @param {string} lon The lon for the prediction
+ * @param {string} LSOA_code The LSOA code for the prediction
+ * @param {string} LSOA_name The LSOA name for the prediction
+ * @param {string} postcode The postcode for the prediction
  * 
  * //@return {object} Machine learning prediction object data
  */
@@ -648,8 +652,6 @@ router.post ('/', async (req, res) => {
   //array to hold crimes to display on map
   let slicedCrimes = []; //array to hold all crimes to display on map
   let crimesDuringMonth = []; //array to hold a specific month's crimes
-
-  //TODO count crimes per LSO per month - useful for info display stats etc or
 
   //get crime data for location for all months required
   for (let aMonth of crimeMonthsArray) {
@@ -759,10 +761,14 @@ router.post ('/', async (req, res) => {
   //call function which generates image URL with crime markers on map
   mapURL = getMap (boundingBox, slicedCrimes, latitude, longitude);
 
+
+
+
   //TODO ----------------  Machine learning --------===================------------------------
   const today = new Date ();
   const predictionYear = today.getFullYear ();
   const predictionMonth = today.getMonth () + 1; //TODO why add 1? should predict current month? or next?
+
   //get geo location data for search area
   geoData = await getGeoData (latitude, longitude);
   var postcode = geoData.postcode; //postcode
@@ -781,116 +787,125 @@ router.post ('/', async (req, res) => {
     postcode
   );
 
+  // function which return the geographical sector for a given police force
+  const getSector = aPoliceForce => {
+    var sector;
 
-//TODO FLASK TESTING
-  var searchLat = 53.765762;
-  var searchLon = -2.692337;
+    switch (aPoliceForce) {
+      //SECTOR 1: cleveland, cumbria, durham, lancashire, northumbria, north-yorkshire
+      case 'cleveland':
+      case 'cumbria':
+      case 'durham':
+      case 'lancashire':
+      case 'northumbria':
+      case 'north-yorkshire':
+        sector = 'Sector 1';
+        break;
+      //SECTOR 2: cheshire, derbyshire, greater manchester, humberside, lincolnshire, merseyside, nottinghamshire, south yorkshire, west yorkshire
+      case 'cheshire':
+      case 'derbyshire':
+      case 'greater-manchester':
+      case 'humberside':
+      case 'lincolnshire':
+      case 'merseyside':
+      case 'nottinghamshire':
+      case 'south-yorkshire':
+      case 'west-yorkshire':
+        sector = 'Sector 2';
+        break;
+      //SECTOR 3: gloucestershire, leicestershire, northamptonshire, staffordshire, warwickshire, west mercia, west midlands
+      case 'gloucestershire':
+      case 'leicestershire':
+      case 'northamptonshire':
+      case 'staffordshire':
+      case 'warwickshire':
+      case 'west-mercia':
+      case 'west-midlands':
+        sector = 'Sector 3';
+        break;
+      //SECTOR 4: bedfordshire, cambridgeshire, essex, hertfordshire, norfolk, suffolk, thames valley
+      case 'bedfordshire':
+      case 'cambridgeshire':
+      case 'essex':
+      case 'hertfordshire':
+      case 'norfolk':
+      case 'suffolk':
+      case 'thames-valley':
+        sector = 'Sector 4';
+        break;
+      //SECTOR 5: city of london, metropolitan
+      case 'city of london':
+      case 'metropolitan':
+        sector = 'Sector 5';
+        break;
+      //SECTOR 6: wiltshire, sussex, surrey, kent, hampshire, dorset, devon and cornwall, avon and sumerset
+      case 'wiltshire':
+      case 'sussex':
+      case 'surrey':
+      case 'kent':
+      case 'hampshire':
+      case 'dorset':
+      case 'devon-and-cornwall':
+      case 'avon-and-sumerset':
+        sector = 'Sector 6';
+        break;
 
+      default:
+        //intentially blank
+        break;
+    }
+    return sector;
+  };
+
+  /**
+ * Function which returns the police force for the current search lat and lon  
+ * 
+ * @param {string} aLatitude The lat for the prediction
+ * @param {string} aLongitude The lon for the prediction
+ * 
+ * @return {string} The sector 
+ */
+  const getPoliceForce = async (aLatitude, aLongitude) => {
+    var aPoliceForce;
+
+    //https://data.police.uk/api/locate-neighbourhood?q=51.500617,-0.124629
+    const baseURL = 'https://data.police.uk/api/locate-neighbourhood?q=';
+    const lat = aLatitude;
+    const lon = aLongitude;
+
+    let URLSector = baseURL + lat + ',' + lon;
+
+    //call police data API to retieve crimes for specified month and area
+    await axios
+      .get (URLSector)
+      .then (res => {
+        if (res.length === 0) {
+          console.log ('No sector for this search');
+        }
+        aPoliceForce = res.data.force; //{"force":"north-yorkshire","neighbourhood":"york-inner"}
+      })
+      .catch (error => {
+        console.log ('error retrieving police sector: ', error);
+      });
+
+    console.log ('=== police force ===' + aPoliceForce);
+
+    return aPoliceForce;
+  };
+
+  // variables to hold police force and sector for this search location
+  var policeForce = getPoliceForce (latitude, longitude);
+  var sector = getSector (policeForce);
+
+  // variable to hold response from machine learning flask server
   var flaskData;
 
-  // await axios
-  //   .request ({
-  //     method: 'POST',
-  //     url: 'http://localhost:5000/testflask',
-  //     data: {
-  //       lat: searchLat,
-  //       lon: searchLon,
-  //     },
-  //   })
-  //   .then (response => {
-  //     const data = response.data;
-  //     flaskData = {
-  //       lat: data.lat,
-  //       lon: data.lon,
-  //     };
-  //   })
-  //   .catch (reason => {
-  //     console.log (reason);
-  //   });
-
-  //latitude
-  //longitude
-  //month
-  //year
-
-
-  //await axios
-   // .request ({
-    //  method: 'POST',
-     // url: 'http://localhost:5000/testrf',
-      //data: {
-       // month: 5,
-      //  year: 2021,
-      //  lat: searchLat,
-       // lon: searchLon,
-      //},
-    //})
-
-  //latitude
-  //longitude
-  //month
-  //year
-  
-  //predictionYear
-  //predictionMonth
-
-/**
- * Function which gets the sector for current search location
- *  
- * @param {int} predictionMonth The year for the prediction //TODO
- * 
- * @return {string} All the selected filters to apply to crimes 
- */
-const getSector = () => {
-      
-  const sectors = [
-    //6 * police forces - cleveland, cumbria, durham, lancashire, northumbria, n.yorkshire
-    { 
-        'sector': 'Sector1'        
-    },
-    //9 * police forces - cheshire, derbyshire, greater manchester, humberside, 
-            //lincolnshire, merseyside, nottinghamshire, s.yorkshire, w.yorkshire
-    { 
-        'sector': 'Sector2'        
-    },
-    //7 * police forces - gloucestershire, leicestershire, northamptonshire, staffordshire, 
-            //warwickshire, west mercia, west midlands 
-    { 
-        'sector': 'Sector3'        
-    },
-    { //7 * police forces - bedfordshire, cambridgeshire, essex, hertfordshire, norfolk, suffolk, thames valleuy
-        'sector': 'Sector4'        
-    },
-    //2 * police forces - (london) - city of london, metropolitan
-    { 
-        'sector': 'Sector5'       
-    },
-     //8 * police forces - wiltshire, sussex, surrey, kent, hampshire, dorset, devon and cornwall, 
-                   //avon and sumerset
-    {
-        'sector': 'Sector6'        
-    }    
-  ]
-
-  //TODO find sector
-
-   var sector = ''; 
-
-  return sector
- };
-   
-
-//TODO get sector for current location - check if force name can be 
-//TODO found from returned data from police API
-var sector = getSector();
-
-//TODO get sector - store sectors and compare region, send sector to flask
   await axios
     .request ({
       method: 'POST',
       url: 'http://localhost:5000/predict',
       data: {
-        month: predictionMonth, //TODO check which month I want to use
+        month: predictionMonth,
         year: predictionYear,
         lat: latitude,
         lon: longitude,
@@ -898,15 +913,14 @@ var sector = getSector();
       },
     })
     .then (response => {
-      const allData = response.data
+      const allData = response.data;
       flaskData = {
-        data: allData        
+        data: allData,
       };
     })
     .catch (reason => {
       console.log (reason);
     });
-
 
   //respond with data //TODO don't need as much response data once finalised
   res.send ({

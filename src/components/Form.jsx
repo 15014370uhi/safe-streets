@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
-import UKMapImage from '../images/alternative/ukVectorGuide.svg';
-import UKIconImage from '../images/uk-icon.png';
+import React, { useState } from "react";
+import Dropdown from "react-bootstrap/Dropdown";
+import UKMapImage from "../images/alternative/ukVectorGuide.svg";
+import UKIconImage from "../images/uk-icon.png";
 
-//style components
-import {MDBBtn, MDBInput} from 'mdbreact';
+// style components
+import { MDBBtn, MDBInput } from "mdbreact";
 
 const Search = (props) => {
 	const {
@@ -13,7 +13,7 @@ const Search = (props) => {
 		locationName,
 		lat,
 		lon,
-		numberOfMonths,		
+		numberOfMonths,
 		dropHandler,
 		radioButton,
 		radioClickedHandler,
@@ -22,7 +22,7 @@ const Search = (props) => {
 
 	let [imageOpen, setImageOpen] = useState(false);
 
-	//map guide image popup for uk
+	// map guide image popup for uk
 	const handleShowImage = (e) => {
 		e.preventDefault();
 		setImageOpen(!imageOpen);
@@ -31,19 +31,19 @@ const Search = (props) => {
 	return (
 		<form onSubmit={submitForm}>
 			<fieldset
-				onClick={(e) => radioClickedHandler('0')}
+				onClick={(e) => radioClickedHandler("0")}
 				className={
-					radioButton === '0'
-						? 'selectedFieldSet'
-						: 'notSelectedFieldSet'
+					radioButton === "0"
+						? "selectedFieldSet"
+						: "notSelectedFieldSet"
 				}>
 				<label>
 					Search by location
 					<input
 						className="form-radio"
 						type="radio"
-						checked={radioButton === '0'}
-						onClick={(e) => radioClickedHandler('0')}
+						checked={radioButton === "0"}
+						onClick={(e) => radioClickedHandler("0")}
 						onChange={formInputHandler}
 						id="searchRadioStreet"
 					/>
@@ -51,46 +51,46 @@ const Search = (props) => {
 				<br />
 				<label className="inputLabels">Street address or town</label>
 				<MDBInput
-					autoFocus={radioButton === '0' ? true : false}
-					size='lg'
-					icon='road'
-					type='text'
-					name='locationName'				
+					autoFocus={radioButton === "0" ? true : false}
+					size="lg"
+					icon="road"
+					type="text"
+					name="locationName"
 					value={locationName}
 					onChange={formInputHandler}
-					onClick={(e) => radioClickedHandler('0')}
+					onClick={(e) => radioClickedHandler("0")}
 				/>
 			</fieldset>
 			<fieldset
-			onClick={(e) => radioClickedHandler('1')}
+				onClick={(e) => radioClickedHandler("1")}
 				className={
-					radioButton === '1'
-						? 'selectedFieldSet'
-						: 'notSelectedFieldSet'
+					radioButton === "1"
+						? "selectedFieldSet"
+						: "notSelectedFieldSet"
 				}>
 				<label>
-					{' '}
+					{" "}
 					Search by latitude and longitude
 					<input
-						className='form-radio'
-						type='radio'
-						checked={radioButton === '1'}
-						onClick={(e) => radioClickedHandler('1')}
+						className="form-radio"
+						type="radio"
+						checked={radioButton === "1"}
+						onClick={(e) => radioClickedHandler("1")}
 						onChange={formInputHandler}
-						id='searchRadioLatLon'
+						id="searchRadioLatLon"
 					/>
 				</label>
 				<br />
 				<label className="inputLabels">Latitude</label>
 				<MDBInput
-					autoFocus={radioButton === '1' ? true : false}
+					autoFocus={radioButton === "1" ? true : false}
 					size="lg"
 					icon="map-marker-alt"
 					type="text"
 					name="lat"
 					value={lat}
 					onChange={formInputHandler}
-					onClick={(e) => radioClickedHandler('1')}
+					onClick={(e) => radioClickedHandler("1")}
 				/>
 				<label className="inputLabels">Longitude</label>
 				<MDBInput
@@ -100,7 +100,7 @@ const Search = (props) => {
 					name="lon"
 					value={lon}
 					onChange={formInputHandler}
-					onClick={(e) => radioClickedHandler('1')}
+					onClick={(e) => radioClickedHandler("1")}
 				/>
 
 				<MDBBtn
@@ -122,7 +122,7 @@ const Search = (props) => {
 				{imageOpen && (
 					<dialog
 						className="dialog"
-						style={{position: 'absolute'}}
+						style={{ position: "absolute" }}
 						open
 						onClick={handleShowImage}>
 						<img
@@ -153,14 +153,14 @@ const Search = (props) => {
 				</Dropdown.Menu>
 			</Dropdown>
 
-			<div className="text-center mt-4">	
+			<div className="text-center mt-4">
 				<MDBBtn
 					id="searchSubmitButton"
 					color="secondary"
 					className="mb-3 submit-search-btn"
 					block
 					size="lg"
-					type="submit">				
+					type="submit">
 					{submitText}
 				</MDBBtn>
 			</div>
