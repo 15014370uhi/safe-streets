@@ -19,27 +19,10 @@ def runPredictionModel():
     lon = data.get('lon')  
     sector = data.get('sector') 
     
-    print('Flask received sector: ' + sector);
-    result = getProbability(month, year, lat, lon, sector) #invoke best model
-    
-    #print(result.get('Drugs') )      
-   
-    results_JSON = json.dumps(result)  
-    
-    #print(results_JSON)
-    #return json.dumps({'result': result})
-    
+    result = getProbability(month, year, lat, lon, sector) #invoke best model   
+    results_JSON = json.dumps(result)      
     return results_JSON
-
-    
-#@app.route('/testflask', methods = ['POST'])
-#def postdata():    
-#    data = request.get_json(silent=True)  
-#    lat = data.get('lat')
-#    lon = data.get('lon')       
-#    return json.dumps({'lat': lat, 'lon': lon})
-  
-  
+      
 if __name__ == '__main__':
     app.run(port=5000)  
     

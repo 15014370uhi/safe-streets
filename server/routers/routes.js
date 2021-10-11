@@ -1,17 +1,8 @@
 const router = require ('express').Router ();
 const mapquest = require ('mapquest');
 const axios = require ('axios');
-const {generateCSV, editCSV} = require ('../util/csv-util');
-const {generateCrimeCSV, editCrimeCSV} = require ('../util/generateCrimeCSV');
 
 mapquest.key = process.env.MAPQUEST_API_KEY;
-
-//TODO TEST creation of csv file
-//generateCSV();
-
-//TODO TEST calling external function and supplying a file path
-//let aFilePath = '../server/crime-data/output.csv';
-//editCSV(aFilePath);
 
 /**
  * Returns an array of latitude and longitutde coordinates 
@@ -129,6 +120,7 @@ const getLatLon = async locationName => {
   return geoLocationData;
 };
 
+
 /**
  * 
  * @param {latitude} latitude 
@@ -180,6 +172,7 @@ const getGeoData = async (lat, lon) => {
   //return geoData object;
   return geoData;
 };
+
 
 /**   
  * function which returns the LSOA code for a postcode 
@@ -344,10 +337,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   //iterate through array of all crime records and add lat, lon, crime category and map marker to URL string
   for (const aCrimeRecord of crimeNodes) {
     // Set specific display and URL format options based on crime type found
-    switch (aCrimeRecord.category) { //TODO check that ML and CSV output crime categories all match
-      //TODO check why the cases string are lower case and different from CSV file
-
-      //TODO Violence and sexual offences  ????????????
+    switch (aCrimeRecord.category) { 
 
       //anti-social
       case 'anti-social-behaviour':
@@ -355,6 +345,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
+
       //general Theft
       case 'bicycle-theft':
       case 'other-theft':
@@ -362,24 +353,28 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         colour = '00FF00';
         symbol = 'flag-sm-';
         break;
+
       //burglary
       case 'burglary':
         category = 'Burg';
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
+
       //criminal-damage and arson
       case 'criminal-damage-arson':
         category = 'Arsn';
         colour = 'FF0000';
         symbol = 'flag-sm-';
         break;
+
       //drugs
       case 'drugs':
         category = 'Drugs';
         colour = 'FFFF00';
         symbol = 'flag-sm-';
         break;
+
       //generalised public order
       case 'other-crime':
       case 'public-order':
@@ -387,12 +382,14 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
+
       //weapons
       case 'possession-of-weapons':
         category = 'Weapn';
         colour = '7B0099';
         symbol = 'flag-sm-';
         break;
+
       //violent Crime
       case 'violent-crime':
       case 'theft-from-the-person':
@@ -401,12 +398,14 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         colour = 'FF0000';
         symbol = 'flag-sm-';
         break;
+
       //shoplifting
       case 'shoplifting':
         category = 'Shop';
         colour = '00FF00';
         symbol = 'flag-sm-';
         break;
+
       //vehicle Crime
       case 'vehicle-crime':
         category = 'Vehic';
@@ -419,7 +418,7 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
         //intentially blank
         break;
     }
-    //construct additional URL string for current crime
+    // construct additional URL string for current crime
     URLMap =
       URLMap +
       '||' +
@@ -433,10 +432,10 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
       category;
   }
 
-  //add URL ending string
+  // add URL ending string
   URLMap = URLMap + '&zoom=8&size=600,600@2x'; //TODO NOTES: zoom=lower value is closer,  size=width,length
 
-  //return full URL for a static map with all crime locations marked
+  // return full URL for a static map with all crime locations marked
   return URLMap;
 };
 
@@ -451,7 +450,8 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
  * @return {array} crime data for all crimes commited within bounding box map area for a given month  
  */
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
-  //set lat and lon coordinates of bounding box
+
+  // set lat and lon coordinates of bounding box
   let latTopLeft = boundingBox[0];
   let lonTopLeft = boundingBox[1];
   let latBotRight = boundingBox[2];
@@ -461,13 +461,13 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
   let latBotLeft = boundingBox[6];
   let lonBotLeft = boundingBox[7];
 
-  //variable to hold crime data
+  // variable to hold crime data
   let crimeData;
 
-  //base URL for polygon search of police API
+  // base URL for polygon search of police API
   let baseURL = 'https://data.police.uk/api/crimes-street/all-crime?poly=';
 
-  //generate URL for API with bounding box area and month
+  // generate URL for API with bounding box area and month
   let URLCrimes =
     baseURL +
     latTopLeft +
@@ -488,12 +488,12 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     '&date=' +
     crimeDateCheck;
 
-  //call police data API to retieve crimes for specified month and area
+  // call police data API to retieve crimes for specified month and area
   await axios
     .get (URLCrimes)
     .then (res => {
       if (res.length === 0) {
-        console.log ('No crimes for this search');
+        console.log ('no crimes for this search');
       }
       crimeData = res.data;
     })
@@ -501,16 +501,9 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
       console.log ('error retrieving crime data: ', error);
     });
 
-  //TODO pas lat and lon of search/center to get police sector?
- // console.log ('=============crimeData from police====================');
-  //console.log (crimeData);
- // console.log ('=================================');
   // Return the data
   return crimeData;
 };
-
-
-
 
 
 /** 
@@ -570,6 +563,7 @@ const applyFilters = filters => {
     var sector;
 
     switch (aPoliceForce) {
+
       //SECTOR 1: cleveland, cumbria, durham, lancashire, northumbria, north-yorkshire
       case 'cleveland':
       case 'cumbria':
@@ -579,6 +573,7 @@ const applyFilters = filters => {
       case 'north-yorkshire':
         sector = 'Sector1';
         break;
+
       //SECTOR 2: cheshire, derbyshire, greater manchester, humberside, lincolnshire, merseyside, nottinghamshire, south yorkshire, west yorkshire
       case 'cheshire':
       case 'derbyshire':
@@ -591,6 +586,7 @@ const applyFilters = filters => {
       case 'west-yorkshire':
         sector = 'Sector2';
         break;
+
       //SECTOR 3: gloucestershire, leicestershire, northamptonshire, staffordshire, warwickshire, west mercia, west midlands
       case 'gloucestershire':
       case 'leicestershire':
@@ -601,6 +597,7 @@ const applyFilters = filters => {
       case 'west-midlands':
         sector = 'Sector3';
         break;
+
       //SECTOR 4: bedfordshire, cambridgeshire, essex, hertfordshire, norfolk, suffolk, thames valley
       case 'bedfordshire':
       case 'cambridgeshire':
@@ -611,11 +608,13 @@ const applyFilters = filters => {
       case 'thames-valley':
         sector = 'Sector4';
         break;
+
       //SECTOR 5: city of london, metropolitan
       case 'city of london':
       case 'metropolitan':
         sector = 'Sector5';
         break;
+
       //SECTOR 6: wiltshire, sussex, surrey, kent, hampshire, dorset, devon and cornwall, avon and sumerset
       case 'wiltshire':
       case 'sussex':
@@ -631,14 +630,13 @@ const applyFilters = filters => {
       default:
         //intentially blank
         break;
-    }
-    console.log('SWITCH sector: ' + sector);
+    }    
     return sector;
   };
 
 
   /**
- * Function which returns the police force for the current search lat and lon  
+ * Function which returns the name of the police force for the current search lat and lon  
  * 
  * @param {string} aLatitude The lat for the prediction
  * @param {string} aLongitude The lon for the prediction
@@ -649,33 +647,30 @@ const applyFilters = filters => {
 
     var aPoliceForce; // name of police force
 
-    //https://data.police.uk/api/locate-neighbourhood?q=51.500617,-0.124629
     const baseURL = 'https://data.police.uk/api/locate-neighbourhood?q=';   
 
     let URLSector = baseURL + aLatitude + ',' + aLongitude;
 
-    //call police data API to retieve crimes for specified month and area
+    // call police data API to retieve crimes for specified month and area
     await axios
       .get (URLSector)
       .then (res => {
         if (res.length === 0) {
           console.log ('No sector for this search');
         }
-        aPoliceForce = res.data.force; //{"force":"north-yorkshire","neighbourhood":"york-inner"}
+        aPoliceForce = res.data.force; //e.g. {"force":"north-yorkshire","neighbourhood":"york-inner"}
       })
       .catch (error => {
         console.log ('error retrieving police sector: ', error);
       });
 
-    console.log ('=== police force ===  ' + aPoliceForce);
+    //console.log ('=== police force ===  ' + aPoliceForce);
 
     return aPoliceForce;
   };
 
 
-
-
-//ENTRY =====================================
+// ================================================================================
 
 //POST route
 router.post ('/', async (req, res) => {
@@ -691,64 +686,63 @@ router.post ('/', async (req, res) => {
   var noCrimes = false; //if no crimes found
   var geoData = {}; //geo data object
 
-  //if user has selected filters to apply
+  // if user has selected filters to apply
   if (req.body.filters !== undefined) {
     filters = req.body.filters;
   }
 
-  //named location search used
+  // named location search used
   if (isNameSearch) {
-    //call function to convert named location to a set of lat and lon coordinates
+    // call function to convert named location to a set of lat and lon coordinates
     var locationData = await getLatLon (locationName);
-    latitude = locationData.latitude; //store lat coordinate of named location
-    longitude = locationData.longitude; //store lon coordinate of named location
+    latitude = locationData.latitude; // store lat coordinate of named location
+    longitude = locationData.longitude; // store lon coordinate of named location
   }
 
-  //call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
+  // call method to get bounding box lat and lon coordinates of area centered on latitude and longitude
   const boundingBox = getBoundingBox (latitude, longitude);
 
-  //populate array with all dates to check
+  // populate array with all dates to check
   var crimeMonthsArray = populateCrimeDates (numberOfMonths);
 
-  //array to hold crimes to display on map
+  // array to hold crimes to display on map
   let slicedCrimes = []; //array to hold all crimes to display on map
   let crimesDuringMonth = []; //array to hold a specific month's crimes
 
-  //get crime data for location for all months required
+  // get crime data for location for all months required
   for (let aMonth of crimeMonthsArray) {
     crimesDuringMonth = await getCrimeData (aMonth, boundingBox);
 
-    //if crimes exist for month being checked, add them to collection of crimes
+    // if crimes exist for month being checked, add them to collection of crimes
     if (crimesDuringMonth !== undefined && crimesDuringMonth.length > 0) {
       crimes.push (crimesDuringMonth);
     }
   }
 
-  //declare crime variables#
+  // declare crime variables
   //TODO crimes array might do the job of crimeNodes - willl depend on what machine learning needs
-  let crimeNodes = []; //array to hold all found crime locations and information
-  let displayCrimes = []; //array to hold only unique crime types and locations for map display
+  let crimeNodes = []; // array to hold all found crime locations and information
+  let displayCrimes = []; // array to hold only unique crime types and locations for map display
 
-  //add crime details for each crime
+  // add crime details for each crime
   for (let crimeCollection of crimes) {
     for (let aCrime of crimeCollection) {
-      //store details of current crime
+      // store details of current crime
       let aCrimeCategory = aCrime.category;
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
       let aCrimeStreet = aCrime.location.street.name;
       let aCrimeMonth = aCrime.month;
 
-      //if filters were selected
+      // if filters were selected
       if (filters.length > 0) {
-        //call function which removes unwanted/unselected crime filters
+        // call function which removes unwanted/unselected crime filters
         const categoriesToInclude = applyFilters (filters);
 
         for (let aCategory of categoriesToInclude) {
           if (aCrimeCategory === aCategory) {
-            //create new object with crime details to add
+            // create new object with crime details to add
             const aCrimeDetails = {
-              //TODO SHOULD add postcode and LSOA stuff???????????-------------
               category: aCrimeCategory,
               latitude: aCrimeLat,
               longitude: aCrimeLon,
@@ -756,18 +750,16 @@ router.post ('/', async (req, res) => {
               month: aCrimeMonth,
             };
 
-
             //TODO================================------------------------------------------------------------//
-            //TODO MACHINE LEARNING DATA
+            
             //TODO for machine learning save full crime data records to master record array
             crimeNodes.push (aCrimeDetails); //add crime to master record of all crimes
-            //randomise crime order //TODO TEST shuffle data
+           
+            //randomise crime order 
             // crimeNodes = shuffleArray (crimeNodes);
-            //TODO ===============for machine learning randomise <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 
 
-
-            //record only unique crime categories and locations for map display efficiency
+            // record only unique crime categories and locations for map display efficiency
             let uniqueCrimeNodes = displayCrimes.filter (
               crime =>
                 crime.category !== aCrimeCategory ||
@@ -775,15 +767,15 @@ router.post ('/', async (req, res) => {
                 crime.longitude !== aCrimeLon
             );
 
-            //set crimeNodes to filtered unique crimeNodes
+            // set crimeNodes to filtered unique crimeNodes
             displayCrimes = uniqueCrimeNodes;
 
-            //add current crime to array of all crimes to display on map
+            // add current crime to array of all crimes to display on map
             displayCrimes.push (aCrimeDetails);
           }
         }
       } else {
-        //no filters supplied to API, create new object with crime details to add
+        // no filters supplied to API, create new object with crime details to add
         const aCrimeDetails = {
           category: aCrimeCategory,
           latitude: aCrimeLat,
@@ -792,17 +784,13 @@ router.post ('/', async (req, res) => {
           month: aCrimeMonth,
         };
 
-
-
         //TODO machine learning-=============================-------------------------------
         //add crime to master record of all crimes without filtering
         crimeNodes.push (aCrimeDetails); //TODO is needed? - may be able to remove the crimeNodes
-        //TODO USE FOR Displaying trend data??????????
-        //TODO ----=====================================------------------------------------------
+        //TODO USE FOR Displaying trend data?????
 
 
-
-        //record only unique crime categories and locations for map display efficiency
+        // record only unique crime categories and locations for map display efficiency
         let uniqueCrimeNodes = displayCrimes.filter (
           crime =>
             crime.category !== aCrimeCategory ||
@@ -810,65 +798,38 @@ router.post ('/', async (req, res) => {
             crime.longitude !== aCrimeLon
         );
 
-        //set crimeNodes to filtered crimeNodes
+        // set crimeNodes to filtered crimeNodes
         displayCrimes = uniqueCrimeNodes;
 
-        //add current crime to array of all crimes to display on map
+        // add current crime to array of all crimes to display on map
         displayCrimes.push (aCrimeDetails);
       }
     }
   }
 
-  //store max of 90 crimes to cater to mapquest marker quantity imposed limit
+  // store max of 90 crimes to cater to mapquest marker quantity imposed limit
   slicedCrimes = displayCrimes.slice (0, 90);
 
-  //if no crimes were found, set boolean flag to true
+  // if no crimes were found, set boolean flag to true
   if (slicedCrimes.length === 0) {
     noCrimes = true;
   }
 
-  //call function which generates image URL with crime markers on map
+  // call function which generates map image URL with crime markers
   mapURL = getMap (boundingBox, slicedCrimes, latitude, longitude);
 
 
-//TODO TEST 
-  // //get geo location data for search area
-  // geoData = await getGeoData (latitude, longitude);
-  // var postcode = geoData.postcode; //postcode
-  // var LSOA_code = geoData.lsoa; //store LSOA code 
-  // var LSOA_name = geoData.lsoa_name; //store returned LSOA name
-
-  // //call ML modelling model with required data
-  // var prediction = generateMLData (
-  //   predictionYear,
-  //   predictionMonth,
-  //   latitude,
-  //   longitude,
-  //   LSOA_code,
-  //   LSOA_name,
-  //   postcode
-  // );
-
-
-  //TODO ----------------  Machine learning ------------
+  //TODO ----------------  Machine learning --------------
   const today = new Date ();
   const predictionYear = today.getFullYear ();
   const predictionMonth = today.getMonth () + 1; 
 
   // variables to hold police force and sector for this search location
   var policeForce = await getPoliceForce (latitude, longitude);
-
-  console.log('policeForce: ' + policeForce);
-
   var sector = getSector (policeForce);
-
-  console.log('routes: sector: ' + sector);
 
   // variable to hold response from machine learning flask server
   var flaskData;
-
-  console.log('sending flask data: ' + predictionMonth
-  + ' ' + predictionYear + ' ' + latitude + ' ' + longitude + ' ' + sector);
 
   await axios
     .request ({
@@ -888,11 +849,9 @@ router.post ('/', async (req, res) => {
         data: allData,
       };
     })
-    .catch (reason => {
-      console.log ('Error getting response from flask: ' + reason);
+    .catch (error => {
+      console.log ('Error getting response from flask: ' + error);
     });
-
-
 
   //respond with data //TODO don't need as much response data once finalised
   res.send ({

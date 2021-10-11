@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-//new search
+// new search
 export const getMapURL = async (payload) => {
 	let dataResponse = await APICall(payload);	
 	return dataResponse;
 };
 
-//filtering previous search display //TODO check whats needed below
+// function which applies crime icon filtering to a previous search
 export const getUpdatedMapURL = async (aPayload) => {
 
 	let payload = {
@@ -22,7 +22,7 @@ export const getUpdatedMapURL = async (aPayload) => {
 	return response; //TODO might need a then here ...	
 };
 
-//function which completes an API call
+// function which completes an API call
 const APICall = async (payload) => {
 
 	return new Promise((resolve) => {

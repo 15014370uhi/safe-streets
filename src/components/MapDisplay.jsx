@@ -25,6 +25,7 @@ const MapDisplay = (props) => {
 		window.scrollTo(0, 10); // scroll map view down
 	}, []);
 
+
 	const openFilter = (e) => {
 		//TODO filter icons on map
 	};
@@ -56,7 +57,6 @@ const MapDisplay = (props) => {
 
 	return (
 		<div className='map-container'>
-
 			<AddFavouriteModal
 				mapurl={mapDetails.mapURL}
 				show={showAddFavouriteModal}
