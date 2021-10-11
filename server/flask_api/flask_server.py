@@ -24,8 +24,4 @@ def runPredictionModel():
     return results_JSON
       
 if __name__ == '__main__':
-    app.run(port=5000)  
-    
-    # Get the output from the classification model
-    #https://github.com/srishilesh/Machine-learning/blob/master/Local%20Deployment/server.py
-    #variety = model.classify(sepal_len, sepal_wid, petal_len, petal_wid)
+    app.run(port=5000)     

@@ -6,12 +6,12 @@ https://docs.anaconda.com/anaconda/install/windows/
 
 2. Install dependencies
 
-conda create --name mlenv python=3.9.7
-conda activate mlenv
+conda create --name venv python=3.9.7
+conda activate venv
 
 pip install pywin32==225
 conda install -c anaconda pandas
-pip install -U scikit-learn
+pip install -U scikit-learn 0.24.2 (pip3 install scikit-learn==0.24.2)
 conda install jmespath
 
 conda install -c conda-forge folium
@@ -20,9 +20,7 @@ conda install -c conda-forge shapely
 conda install seaborn
 conda install -c conda-forge matplotlib
 
-
 import geopandas as gpd
-
 
 =================
 FLASK VENV in server folder
