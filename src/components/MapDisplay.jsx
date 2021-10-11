@@ -18,6 +18,8 @@ const MapDisplay = (props) => {
 	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
 		useState(false);
 	const [showFiltersModal, setShowFiltersModal] = useState(false);
+	const [showDataModal, setShowDataModal] = useState(false); //TEST
+
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
 	let history = useHistory();
 
@@ -25,11 +27,6 @@ const MapDisplay = (props) => {
 		window.scrollTo(0, 10); // scroll map view down
 	}, []);
 
-
-	const openFilter = (e) => {
-		//TODO filter icons on map
-	};
-	
 
 	// function which updates the mapURL context
 	const updateMapURL = async (filters) => {

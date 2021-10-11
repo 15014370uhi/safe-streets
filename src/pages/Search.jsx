@@ -44,10 +44,10 @@ const Search = props => {
     if (name === 'locationName') {
       setLocationName (value);
     } else if (name === 'lat') {
-      //if latitude input, set lat state
+      // if latitude input, set lat state
       setLat (value);
     } else if (name === 'lon') {
-      //if longitude input, set lon state
+      // if longitude input, set lon state
       setLon (value);
     }
   };
@@ -138,39 +138,10 @@ const Search = props => {
         // check if no crimes were recorded for search criteria
         const noCrimesDetected = response.nocrimes;
 
-        //TODO switch to leaflet !!!!
-        console.log ('flask response: ' + JSON.stringify (response.flaskdata.data));		
-
-        const anti_social_behaviour =
-          response.flaskdata.data.Anti_social_behaviour;
-        const burglary = response.flaskdata.data.Burglary;
-        const criminal_damage_and_arson =
-          response.flaskdata.data.Criminal_damage_and_arson;
-        const drugs = response.flaskdata.data.Drugs;
-        const possession_of_weapons =
-          response.flaskdata.data.Possession_of_weapons;
-        const public_order = response.flaskdata.data.Public_order;
-        const theft = response.flaskdata.data.Theft;
-        const vehicle_crime = response.flaskdata.data.Vehicle_crime;
-        const violent_crime = response.flaskdata.data.Violent_crime;
-
-        alert (
-          'Predicted Crime Probabilities for this week: \n\n' 
-		  + 'Anti-Social = ' + (parseFloat(anti_social_behaviour / 4).toFixed(2)) + '%\n'
-		  + 'Burglary = ' + (parseFloat(burglary / 4).toFixed(2)) + '%\n' 
-		  + 'Criminal Damage & Arson = ' + (parseFloat(criminal_damage_and_arson / 4).toFixed(2)) + '%\n' 
-		  + 'Drugs = ' + (parseFloat(drugs / 4).toFixed(2)) + '\n' 
-		  + 'Possession of Weapons = ' + (parseFloat(possession_of_weapons / 4).toFixed(2)) + '%\n' 
-		  + 'Public Order = ' + (parseFloat(public_order / 4).toFixed(2)) + '%\n' 
-		  + 'Theft = ' + (parseFloat(theft / 4).toFixed(2)) + '%\n' 
-		  + 'Vehicle Crime = ' + (parseFloat(vehicle_crime / 4).toFixed(2)) + '%\n' 
-		  + 'Violent Crime = ' + (parseFloat(violent_crime / 4).toFixed(2)) + '%\n'
-        );
-
         // check for invalid lat and lon response, due to mispelled/invalid location name
         let isValidLocation = isWithinUK (response.lat, response.lon);
 
-        // invalid search location
+        // if invalid search location
         if (!isValidLocation) {
           setSubmitText (<label className="submit-btn-text">Submit</label>);
           alert (
@@ -180,6 +151,54 @@ const Search = props => {
           setSubmitText ('Submit');
           alert ('No crime data found for this search!');
         } else {
+          const flaskData = response.flaskdata.data;
+
+          //TODO switch to leaflet !!!!
+          //TODO send data to function which creates crime history/presentation of data?
+          //console.log ('flask response: ' + JSON.stringify (response.flaskdata.data));
+
+          const anti_social_behaviour = flaskData.Anti_social_behaviour;
+          const burglary = flaskData.Burglary;
+          const criminal_damage_and_arson = flaskData.Criminal_damage_and_arson;
+          const drugs = flaskData.Drugs;
+          const possession_of_weapons = flaskData.Possession_of_weapons;
+          const public_order = flaskData.Public_order;
+          const theft = flaskData.Theft;
+          const vehicle_crime = flaskData.Vehicle_crime;
+          const violent_crime = flaskData.Violent_crime;
+
+          //TODO instead of alert, present crime data as graphs etc
+          alert (
+            'Predicted Crime Probabilities for this week: \n\n' +
+              'Anti-Social = ' +
+              parseFloat (anti_social_behaviour / 4).toFixed (2) +
+              '%\n' +
+              'Burglary = ' +
+              parseFloat (burglary / 4).toFixed (2) +
+              '%\n' +
+              'Criminal Damage & Arson = ' +
+              parseFloat (criminal_damage_and_arson / 4).toFixed (2) +
+              '%\n' +
+              'Drugs = ' +
+              parseFloat (drugs / 4).toFixed (2) +
+              '\n' +
+              'Possession of Weapons = ' +
+              parseFloat (possession_of_weapons / 4).toFixed (2) +
+              '%\n' +
+              'Public Order = ' +
+              parseFloat (public_order / 4).toFixed (2) +
+              '%\n' +
+              'Theft = ' +
+              parseFloat (theft / 4).toFixed (2) +
+              '%\n' +
+              'Vehicle Crime = ' +
+              parseFloat (vehicle_crime / 4).toFixed (2) +
+              '%\n' +
+              'Violent Crime = ' +
+              parseFloat (violent_crime / 4).toFixed (2) +
+              '%\n'
+          );
+
           // set lat and lon values
           setLat (response.lat);
           setLon (response.lon);

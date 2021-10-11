@@ -11,11 +11,6 @@ import FiltersModal from '../modals/FiltersModal';
 import ButtonShowFilters from './ButtonShowFilters';
 import ButtonBack from './ButtonBack';
 
-//TEST LEAFLET
-import { Map, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
-import { Icon } from 'leaflet';
-import { LatLngExpression } from 'leaflet';
-
 // component which displays the map image for a mapURL
 const MapDisplay = (props) => {
 	// state for modal screen
@@ -26,15 +21,10 @@ const MapDisplay = (props) => {
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
 	let history = useHistory();
 
-
-	//TEST leaflet
-	//const defaultPosition: LatLngExpression = [48.864716, 2.349]; // Paris position
-
-
-
 	useEffect(() => {
 		window.scrollTo(0, 10); // scroll map view down
 	}, []);
+
 
 	const openFilter = (e) => {
 		//TODO filter icons on map
@@ -67,7 +57,6 @@ const MapDisplay = (props) => {
 
 	return (
 		<div className='map-container'>
-
 			<AddFavouriteModal
 				mapurl={mapDetails.mapURL}
 				show={showAddFavouriteModal}

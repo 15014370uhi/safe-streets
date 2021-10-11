@@ -433,7 +433,9 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   }
 
   // add URL ending string
-  URLMap = URLMap + '&zoom=8&size=600,600@2x'; //TODO NOTES: zoom=lower value is closer,  size=width,length
+  URLMap = URLMap + '&zoom=8&size=600,400@2x'; //TODO NOTES: zoom=lower value is closer,  size=width,length
+// URLMap = URLMap + '&zoom=8&size=600,600@2x'; //TODO NOTES: zoom=lower value is closer,  size=width,length
+
 
   // return full URL for a static map with all crime locations marked
   return URLMap;
