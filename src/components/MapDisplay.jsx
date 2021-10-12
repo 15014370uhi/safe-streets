@@ -1,15 +1,19 @@
-import React, {useState, useEffect, useContext} from 'react';
-import {MapDetails} from '../contexts/MapDetailsContext';
-import {getUpdatedMapURL} from '../util/GetMapURL';
-import {useHistory} from 'react-router-dom';
-import Image from 'react-bootstrap/Image';
-import AddFavouriteModal from '../modals/AddFavouriteModal';
-import ButtonAddToFavs from './ButtonAddToFavs';
-import RemoveFavouriteModal from '../modals/RemoveFavouriteModal';
-import ButtonRemoveFromFavs from './ButtonRemoveFromFavs';
-import FiltersModal from '../modals/FiltersModal';
-import ButtonShowFilters from './ButtonShowFilters';
-import ButtonBack from './ButtonBack';
+import React, { useState, useEffect, useContext} from "react";
+import { MapDetails } from "../contexts/MapDetailsContext";
+import { getUpdatedMapURL } from "../util/GetMapURL";
+import { useHistory } from "react-router-dom";
+import Image from "react-bootstrap/Image";
+import AddFavouriteModal from "../modals/AddFavouriteModal";
+import ButtonAddToFavs from "./ButtonAddToFavs";
+import RemoveFavouriteModal from "../modals/RemoveFavouriteModal";
+import ButtonRemoveFromFavs from "./ButtonRemoveFromFavs";
+import FiltersModal from "../modals/FiltersModal";
+import ButtonShowFilters from "./ButtonShowFilters";
+import ButtonBack from "./ButtonBack";
+
+// data modal
+import ButtonShowData from "./ButtonShowData";
+import DataModal from "../modals/ShowDataModal";
 
 // component which displays the map image for a mapURL
 const MapDisplay = (props) => {
@@ -18,15 +22,14 @@ const MapDisplay = (props) => {
 	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
 		useState(false);
 	const [showFiltersModal, setShowFiltersModal] = useState(false);
-	const [showDataModal, setShowDataModal] = useState(false); //TEST
-
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
+	const [showDataModal, setShowDataModal] = useState(false); //Data chart modal
+
 	let history = useHistory();
 
 	useEffect(() => {
 		window.scrollTo(0, 10); // scroll map view down
 	}, []);
-
 
 	// function which updates the mapURL context
 	const updateMapURL = async (filters) => {
@@ -39,9 +42,10 @@ const MapDisplay = (props) => {
 			filters: filters,
 		};
 		// call API function in external file
-		const response = await getUpdatedMapURL(payload); //TODO check data getting to api
+		const response = await getUpdatedMapURL(payload);	
 
-		await setMapDetails((mapDetails) => ({ // dont need AWAIT? // TODO
+		await setMapDetails((mapDetails) => ({			
+			flaskdata: response.flaskdata,
 			mapURL: response.mapurl,
 			locationname: response.locationname,
 			isnamesearch: response.isnamesearch,
@@ -53,37 +57,46 @@ const MapDisplay = (props) => {
 	};
 
 	return (
-		<div className='map-container'>
+		<div className="map-container">
 			<AddFavouriteModal
 				mapurl={mapDetails.mapURL}
 				show={showAddFavouriteModal}
 				onHide={() => setShowAddFavouriteModal(false)}
-				mapdetails={mapDetails}	/>
+				mapdetails={mapDetails}
+			/>
 
 			<RemoveFavouriteModal
 				mapurl={mapDetails.mapURL}
 				show={showRemoveFavouritesModal}
-				onHide={() => setShowRemoveFavouritesModal(false)}/>
+				onHide={() => setShowRemoveFavouritesModal(false)}
+			/>
 
 			<FiltersModal
 				show={showFiltersModal}
 				onHide={() => setShowFiltersModal(false)}
 				updateMapURL={updateMapURL}
 				mapdetails={mapDetails}
-				setmapdetails={setMapDetails}/>		
+				setmapdetails={setMapDetails}
+			/>
+
+			<DataModal
+				show={showDataModal}				
+				onHide={() => setShowDataModal(false)}
+			/>
+
+			<ButtonShowData setShowDataModal={setShowDataModal} />
 
 			<ButtonBack />
-			<ButtonShowFilters
-				openFilter={openFilter}
-				setModalShow={setShowFiltersModal}/>	
-					
-			{history.location.state?.isfavourite === 'true' ? (
+			<ButtonShowFilters setModalShow={setShowFiltersModal} />
+
+			{history.location.state?.isfavourite === "true" ? (
 				<ButtonRemoveFromFavs
-					setModalShow={setShowRemoveFavouritesModal}/>
+					setModalShow={setShowRemoveFavouritesModal}
+				/>
 			) : (
 				<ButtonAddToFavs setModalShow={setShowAddFavouriteModal} />
-			)}			
-				<Image className="mapDisplay" src={mapDetails.mapURL} />				
+			)}
+			<Image className="mapDisplay" src={mapDetails.mapURL} />
 		</div>
 	);
 };

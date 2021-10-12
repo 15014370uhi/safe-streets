@@ -1,186 +1,319 @@
-import React, {useState, useEffect} from 'react';
+import React, {useContext} from "react";
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import ButtonFilterCrime from '../components/ButtonFilterCrime';
-import uuid from 'react-uuid';
+import { MapDetails } from "../contexts/MapDetailsContext";
 
-//array to hold crimes to remove from map display
-let filters = []; //TODO TEST outside of scope
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts';
 
-const FiltersModal = (props) => {
+//style components
+import {MDBIcon} from 'mdbreact';
 
-	//TODO check how filters works with nodeJS filters/groupings and python code - consistency throughout
-	//filter buttons
-	const [crimeButtons, setCrimeButtons] = useState([
-		{
-			label: 'Anti-Social Behaviour', //button label text
-			categories: ['anti-social-behaviour'], //element categories[0] used as button id
-			isActive: true, //boolean flag to determine whether to display this crime on map
-		},
-		{
-			label: 'Arson',
-			categories: ['criminal-damage-arson'],
-			isActive: true,
-		},
-		{
-			label: 'Burglary',
-			categories: ['burglary'],
-			isActive: true,
-		},
-		{
-			label: 'Drugs',
-			categories: ['drugs'],
-			isActive: true,
-		},
-		{
-			label: 'Theft',
-			categories: ['other-theft', 'bicycle-theft'],
-			isActive: true,
-		},
-		{
-			label: 'Public Order',
-			categories: ['public-order', 'other-crime'],
-			isActive: true,
-		},
-		{
-			label: 'Robbery',
-			categories: ['robbery'],
-			isActive: true,
-		},
-		{
-			label: 'Shoplifting',
-			categories: ['shoplifting'],
-			isActive: true,
-		},
-		{
-			label: 'Vehicle Crime',
-			categories: ['vehicle-crime'],
-			isActive: true,
-		},
-		{
-			label: 'Violent Crime',
-			categories: ['violent-crime', 'theft-from-the-person'],
-			isActive: true,
-		},
-		{
-			label: 'Weapons',
-			categories: ['possession-of-weapons'],
-			isActive: true,
-		},
-	]);
+const ShowDataModal = props => { 
+  
+  const [mapDetails, setMapDetails] = useContext(MapDetails); 
 
-	const [appliedFilters, setAppliedFilters] = useState([]);
+  //const anti_social_behaviour = parseFloat (flaskdata.Anti_social_behaviour / 4).toFixed (2); //WEEKLY?
+  //console.log('TEST VALUES:: ' + mapDetails.flaskdata.Burglary);
 
-	useEffect(() => {
-		setPreviousFilters(props.mapdetails.filters);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
-	//apply any filters supplied as props from previously filtered favourite
-	const setPreviousFilters = (filtersToApply) => {	
-		setAppliedFilters(filtersToApply); //set filters state to loaded filters		
-		filtersToApply.forEach((aFilterCategory) => {
-			const indexOfButtonToUpdate = crimeButtons.findIndex(
-				(aButton) => aButton.categories.includes(aFilterCategory)				
-			);
-			changeFilterState(crimeButtons[indexOfButtonToUpdate].label); //call function with label of corresponding button
-		});
-	};
+  // const anti_social_behaviour = parseFloat (flaskdata.Anti_social_behaviour).toFixed (2); //WEEKLY or not?
+  // const burglary = parseFloat (flaskdata.Burglary).toFixed (2);
+  // const criminal_damage_and_arson = parseFloat (flaskdata.Criminal_damage_and_arson).toFixed (2);
+  // const drugs = parseFloat (flaskdata.Drugs).toFixed (2);
+  // const possession_of_weapons = parseFloat (flaskdata.Possession_of_weapons).toFixed (2);
+  // const public_order = parseFloat (flaskdata.Public_order).toFixed (2);
+  // const theft = parseFloat (flaskdata.Theft).toFixed (2);
+  // const vehicle_crime = parseFloat (flaskdata.Vehicle_crime).toFixed (2);
+  // const violent_crime = parseFloat (flaskdata.Violent_crime).toFixed (2);	  
 
-	//function to handle user form input
-	const changeFilterState = (label) => {
-		const indexOfButtonToUpdate = crimeButtons.findIndex(
-			(aButton) => aButton.label === label
-		);
-		const updatedButtons = [...crimeButtons]; //create copy of array
+  const anti_social_behaviour = Math.round(mapDetails.flaskdata.Anti_social_behaviour); //WEEKLY or not?
+  const burglary = Math.round(mapDetails.flaskdata.Burglary);
+  const criminal_damage_and_arson = Math.round(mapDetails.flaskdata.Criminal_damage_and_arson);
+  const drugs = Math.round(mapDetails.flaskdata.Drugs);
+  const possession_of_weapons = Math.round(mapDetails.flaskdata.Possession_of_weapons);
+  const public_order = Math.round(mapDetails.flaskdata.Public_order);
+  const theft = Math.round(mapDetails.flaskdata.Theft);
+  const vehicle_crime = Math.round(mapDetails.flaskdata.Vehicle_crime);
+  const violent_crime = Math.round(mapDetails.flaskdata.Violent_crime);	  
 
-		let newIsActiveStatus = !updatedButtons[indexOfButtonToUpdate].isActive;
-		updatedButtons[indexOfButtonToUpdate].isActive = newIsActiveStatus;
-		let categories = updatedButtons[indexOfButtonToUpdate].categories;
 
-		//if button is now active, remove crime categories from filtered crimes list
-		if (newIsActiveStatus) {
-			for (let category of updatedButtons[indexOfButtonToUpdate]
-				.categories) {
-				filters = filters.filter(
-					(crimeFilter) => crimeFilter !== category
-				);
-			}
-		} else {
-			//else add crime categories to list of crimes to filter
-			for (let category of categories) {
-				filters.push(category);
-			}
-		}
-		//update set of buttons with new state
-		setCrimeButtons(updatedButtons);
-	};
+  //TODO need to display previous 12 months data - then show trends on graph over the Year
+  // Maybe add new bit on end of graph for prediction?
+  //need months, crimes, and total crimes for each type of crime
+  //calculate current month and set that to last - entry in graph - 
+  
+  //Two data points - dougnut with prediciton crimes - and trend of last 12 months actual
 
-	//function to apply selected filters to map display
-	const applyFilters = async () => {
-		//TODO animate apply filters button - to give time for new filtered map to arrive
-		//TODO dont close modal until button states show they are dropHandler
-		//TODO might need another button like - apply - after filters reset
+  const data = [
+    {
+      'name': 'Jan',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Feb',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Mar',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Apr', //Was...   name: 'April'
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'May',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Jun',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Jul',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Aug',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Sep',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Oct',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Nov',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+    {
+      'name': 'Dec',
+      'Anti-Social': anti_social_behaviour,
+      'Burglary': burglary,
+      'Criminal Damage and Arson': criminal_damage_and_arson,
+      'Drugs': drugs,
+      'Possession of Weapons': possession_of_weapons,
+      'Public Order': public_order,
+      'Theft': theft,
+      'Vehicle Crime': vehicle_crime,
+      'Violent Crime': violent_crime,
+    },
+  ];
 
-		//TODO whatever causes them to cahange state when clicking on filter buttons - reverse that for
-		//TODO the reset button - just do same thing
-		props.onHide(); //hide filter modal interface
-		props.updateMapURL(filters);
-	};
+  // 'name': 'Dec',
+  // 'Anti-Social': anti_social_behaviour,
+  // 'Burglary': 2400,
+  // 'Criminal Damage and Arson': 1400,
+  // 'Drugs': 1200,
+  // 'Possession of Weapons': 455,
+  // 'Public Order': 2152,
+  // 'Theft': 1200,
+  // 'Vehicle Crime': 399,
+  // 'Violent Crime': 1876,
 
-	const resetFilters = () => {
-		filters = [];
+ 
 
-		//iterate over all buttons and call the change state function for each
-		for (let aButton of crimeButtons) {
-			if (!aButton.isActive) {
-				changeFilterState(aButton.label);
-			}			
-		}
-	};
-
-	return (
-		<Modal
-			show={props.show}
-			onHide={props.onHide}
-			animation={false}
-			size="lg"
-			centered>
-			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
-					Crime Filters
-				</Modal.Title>
-			</Modal.Header>
-
-			<Modal.Body className="filterButtonsGroup">
-				{crimeButtons.map((aButton) => (
-					<ButtonFilterCrime
-						key={uuid()}
-						id={aButton.categories[0]}
-						label={aButton.label}
-						categories={aButton.categories}
-						isActive={aButton.isActive}
-						changeFilterState={changeFilterState}
-					/>
-				))}
-			</Modal.Body>
-			<Modal.Footer>
-				<Button
-					className="btn-footer"
-					variant="red"
-					onClick={resetFilters}>
-					Reset
-				</Button>
-				<Button
-					className="btn-footer"
-					variant="green"
-					type="submit"
-					onClick={() => applyFilters()}>
-					Apply
-				</Button>
-			</Modal.Footer>
-		</Modal>
-	);
+  return (
+    <Modal
+      show={props.show}
+      onHide={props.onHide}
+      animation={false}
+      size="lg"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          <h3 className="my-3">
+            <MDBIcon className="addFavModal-icon" icon="bookmark" />
+            Data for location
+          </h3>
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>   
+      <ResponsiveContainer width={'99%'} height={400}>
+          <AreaChart
+            width={400}
+            height={400}
+            data={data}
+            margin={{
+              top: 10,
+              right: 30,
+              left: 0,
+              bottom: 0,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Area
+              type="monotone"
+              dataKey="Anti-Social"
+              stackId="1"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+            <Area
+              type="monotone"
+              dataKey="Burglary"
+              stackId="1"
+              stroke="#82ca9d"
+              fill="#82ca9d"
+            />
+            <Area
+              type="monotone"
+              dataKey="Criminal Damage and Arson"
+              stackId="1"
+              stroke="#ffc658"
+              fill="#ffc658"
+            />
+             <Area
+              type="monotone"
+              dataKey="Drugs"
+              stackId="1"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+             <Area
+              type="monotone"
+              dataKey="Possession of Weapons"
+              stackId="1"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+             <Area
+              type="monotone"
+              dataKey="Public Order"
+              stackId="1"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+             <Area
+              type="monotone"
+              dataKey="Theft"
+              stackId="1"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+             <Area
+              type="monotone"
+              dataKey="Vehicle Crime"
+              stackId="1"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+             <Area
+              type="monotone"
+              dataKey="Violent Crime"
+              stackId="1"
+              stroke="#8884d8"
+              fill="#8884d8"
+            />
+          </AreaChart>
+          </ResponsiveContainer>      
+      </Modal.Body>
+    </Modal>
+  );
 };
 
-export default FiltersModal;
+
+
+export default ShowDataModal;

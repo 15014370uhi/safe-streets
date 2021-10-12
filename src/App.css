@@ -487,6 +487,21 @@ form>fieldset {
   right: 1.9%;
 }
 
+
+.btn-display-data {
+  position: fixed;
+  font-size: 4em; 
+  padding-top: 12px !important;
+  padding-bottom: 2px !important;
+  padding-left: 1px !important;
+  padding-right: 1px !important;
+  border: 6px solid rgb(101, 221, 32);
+  border-radius: 90px;
+  box-shadow: 0 14px 18px rgb(82, 73, 24);
+  bottom: 5%;
+  left: 7%;
+}
+
 .btn-delete-favourite {
   position: fixed;
   font-size: 4em;  
