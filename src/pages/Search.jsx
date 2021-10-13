@@ -20,12 +20,13 @@ const Search = props => {
   const [mapDetails, setMapDetails] = useContext (MapDetails);
 
   // function which updates the mapURL context
-  const updateMapURL = (aFlaskdata, aMapURL, aLat, aLon, wasNameSearch) => {
+  const updateMapURL = (aFlaskdata, historicData, aMapURL, aLat, aLon, wasNameSearch) => {
 
     //console.log('updateMapURL received flaskdata: ' + aFlaskdata.data.Anti_social_behaviour);
     
     setMapDetails ({ 
       flaskdata: aFlaskdata.data,  //flaskdata: aFlaskdata, 
+      historicdata:  historicData,
       mapURL: aMapURL,
       locationname: locationName,
       isnamesearch: wasNameSearch,
@@ -155,8 +156,7 @@ const Search = props => {
           setSubmitText ('Submit');
           alert ('No crime data found for this search!');
         } else {
-          const flaskData = response.flaskdata.data;
-
+         
           //TODO switch to leaflet !!!!
           //TODO send data to function which creates crime history/presentation of data?
           //console.log ('flask response: ' + JSON.stringify (response.flaskdata.data));
@@ -203,8 +203,7 @@ const Search = props => {
           //     '%\n'
           // );
 
-          console.log(JSON.stringify(response.flaskdata)) //TODO TEST
-
+         // console.log(JSON.stringify(response.flaskdata)) //TODO TEST
 
           // set lat and lon values
           setLat (response.lat);
@@ -213,6 +212,7 @@ const Search = props => {
           // pass mapurl to context
           updateMapURL (
             response.flaskdata, 
+            response.historicData,
             response.mapurl,
             response.lat,
             response.lon,

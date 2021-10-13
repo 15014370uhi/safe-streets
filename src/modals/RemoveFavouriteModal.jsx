@@ -1,17 +1,17 @@
-import React, {useContext} from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import firebase from 'firebase';
-import {useHistory} from 'react-router-dom';
-import {UserContext} from '../auth/UserProvider';
+import React, { useContext } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import firebase from "firebase";
+import { useHistory } from "react-router-dom";
+import { UserContext } from "../auth/UserProvider";
 
 const RemoveFavouriteModal = (props) => {
 	const user = useContext(UserContext); // Get User Context for ID
 	let history = useHistory();
 
-	//function to remove a favourite from a user's collection of favourites based on title
+	// function to remove a favourite from a user's collection of favourites based on title
 	const deleteFavourite = async (aMapURL) => {
-		var userRef = firebase.firestore().collection('users').doc(user.uid);
+		var userRef = firebase.firestore().collection("users").doc(user.uid);
 		await userRef
 			.get()
 			.then(function (doc) {
@@ -30,11 +30,11 @@ const RemoveFavouriteModal = (props) => {
 					let path = `/favourites`;
 					history.push(path);
 				} else {
-					console.log('No favourites!');
+					console.log("No favourites!");
 				}
 			})
 			.catch(function (error) {
-				console.log('Error getting favourites:', error);
+				console.log("Error getting favourites:", error);
 			});
 	};
 

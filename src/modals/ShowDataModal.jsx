@@ -197,18 +197,6 @@ const ShowDataModal = props => {
       'Violent Crime': violent_crime,
     },
   ];
-
-  // 'name': 'Dec',
-  // 'Anti-Social': anti_social_behaviour,
-  // 'Burglary': 2400,
-  // 'Criminal Damage and Arson': 1400,
-  // 'Drugs': 1200,
-  // 'Possession of Weapons': 455,
-  // 'Public Order': 2152,
-  // 'Theft': 1200,
-  // 'Vehicle Crime': 399,
-  // 'Violent Crime': 1876,
-
  
 
   return (
@@ -223,7 +211,7 @@ const ShowDataModal = props => {
         <Modal.Title id="contained-modal-title-vcenter">
           <h3 className="my-3">
             <MDBIcon className="addFavModal-icon" icon="bookmark" />
-            Data for location
+            Crime data for previous year
           </h3>
         </Modal.Title>
       </Modal.Header>

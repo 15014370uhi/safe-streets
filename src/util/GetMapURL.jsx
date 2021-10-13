@@ -29,6 +29,7 @@ const getAPIResponse = async payload => {
       .then (res => {
         const response = {
           flaskdata: res.data.flaskdata,
+          historicdata: res.data.historicdata,
           boundingbox: res.data.boundingbox,
           filters: res.data.filters,
           isnamesearch: res.data.isnamesearch,
@@ -40,7 +41,7 @@ const getAPIResponse = async payload => {
           numberofmonths: res.data.numberofmonths,
           nocrimes: res.data.nocrimes,
         };				
-        resolve (response); //TODO flaskdata is here ok
+        resolve (response); 
       })
       .catch (error => {
         console.log ('error in obtaining API response: ', error.message);

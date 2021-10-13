@@ -676,7 +676,7 @@ form>fieldset {
   }
 
   ul.nav-menu {
-    height: 1200px;
+    height: 720px; /* was 1200px */
     text-align: left;
     padding-top: 30px;
   }
