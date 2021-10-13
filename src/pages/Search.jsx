@@ -209,10 +209,12 @@ const Search = props => {
           setLat (response.lat);
           setLon (response.lon);
 
+          
+
           // pass mapurl to context
           updateMapURL (
             response.flaskdata, 
-            response.historicData,
+            response.historicdata,
             response.mapurl,
             response.lat,
             response.lon,
