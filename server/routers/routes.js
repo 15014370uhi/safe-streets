@@ -539,6 +539,16 @@ const applyFilters = filters => {
     'burglary',
   ];
 
+  // 'anti-social-behaviour',
+  // 'theft',
+  // 'burglary',
+  // 'criminal-damage-arson',
+  // 'drugs',
+  // 'public-order', 
+  // 'possession-of-weapons',      
+  // 'violent-crime', 
+  // 'vehicle-crime',      
+
   const categoriesToInclude = allCategories.filter (
     aCategory => !filters.includes (aCategory)
   );
@@ -648,6 +658,26 @@ const getPoliceForce = async (aLatitude, aLongitude) => {
   return aPoliceForce;
 };
 
+
+
+/**
+ * Function which extracts the year and month from a string and returns
+ * a Date object representation  
+ * 
+ * @param {string} stringDate String representation of year and month
+ * 
+ * @return {Date} The date object containing year and month of crime 
+ */
+ const getYearAndMonth = stringDate => {
+  const crimeYear = stringDate.slice (0, 4);
+  const crimeMonth = stringDate.slice (5);
+  const crimeDate = new Date (crimeYear, crimeMonth);
+
+  //TODO TEST
+  //console.log (crimeDate);
+  return crimeDate;
+};
+
 // ================================================================================
 
 //POST route
@@ -697,8 +727,6 @@ router.post ('/', async (req, res) => {
   }
 
 
-
-
   //TODO *************** HISTORIC *************************
   var crimeMonthsArrayHistoric = populateCrimeDates (12);
 
@@ -730,7 +758,9 @@ router.post ('/', async (req, res) => {
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
       let aCrimeStreet = aCrime.location.street.name;
-      let aCrimeMonth = aCrime.month;
+      let aCrimeDate = getYearAndMonth (aCrime.month);
+      let aCrimeYear = aCrimeDate.getFullYear ();
+      let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
 
       // reate new object with crime details to add
       const aCrimeDetails = {
@@ -738,7 +768,8 @@ router.post ('/', async (req, res) => {
         latitude: aCrimeLat,
         longitude: aCrimeLon,
         street: aCrimeStreet,
-        month: aCrimeMonth,
+        month: aCrimeMonth,      
+        year: aCrimeYear,
       };     
       // add current crime to array of all crimes to display on map
       displayCrimesHistoric.push (aCrimeDetails);
@@ -761,7 +792,9 @@ router.post ('/', async (req, res) => {
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
       let aCrimeStreet = aCrime.location.street.name;
-      let aCrimeMonth = aCrime.month;
+      let aCrimeDate = getYearAndMonth (aCrime.month);
+      let aCrimeYear = aCrimeDate.getFullYear ();
+      let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
 
       // if filters were selected
       if (filters.length > 0) {
@@ -777,6 +810,7 @@ router.post ('/', async (req, res) => {
               longitude: aCrimeLon,
               street: aCrimeStreet,
               month: aCrimeMonth,
+              year: aCrimeYear,
             };
 
             //TODO for machine learning save full crime data records to master record array
@@ -805,6 +839,7 @@ router.post ('/', async (req, res) => {
           longitude: aCrimeLon,
           street: aCrimeStreet,
           month: aCrimeMonth,
+          year: aCrimeYear,
         };
 
         //TODO machine learning-=============================-------------------------------

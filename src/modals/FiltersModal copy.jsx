@@ -5,7 +5,7 @@ import ButtonFilterCrime from '../components/ButtonFilterCrime';
 import uuid from 'react-uuid';
 
 //array to hold crimes to remove from map display
-let filters = []; 
+let filters = []; //TODO TEST outside of scope
 
 const FiltersModal = (props) => {
 
@@ -33,7 +33,7 @@ const FiltersModal = (props) => {
 		},
 		{
 			label: 'Theft',
-			categories: ['other-theft', 'bicycle-theft', 'shoplifting'],
+			categories: ['other-theft', 'bicycle-theft'],
 			isActive: true,
 		},
 		{
@@ -42,30 +42,30 @@ const FiltersModal = (props) => {
 			isActive: true,
 		},
 		{
-			label: 'Weapons',
-			categories: ['possession-of-weapons'],
+			label: 'Robbery',
+			categories: ['robbery'],
+			isActive: true,
+		},
+		{
+			label: 'Shoplifting',
+			categories: ['shoplifting'],
+			isActive: true,
+		},
+		{
+			label: 'Vehicle Crime',
+			categories: ['vehicle-crime'],
 			isActive: true,
 		},
 		{
 			label: 'Violent Crime',
 			categories: ['violent-crime', 'theft-from-the-person'],
 			isActive: true,
-		},		
+		},
 		{
-			label: 'Vehicle Crime',
-			categories: ['vehicle-crime'],
+			label: 'Weapons',
+			categories: ['possession-of-weapons'],
 			isActive: true,
 		},
-		//{
-		//	label: 'Robbery',
-		//	categories: ['robbery'],
-	//		isActive: true,
-	//	},
-		// {
-		// 	label: 'Shoplifting',
-		// 	categories: ['shoplifting'],
-		// 	isActive: true,
-		// },
 	]);
 
 	const [appliedFilters, setAppliedFilters] = useState([]);

@@ -208,8 +208,7 @@ const Search = props => {
           // set lat and lon values
           setLat (response.lat);
           setLon (response.lon);
-
-          
+         
 
           // pass mapurl to context
           updateMapURL (
