@@ -1,0 +1,74 @@
+Sector 1 (top upper)
+1. Cumbria
+2. Northumberland
+3. Tyne and wear
+4. durham
+5. Lancashire
+6. north yorkshire (and cleveland)
+
+Sector 2 (top lower)
+7. merseyside
+8. cheshire
+9. Greater manchester
+10. west yorkshire
+11. south yorkshire
+12. derbyshire
+13. east riding of yorkshire (humberside too)
+14. lincolnshire
+15. nottinghamshire
+
+
+Sector 3 (mid left strip)
+16. shropshire
+17. staffordshire (and west mercia)
+18. west midlands
+19. herefordshire
+20. worcester
+21. warwickshire
+22. leicestershire
+23. rutland
+24. northamptonshire
+25. gloucestershire
+
+sector 4 (mid right strip)
+26. norfolk
+27. cambridgeshire
+28. suffok
+29. essex
+30. bedfordshire
+31. herfordshire
+32. buckinghamshire (and thames valley)
+33. oxfordshire
+34. berkshire
+
+sector 5 (london)
+36. greater london/metrop
+
+sector 6 (lower strip)
+37. cornwall
+38. devon
+39. somerset
+40. dorset
+41. wiltshire
+42. hampshire
+43. isle of wight
+44. surrey
+45. chichester
+46. east sussex
+47. west sussex
+48. kent
+
+
+REMOVE: 
+trasponrt?
+
+dyfed
+gwent
+northern-ireland
+north-wales
+sourth-wales
+
+
+
+
+

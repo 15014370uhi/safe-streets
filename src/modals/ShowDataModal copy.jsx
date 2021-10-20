@@ -274,6 +274,7 @@ var graphData = [
 		},
 	];
 
+	console.log('historic data in dataModal received: ' + JSON.stringify(mapDetails.historicData));
 
 	for (const crime in mapDetails.historicdata) {
 

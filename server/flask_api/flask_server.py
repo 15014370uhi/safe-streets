@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_cors import CORS
 import json 
-from myLogisticRegression import getProbability
+from myLogisticRegression import getProbability #import ML function
 
 app = Flask(__name__)
 CORS(app)
@@ -19,8 +19,10 @@ def runPredictionModel():
     lon = data.get('lon')  
     sector = data.get('sector') 
     
+    # call machine learning function with data
     result = getProbability(month, year, lat, lon, sector) #invoke best model   
-    results_JSON = json.dumps(result)      
+    results_JSON = json.dumps(result) 
+    
     return results_JSON
       
 if __name__ == '__main__':

@@ -30,25 +30,20 @@ const FiltersModal = (props) => {
 			label: 'Drugs',
 			categories: ['drugs'],
 			isActive: true,
-		},
-		{
-			label: 'Theft',
-			categories: ['other-theft', 'bicycle-theft'],
-			isActive: true,
-		},
+		},				
 		{
 			label: 'Public Order',
 			categories: ['public-order', 'other-crime'],
 			isActive: true,
-		},
-		{
-			label: 'Robbery',
-			categories: ['robbery'],
-			isActive: true,
-		},
+		},				
 		{
 			label: 'Shoplifting',
 			categories: ['shoplifting'],
+			isActive: true,
+		},
+		{
+			label: 'Theft',
+			categories: ['other-theft', 'bicycle-theft', 'theft-from-the-person'],
 			isActive: true,
 		},
 		{
@@ -58,14 +53,14 @@ const FiltersModal = (props) => {
 		},
 		{
 			label: 'Violent Crime',
-			categories: ['violent-crime', 'theft-from-the-person'],
+			categories: ['violent-crime',],
 			isActive: true,
-		},
+		},	
 		{
 			label: 'Weapons',
 			categories: ['possession-of-weapons'],
 			isActive: true,
-		},
+		},	
 	]);
 
 	const [appliedFilters, setAppliedFilters] = useState([]);

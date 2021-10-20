@@ -26,11 +26,6 @@ const MapDisplay = (props) => {
 	}, []);
 
 
-	const openFilter = (e) => {
-		//TODO filter icons on map
-	};
-	
-
 	// function which updates the mapURL context
 	const updateMapURL = async (filters) => {
 		const payload = {
@@ -76,8 +71,7 @@ const MapDisplay = (props) => {
 				setmapdetails={setMapDetails}/>		
 
 			<ButtonBack />
-			<ButtonShowFilters
-				openFilter={openFilter}
+			<ButtonShowFilters			
 				setModalShow={setShowFiltersModal}/>	
 					
 			{history.location.state?.isfavourite === 'true' ? (

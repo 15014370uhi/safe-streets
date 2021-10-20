@@ -1,103 +1,105 @@
-import React, {useState, useEffect} from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import ButtonFilterCrime from '../components/ButtonFilterCrime';
-import uuid from 'react-uuid';
+import React, { useState, useEffect } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import ButtonFilterCrime from "../components/ButtonFilterCrime";
+import uuid from "react-uuid";
 
-//array to hold crimes to remove from map display
-let filters = []; 
+// array to hold crimes to remove from map display
+let filters = [];
 
 const FiltersModal = (props) => {
+	const [appliedFilters, setAppliedFilters] = useState([]);
 
-	//filter buttons
+	// filter buttons
 	const [crimeButtons, setCrimeButtons] = useState([
 		{
-			label: 'Anti-Social Behaviour', //button label text
-			categories: ['anti-social-behaviour'], //element categories[0] used as button id
+			label: "Anti-Social Behaviour", //button label text
+			categories: ["anti-social-behaviour"], //element categories[0] used as button id
 			isActive: true, //boolean flag to determine whether to display this crime on map
 		},
 		{
-			label: 'Arson',
-			categories: ['criminal-damage-arson'],
+			label: "Arson",
+			categories: ["criminal-damage-arson"],
 			isActive: true,
 		},
 		{
-			label: 'Burglary',
-			categories: ['burglary'],
+			label: "Burglary",
+			categories: ["burglary"],
 			isActive: true,
 		},
 		{
-			label: 'Drugs',
-			categories: ['drugs'],
+			label: "Drugs",
+			categories: ["drugs"],
 			isActive: true,
 		},
 		{
-			label: 'Theft',
-			categories: ['other-theft', 'bicycle-theft', 'shoplifting'],
+			label: "Public Order",
+			categories: ["public-order", "other-crime"],
 			isActive: true,
 		},
 		{
-			label: 'Public Order',
-			categories: ['public-order', 'other-crime'],
+			label: "Shoplifting",
+			categories: ["shoplifting"],
 			isActive: true,
 		},
 		{
-			label: 'Weapons',
-			categories: ['possession-of-weapons'],
+			label: "Theft",
+			categories: [
+				"other-theft",
+				"bicycle-theft",
+				"theft-from-the-person",
+			],
 			isActive: true,
 		},
 		{
-			label: 'Violent Crime',
-			categories: ['violent-crime', 'theft-from-the-person'],
-			isActive: true,
-		},		
-		{
-			label: 'Vehicle Crime',
-			categories: ['vehicle-crime'],
+			label: "Vehicle Crime",
+			categories: ["vehicle-crime"],
 			isActive: true,
 		},
-		//{
-		//	label: 'Robbery',
-		//	categories: ['robbery'],
-	//		isActive: true,
-	//	},
-		// {
-		// 	label: 'Shoplifting',
-		// 	categories: ['shoplifting'],
-		// 	isActive: true,
-		// },
+		{
+			label: "Violent Crime",
+			categories: ["violent-crime", "robbery"],
+			isActive: true,
+		},
+		{
+			label: "Weapons",
+			categories: ["possession-of-weapons"],
+			isActive: true,
+		},
 	]);
-
-	const [appliedFilters, setAppliedFilters] = useState([]);
 
 	useEffect(() => {
 		setPreviousFilters(props.mapdetails.filters);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	//apply any filters supplied as props from previously filtered favourite
-	const setPreviousFilters = (filtersToApply) => {	
-		setAppliedFilters(filtersToApply); //set filters state to loaded filters		
+	// apply any filters supplied as props from previously filtered favourite
+	const setPreviousFilters = (filtersToApply) => {
+		// set filters state to loaded filters
+		setAppliedFilters(filtersToApply);
 		filtersToApply.forEach((aFilterCategory) => {
-			const indexOfButtonToUpdate = crimeButtons.findIndex(
-				(aButton) => aButton.categories.includes(aFilterCategory)				
+			const indexOfButtonToUpdate = crimeButtons.findIndex((aButton) =>
+				aButton.categories.includes(aFilterCategory)
 			);
-			changeFilterState(crimeButtons[indexOfButtonToUpdate].label); //call function with label of corresponding button
+
+			// call function with label of corresponding button
+			changeFilterState(crimeButtons[indexOfButtonToUpdate].label);
 		});
 	};
 
-	//function to handle user form input
+	// function to handle user form input
 	const changeFilterState = (label) => {
 		const indexOfButtonToUpdate = crimeButtons.findIndex(
 			(aButton) => aButton.label === label
 		);
-		const updatedButtons = [...crimeButtons]; //create copy of array
 
+		// create copy of array
+		const updatedButtons = [...crimeButtons];
 		let newIsActiveStatus = !updatedButtons[indexOfButtonToUpdate].isActive;
 		updatedButtons[indexOfButtonToUpdate].isActive = newIsActiveStatus;
 		let categories = updatedButtons[indexOfButtonToUpdate].categories;
 
-		//if button is now active, remove crime categories from filtered crimes list
+		// if button is now active, remove crime categories from filtered crimes list
 		if (newIsActiveStatus) {
 			for (let category of updatedButtons[indexOfButtonToUpdate]
 				.categories) {
@@ -106,23 +108,20 @@ const FiltersModal = (props) => {
 				);
 			}
 		} else {
-			//else add crime categories to list of crimes to filter
+			// else add crime categories to list of crimes to filter
 			for (let category of categories) {
 				filters.push(category);
 			}
 		}
-		//update set of buttons with new state
+		// update set of buttons with new state
 		setCrimeButtons(updatedButtons);
 	};
 
 	//function to apply selected filters to map display
 	const applyFilters = async () => {
-		//TODO animate apply filters button - to give time for new filtered map to arrive
-		//TODO dont close modal until button states show they are dropHandler
+		//TODO animate apply filters button -
+		//TODO dont close modal until button states show they are - check dropHandler
 		//TODO might need another button like - apply - after filters reset
-
-		//TODO whatever causes them to cahange state when clicking on filter buttons - reverse that for
-		//TODO the reset button - just do same thing
 		props.onHide(); //hide filter modal interface
 		props.updateMapURL(filters);
 	};
@@ -134,7 +133,7 @@ const FiltersModal = (props) => {
 		for (let aButton of crimeButtons) {
 			if (!aButton.isActive) {
 				changeFilterState(aButton.label);
-			}			
+			}
 		}
 	};
 

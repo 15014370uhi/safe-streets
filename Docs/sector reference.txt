@@ -1,0 +1,67 @@
+Sector 1:
+Northumbria
+durham
+Cleveland
+
+Sector 2:
+Cumbria
+Lancashire
+
+Sector 3:
+North Yorkshire
+West Yorkshire
+
+Sector 4:
+Humberside
+South Yorkshire
+
+Sector 5:
+Merseyside
+Cheshire
+
+Sector 6:
+Greater Manchester
+
+Sector 7:
+Derbyshire
+Nottinghamshire
+Lincolnshire
+Leicestershire
+Northamptonshire
+
+Sector 8:
+West Mercia
+Staffordshire
+West Midlands
+Warwickshire
+
+Sector 9:
+Gloucestershire
+Avon & Somerset
+Devon & Cornwall
+
+Sector 10:
+Wiltshire
+Dorset
+Hampshire (and isle of wight)
+
+Sector 11:
+Thames Valley
+Hertfordshire
+Bedforshire
+
+Sector 12:
+Cambridgeshire
+Norfolk
+Suffolk
+Essex
+
+Sector 13:
+Surrey
+Sussex
+Kent
+
+Sector 14:
+London 
+
+

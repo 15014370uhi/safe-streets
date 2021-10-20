@@ -21,11 +21,9 @@ const Search = props => {
 
   // function which updates the mapURL context
   const updateMapURL = (aFlaskdata, historicData, aMapURL, aLat, aLon, wasNameSearch) => {
-
-    //console.log('updateMapURL received flaskdata: ' + aFlaskdata.data.Anti_social_behaviour);
     
     setMapDetails ({ 
-      flaskdata: aFlaskdata.data,  //flaskdata: aFlaskdata, 
+      flaskdata: aFlaskdata.data,  
       historicdata:  historicData,
       mapURL: aMapURL,
       locationname: locationName,
@@ -156,59 +154,10 @@ const Search = props => {
           setSubmitText ('Submit');
           alert ('No crime data found for this search!');
         } else {
-         
-          //TODO switch to leaflet !!!!
-          //TODO send data to function which creates crime history/presentation of data?
-          //console.log ('flask response: ' + JSON.stringify (response.flaskdata.data));
-
-          // const anti_social_behaviour = flaskData.Anti_social_behaviour;
-          // const burglary = flaskData.Burglary;
-          // const criminal_damage_and_arson = flaskData.Criminal_damage_and_arson;
-          // const drugs = flaskData.Drugs;
-          // const possession_of_weapons = flaskData.Possession_of_weapons;
-          // const public_order = flaskData.Public_order;
-          // const theft = flaskData.Theft;
-          // const vehicle_crime = flaskData.Vehicle_crime;
-          // const violent_crime = flaskData.Violent_crime;
-
-          // //TODO instead of alert, present crime data as graphs etc
-          // alert (
-          //   'Predicted Crime Probabilities for this week: \n\n' +
-          //     'Anti-Social = ' +
-          //     parseFloat (anti_social_behaviour / 4).toFixed (2) +
-          //     '%\n' +
-          //     'Burglary = ' +
-          //     parseFloat (burglary / 4).toFixed (2) +
-          //     '%\n' +
-          //     'Criminal Damage & Arson = ' +
-          //     parseFloat (criminal_damage_and_arson / 4).toFixed (2) +
-          //     '%\n' +
-          //     'Drugs = ' +
-          //     parseFloat (drugs / 4).toFixed (2) +
-          //     '\n' +
-          //     'Possession of Weapons = ' +
-          //     parseFloat (possession_of_weapons / 4).toFixed (2) +
-          //     '%\n' +
-          //     'Public Order = ' +
-          //     parseFloat (public_order / 4).toFixed (2) +
-          //     '%\n' +
-          //     'Theft = ' +
-          //     parseFloat (theft / 4).toFixed (2) +
-          //     '%\n' +
-          //     'Vehicle Crime = ' +
-          //     parseFloat (vehicle_crime / 4).toFixed (2) +
-          //     '%\n' +
-          //     'Violent Crime = ' +
-          //     parseFloat (violent_crime / 4).toFixed (2) +
-          //     '%\n'
-          // );
-
-         // console.log(JSON.stringify(response.flaskdata)) //TODO TEST
-
+          
           // set lat and lon values
           setLat (response.lat);
-          setLon (response.lon);
-         
+          setLon (response.lon);         
 
           // pass mapurl to context
           updateMapURL (

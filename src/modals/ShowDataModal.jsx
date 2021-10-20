@@ -19,13 +19,9 @@ const ShowDataModal = (props) => {
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
 
 	//TODO need to display previous 12 months data - then show trends on graph over the Year
-	// Maybe add new bit on end of graph for prediction?
-	//need months, crimes, and total crimes for each type of crime
-	//calculate current month and set that to last - entry in graph -
+	//TODO calculate current month and set that to last - entry in graph -
+	//TODO data points - dougnut with prediciton crimes - and trend of last 12 months actual
 
-	//Two data points - dougnut with prediciton crimes - and trend of last 12 months actual
-
-	//TODO hold array of jan to dec - in order of data? - then add name:Jan, then iterate over datathrough
 
 	//var data = [];
 	var months = [
@@ -44,34 +40,6 @@ const ShowDataModal = (props) => {
 	];
 
 
-// Input from API for historic>>>
-// Anti social behaviour
-// Burglary
-// Criminal damage arson
-// Other theft
-// Theft from the person
-// Violent crime
-// Other crime
-// Possession of weapons
-// Burglary
-// Other theft
-// Robbery
-// Violent crime
-
-//Required >>
-//Anti-Social
-//Burglary
-//Criminal Damage and Arson
-//Drugs
-//Weapons
-//Public Order
-//Theft
-//Robbery
-//Shoplifting
-//Vehicle Crime
-//Violent Crime
-
-//===== REFERENCE LIST FOR ALL ======
 const getCrimeCategory = (aCrimeCategory) => {
 
 	let crimeCat = '';
@@ -83,7 +51,7 @@ const getCrimeCategory = (aCrimeCategory) => {
 		  
 	case 'Bicycle theft':
 	case 'Other theft':
-    case 'Shoplifting':
+	case 'Theft from the person':   
 		crimeCat = 'Theft';
 		break;	
 
@@ -108,8 +76,7 @@ const getCrimeCategory = (aCrimeCategory) => {
 		crimeCat = 'Possession of Weapons';
 		break;
 
-	case 'Violent crime':
-	case 'Theft from the person':
+	case 'Violent crime':	
     case 'Robbery':
     case 'Violence and sexual offences':
 		crimeCat = 'Violent Crime';
@@ -117,6 +84,10 @@ const getCrimeCategory = (aCrimeCategory) => {
 
 	case 'Vehicle crime':
 		crimeCat = 'Vehicle Crime';
+		break;
+
+	case 'Shoplifting':
+		crimeCat = 'Shoplifting';
 		break;
 
 	  default:
@@ -134,10 +105,12 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
+
 		},
 		{
 			"name": "Feb",
@@ -146,7 +119,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -158,7 +132,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -170,7 +145,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -182,7 +158,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,		
+			"Shoplifting": 0,		
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -194,7 +171,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -206,7 +184,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -218,7 +197,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -230,7 +210,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -242,7 +223,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,		
+			"Shoplifting": 0,		
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -254,7 +236,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
@@ -266,20 +249,26 @@ const getCrimeCategory = (aCrimeCategory) => {
 			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
 			"Public Order": 0,
-			"Possession of Weapons": 0,				
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 	];
 
+
+	//TODO TEST 
+	//console.log('mapDetails context has historic data: ');
+	//console.log(JSON.stringify(mapDetails.historicdata));
+
 	for (const crime in mapDetails.historicdata) {
 		let aCrimeRecord = mapDetails.historicdata[crime];
 
+		// format crime category string
 		var aCategory = aCrimeRecord.category.replace(/-/g," ");
 		aCategory = aCategory.charAt(0).toUpperCase() + aCategory.slice(1);
-		aCategory = getCrimeCategory(aCategory);
-		//console.log('aCategory in record: ' + aCategory);
+		aCategory = getCrimeCategory(aCategory);	
 
 		var aMonth = months[aCrimeRecord.month - 1];
 		var year = aCrimeRecord.year;
@@ -302,11 +291,9 @@ const getCrimeCategory = (aCrimeCategory) => {
 		//TODO currently not showing predicitons ---------  need a modal for that maybe or add 
 		//TODO to this modal by making it bigger?
 		//tODO or allow for a search box for predicitons and show graph modal for that?
-
-
 	}
 
-	console.log('graphData HOLDS: ' + JSON.stringify(graphData));
+	//console.log('graphData HOLDS: ' + JSON.stringify(graphData));
 
 	return (
 		<Modal
@@ -383,6 +370,13 @@ const getCrimeCategory = (aCrimeCategory) => {
 						/>
 						<Area
 							type="monotone"
+							dataKey="Shoplifting"
+							stackId="1"
+							stroke="blue"
+							fill="blue"
+						/>
+						<Area
+							type="monotone"
 							dataKey="Theft"
 							stackId="1"
 							stroke="#a4de6c"
@@ -401,7 +395,7 @@ const getCrimeCategory = (aCrimeCategory) => {
 							stackId="1"
 							stroke="#82ca9d"
 							fill="#82ca9d"
-						/>
+						/>						
 					</AreaChart>
 				</ResponsiveContainer>
 			</Modal.Body>

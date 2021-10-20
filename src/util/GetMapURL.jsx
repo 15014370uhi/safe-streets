@@ -6,7 +6,7 @@ export const getMapURL = async payload => {
   return dataResponse;
 };
 
-// function which applies crime icon filtering to a previous search
+// function which applies crime icon filtering to a previously made search
 export const getUpdatedMapURL = async aPayload => {
   let payload = {
     locationname: aPayload.locationname,
@@ -40,7 +40,12 @@ const getAPIResponse = async payload => {
           mapurl: res.data.mapurl,
           numberofmonths: res.data.numberofmonths,
           nocrimes: res.data.nocrimes,
-        };				
+        };		
+        
+        //TODO test 
+        //console.log('HISTORIC DATA in getMapURL: >>>>>>>>>>>>>  ');
+       //console.log(JSON.stringify(response.historicdata));
+
         resolve (response); 
       })
       .catch (error => {

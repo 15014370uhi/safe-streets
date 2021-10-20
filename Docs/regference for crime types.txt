@@ -1,0 +1,102 @@
+ if(aCrime == 'Anti-social behaviour'):
+        return 0  # anti-social behaviour
+
+    if(aCrime == 'Bicycle theft'
+       or aCrime == 'Other theft'
+       or aCrime == 'Shoplifting'):
+        return 1  # theft
+
+    if(aCrime == 'Burglary'):
+        return 2  # burglary
+
+    if(aCrime == 'Criminal damage and arson'):
+        return 3  # criminal damage
+
+    if(aCrime == 'Drugs'):
+        return 4  # drugs
+
+    if(aCrime == 'Public order'
+       or aCrime == 'Other crime'):
+        return 5  # public order
+
+    if(aCrime == 'Possession of weapons'):
+        return 6  # weapons
+
+    if(aCrime == 'Violent crime'
+       or aCrime == 'Theft from the person'
+       or aCrime == 'Robbery'
+       or aCrime == 'Violence and sexual offences'):
+        return 7  # violent crime
+
+    if(aCrime == 'Vehicle crime'):
+        return 8  # vehicle
+
+
+
+
+
+	switch (aCrimeCategory) {
+    case 'Anti social behaviour':
+		crimeCat = 'Anti-Social Behaviour';
+      	break;	
+		  
+	case 'Bicycle theft':
+	case 'Other theft':
+    case 'Shoplifting':
+		crimeCat = 'Theft';
+		break;	
+
+	case 'Burglary':
+		crimeCat = 'Burglary';
+		break;
+
+	case 'Criminal damage arson': 
+		crimeCat = 'Criminal Damage & Arson';
+		break;   
+		
+	case 'Drugs':
+		crimeCat = 'Drugs';
+		break;		
+	
+	case 'Public order':
+	case 'Other crime':
+		crimeCat = 'Public Order';
+		break;
+			
+	case 'Possession of weapons':
+		crimeCat = 'Possession of Weapons';
+		break;
+
+	case 'Violent crime':
+	case 'Theft from the person':
+    case 'Robbery':
+    case 'Violence and sexual offences':
+		crimeCat = 'Violent Crime';
+		break;
+
+	case 'Vehicle crime':
+		crimeCat = 'Vehicle Crime';
+		break;
+
+
+
+'anti-social-behaviour',
+    'theft',
+    'burglary',
+    'criminal-damage-arson',
+    'drugs',
+    'public-order', 
+    'possession-of-weapons',      
+    'violent-crime', 
+    'vehicle-crime',      
+
+
+"Anti-Social Behaviour": 0,
+			"Burglary": 0,
+			"Criminal Damage & Arson": 0,
+			"Drugs": 0,
+			"Public Order": 0,
+			"Possession of Weapons": 0,				
+			"Theft": 0,
+			"Vehicle Crime": 0,
+			"Violent Crime": 0,
