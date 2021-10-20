@@ -446,6 +446,7 @@ form>fieldset {
   z-index: 0;
 }
 
+
 .btn-back {
   position: sticky;
   font-size: 4em;
@@ -490,16 +491,16 @@ form>fieldset {
 
 .btn-display-data {
   position: fixed;
-  font-size: 4em; 
+  font-size: 3em; 
   padding-top: 12px !important;
-  padding-bottom: 2px !important;
+  padding-bottom: 10px !important;
   padding-left: 1px !important;
-  padding-right: 1px !important;
-  border: 6px solid rgb(101, 221, 32);
+  padding-right: 20px !important;
+  border: 6px solid rgba(170, 28, 28, 0.849);
   border-radius: 90px;
   box-shadow: 0 14px 18px rgb(82, 73, 24);
   bottom: 5%;
-  left: 7%;
+  left: 1%;
 }
 
 .btn-delete-favourite {
@@ -552,6 +553,7 @@ form>fieldset {
   font-size: 1.5em;
   box-shadow: 3px 3px 3px 4px rgba(7, 0, 27, 0.548);
 }
+
 
 /* MEDIA Queries */
 @media screen and (max-width: 1024px) {

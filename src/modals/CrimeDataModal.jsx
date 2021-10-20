@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import Modal from "react-bootstrap/Modal";
-import { MapDetails } from "../contexts/MapDetailsContext";
-
+import React, { useContext } from 'react';
+import Modal from 'react-bootstrap/Modal';
+import { MapDetails } from '../contexts/MapDetailsContext';
+import { ResultsData } from '../contexts/ResultsDataContext';
 import {
 	AreaChart,
 	Area,
@@ -17,6 +17,8 @@ import { MDBIcon } from "mdbreact";
 
 const ShowDataModal = (props) => {
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
+	const [resultsData, setResultsData] = useContext(ResultsData);
+
 
 	//TODO need to display previous 12 months data - then show trends on graph over the Year
 	//TODO calculate current month and set that to last - entry in graph -
@@ -257,13 +259,8 @@ const getCrimeCategory = (aCrimeCategory) => {
 		},
 	];
 
-
-	//TODO TEST 
-	//console.log('mapDetails context has historic data: ');
-	//console.log(JSON.stringify(mapDetails.historicdata));
-
-	for (const crime in mapDetails.historicdata) {
-		let aCrimeRecord = mapDetails.historicdata[crime];
+	for (const crime in resultsData.historicdata) {
+		let aCrimeRecord = resultsData.historicdata[crime];
 
 		// format crime category string
 		var aCategory = aCrimeRecord.category.replace(/-/g," ");
@@ -293,8 +290,6 @@ const getCrimeCategory = (aCrimeCategory) => {
 		//tODO or allow for a search box for predicitons and show graph modal for that?
 	}
 
-	//console.log('graphData HOLDS: ' + JSON.stringify(graphData));
-
 	return (
 		<Modal
 			show={props.show}
@@ -311,7 +306,7 @@ const getCrimeCategory = (aCrimeCategory) => {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<ResponsiveContainer width={"99%"} height={400}>
+				<ResponsiveContainer width={"99%"} height={550}>
 					<AreaChart
 						width={500}
 						height={400}

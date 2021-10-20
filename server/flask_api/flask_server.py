@@ -17,12 +17,11 @@ def runPredictionModel():
     year = data.get('year')     
     lat = data.get('lat')
     lon = data.get('lon')  
-    sector = data.get('sector') 
+    sector = data.get('sector')     
     
     # call machine learning function with data
     result = getProbability(month, year, lat, lon, sector) #invoke best model   
-    results_JSON = json.dumps(result) 
-    
+    results_JSON = json.dumps(result)  
     return results_JSON
       
 if __name__ == '__main__':

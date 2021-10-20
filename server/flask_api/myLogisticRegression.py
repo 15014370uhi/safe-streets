@@ -41,7 +41,7 @@ def getResult(data):
     
 # function which returns the probablity of crime types occuring 
 # at a latitude and longitude location during the next month
-def getProbability(month, year, lat, lon, sector):       
+def getProbability(month, year, lat, lon, sector):   
     
     # load KMeans cluster model for current sector
     clusterFile = 'kmini_models/KMini_' + sector + '.sav'    
@@ -76,7 +76,7 @@ def getProbability(month, year, lat, lon, sector):
     # get probability for crime categories
     prediction = logisticRegressionModel.predict_proba(X)[0] 
     
-    print(prediction); 
+    #print(prediction); 
         
     # generate result object
     result = getResult(prediction)

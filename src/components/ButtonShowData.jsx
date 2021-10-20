@@ -5,11 +5,17 @@ const ButtonShowData = ({setShowDataModal}) => {
   return (
     <Button
       className="btn-display-data"
-      variant="success"
+      variant="danger"
       title="Show data"
       onClick={() => setShowDataModal (true)}
     >
-      <i className="fa fa-minus fa-lg mx-4" />
+      <i 
+      className="fa fa-chart-line fa-lg mx-4" 
+      title="View Crime Data" />
+      <span 
+      className="tooltip-text">
+        Crime Data
+      </span>
     </Button>
   );
 };

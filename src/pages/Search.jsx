@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {MapDetails} from '../contexts/MapDetailsContext';
+import {ResultsData} from '../contexts/ResultsDataContext';
 import {useHistory} from 'react-router-dom';
 import Form from '../components/Form';
 import Spinner from 'react-bootstrap/Spinner';
@@ -18,13 +19,11 @@ const Search = props => {
   const [error, setError] = useState (null);
   const history = useHistory ();
   const [mapDetails, setMapDetails] = useContext (MapDetails);
+  const [resultsData, setResultsData] = useContext (ResultsData);
 
   // function which updates the mapURL context
-  const updateMapURL = (aFlaskdata, historicData, aMapURL, aLat, aLon, wasNameSearch) => {
-    
-    setMapDetails ({ 
-      flaskdata: aFlaskdata.data,  
-      historicdata:  historicData,
+  const updateMapURL = (aMapURL, aLat, aLon, wasNameSearch) => {
+    setMapDetails ({
       mapURL: aMapURL,
       locationname: locationName,
       isnamesearch: wasNameSearch,
@@ -135,8 +134,9 @@ const Search = props => {
           filters: [],
         };
 
-        // call funciton which calls API for user search
+        // call function which calls API for user search
         const response = await getMapURL (payload);
+        const returnedFlaskData = response.flaskdata.data;
 
         // check if no crimes were recorded for search criteria
         const noCrimesDetected = response.nocrimes;
@@ -150,26 +150,92 @@ const Search = props => {
           alert (
             'Location name is not recognised!, please check your spelling'
           );
+        } else if (noCrimesDetected && response.policeforce === 'greater-manchester') {
+          setSubmitText ('Submit');
+          alert (
+            'Please note that Greater Manchester crime data is currently restricted due to an ongoing investigation into missing police data.'
+          );
+          setResultsData ({
+            flaskdata: response.flaskdata.data,
+            historicdata: response.data,
+          });
         } else if (noCrimesDetected) {
           setSubmitText ('Submit');
           alert ('No crime data found for this search!');
         } else {
-          
+
+          if (response.policeforce === 'greater-manchester') {
+            alert (
+              'Please note: Greater Manchester crime data is currently restricted due to an ongoing investigation into missing police crime data.'
+            );
+          }
           // set lat and lon values
           setLat (response.lat);
-          setLon (response.lon);         
+          setLon (response.lon);
 
-          // pass mapurl to context
+          // pass response data to function
           updateMapURL (
-            response.flaskdata, 
-            response.historicdata,
             response.mapurl,
             response.lat,
             response.lon,
             response.isnamesearch
           );
+
+          // pass historic and flask data to context
+          setResultsData ({
+            flaskdata: response.flaskdata.data,
+            historicdata: response.data,
+          });
           history.push (`/results`);
         }
+
+        // //TODO TEST display of flask dataKey
+        const anti_social_behaviour = returnedFlaskData.Anti_social_behaviour;
+        const burglary = returnedFlaskData.Burglary;
+        const criminal_damage_and_arson =
+          returnedFlaskData.Criminal_damage_and_arson;
+        const drugs = returnedFlaskData.Drugs;
+        const possession_of_weapons = returnedFlaskData.Possession_of_weapons;
+        const public_order = returnedFlaskData.Public_order;
+        const theft = returnedFlaskData.Theft;
+        const shoplifting = returnedFlaskData.Shoplifting;
+        const vehicle_crime = returnedFlaskData.Vehicle_crime;
+        const violent_crime = returnedFlaskData.Violent_crime;
+
+        //TODO Convert to graphic data within modal for prediction and historic data
+        alert (
+          'Predicted Crime Probabilities for this month: \n' +
+            'Anti-Social = ' +
+            parseFloat (anti_social_behaviour).toFixed (2) +
+            '%\n' +
+            'Burglary = ' +
+            parseFloat (burglary).toFixed (2) +
+            '%\n' +
+            'Criminal Damage & Arson = ' +
+            parseFloat (criminal_damage_and_arson).toFixed (2) +
+            '%\n' +
+            'Drugs = ' +
+            parseFloat (drugs).toFixed (2) +
+            '\n' +
+            'Possession of Weapons = ' +
+            parseFloat (possession_of_weapons).toFixed (2) +
+            '%\n' +
+            'Public Order = ' +
+            parseFloat (public_order).toFixed (2) +
+            '%\n' +
+            'Theft = ' +
+            parseFloat (theft).toFixed (2) +
+            '%\n' +
+            'Vehicle Crime = ' +
+            parseFloat (vehicle_crime).toFixed (2) +
+            '%\n' +
+            'Violent Crime = ' +
+            parseFloat (violent_crime).toFixed (2) +
+            '%\n' +
+            'Shoplifting = ' +
+            parseFloat (shoplifting).toFixed (2) +
+            '%\n'
+        );
       }
     }
   };

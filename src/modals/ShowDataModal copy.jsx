@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import { MapDetails } from "../contexts/MapDetailsContext";
-
+import { ResultsData } from './contexts/ResultsDataContext';
 import {
 	AreaChart,
 	Area,
@@ -17,323 +17,285 @@ import { MDBIcon } from "mdbreact";
 
 const ShowDataModal = (props) => {
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
+	const [resultsData, setResultsData] = useContext(ResultsData);
 
-  //TODO crime data needs months data in it - so I can create the graph using months
-
-	// //const anti_social_behaviour = parseFloat (flaskdata.Anti_social_behaviour / 4).toFixed (2); //WEEKLY?
-	// //console.log('TEST VALUES:: ' + mapDetails.flaskdata.Burglary);
-
-	// var allCrimeCategories = {
-	// 	// anti_social_behaviour: 0,
-	// 	// Burglary: 0,
-	// 	// Criminal_damage_and_arson: 0,
-	// 	// Drugs: 0,
-	// 	// Possession_of_weapons: 0,
-	// 	// Public_order: 0,
-	// 	// Theft: 0,
-	// 	// Vehicle_crime: 0,
-	// 	// Violent_crime: 0,
-	// };
-
-	// //TODO check if values exist
-	// var anti_social_behaviour = 0;
-	// var burglary = 0;
-	// var criminal_damage_and_arson = 0;
-	// var drugs = 0;
-	// var possession_of_weapons = 0;
-	// var public_order = 0;
-	// var theft = 0;
-	// var vehicle_crime = 0;
-	// var violent_crime = 0;
-
-	// for (const crimeCategory in mapDetails.flaskdata) {
-	// 	let crimeValue = mapDetails.flaskdata[crimeCategory];
-	// 	if (crimeValue > 0) {
-	// 		allCrimeCategories.crimeCategory = Math.round(crimeValue);
-	// 	} else {
-  //     delete allCrimeCategories.crimeCategory; //remove invalid element
-  //   }
-	// }
-
-  // console.log('allCrimeCategories:' + JSON.stringify (allCrimeCategories));
-   
-  // using spread ...
-  //let p1 = {
-     // ...person
-  //};
-
-	// const anti_social_behaviour = Math.round(mapDetails.flaskdata.Anti_social_behaviour); //WEEKLY or not?
-	// const burglary = Math.round(mapDetails.flaskdata.Burglary);
-	// const criminal_damage_and_arson = Math.round(mapDetails.flaskdata.Criminal_damage_and_arson);
-	// const drugs = Math.round(mapDetails.flaskdata.Drugs);
-	// const possession_of_weapons = Math.round(mapDetails.flaskdata.Possession_of_weapons);
-	// const public_order = Math.round(mapDetails.flaskdata.Public_order);
-	// const theft = Math.round(mapDetails.flaskdata.Theft);
-	// const vehicle_crime = Math.round(mapDetails.flaskdata.Vehicle_crime);
-	// const violent_crime = Math.round(mapDetails.flaskdata.Violent_crime);
 
 	//TODO need to display previous 12 months data - then show trends on graph over the Year
-	// Maybe add new bit on end of graph for prediction?
-	//need months, crimes, and total crimes for each type of crime
-	//calculate current month and set that to last - entry in graph -
+	//TODO calculate current month and set that to last - entry in graph -
+	//TODO data points - dougnut with prediciton crimes - and trend of last 12 months actual
 
-	//Two data points - dougnut with prediciton crimes - and trend of last 12 months actual
 
-  //TODO hold array of jan to dec - in order of data? - then add name:Jan, then iterate over datathrough
-  // alcrime categories and add new object element based on each
-  //var historicTEST = JSON.stringify(mapDetails.historicdata);
-  //var historicTEST = mapDetails.historicdata;
-  //console.log('map details historic holds: <><><>' + historicTEST);
-	let category = ''; 
-	let month = 0; 
+	//var data = [];
+	var months = [
+		"Jan",
+		"Feb",
+		"Mar",
+		"Apr",
+		"May",
+		"Jun",
+		"Jul",
+		"Aug",
+		"Sep",
+		"Oct",
+		"Nov",
+		"Dec",
+	];
+
+
+const getCrimeCategory = (aCrimeCategory) => {
+
+	let crimeCat = '';
+
+	switch (aCrimeCategory) {
+    case 'Anti social behaviour':
+		crimeCat = 'Anti-Social Behaviour';
+      	break;	
+		  
+	case 'Bicycle theft':
+	case 'Other theft':
+	case 'Theft from the person':   
+		crimeCat = 'Theft';
+		break;	
+
+	case 'Burglary':
+		crimeCat = 'Burglary';
+		break;
+
+	case 'Criminal damage arson': 
+		crimeCat = 'Criminal Damage & Arson';
+		break;   
+		
+	case 'Drugs':
+		crimeCat = 'Drugs';
+		break;		
 	
+	case 'Public order':
+	case 'Other crime':
+		crimeCat = 'Public Order';
+		break;
+			
+	case 'Possession of weapons':
+		crimeCat = 'Possession of Weapons';
+		break;
 
-   //for (var element in mapDetails.historicdata) {	   
-	//console.log( mapDetails.historicdata[element]);     
- // }
- 
-  //var data = [];
-  var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-  
-  var occurenceCounter = {
-	"anti_social_behaviour": 0,
-	"burglary": 0,
-	"criminal_damage_and_arson": 0,
-	"drugs": 0,
-	"possession_of_weapons": 0,
-	"public_order": 0,
-	"theft": 0,
-	"vehicle_crime": 0,
-	"violent_crime": 0,
+	case 'Violent crime':	
+    case 'Robbery':
+    case 'Violence and sexual offences':
+		crimeCat = 'Violent Crime';
+		break;
+
+	case 'Vehicle crime':
+		crimeCat = 'Vehicle Crime';
+		break;
+
+	case 'Shoplifting':
+		crimeCat = 'Shoplifting';
+		break;
+
+	  default:
+      //intentially blank
+      break;
   }
-  
+  return crimeCat;
+}
 
-  //var counter = 0;
-
-
-//   {
-// 	"name": "TEST",
-// 	"Anti-Social": anti_social_behaviour,
-// 	"Burglary": burglary,
-// 	"Criminal Damage and Arson": criminal_damage_and_arson,
-// 	"Drugs": drugs,
-// 	"Possession of Weapons": possession_of_weapons,
-// 	"Public Order": public_order,
-// 	"Theft": theft,
-// 	"Vehicle Crime": vehicle_crime,
-// 	"Violent Crime": violent_crime,
-// },
-//CHECK for how to count occurences easier than this
-
-
-
-var graphData = [   
+	var graphData = [
 		{
 			"name": "Jan",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
+
 		},
 		{
 			"name": "Feb",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
 			"name": "Mar",
-     		"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
-			"name": "Apr", //Was...   name: 'April'
-			"Anti-Social": 0,
+			"name": "Apr", 
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
 			"name": "May",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,		
+			"Shoplifting": 0,		
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
-			"name": "Jun", 
-			"Anti-Social": 0,
+			"name": "Jun",
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
 			"name": "Jul",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
 			"name": "Aug",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
 			"name": "Sep",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
 			"name": "Oct",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,		
+			"Shoplifting": 0,		
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
 			"name": "Nov",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 		{
 			"name": "Dec",
-			"Anti-Social": 0,
+			"Anti-Social Behaviour": 0,
 			"Burglary": 0,
-			"Criminal Damage and Arson": 0,
+			"Criminal Damage & Arson": 0,
 			"Drugs": 0,
-			"Possession of Weapons": 0,
 			"Public Order": 0,
+			"Possession of Weapons": 0,	
+			"Shoplifting": 0,			
 			"Theft": 0,
 			"Vehicle Crime": 0,
 			"Violent Crime": 0,
 		},
 	];
 
-	console.log('historic data in dataModal received: ' + JSON.stringify(mapDetails.historicData));
+
+	//TODO TEST 
+	//console.log('mapDetails context has historic data: ');
+	//console.log(JSON.stringify(mapDetails.historicdata));
 
 	for (const crime in mapDetails.historicdata) {
+		let aCrimeRecord = mapDetails.historicdata[crime];
 
-		let aCrimeRecord = mapDetails.historicdata[crime];		
+		// format crime category string
+		var aCategory = aCrimeRecord.category.replace(/-/g," ");
+		aCategory = aCategory.charAt(0).toUpperCase() + aCategory.slice(1);
+		aCategory = getCrimeCategory(aCategory);	
 
-		//increment crime counter for category category
-		//occurenceCounter.aCrimeRecord[category]++;
-
-		var aCategory = aCrimeRecord.category;
-		//console.log('aCategory in record: ' + aCategory);
-
-		var aMonth = months[aCrimeRecord.month - 1]; 
-		//console.log('MONTH in record: ' + aMonth);
-
+		var aMonth = months[aCrimeRecord.month - 1];
 		var year = aCrimeRecord.year;
-		//console.log(year)
 
-		//for (let monthData in )
-		//const monthGraphData = JSON.parse(graphData);
-	//	x = myObj["name"];
+		for (const [key, value] of Object.entries(graphData)) {
+			//console.log(`${key}: ${value}`);
+			//console.log(key + ' : ' + value.name);
+			if (value.name === aMonth) {
+				//console.log(value["Drugs"]);
+				//console.log('value : ' + value.Drugs);
+				//console.log('Check previous value: <<<<<<>>>>  ' + value[aCategory]);
+				value[aCategory] = value[aCategory] + 1;
+				//console.log('Check for incremented: >>>>  ' + value[aCategory]);
+			}
+		}		
 
-		//for(let monthlyData in graphData){	
-
-			for (const [key, value] of Object.entries(graphData)) {
-				//console.log(`${key}: ${value}`);
-				//console.log(key + ' : ' + value.name);
-				if(value.name === "Jan"){	
-					//console.log(value["Drugs"]);
-					//console.log('value : ' + value.drugs);
-				}
-		}
-//else	}
-		
-
-		// var dataElement = {
-		// "name": aMonth,
-		// "Anti-Social": occurenceCounter.anti_social_behaviour,
-		// "Burglary": occurenceCounter.burglary,
-		// "Criminal Damage and Arson": occurenceCounter.criminal_damage_and_arson,
-		// "Drugs": occurenceCounter.drugs,
-		// "Possession of Weapons": occurenceCounter.possession_of_weapons,
-		// "Public Order": occurenceCounter.public_order,
-		// "Theft": occurenceCounter.theft,
-		// "Vehicle Crime": occurenceCounter.vehicle_crime,
-		// "Violent Crime": occurenceCounter.violent_crime,
-		// }   
-
-		//let crimeValue = mapDetails.flaskdata[crimeCategory]; //should be using historic data
-    //TODO need a data check somewhere once I have months in data 
-
-	// 	if (crimeValue > 0) {
-	// 		dataElement[crimeCategory] = Math.round(crimeValue);
-    //   data.push(dataElement);
-    //   counter ++;
-	// 	}
+		//TODO order graph by months since previous 12 months not jan to dec
+		//TODO should end on previous 2nd month - and begin 12 months before that.
+		//tODO get current month - 2, arrange data objects in order of that same order etc
+		//TODO currently not showing predicitons ---------  need a modal for that maybe or add 
+		//TODO to this modal by making it bigger?
+		//tODO or allow for a search box for predicitons and show graph modal for that?
 	}
-  
-  //console.log('DATA HOLDS: ' + JSON.stringify(data));
 
+	//console.log('graphData HOLDS: ' + JSON.stringify(graphData));
 
 	return (
 		<Modal
@@ -353,7 +315,7 @@ var graphData = [
 			<Modal.Body>
 				<ResponsiveContainer width={"99%"} height={400}>
 					<AreaChart
-						width={400}
+						width={500}
 						height={400}
 						data={graphData}
 						margin={{
@@ -368,7 +330,7 @@ var graphData = [
 						<Tooltip />
 						<Area
 							type="monotone"
-							dataKey="Anti-Social"
+							dataKey="Anti-Social Behaviour"
 							stackId="1"
 							stroke="#8884d8"
 							fill="#8884d8"
@@ -382,7 +344,7 @@ var graphData = [
 						/>
 						<Area
 							type="monotone"
-							dataKey="Criminal Damage and Arson"
+							dataKey="Criminal Damage & Arson"
 							stackId="1"
 							stroke="#ffc658"
 							fill="#ffc658"
@@ -391,29 +353,36 @@ var graphData = [
 							type="monotone"
 							dataKey="Drugs"
 							stackId="1"
-							stroke="#8884d8"
-							fill="#8884d8"
+							stroke="red"
+							fill="red"
 						/>
 						<Area
 							type="monotone"
 							dataKey="Possession of Weapons"
 							stackId="1"
-							stroke="#8884d8"
-							fill="#8884d8"
+							stroke="#d0ed57"
+							fill="#d0ed57"
 						/>
 						<Area
 							type="monotone"
 							dataKey="Public Order"
 							stackId="1"
-							stroke="#8884d8"
-							fill="#8884d8"
+							stroke="#413ea0" //#ffc658
+							fill="#413ea0"
+						/>
+						<Area
+							type="monotone"
+							dataKey="Shoplifting"
+							stackId="1"
+							stroke="blue"
+							fill="blue"
 						/>
 						<Area
 							type="monotone"
 							dataKey="Theft"
 							stackId="1"
-							stroke="#8884d8"
-							fill="#8884d8"
+							stroke="#a4de6c"
+							fill="#a4de6c"
 						/>
 						<Area
 							type="monotone"
@@ -426,9 +395,9 @@ var graphData = [
 							type="monotone"
 							dataKey="Violent Crime"
 							stackId="1"
-							stroke="#8884d8"
-							fill="#8884d8"
-						/>
+							stroke="#82ca9d"
+							fill="#82ca9d"
+						/>						
 					</AreaChart>
 				</ResponsiveContainer>
 			</Modal.Body>

@@ -16,7 +16,6 @@ export const getUpdatedMapURL = async aPayload => {
     numberofmonths: aPayload.numberofmonths,
     filters: aPayload.filters,
   };
-
   const response = await getAPIResponse (payload);    
   return response; 
 };
@@ -29,7 +28,7 @@ const getAPIResponse = async payload => {
       .then (res => {
         const response = {
           flaskdata: res.data.flaskdata,
-          historicdata: res.data.historicdata,
+          data: res.data.historicdata, 
           boundingbox: res.data.boundingbox,
           filters: res.data.filters,
           isnamesearch: res.data.isnamesearch,
@@ -40,12 +39,8 @@ const getAPIResponse = async payload => {
           mapurl: res.data.mapurl,
           numberofmonths: res.data.numberofmonths,
           nocrimes: res.data.nocrimes,
-        };		
-        
-        //TODO test 
-        //console.log('HISTORIC DATA in getMapURL: >>>>>>>>>>>>>  ');
-       //console.log(JSON.stringify(response.historicdata));
-
+          policeforce: res.data.policeforce,
+        };	
         resolve (response); 
       })
       .catch (error => {
