@@ -135,8 +135,7 @@ const Search = props => {
         };
 
         // call function which calls API for user search
-        const response = await getMapURL (payload);
-        const returnedFlaskData = response.flaskdata.data;
+        const response = await getMapURL (payload);       
 
         // check if no crimes were recorded for search criteria
         const noCrimesDetected = response.nocrimes;
@@ -188,6 +187,11 @@ const Search = props => {
           });
           history.push (`/results`);
         }
+
+        //TODO TEST
+        const returnedFlaskData = response.flaskdata.data;
+       // console.log(returnedFlaskData);
+
 
         // //TODO TEST display of flask dataKey
         const anti_social_behaviour = returnedFlaskData.Anti_social_behaviour;
