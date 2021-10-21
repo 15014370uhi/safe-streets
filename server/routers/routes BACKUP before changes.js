@@ -2,20 +2,99 @@ const {
   getPoliceForce,
   getCrimeData,
   getSector,
-  getHistoricData,
 } = require ('../util/police-data');
-const {
-  getMap,
-  getLatLon,
-  getBoundingBox,
-  improveMarkerVisibility,
-} = require ('../util/geo-data');
-const {getYearAndMonth, populateCrimeDates} = require ('../util/date-helpers');
+const {getMap, getLatLon, getBoundingBox, improveMarkerVisibility} = require ('../util/geo-data');
 const router = require ('express').Router ();
 const mapquest = require ('mapquest');
 const axios = require ('axios');
 
 mapquest.key = process.env.MAPQUEST_API_KEY;
+
+/** 
+ * Function which returns an array of dates in the format YYYY-MM 
+ * for a given number of months, begining 1 month prior
+ * to the current month   
+ * 
+ * @param {number} numberOfMonthsRequired The number of months to check for crimes
+ * 
+ * @return {array} The array of dates to check for crimes  
+ */
+const populateCrimeDates = numberOfMonthsRequired => {
+  //initialise an array to hold dates of months and year(s) to check for crimes
+  let dateArray = [];
+
+  //get current year in 4-digit format
+  let currentYear = new Date ().getFullYear ();
+
+  //get current month as int with no leading zero
+  let currentMonth = new Date ().getMonth () + 1; //zero indexed
+
+  //initialise variable to hold month to check for crimes
+  let crimeMonth = 0;
+
+  //initialise variable to hold full date to check for crimes
+  let crimeDateToCheck = '';
+
+  /** 
+   * Set initial crime month to 2 months prior,
+   * since the past 1-2 month's crimes are not usually listed on police API. 
+   */
+  if (currentMonth === 1) {
+    //January special case
+    crimeMonth = 11; //set crime month to Nov (2 months prior)
+    currentYear--; //decrement year
+  } else if (currentMonth === 2) {
+    //February special case
+    crimeMonth = 12; //set crime month to December (2 months prior)
+    currentYear--; //decrement year
+  } else {
+    //just decrement month by 2
+    crimeMonth = currentMonth - 2;
+  }
+
+  //if month is single digit, add leading zero and store as format YYYY-MM
+  if (crimeMonth < 10) {
+    crimeDateToCheck = currentYear + '-0' + crimeMonth; //add leading zero to month value
+  } else {
+    crimeDateToCheck = currentYear + '-' + crimeMonth; //leading zero not required
+  }
+
+  //push date to array of all dates to check
+  dateArray.push (crimeDateToCheck);
+
+  //decrement number of months counter
+  numberOfMonthsRequired--;
+
+  //while more dates are required, loop until the required months have been added
+  while (numberOfMonthsRequired > 0) {
+    //decrement current crime month by 1
+    crimeMonth--;
+
+    //if current month is now zero ((Jan - 1 = 0), set to December and decrement year
+    if (crimeMonth === 0) {
+      crimeMonth = 12; //set crime month to December
+      currentYear--; //decrement year
+    }
+
+    //if month is single digit month, add leading zero and store as format YYYY-MM
+    if (crimeMonth < 10) {
+      crimeDateToCheck = currentYear + '-0' + crimeMonth;
+
+      //else don't add leading zero
+    } else {
+      crimeDateToCheck = currentYear + '-' + crimeMonth;
+    }
+
+    //push date to array of all dates to check
+    dateArray.push (crimeDateToCheck);
+
+    //decrement number of months required counter
+    numberOfMonthsRequired--;
+  }
+
+  //return array of all dates to check for crimes
+  return dateArray;
+};
 
 /**
  * Function which returns an array of all user selected crime filters to apply
@@ -45,6 +124,22 @@ const applyFilters = filters => {
 
   // return array of crimes to include on map (not filtered)
   return crimesToDisplay;
+};
+
+/**
+ * Function which extracts the year and month from a string and returns
+ * a Date object representation  
+ * 
+ * @param {string} stringDate String representation of year and month
+ * 
+ * @return {Date} The date object containing year and month of crime 
+ */
+const getYearAndMonth = stringDate => {
+  const crimeYear = stringDate.slice (0, 4);
+  const crimeMonth = stringDate.slice (5);
+  const crimeDate = new Date (crimeYear, crimeMonth);
+
+  return crimeDate;
 };
 
 // Function which calls the flask server to obtain crime predictions for current area
@@ -116,6 +211,7 @@ router.post ('/', async (req, res) => {
   var monthsToCheck = populateCrimeDates (numberOfMonths);
 
   // array to hold crimes to display on map
+  let slicedCrimes = []; //array to hold all crimes to display on map
   let crimesDuringMonth = []; //array to hold a specific month's crimes
 
   // get crime data for location for all months required
@@ -124,12 +220,58 @@ router.post ('/', async (req, res) => {
 
     // if crimes exist for month being checked, add them to collection of crimes
     if (crimesDuringMonth !== undefined && crimesDuringMonth.length > 0) {
+      //console.log('adding crime: ' + crimesDuringMonth);
       crimes.push (crimesDuringMonth);
     }
   }
 
-  // store previous 12 months of crime data
-  var displayCrimesHistoric = await getHistoricData (boundingBox);
+  //*************** STORE HISTORIC CRIME DATA (Previous 12 months) *************************
+  var crimeMonthsArrayHistoric = populateCrimeDates (12);
+  var crimesHistoric = [];
+  let crimesDuringMonthHistoric = []; //array to hold a specific month's crimes
+
+  // get crime data for location for all months required
+  for (let aMonth of crimeMonthsArrayHistoric) {
+    crimesDuringMonthHistoric = await getCrimeData (aMonth, boundingBox);
+
+    // if crimes exist for month being checked, add them to collection of crimes
+    if (
+      crimesDuringMonthHistoric !== undefined &&
+      crimesDuringMonthHistoric.length > 0
+    ) {
+      crimesHistoric.push (crimesDuringMonthHistoric);
+    }
+  }
+
+  // declare crime variables
+  let displayCrimesHistoric = []; // array to hold only unique crime types and locations for map display
+
+  // add crime details for each crime
+  for (let crimeCollection of crimesHistoric) {
+    for (let aCrime of crimeCollection) {
+      // store details of current crime
+      let aCrimeCategory = aCrime.category;
+      let aCrimeLat = aCrime.location.latitude;
+      let aCrimeLon = aCrime.location.longitude;
+      let aCrimeStreet = aCrime.location.street.name;
+      let aCrimeDate = getYearAndMonth (aCrime.month);
+      let aCrimeYear = aCrimeDate.getFullYear ();
+      let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
+
+      // reate new object with crime details to add
+      const aCrimeDetails = {
+        category: aCrimeCategory,
+        latitude: aCrimeLat,
+        longitude: aCrimeLon,
+        street: aCrimeStreet,
+        month: aCrimeMonth,
+        year: aCrimeYear,
+      };
+      // add current crime to array of all crimes to display on map
+      displayCrimesHistoric.push (aCrimeDetails);
+    }
+  }
+  //*************** END STORING HISTORIC **********************
 
   // declare crime variables
   let crimeNodes = []; // array to hold all found crime locations and information
@@ -192,7 +334,7 @@ router.post ('/', async (req, res) => {
           street: aCrimeStreet,
           month: aCrimeMonth,
           year: aCrimeYear,
-        };
+        };       
 
         // add current crime to array of all crimes to display on map
         displayCrimes.push (aCrimeDetails);
@@ -201,15 +343,18 @@ router.post ('/', async (req, res) => {
   }
 
   // adjust crime marker locations to improve visibility
-  displayCrimes = improveMarkerVisibility (displayCrimes);
+  displayCrimes = improveMarkerVisibility(displayCrimes);
+ 
+  // store max of 90 crimes, to cater to mapquest API map markers imposed limit
+  slicedCrimes = displayCrimes.slice (0, 90);
 
   // if no crimes were found, set boolean flag to true
-  if (displayCrimes.length === 0) {
+  if (slicedCrimes.length === 0) {
     noCrimes = true;
   }
 
   // call function which generates map image URL with crime markers
-  mapURL = getMap (boundingBox, displayCrimes, latitude, longitude);
+  mapURL = getMap (boundingBox, slicedCrimes, latitude, longitude);
 
   const today = new Date (); // get Date object
   const predictionYear = today.getFullYear (); // get current year
@@ -217,25 +362,16 @@ router.post ('/', async (req, res) => {
 
   // get police force and sector number for this search location
   var policeForce = await getPoliceForce (latitude, longitude);
-  var flaskData;
+  var sector = getSector (policeForce); // get name of police sector for this location
 
-  // check for valid police force 
-  if (typeof policeForce !== 'undefined') {   
-    var sector = getSector (policeForce); // get name of police sector for this location
-    
-    if (typeof sector !== 'undefined') {
-      // call flask server to get machine learning crime predictions for this area
-       flaskData = await predictCrimes (
-        predictionMonth,
-        predictionYear,
-        latitude,
-        longitude,
-        sector
-      );
-    }
-  };
-
-  
+  // call flask server to get machine learning crime predictions for this area
+  var flaskData = await predictCrimes (
+    predictionMonth,
+    predictionYear,
+    latitude,
+    longitude,
+    sector
+  );
 
   res.send ({
     flaskdata: flaskData,

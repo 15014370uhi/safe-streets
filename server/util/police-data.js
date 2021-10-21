@@ -1,3 +1,4 @@
+const { getYearAndMonth, populateCrimeDates } = require('../util/date-helpers');
 const axios = require ('axios');
 
 
@@ -65,6 +66,57 @@ const axios = require ('axios');
     return crimeData;
   };
 
+
+// Function which stores the previous 12 months crime data
+const getHistoricData = async (aBoundingBox) => {
+  var crimeMonthsArrayHistoric = populateCrimeDates (12);
+  var crimesHistoric = [];
+  let crimesDuringMonthHistoric = []; //array to hold a specific month's crimes
+
+  // get crime data for location for all months required
+  for (let aMonth of crimeMonthsArrayHistoric) {
+    crimesDuringMonthHistoric = await getCrimeData (aMonth, aBoundingBox);
+
+    // if crimes exist for month being checked, add them to collection of crimes
+    if (
+      crimesDuringMonthHistoric !== undefined &&
+      crimesDuringMonthHistoric.length > 0
+    ) {
+      crimesHistoric.push (crimesDuringMonthHistoric);
+    }
+  }
+
+  // declare crime variables
+  let displayCrimesHistoric = []; // array to hold only unique crime types and locations for map display
+
+  // add crime details for each crime
+  for (let crimeCollection of crimesHistoric) {
+    for (let aCrime of crimeCollection) {
+      // store details of current crime
+      let aCrimeCategory = aCrime.category;
+      let aCrimeLat = aCrime.location.latitude;
+      let aCrimeLon = aCrime.location.longitude;
+      let aCrimeStreet = aCrime.location.street.name;
+      let aCrimeDate = getYearAndMonth (aCrime.month);
+      let aCrimeYear = aCrimeDate.getFullYear ();
+      let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
+
+      // reate new object with crime details to add
+      const aCrimeDetails = {
+        category: aCrimeCategory,
+        latitude: aCrimeLat,
+        longitude: aCrimeLon,
+        street: aCrimeStreet,
+        month: aCrimeMonth,
+        year: aCrimeYear,
+      };
+      // add current crime to array of all crimes to display on map
+      displayCrimesHistoric.push (aCrimeDetails);
+    }
+  }
+
+  return displayCrimesHistoric;
+};
 
 // function which returns the sector for a given police force
 const getSector = aPoliceForce => {
@@ -195,5 +247,5 @@ const getSector = aPoliceForce => {
   };
 
 
-  module.exports = {getPoliceForce, getCrimeData, getSector};
+  module.exports = {getPoliceForce, getCrimeData, getSector, getHistoricData};
   

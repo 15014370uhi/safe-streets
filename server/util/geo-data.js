@@ -176,6 +176,9 @@ const improveMarkerVisibility = displayCrimes => {
       aCrimeRecord.longitude = newLonVal;
     }
   }
+  
+  // store max of 90 crimes, to cater to mapquest API map markers imposed limit
+  displayCrimes = displayCrimes.slice (0, 90);
 
   return displayCrimes;
 };
