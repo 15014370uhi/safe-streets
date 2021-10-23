@@ -204,7 +204,7 @@ const Search = props => {
 
           //TODO TEST
         const returnedFlaskData = response.flaskdata.data;
-        // console.log(returnedFlaskData);
+       // console.log(returnedFlaskData);
  
          // //TODO TEST display of flask dataKey
          const anti_social_behaviour = returnedFlaskData.Anti_social_behaviour;
@@ -233,7 +233,7 @@ const Search = props => {
              '%\n' +
              'Drugs = ' +
              parseFloat (drugs).toFixed (2) +
-             '\n' +
+             '%\n' +
              'Possession of Weapons = ' +
              parseFloat (possession_of_weapons).toFixed (2) +
              '%\n' +

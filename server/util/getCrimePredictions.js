@@ -1,0 +1,41 @@
+const axios = require ('axios');
+const {getSector} = require ('../util/crime-data');
+
+// Function which calls the flask server to obtain crime predictions for current area
+const getProbabilities = async (policeForce, latitude, longitude) => {
+  var flaskData;
+
+  var sector = getSector (policeForce); // get name of police sector for this location
+
+  const today = new Date (); // get Date object
+  const predictionYear = today.getFullYear (); // get current year
+  const predictionMonth = today.getMonth () + 1; // get next month
+
+  if (typeof sector !== 'undefined') {
+    // call flask server API to get prediction data
+    await axios
+      .request ({
+        method: 'POST',
+        url: 'http://localhost:5000/predict',
+        data: {
+          month: predictionMonth, // the month to predict (current month + 1)
+          year: predictionYear, // the year to predict
+          lat: latitude, // the latitude of search location
+          lon: longitude, // the longitude of search location
+          sector: sector, // the name of police force sector
+        },
+      })
+      .then (response => {
+        const allData = response.data;
+        flaskData = {
+          data: allData, // store returned prediction data
+        };
+      })
+      .catch (error => {
+        console.log ('Error getting response from flask server: ' + error);
+      });
+  }
+  return flaskData;
+};
+
+module.exports = {getProbabilities};

@@ -1,8 +1,8 @@
 const mapquest = require ('mapquest');
 const axios = require ('axios');
-
 mapquest.key = process.env.MAPQUEST_API_KEY;
 
+ 
 /**   
  * function which returns the latitude and longitude of a named UK street location
  * 
@@ -11,11 +11,12 @@ mapquest.key = process.env.MAPQUEST_API_KEY;
  * @return {object} Object containing latitude and longitude
  */
 const getLatLon = async locationName => {
-  //declare array to hold results
-  var geoLocationData = {};
+  
+ //API key
+ const apiKey = process.env.MAPQUEST_API_KEY;
 
-  //API key
-  const apiKey = process.env.MAPQUEST_API_KEY;
+  //declare array to hold results
+  var geoLocationData = {}; 
 
   //construct base URL
   const baseURL = 'http://open.mapquestapi.com/geocoding/v1/address?key=';
@@ -114,16 +115,16 @@ const getBoundingBox = (latLocation, lonLocation) => {
     latBotLeft,
     lonBotLeft
   );
-
+  
   //return bounding box coordinates
   return boundingBox;
 };
 
-// function which improves the visibility of overlapping markers by randomly adjusting crime
-// position slightly
+// function which improves the visibility of overlapping and identically positioned
+// map markers, by adding a random value to latitude and longitude positions
 const improveMarkerVisibility = displayCrimes => {
-  var referenceLats = []; // store duplicate latitudes
-  var referencelons = []; // store duplicate longitudes
+  var referenceLats = []; // to store duplicate latitudes
+  var referencelons = []; // to store duplicate longitudes
 
   for (let aCrimeRecord of displayCrimes) {
     referenceLats.push (aCrimeRecord.latitude);
@@ -195,9 +196,15 @@ const improveMarkerVisibility = displayCrimes => {
  * @return {string} The URL of static map image with crime markers for each crime and center point  
  */
 const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
+
+ //API key
+ const apiKey = process.env.MAPQUEST_API_KEY;
+
   //define base URL
   let URLMap =
-    'https://www.mapquestapi.com/staticmap/v5/map?key=HaI8dvLBtirhMstWmwrcbkRmltyyHAT2&boundingBox=';
+    'https://www.mapquestapi.com/staticmap/v5/map?key=' 
+    + apiKey 
+    + '&boundingBox=';
 
   //get reference to bounding box lat and lon coordinates
   const latTopLeft = boundingBox[0];
@@ -223,8 +230,9 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
     '&locations=' +
     latLocation +
     ',' +
-    lonLocation +
-    '|marker-7B0099'; //center point marker
+    lonLocation + '|marker-7B0099'; //center point marker
+
+
 
   // iterate through array of all crime records and add lat, lon, crime category and map marker to URL string
   for (const aCrimeRecord of crimeNodes) {
@@ -316,8 +324,9 @@ const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
   }
 
   // add standard URL string ending
-  URLMap = URLMap + '&zoom=8&size=600,500@2x'; //TODO NOTE: zoom=lower value=closer,  size=width,length
-
+  URLMap = URLMap + '&zoom=10&size=1000,500@2x'; //TODO NOTE: zoom=lower value=closer,  size=width,length
+//&zoom=6&size=600,600@2x
+ 
   // return full URL for a static map with all crime locations marked
   return URLMap;
 };

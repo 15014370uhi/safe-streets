@@ -44,7 +44,7 @@ const getAPIResponse = async payload => {
         resolve (response); 
       })
       .catch (error => {
-        console.log ('error in obtaining API response: ', error.message);
+        console.log ('error in obtaining node API response: ', error.message);
       });
   });
 };

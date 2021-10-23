@@ -459,6 +459,7 @@ form>fieldset {
   box-shadow: 0 14px 18px rgb(4, 8, 56); 
   left: 1%;
   top: 1%;
+  z-index: 1000;
 }
 
 .btn-open-filter {
@@ -472,6 +473,7 @@ form>fieldset {
   box-shadow: 0 14px 18px rgb(4, 8, 56);  
   left: 88%;  
   top: 1%;
+  z-index: 1000;
 }
 
 .btn-add-to-favourites {
@@ -486,6 +488,23 @@ form>fieldset {
   box-shadow: 0 14px 18px rgb(4, 8, 56);
   bottom: 5%;
   right: 1.9%;
+  z-index: 1000;
+}
+
+
+.btn-delete-favourite {
+  position: fixed;
+  font-size: 4em;  
+  padding-top: 12px !important;
+  padding-bottom: 2px !important;
+  padding-left: 1px !important;
+  padding-right: 1px !important;
+  border: 6px solid rgb(61, 5, 7);
+  border-radius: 60px;
+  box-shadow: 0 14px 18px rgb(46, 1, 1);
+  bottom: 5%;
+  right: 1.8%;
+  z-index: 1000;
 }
 
 
@@ -501,21 +520,9 @@ form>fieldset {
   box-shadow: 0 14px 18px rgb(82, 73, 24);
   bottom: 5%;
   left: 1%;
+  z-index: 1000;
 }
 
-.btn-delete-favourite {
-  position: fixed;
-  font-size: 4em;  
-  padding-top: 12px !important;
-  padding-bottom: 2px !important;
-  padding-left: 1px !important;
-  padding-right: 1px !important;
-  border: 6px solid rgb(61, 5, 7);
-  border-radius: 60px;
-  box-shadow: 0 14px 18px rgb(46, 1, 1);
-  bottom: 5%;
-  right: 1.8%;
-}
 
 .btn-filter-active,
 .btn-filter-inactive {

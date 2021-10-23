@@ -26,3 +26,5 @@ def runPredictionModel():
       
 if __name__ == '__main__':
     app.run(port=5000)     
+    
+    #TODO note: venv\Scripts\activate   flask run
