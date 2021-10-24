@@ -26,20 +26,19 @@ const getAPIResponse = async payload => {
     axios
       .post ('http://localhost:4000/api/map', payload)
       .then (res => {
-        const response = {
+        const response = {          
           flaskdata: res.data.flaskdata,
           data: res.data.historicdata, 
-          boundingbox: res.data.boundingbox,
           filters: res.data.filters,
           isnamesearch: res.data.isnamesearch,
           lat: res.data.lat,
           lon: res.data.lon,
-          location: res.data.location,
           locationname: res.data.locationname,
           mapurl: res.data.mapurl,
           numberofmonths: res.data.numberofmonths,
           nocrimes: res.data.nocrimes,
-          policeforce: res.data.policeforce,
+          policeforce: res.data.policeforce,     
+          displaycrimes: res.data.displaycrimes,     
         };	
         resolve (response); 
       })

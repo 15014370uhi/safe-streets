@@ -11,7 +11,7 @@ dotenv.config();
 const PORT = process.env.PORT || 4000; 
 
 //middleware
-app.use (express.json ()); // Body parser json
+app.use (express.json ()); 
 app.use(
   cors({
     origin: [
@@ -26,9 +26,7 @@ app.use(
 app.listen (PORT, () => {
     console.log (`Server is running on port ${PORT}`);
   });
-
-  //app.get('/', (req, res) => res.send('Hello world!'));
-
+ 
 //set api route
 app.use('/api/map', routes);
 

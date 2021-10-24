@@ -5,6 +5,7 @@ const {
   getHistoricData,
 } = require ('../util/crime-data');
 const {getMap, getLatLon, getBoundingBox} = require ('../util/geo-data');
+
 const {populateCrimeDates} = require ('../util/date-helpers');
 const {getProbabilities} = require ('../util/getCrimePredictions');
 const router = require ('express').Router ();
@@ -18,6 +19,7 @@ router.post ('/', async (req, res) => {
   let longitude = req.body.lon; // longitude searched for
   let filters = []; // to hold crime filters
   var mapURL = ''; // static map image URL
+  //var location = ''; // variable to hold location   // remove
   var crimes = []; // array to hold crime data
   var noCrimes = false; // if no crimes found
 
@@ -78,14 +80,17 @@ router.post ('/', async (req, res) => {
   }
 
   res.send ({
-    displaycrimes: displayCrimes,
     flaskdata: flaskData,
+   // boundingbox: boundingBox, // remove
     historicdata: displayCrimesHistoric,
     filters: filters,
     isnamesearch: isNameSearch,
     lat: latitude,
     lon: longitude,
+   // location: location, // remove
+   // locationname: locationName, //remove
     mapurl: mapURL,
+   // numberofmonths: numberOfMonths, // remove
     nocrimes: noCrimes,
     policeforce: policeForce,
   });

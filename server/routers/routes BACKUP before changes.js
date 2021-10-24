@@ -253,7 +253,6 @@ router.post ('/', async (req, res) => {
       let aCrimeCategory = aCrime.category;
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
-      let aCrimeStreet = aCrime.location.street.name;
       let aCrimeDate = getYearAndMonth (aCrime.month);
       let aCrimeYear = aCrimeDate.getFullYear ();
       let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
@@ -263,7 +262,6 @@ router.post ('/', async (req, res) => {
         category: aCrimeCategory,
         latitude: aCrimeLat,
         longitude: aCrimeLon,
-        street: aCrimeStreet,
         month: aCrimeMonth,
         year: aCrimeYear,
       };
@@ -284,7 +282,6 @@ router.post ('/', async (req, res) => {
       let aCrimeCategory = aCrime.category;
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
-      let aCrimeStreet = aCrime.location.street.name;
       let aCrimeDate = getYearAndMonth (aCrime.month);
       let aCrimeYear = aCrimeDate.getFullYear ();
       let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
@@ -302,8 +299,7 @@ router.post ('/', async (req, res) => {
             const aCrimeDetails = {
               category: aCrimeCategory,
               latitude: aCrimeLat,
-              longitude: aCrimeLon,
-              street: aCrimeStreet,
+              longitude: aCrimeLon,  //TODO               
               month: aCrimeMonth,
               year: aCrimeYear,
             };
@@ -330,8 +326,7 @@ router.post ('/', async (req, res) => {
         const aCrimeDetails = {
           category: aCrimeCategory,
           latitude: aCrimeLat,
-          longitude: aCrimeLon,
-          street: aCrimeStreet,
+          longitude: aCrimeLon,         
           month: aCrimeMonth,
           year: aCrimeYear,
         };       

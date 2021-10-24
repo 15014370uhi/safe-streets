@@ -130,7 +130,6 @@ const populateDisplayCrimes = async (crimes, filters) => {
       let aCrimeCategory = aCrime.category;
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
-      let aCrimeStreet = aCrime.location.street.name;
       let aCrimeDate = getYearAndMonth (aCrime.month);
       let aCrimeYear = aCrimeDate.getFullYear ();
       let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
@@ -147,7 +146,6 @@ const populateDisplayCrimes = async (crimes, filters) => {
               category: aCrimeCategory,
               latitude: aCrimeLat,
               longitude: aCrimeLon,
-              street: aCrimeStreet,
               month: aCrimeMonth,
               year: aCrimeYear,
             };
@@ -162,7 +160,6 @@ const populateDisplayCrimes = async (crimes, filters) => {
           category: aCrimeCategory,
           latitude: aCrimeLat,
           longitude: aCrimeLon,
-          street: aCrimeStreet,
           month: aCrimeMonth,
           year: aCrimeYear,
         };
@@ -179,7 +176,10 @@ const populateDisplayCrimes = async (crimes, filters) => {
   return displayCrimes;
 };
 
-// Function which stores the previous 12 months crime data
+
+
+
+// Function which retrieves the previous 12 months crime data
 const getHistoricData = async aBoundingBox => {
   var crimeMonthsArrayHistoric = populateCrimeDates (12);
   var crimesHistoric = [];
@@ -208,7 +208,6 @@ const getHistoricData = async aBoundingBox => {
       let aCrimeCategory = aCrime.category;
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
-      let aCrimeStreet = aCrime.location.street.name;
       let aCrimeDate = getYearAndMonth (aCrime.month);
       let aCrimeYear = aCrimeDate.getFullYear ();
       let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
@@ -218,7 +217,6 @@ const getHistoricData = async aBoundingBox => {
         category: aCrimeCategory,
         latitude: aCrimeLat,
         longitude: aCrimeLon,
-        street: aCrimeStreet,
         month: aCrimeMonth,
         year: aCrimeYear,
       };
@@ -229,7 +227,7 @@ const getHistoricData = async aBoundingBox => {
   return displayCrimesHistoric;
 };
 
-// function which returns the sector for a given police force
+// function which returns the sector for a given police force 
 const getSector = aPoliceForce => {
   var sector;
 

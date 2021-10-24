@@ -19,7 +19,7 @@ const AddFavouriteModal = (props) => {
 		try {
 			await addUserFavourite(
 				title,
-				props.mapdetails.mapURL,
+				props.mapdetails.mapURL,  //TODO change to get from context?
 				props.mapdetails.locationname,
 				props.mapdetails.isnamesearch,
 				props.mapdetails.lat,
