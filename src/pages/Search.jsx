@@ -28,8 +28,9 @@ const Search = props => {
 
 
   // function which updates the mapURL context
-  const updateMapURL = (aMapURL, aLat, aLon, wasNameSearch) => {
+  const updateMapURL = (aMapURL, aLat, aLon, wasNameSearch, displayCrimes) => {
     setMapDetails ({
+      displaycrimes: displayCrimes,
       mapURL: aMapURL,
       locationname: locationName,
       isnamesearch: wasNameSearch,
@@ -202,9 +203,7 @@ const Search = props => {
             }); //TODO can also add other data - just have 1 CONTEXT for everything???
 
             setCrimeData (response.displaycrimes);
-
             setCenterPoint([response.lat, response.lon]);
-
            
             //TODO TEST
             const returnedFlaskData = response.flaskdata.data;

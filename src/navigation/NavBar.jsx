@@ -71,7 +71,7 @@ const NavBar = (props) => {
 								as={NavLink}
 								to="/profile"
 								onClick={closeMobileMenu}>
-								<i className="fas fa-envelope fa-2x mobile-icon" />
+								<i className="fas fa-user fa-2x mobile-icon" />
 								<label className="nav-icon-label label-dropdown">
 									Profile
 								</label>
@@ -103,7 +103,7 @@ const NavBar = (props) => {
 								onClick={closeMobileMenu}>
 								<i
 									id="dropdownProfileIcon"
-									className="fas fa-envelope fa-lg"
+									className="fas fa-user fa-lg"
 								/>
 								<label className="dropdown-text">Profile</label>
 							</DropdownItem>

@@ -97,7 +97,7 @@ const getCrimeCategory = (aCrimeCategory) => {
       break;
   }
   return crimeCat;
-}
+};
 
 	var graphData = [
 		{

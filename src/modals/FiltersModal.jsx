@@ -70,6 +70,7 @@ const FiltersModal = (props) => {
 
 	useEffect(() => {
 		setPreviousFilters(props.mapdetails.filters);
+		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -77,6 +78,7 @@ const FiltersModal = (props) => {
 	const setPreviousFilters = (filtersToApply) => {
 		// set filters state to loaded filters
 		setAppliedFilters(filtersToApply);
+		//console.log('Filters Modal - PREVIOUS filters: ', props.mapdetails.filters);
 		filtersToApply.forEach((aFilterCategory) => {
 			const indexOfButtonToUpdate = crimeButtons.findIndex((aButton) =>
 				aButton.categories.includes(aFilterCategory)
@@ -123,6 +125,7 @@ const FiltersModal = (props) => {
 		//TODO dont close modal until button states show they are - check dropHandler
 		//TODO might need another button like - apply - after filters reset
 		props.onHide(); //hide filter modal interface
+		//console.log('FILTERS MODAL SETTING filters: ' + JSON.stringify(filters));
 		props.updateMapURL(filters);
 	};
 

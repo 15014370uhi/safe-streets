@@ -78,6 +78,8 @@ a.dropdown-toggle.nav-link {
 
 div.dropdown-menu.show {
   padding-top: 0px;
+  background-color: rgb(33,187,111);
+  z-index: 2500;
 }
 
 .dropDownItem {
@@ -86,6 +88,7 @@ div.dropdown-menu.show {
 
 .mobile-icon {
   padding-right: 12px;
+  margin-left: 20px;
 }
 
 #dropdownLogoutIcon {
@@ -98,8 +101,9 @@ div.dropdown-menu.show {
 }
 
 .dropdown-text {
-  font-size: 1.4rem;
-  margin-bottom: 8px;
+  font-size: 1.8rem;
+  padding-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .login-container {
@@ -217,7 +221,7 @@ i.far.fa-trash-alt.fa-lg:hover {
 }
 
 .profile-heading {
-  background-color: rgb(34, 187, 111);
+  background-color: royalblue;
   font-size: 2em;
 }
 
@@ -416,21 +420,21 @@ form>fieldset {
 }
 
 .dropdown-item {
-  background-color: rgb(73, 202, 73);
+  background-color: rgb(33,187,111);
 }
 
 .dropdown-button.active {
   color: #030320;
-  background-color: rgb(73, 202, 73);
+  background-color: rgb(33,187,111);
 }
 
 .mobile-show {
   display: none;
 }
 
+
+
 /* map display screen */
-
-
 .map-container{
   position: relative;   
 }
@@ -445,7 +449,6 @@ form>fieldset {
   padding-top: 0px;
   z-index: 0;
 }
-
 
 .btn-back {
   position: sticky;
@@ -523,7 +526,6 @@ form>fieldset {
   z-index: 1000;
 }
 
-
 .btn-filter-active,
 .btn-filter-inactive {
   font-size: 1.75em;
@@ -558,7 +560,16 @@ form>fieldset {
 
 .btn-footer:hover {
   font-size: 1.5em;
-  box-shadow: 3px 3px 3px 4px rgba(7, 0, 27, 0.548);
+  box-shadow: 3px 3px 3px 4px rgba(12, 2, 41, 0.548);
+}
+
+.icon-popup {
+  font-size: 2em;
+  font-weight: bold;
+  border-radius: 20px;
+  transition: all 0.2s ease-out;
+  box-shadow: 0 1em 1.5em -0.5em rgba(7, 0, 27, 0.548);
+  transform: translateY(-0.5em);
 }
 
 
@@ -636,7 +647,7 @@ form>fieldset {
     left: 0;
     opacity: 1;
     transition: all 0.3s ease;
-    z-index: 500;
+    z-index: 2000;
   }
 
   .nav-links {
@@ -681,17 +692,18 @@ form>fieldset {
 
   .label-dropdown {
     font-size: 2.5em;
-    margin-left: 40px;
+    margin-left: 40px;    
   }
 
   ul.nav-menu {
-    height: 720px; /* was 1200px */
+    height: 500px; /* was 1200px */
     text-align: left;
-    padding-top: 30px;
+    padding-bottom: 28px;
   }
 
   label.nav-icon-label {
     font-size: 42px;
+    padding-left: 5px;
   }
 
   a.navbar-logo.navbar-brand.active {

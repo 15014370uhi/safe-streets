@@ -123,6 +123,7 @@ const getBoundingBox = (latLocation, lonLocation) => {
 // function which improves the visibility of overlapping and identically positioned
 // map markers, by adding a random value to latitude and longitude positions
 const improveMarkerVisibility = displayCrimes => {
+  console.log('improveMarkerVisibility: SERVER-SIDE Called');
   var referenceLats = []; // to store duplicate latitudes
   var referencelons = []; // to store duplicate longitudes
 
@@ -138,23 +139,18 @@ const improveMarkerVisibility = displayCrimes => {
   var uniqueLons = [...new Set (referencelons)];
 
   // values to adjust crime marker location by
-  var locationValues = [
+  var locationValues = [    
+    0.00015,  
     0.0002,
-    0.0003,
-    0.0004,
-    0.0005,
-    0.0006,
-    0.0007,
-    0.0009,
+    0.00025,
+    0.0003,   
+    0.0004,     
     0.0,
-    -0.0002,
-    -0.0003,
-    -0.0004,
-    -0.0005,
-    -0.0006,
-    -0.0007,
-    -0.0008,
-    -0.0009,
+    -0.00015,    
+    -0.0002, 
+    -0.00025  
+    -0.0003,   
+    -0.0004,  
   ];
 
   //Iterate over all crimes - adjust the lat and lon of any duplicates so they show on map better
