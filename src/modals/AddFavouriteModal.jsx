@@ -17,9 +17,10 @@ const AddFavouriteModal = (props) => {
 		props.onHide();
 
 		try {
+			//TODO add display crimes and prediciton data just in case?
 			await addUserFavourite(
 				title,
-				props.mapdetails.mapURL,  //TODO change to get from context?
+				props.mapdetails.mapURL,  //TODO change to get from context not props?
 				props.mapdetails.locationname,
 				props.mapdetails.isnamesearch,
 				props.mapdetails.lat,

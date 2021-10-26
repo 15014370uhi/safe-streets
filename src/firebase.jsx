@@ -11,15 +11,15 @@ const firebaseConfig = {
 	appId: '1:400130243033:web:3439d32591167991e041c8',
 };
 
-//async function which returns the latest user document from firestore
+// Function which returns the latest user document from firestore
 const getUserDocument = async (uid) => {
-	//no UID supplied, return null
+	// no UID supplied, return null
 	if (!uid) {
 		return null;
 	}
-	//else user UID supplied for logged in user
+	// else user UID supplied for logged in user
 	try {
-		//get reference to current user document
+		// get reference to current user document
 		const userDocument = await firestore.doc(`users/${uid}`).get();
 		return {
 			uid,
@@ -31,6 +31,7 @@ const getUserDocument = async (uid) => {
 };
 
 //function to create a new user with email and password
+//TODO add email authenticating
 export const createUserWithEmailAndPassword = async (email, password) => {
 	try {
 		const {user} = await auth.createUserWithEmailAndPassword(
@@ -49,33 +50,33 @@ export const createUserWithEmailAndPassword = async (email, password) => {
 
 //function to create a user document
 export const generateUserDocument = async (user, additionalData) => {
-	//if user missing, exit
+	// if user missing, exit
 	if (!user) {
 		return;
 	}
-	//get reference to current user data in firestore by UID
+	// get reference to current user data in firestore by UID
 	const userRef = firestore.doc(`users/${user.uid}`);
 	const snapshot = await userRef.get();
 
-	//if user is logged in but no firestore document exists
+	// if user is logged in but no firestore document exists
 	if (!snapshot.exists) {
-		//get email of currently logged in user
+		// get email of currently logged in user
 		const {email} = user;
 		try {
 			await userRef.set({
-				email, //set user email
-				favourites: [], //initialise empty favourites array
+				email, // set user email
+				favourites: [], // initialise empty favourites array
 				...additionalData,
 			});
 		} catch (error) {
-			console.error('Firebase errorL: ', error.message);
+			console.error('Firebase error: ', error.message);
 		}
 	}
-	//call getUserDocument function with user UID
+	// call getUserDocument function with user UID
 	return getUserDocument(user.uid);
 };
 
-//function to add a new favourite to user collection of favourites
+// Function to add a new favourite to a user collection of all favourites
 export const addUserFavourite = async (
 	title,
 	mapurl,
@@ -90,7 +91,7 @@ export const addUserFavourite = async (
 	var options = {year: 'numeric', month: 'long', day: 'numeric'};
 	const timestamp = new Date().toLocaleDateString([], options);
 
-	//create a new favourite object
+	// create a new favourite object
 	var newFavourite = {
 		title: title,
 		mapURL: mapurl,
@@ -103,10 +104,10 @@ export const addUserFavourite = async (
 		filters: filters,
 	};
 
-	//get reference to current user data in firestore by UID
+	// get reference to current user data in firestore by UID
 	const userRef = firestore.doc(`users/${user.uid}`);
 	const snapshot = await userRef.get();
-	//if firestore user document found
+	// if firestore user document was found
 	if (snapshot.exists) {
 		try {
 			await userRef.update({
@@ -121,38 +122,30 @@ export const addUserFavourite = async (
 	return getUserDocument(user.uid);
 };
 
-//reauthenticate a user with password
+// reauthenticate user with password
 export const reauthenticateUser = async (password) => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
 	var credentials = firebase.auth.EmailAuthProvider.credential(
 		user.email,
 		password
-	);
-	//TODO TEST
-	//console.log('reauthenticateUser --- user: ' + user + ' credentials: ' + credentials);
+	);	
 	await user.reauthenticateWithCredential(credentials);
 };
 
-//async function to delete a user document in firestore
+// Function to delete a user document in firestore
 export const deleteUserDocument = async () => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
 
-	//get reference to current user data in firestore by UID
+	// get reference to current user data in firestore by UID
 	const userDocumentRef = firestore.doc(`users/${user.uid}`);
 
-		//TODO TEST
-		//console.log('deleteUserDocument --- user: ' + user + ' userDocumentRef: ' + userDocumentRef);
-
-	//delete user document from firestore
+	// delete user document from firestore
 	await userDocumentRef.delete(); 
 };
 
-//async function to delete a user account from firebase authentication list
+// Function to delete a user account from firebase authentication list
 export const deleteUserAccount = async () => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
-
-	//TODO TEST
-	//console.log('deleteUserAccount --- user: ' + user);
 
 	await user.delete(); //delete user authentication account record
 };

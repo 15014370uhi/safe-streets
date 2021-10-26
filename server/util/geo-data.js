@@ -122,8 +122,7 @@ const getBoundingBox = (latLocation, lonLocation) => {
 
 // function which improves the visibility of overlapping and identically positioned
 // map markers, by adding a random value to latitude and longitude positions
-const improveMarkerVisibility = displayCrimes => {
-  console.log('improveMarkerVisibility: SERVER-SIDE Called');
+const improveMarkerVisibility = displayCrimes => {  
   var referenceLats = []; // to store duplicate latitudes
   var referencelons = []; // to store duplicate longitudes
 

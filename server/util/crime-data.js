@@ -43,14 +43,28 @@ const applyFilters = filters => {
  */
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
   
-  // console.log('Bounding Box BEFORE CORRECTIONS in getCrimeData = \n'
-  // + 'latTopLeft: ' + boundingBox[0] + ' lonTopLeft: ' + boundingBox[1] + '\n'
-  // + 'latBotRight: ' + boundingBox[2] + ' lonBotRight: ' + boundingBox[3] + '\n'
-  // + 'latTopRight: ' + boundingBox[4] + ' lonTopRight:' + boundingBox[5] + '\n'
-  // + 'latBotLeft: ' + boundingBox[6] + ' lonBotLeft:' + boundingBox[7] + '\n'  
-  // );
+  console.log('Bounding Box BEFORE CORRECTIONS in getCrimeData = \n'
+  + 'lat-Top-Left, lon-Top-Left ' + boundingBox[0] + ', ' + boundingBox[1] + '\n'
+  + 'lat-Bot-Left, lon-Bot-Left ' + boundingBox[6] + ', ' + boundingBox[7] + '\n'
+  + 'lat-Bot-Right, lon-Bot-Right ' + boundingBox[2] + ', ' + boundingBox[3] + '\n'  
+  + 'lat-Top-Right, lon-Top-Right ' + boundingBox[4] + ', ' + boundingBox[5] + '\n'
+  
+  );
 
-  var correction = 0.0015;
+  // latTopLeft,0
+  // lonTopLeft,1
+
+  // latBotRight,2
+  // lonBotRight,3
+
+  // latTopRight,4
+  // lonTopRight,5
+  
+  // latBotLeft,6
+  // lonBotLeft,7
+
+  var correction = 0.00;
+  //0.0015;
 
   let latTopLeft = parseFloat( (parseFloat(boundingBox[0])) - parseFloat(correction)).toFixed(5);
   let lonTopLeft = parseFloat( (parseFloat(boundingBox[1])) + parseFloat(correction)).toFixed(5);
@@ -65,12 +79,12 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
   let lonBotLeft = parseFloat( (parseFloat(boundingBox[7])) + parseFloat(correction)).toFixed(5);
 
 
-  // console.log('Bounding Box AFTER CORRECTIONS in getCrimeData = \n'
-  // + 'latTopLeft: ' + latTopLeft + ' lonTopLeft: ' + lonTopLeft + '\n'
-  // + 'latBotRight: ' + latBotRight + ' lonBotRight: ' + lonBotRight + '\n'
-  // + 'latTopRight: ' + latTopRight + ' lonTopRight:' + lonTopRight + '\n'
-  // + 'latBotLeft: ' + latBotLeft + ' lonBotLeft:' + lonBotLeft + '\n'  
-  // );
+  console.log('Bounding Box Crimes for month: ' + crimeDateCheck + '\n'
+  + 'lat-Top-Left, lon-Top-Left ' + latTopLeft + ', ' + lonTopLeft + '\n'  
+  + 'lat-Bot-Left, lon-Bot-Left ' + latBotLeft + ', ' + lonBotLeft + '\n' 
+  + 'lat-Bot-Right, lon-Bot-Right ' + latBotRight + ', ' + lonBotRight + '\n'  
+  + 'lat-Top-Right, lon-Top-Right ' + latTopRight + ', ' + lonTopRight + '\n'  
+  );
 
   // variable to hold crime data
   let crimeData;
@@ -99,7 +113,8 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     '&date=' +
     crimeDateCheck;
 
-    //console.log('\n ================ CRIME URL: ' + URLCrimes + '\n=================');
+    console.log('Crime URL: ' + URLCrimes);
+
   // call police data API to retieve crimes for specified month and area
   await axios
     .get (URLCrimes)

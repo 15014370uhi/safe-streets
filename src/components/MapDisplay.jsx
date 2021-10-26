@@ -14,8 +14,6 @@ import FiltersModal from "../modals/FiltersModal";
 import ButtonShowFilters from "./ButtonShowFilters";
 import ButtonBack from "./ButtonBack";
 import uuid from "react-uuid";
-import "leaflet/dist/leaflet.css";
-
 import {
 	MapContainer,
 	Marker,
