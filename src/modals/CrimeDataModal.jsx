@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
-import Modal from 'react-bootstrap/Modal';
-import { MapDetails } from '../contexts/MapDetailsContext';
-import { ResultsData } from '../contexts/ResultsDataContext';
+import React, { useContext } from "react";
+import Modal from "react-bootstrap/Modal";
+import { ResultsData } from "../contexts/ResultsDataContext";
 import {
 	AreaChart,
 	Area,
@@ -16,16 +15,9 @@ import {
 import { MDBIcon } from "mdbreact";
 
 const ShowDataModal = (props) => {
-	const [mapDetails, setMapDetails] = useContext(MapDetails);
 	const [resultsData, setResultsData] = useContext(ResultsData);
 
-
-	//TODO need to display previous 12 months data - then show trends on graph over the Year
-	//TODO calculate current month and set that to last - entry in graph -
-	//TODO data points - dougnut with prediciton crimes - and trend of last 12 months actual
-
-
-	//var data = [];
+	// array of month names
 	var months = [
 		"Jan",
 		"Feb",
@@ -41,253 +33,131 @@ const ShowDataModal = (props) => {
 		"Dec",
 	];
 
+	// function which returns an array of months sorted in order of how
+	// they should be displayed on a graph of historic crimes
+	const getSortedMonths = () => {
+		var sortedMonths = [];
 
-const getCrimeCategory = (aCrimeCategory) => {
+		//get final graph month to display
+		let finalGraphMonth = new Date().getMonth() + 1; //zero indexed
 
-	let crimeCat = '';
+		if (finalGraphMonth === 1) {
+			// January special case
+			finalGraphMonth = 11; // set month to (2 months prior)
+		} else if (finalGraphMonth === 2) {
+			// February special case
+			finalGraphMonth = 12; // set crime month to December (2 months prior)
+		} else {
+			// else decrement month by 2
+			finalGraphMonth = finalGraphMonth - 2;
+		}
 
-	switch (aCrimeCategory) {
-    case 'Anti social behaviour':
-		crimeCat = 'Anti-Social Behaviour';
-      	break;	
-		  
-	case 'Bicycle theft':
-	case 'Other theft':
-	case 'Theft from the person':   
-		crimeCat = 'Theft';
-		break;	
+		// get first graph month
+		var currentGraphMonth = finalGraphMonth + 1;
 
-	case 'Burglary':
-		crimeCat = 'Burglary';
-		break;
+		// create new crime stats month object and add to array
+		for (var i = 0; i < 12; i++) {
+			if (currentGraphMonth > 12) {
+				currentGraphMonth = currentGraphMonth - 12;
+			}
 
-	case 'Criminal damage arson': 
-		crimeCat = 'Criminal Damage & Arson';
-		break;   
-		
-	case 'Drugs':
-		crimeCat = 'Drugs';
-		break;		
-	
-	case 'Public order':
-	case 'Other crime':
-		crimeCat = 'Public Order';
-		break;
-			
-	case 'Possession of weapons':
-		crimeCat = 'Possession of Weapons';
-		break;
+			var monthlyStats = {
+				name: months[currentGraphMonth - 1],
+				"Anti-Social Behaviour": 0,
+				Burglary: 0,
+				"Criminal Damage & Arson": 0,
+				Drugs: 0,
+				"Public Order": 0,
+				"Possession of Weapons": 0,
+				Shoplifting: 0,
+				Theft: 0,
+				"Vehicle Crime": 0,
+				"Violent Crime": 0,
+			};
+			sortedMonths.push(monthlyStats);
+			currentGraphMonth++;
+		}
 
-	case 'Violent crime':	
-    case 'Robbery':
-    case 'Violence and sexual offences':
-		crimeCat = 'Violent Crime';
-		break;
+		return sortedMonths;
+	};
 
-	case 'Vehicle crime':
-		crimeCat = 'Vehicle Crime';
-		break;
+	const getCrimeCategory = (aCrimeCategory) => {
+		let crimeCat = "";
 
-	case 'Shoplifting':
-		crimeCat = 'Shoplifting';
-		break;
+		switch (aCrimeCategory) {
+			case "Anti social behaviour":
+				crimeCat = "Anti-Social Behaviour";
+				break;
 
-	  default:
-      //intentially blank
-      break;
-  }
-  return crimeCat;
-};
+			case "Bicycle theft":
+			case "Other theft":
+			case "Theft from the person":
+				crimeCat = "Theft";
+				break;
 
-	var graphData = [
-		{
-			"name": "Jan",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
+			case "Burglary":
+				crimeCat = "Burglary";
+				break;
 
-		},
-		{
-			"name": "Feb",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Mar",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Apr", 
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "May",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,		
-			"Shoplifting": 0,		
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Jun",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Jul",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Aug",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Sep",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Oct",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,		
-			"Shoplifting": 0,		
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Nov",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-		{
-			"name": "Dec",
-			"Anti-Social Behaviour": 0,
-			"Burglary": 0,
-			"Criminal Damage & Arson": 0,
-			"Drugs": 0,
-			"Public Order": 0,
-			"Possession of Weapons": 0,	
-			"Shoplifting": 0,			
-			"Theft": 0,
-			"Vehicle Crime": 0,
-			"Violent Crime": 0,
-		},
-	];
+			case "Criminal damage arson":
+				crimeCat = "Criminal Damage & Arson";
+				break;
+
+			case "Drugs":
+				crimeCat = "Drugs";
+				break;
+
+			case "Public order":
+			case "Other crime":
+				crimeCat = "Public Order";
+				break;
+
+			case "Possession of weapons":
+				crimeCat = "Possession of Weapons";
+				break;
+
+			case "Violent crime":
+			case "Robbery":
+			case "Violence and sexual offences":
+				crimeCat = "Violent Crime";
+				break;
+
+			case "Vehicle crime":
+				crimeCat = "Vehicle Crime";
+				break;
+
+			case "Shoplifting":
+				crimeCat = "Shoplifting";
+				break;
+
+			default:
+				//intentially blank
+				break;
+		}
+		return crimeCat;
+	};
+
+	var graphData = getSortedMonths();
 
 	for (const crime in resultsData.historicdata) {
 		let aCrimeRecord = resultsData.historicdata[crime];
 
 		// format crime category string
-		var aCategory = aCrimeRecord.category.replace(/-/g," ");
+		var aCategory = aCrimeRecord.category.replace(/-/g, " ");
 		aCategory = aCategory.charAt(0).toUpperCase() + aCategory.slice(1);
-		aCategory = getCrimeCategory(aCategory);	
+		aCategory = getCrimeCategory(aCategory);
 
-		var aMonth = months[aCrimeRecord.month - 1];
-		var year = aCrimeRecord.year;
+		// revert crime month to zero based index
+		var indexOfMonth = parseInt(aCrimeRecord.month - 1);
+		var aMonth = months[indexOfMonth];
 
 		for (const [key, value] of Object.entries(graphData)) {
-			//console.log(`${key}: ${value}`);
-			//console.log(key + ' : ' + value.name);
+			// if current object matches month crime was committed
 			if (value.name === aMonth) {
-				//console.log(value["Drugs"]);
-				//console.log('value : ' + value.Drugs);
-				//console.log('Check previous value: <<<<<<>>>>  ' + value[aCategory]);
+				// increment count of crime of this type for month
 				value[aCategory] = value[aCategory] + 1;
-				//console.log('Check for incremented: >>>>  ' + value[aCategory]);
 			}
-		}		
-
-		//TODO order graph by months since previous 12 months not jan to dec
-		//TODO should end on previous 2nd month - and begin 12 months before that.
-		//tODO get current month - 2, arrange data objects in order of that same order etc
-		//TODO currently not showing predicitons ---------  need a modal for that maybe or add 
-		//TODO to this modal by making it bigger?
-		//tODO or allow for a search box for predicitons and show graph modal for that?
+		}
 	}
 
 	return (
@@ -301,7 +171,7 @@ const getCrimeCategory = (aCrimeCategory) => {
 				<Modal.Title id="contained-modal-title-vcenter">
 					<h3 className="my-3">
 						<MDBIcon className="addFavModal-icon" icon="bookmark" />
-						Crime data for previous year
+						Crime data from previous year
 					</h3>
 				</Modal.Title>
 			</Modal.Header>
@@ -360,7 +230,7 @@ const getCrimeCategory = (aCrimeCategory) => {
 							type="monotone"
 							dataKey="Public Order"
 							stackId="1"
-							stroke="#413ea0" //#ffc658
+							stroke="#413ea0"
 							fill="#413ea0"
 						/>
 						<Area
@@ -390,7 +260,7 @@ const getCrimeCategory = (aCrimeCategory) => {
 							stackId="1"
 							stroke="#82ca9d"
 							fill="#82ca9d"
-						/>						
+						/>
 					</AreaChart>
 				</ResponsiveContainer>
 			</Modal.Body>

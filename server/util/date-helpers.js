@@ -9,7 +9,8 @@
  */
  const getYearAndMonth = stringDate => {
     const crimeYear = stringDate.slice (0, 4);
-    const crimeMonth = stringDate.slice (5);
+    var crimeMonth = stringDate.slice (5);
+    crimeMonth = parseInt (crimeMonth - 1); // preparation for Date object zero indexing
     const crimeDate = new Date (crimeYear, crimeMonth);
   
     return crimeDate;
@@ -47,15 +48,15 @@ const populateCrimeDates = numberOfMonthsRequired => {
    * since the past 1-2 month's crimes are not usually listed on police API. 
    */
   if (currentMonth === 1) {
-    //January special case
-    crimeMonth = 11; //set crime month to Nov (2 months prior)
-    currentYear--; //decrement year
+    // January special case
+    crimeMonth = 11; // set crime month to Nov (2 months prior)
+    currentYear--; // decrement year
   } else if (currentMonth === 2) {
-    //February special case
-    crimeMonth = 12; //set crime month to December (2 months prior)
-    currentYear--; //decrement year
+    // February special case
+    crimeMonth = 12; // set crime month to December (2 months prior)
+    currentYear--; // decrement year
   } else {
-    //just decrement month by 2
+    // decrement month by 2
     crimeMonth = currentMonth - 2;
   }
 

@@ -17,10 +17,9 @@ const AddFavouriteModal = (props) => {
 		props.onHide();
 
 		try {
-			//TODO add display crimes and prediciton data just in case?
 			await addUserFavourite(
 				title,
-				props.mapdetails.mapURL,  //TODO change to get from context not props?
+				props.mapdetails.mapURL,  
 				props.mapdetails.locationname,
 				props.mapdetails.isnamesearch,
 				props.mapdetails.lat,
@@ -29,9 +28,9 @@ const AddFavouriteModal = (props) => {
 				props.mapdetails.filters
 			);
 
-			//change mapdisplay icon from add fav to remove fav
+			//change icon from add fav + to remove fav -
 			history.push(`/results`, {
-				isfavourite: 'true', //boolean flag to determine if map a previously favourited map or new search result
+				isfavourite: 'true', // if was a previously favourited map
 			}); //flag current map as a favourite
 		} catch (error) {
 			console.log('Error adding favourite' + error);

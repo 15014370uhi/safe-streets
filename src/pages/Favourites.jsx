@@ -29,7 +29,7 @@ const Favourites = (props) => {
 					const aFavourite = doc
 						.data()
 						.favourites.find(({mapURL}) => mapURL === aMapURL); 					
-					updateMapURL(aFavourite);
+					updateMap(aFavourite);
 				} else {
 					console.log('No Matching favourite!');
 				}
@@ -40,7 +40,7 @@ const Favourites = (props) => {
 	};
 
 	//updates the mapDetails context
-	const updateMapURL = (aFavourite) => {	
+	const updateMap = (aFavourite) => {	
 		//update context to latest data 
 		setMapDetails((mapDetails) => ({
 			mapURL: aFavourite.mapURL,

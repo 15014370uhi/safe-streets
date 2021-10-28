@@ -4,7 +4,6 @@ import {ResultsData} from '../contexts/ResultsDataContext';
 import {Crimes} from '../contexts/CrimeDataContext';
 import {useHistory} from 'react-router-dom';
 import {CenterPoint} from '../contexts/CenterPointContext';
-
 import Form from '../components/Form';
 import Spinner from 'react-bootstrap/Spinner';
 import {getMapURL} from '../util/GetMapURL';
@@ -27,8 +26,8 @@ const Search = props => {
   const [centerPoint, setCenterPoint] = useContext (CenterPoint);
 
 
-  // function which updates the mapURL context
-  const updateMapURL = (aMapURL, aLat, aLon, wasNameSearch, displayCrimes) => {
+  // function which updates the map context
+  const updateMap = (aMapURL, aLat, aLon, wasNameSearch, displayCrimes) => {
     setMapDetails ({
       displaycrimes: displayCrimes,
       mapURL: aMapURL,
@@ -187,14 +186,13 @@ const Search = props => {
             setLon (response.lon);
 
             // pass response data to function
-            updateMapURL (
+            updateMap (
               response.mapurl,
               response.lat,
               response.lon,
               response.isnamesearch,
               response.displaycrimes
             );
-
             
             // pass historic and flask data to results data context
             setResultsData ({
@@ -207,7 +205,6 @@ const Search = props => {
            
             //TODO TEST
             const returnedFlaskData = response.flaskdata.data;
-            // console.log(returnedFlaskData);
 
             // //TODO TEST display of flask dataKey
             const anti_social_behaviour =

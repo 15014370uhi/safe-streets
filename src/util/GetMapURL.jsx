@@ -6,20 +6,6 @@ export const getMapURL = async payload => {
   return dataResponse;
 };
 
-// function which applies crime icon filtering to a previously made search
-export const getUpdatedMapURL = async aPayload => {
-  let payload = {
-    locationname: aPayload.locationname,
-    isnamesearch: aPayload.isnamesearch,
-    lat: aPayload.lat,
-    lon: aPayload.lon,
-    numberofmonths: aPayload.numberofmonths,
-    filters: aPayload.filters,
-  };
-  const response = await getAPIResponse (payload);    
-  return response; 
-};
-
 // function which completes an API call
 const getAPIResponse = async payload => {
   return new Promise (resolve => {
@@ -47,3 +33,20 @@ const getAPIResponse = async payload => {
       });
   });
 };
+
+
+
+// function which applies crime icon filtering to a previously made search
+export const getUpdatedMapURL = async aPayload => {
+  let payload = {
+    locationname: aPayload.locationname,
+    isnamesearch: aPayload.isnamesearch,
+    lat: aPayload.lat,
+    lon: aPayload.lon,
+    numberofmonths: aPayload.numberofmonths,
+    filters: aPayload.filters,
+  };
+  const response = await getAPIResponse (payload);    
+  return response; 
+};
+

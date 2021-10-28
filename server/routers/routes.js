@@ -53,7 +53,7 @@ router.post ('/', async (req, res) => {
     }
   }
 
-  // store previous 12 months of crime data //TODO ordered from this month?
+  // store previous 12 months of crime data 
   var displayCrimesHistoric = await getHistoricData (boundingBox);
 
   // array to hold all crimes to be displayed on map

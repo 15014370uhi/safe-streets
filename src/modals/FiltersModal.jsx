@@ -13,9 +13,9 @@ const FiltersModal = (props) => {
 	// filter buttons
 	const [crimeButtons, setCrimeButtons] = useState([
 		{
-			label: "Anti-Social Behaviour", //button label text
-			categories: ["anti-social-behaviour"], //element categories[0] used as button id
-			isActive: true, //boolean flag to determine whether to display this crime on map
+			label: "Anti-Social Behaviour", // button label text
+			categories: ["anti-social-behaviour"], // element categories[0] used as button id
+			isActive: true, // boolean flag to determine whether to display this crime on map
 		},
 		{
 			label: "Arson",
@@ -78,7 +78,7 @@ const FiltersModal = (props) => {
 	const setPreviousFilters = (filtersToApply) => {
 		// set filters state to loaded filters
 		setAppliedFilters(filtersToApply);
-		//console.log('Filters Modal - PREVIOUS filters: ', props.mapdetails.filters);
+		// console.log('Filters Modal - PREVIOUS filters: ', props.mapdetails.filters);
 		filtersToApply.forEach((aFilterCategory) => {
 			const indexOfButtonToUpdate = crimeButtons.findIndex((aButton) =>
 				aButton.categories.includes(aFilterCategory)
@@ -119,14 +119,11 @@ const FiltersModal = (props) => {
 		setCrimeButtons(updatedButtons);
 	};
 
-	//function to apply selected filters to map display
+	// function to apply selected filters to map display
 	const applyFilters = async () => {
-		//TODO animate apply filters button -
-		//TODO dont close modal until button states show they are - check dropHandler
-		//TODO might need another button like - apply - after filters reset
+		//TODO animate apply filters button		
 		props.onHide(); //hide filter modal interface
-		//console.log('FILTERS MODAL SETTING filters: ' + JSON.stringify(filters));
-		props.updateMapURL(filters);
+		props.updateMap(filters);
 	};
 
 	const resetFilters = () => {

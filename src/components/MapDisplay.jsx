@@ -1,98 +1,65 @@
 import React, { useState, useEffect, useContext } from "react";
+
+// import contexts
 import { MapDetails } from "../contexts/MapDetailsContext";
 import { Crimes } from "../contexts/CrimeDataContext";
 import { CenterPoint } from "../contexts/CenterPointContext";
+import { ResultsData } from "../contexts/ResultsDataContext";
+
+// import utility functions
 import { getUpdatedMapURL } from "../util/GetMapURL";
-import { filterIcons } from "../util/FilterIcons";
+import { populateDisplayCrimes } from "../util/FilterIcons";
 import { getCrimeCategory, getCrimeIcon } from "../util/CrimeTypes";
-import { useHistory } from "react-router-dom";
+import uuid from "react-uuid";
+
+// import modals
 import AddFavouriteModal from "../modals/AddFavouriteModal";
-import ButtonAddToFavs from "./ButtonAddToFavs";
+import DataModal from "../modals/CrimeDataModal";
 import RemoveFavouriteModal from "../modals/RemoveFavouriteModal";
-import ButtonRemoveFromFavs from "./ButtonRemoveFromFavs";
 import FiltersModal from "../modals/FiltersModal";
+
+// import buttons 
+import ButtonAddToFavs from "./ButtonAddToFavs";
+import ButtonRemoveFromFavs from "./ButtonRemoveFromFavs";
 import ButtonShowFilters from "./ButtonShowFilters";
 import ButtonBack from "./ButtonBack";
-import uuid from "react-uuid";
-import {
-	MapContainer,
-	Marker,
-	Popup,
-	TileLayer,
-	ZoomControl,
-} from "react-leaflet";
+import ButtonShowData from "./ButtonShowData";
+
+// import leaflet
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-// data modal
-import ButtonShowData from "./ButtonShowData";
-import DataModal from "../modals/CrimeDataModal";
+// import history
+import { useHistory } from "react-router-dom";
+
 
 const MapDisplay = () => {
-	const [map, setMap] = useState(null);
-	// state for modal screen
-	const [showAddFavouriteModal, setShowAddFavouriteModal] = useState(false);
-	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
-		useState(false);
-	const [showFiltersModal, setShowFiltersModal] = useState(false);
-	const [mapDetails, setMapDetails] = useContext(MapDetails);
-	const [crimeData, setCrimeData] = useContext(Crimes);
-	const [centerPoint, setCenterPoint] = useContext(CenterPoint);
-	const [showDataModal, setShowDataModal] = useState(false); //Data chart modal
+	const [map, setMap] = useState(null); // leaflet map object
+	const [showAddFavouriteModal, setShowAddFavouriteModal] = useState(false); // favourites modal
+	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] = useState(false);
+	const [showFiltersModal, setShowFiltersModal] = useState(false); // filters modal
+	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
+	const [crimeData, setCrimeData] = useContext(Crimes); // crimes data context
+	const [centerPoint, setCenterPoint] = useContext(CenterPoint); // reference to center point of search
+	const [showDataModal, setShowDataModal] = useState(false); // data chart modal
+	const [resultsData, setResultsData] = useContext(ResultsData); // results data
 	let history = useHistory();
 
 	useEffect(() => {
-		window.scrollTo(0, 0);
+		window.scrollTo(0, 0); // scroll map to top
 	}, []);
 
-	// function which updates the mapURL context
-	const updateMapURL = async (filters) => {
-		//console.log('updateMapURL in mapDisplay got filters: ' + filters);
-
-		var crimesFiltered = filterIcons(mapDetails.displaycrimes, filters);
-
-		//console.log(JSON.stringify(crimesFiltered));
-		setCrimeData(crimesFiltered); //are these already filtered in api?
-
-		// const payload = {
-		// 	locationname: mapDetails.locationname,
-		// 	isnamesearch: mapDetails.isnamesearch,
-		// 	lat: mapDetails.lat, //centre point
-		// 	lon: mapDetails.lon, //centre point
-		// 	numberofmonths: mapDetails.numberofmonths,
-		// 	filters: filters,
-		// };
-
-		// call API function
-		// const response = await getUpdatedMapURL(payload);
-		// await setMapDetails((mapDetails) => ({
-		// 	mapURL: response.mapurl,
-		// 	locationname: response.locationname,
-		// 	isnamesearch: response.isnamesearch,
-		// 	lat: response.lat,
-		// 	lon: response.lon,
-		// 	numberofmonths: response.numberofmonths,
-		// 	filters: response.filters,
-		// }));
-		//TODO TEST setting crimes from update
-
-		//TODO ********  create util function/file which takes crimeData and returns
-		// TODO the filtered version without calling API
-		// TODO the file/function will also update the context that saves favourites<<
-		//console.log('CRIME DATA: ' + JSON.stringify(response.displaycrimes));
-		//setCrimeData (response.displaycrimes);
-
-		//setCrimeData(filterIcons(response.displaycrimes, filters)); //are these already filtered in api?
+	// function which updates the filtered crimes on map
+	const updateMap = async (filters) => {
+		var crimesFiltered = populateDisplayCrimes(
+			mapDetails.displaycrimes,
+			filters
+		);
+		setCrimeData(crimesFiltered);
 	};
 
 	//default zoom level on map
 	const zoom = 17;
-
-	//TODO Check this out - could maybe add this as crime bounding box indicator?
-	//   var polygon = L.polygon([
-	//     [51.509, -0.08],
-	//     [51.503, -0.06],       https://leafletjs.com/examples/quick-start/
-	//     [51.51, -0.047]
-	// ]).addTo(mymap);
 
 	return (
 		<div className="map-container">
@@ -133,7 +100,7 @@ const MapDisplay = () => {
 				<FiltersModal
 					show={showFiltersModal}
 					onHide={() => setShowFiltersModal(false)}
-					updateMapURL={updateMapURL}
+					updateMap={updateMap}
 					mapdetails={mapDetails}
 					setmapdetails={setMapDetails}
 				/>
