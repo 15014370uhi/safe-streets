@@ -6,8 +6,6 @@ import { ResultsData } from '../contexts/ResultsDataContext';
 const ShowPredictionsModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
 
-
-
 	return (
 		<Modal
 			show={props.show}

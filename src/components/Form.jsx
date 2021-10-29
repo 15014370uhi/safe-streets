@@ -148,8 +148,7 @@ const Search = (props) => {
 				<Dropdown.Menu>
 					<Dropdown.Item eventKey="3">3 Months</Dropdown.Item>
 					<Dropdown.Item eventKey="6">6 Months</Dropdown.Item>
-					<Dropdown.Item eventKey="12">12 Months</Dropdown.Item>
-					<Dropdown.Item eventKey="24">24 Months</Dropdown.Item>
+					<Dropdown.Item eventKey="12">12 Months</Dropdown.Item>					
 				</Dropdown.Menu>
 			</Dropdown>
 

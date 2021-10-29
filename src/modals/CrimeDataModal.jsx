@@ -195,57 +195,57 @@ const ShowDataModal = (props) => {
 							type="monotone"
 							dataKey="Anti-Social Behaviour"
 							stackId="1"
-							stroke="#8884d8"
-							fill="#8884d8"
+							stroke="#2b704c"
+							fill="#2b704c"
 						/>
 						<Area
 							type="monotone"
 							dataKey="Burglary"
 							stackId="1"
-							stroke="#82ca9d"
-							fill="#82ca9d"
+							stroke="#493baf"
+							fill="#493baf"
 						/>
 						<Area
 							type="monotone"
 							dataKey="Criminal Damage & Arson"
 							stackId="1"
-							stroke="#ffc658"
-							fill="#ffc658"
+							stroke="yellow"
+							fill="yellow"
 						/>
 						<Area
 							type="monotone"
 							dataKey="Drugs"
+							stackId="1"
+							stroke="brown"
+							fill="brown"
+						/>
+						<Area
+							type="monotone"
+							dataKey="Possession of Weapons"
 							stackId="1"
 							stroke="red"
 							fill="red"
 						/>
 						<Area
 							type="monotone"
-							dataKey="Possession of Weapons"
-							stackId="1"
-							stroke="#d0ed57"
-							fill="#d0ed57"
-						/>
-						<Area
-							type="monotone"
 							dataKey="Public Order"
 							stackId="1"
-							stroke="#413ea0"
-							fill="#413ea0"
+							stroke="#570345"
+							fill="#570345"
 						/>
 						<Area
 							type="monotone"
 							dataKey="Shoplifting"
 							stackId="1"
-							stroke="blue"
-							fill="blue"
+							stroke="orange"
+							fill="orange"
 						/>
 						<Area
 							type="monotone"
 							dataKey="Theft"
 							stackId="1"
-							stroke="#a4de6c"
-							fill="#a4de6c"
+							stroke="purple"
+							fill="purple"
 						/>
 						<Area
 							type="monotone"
@@ -258,8 +258,8 @@ const ShowDataModal = (props) => {
 							type="monotone"
 							dataKey="Violent Crime"
 							stackId="1"
-							stroke="#82ca9d"
-							fill="#82ca9d"
+							stroke="#f40e0e"
+							fill="#f40e0e"
 						/>
 					</AreaChart>
 				</ResponsiveContainer>

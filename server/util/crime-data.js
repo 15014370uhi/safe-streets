@@ -146,6 +146,7 @@ const populateDisplayCrimes = async (crimes, filters) => {
           year: aCrimeYear,
         };
 
+        //console.log('ADDING crime with MONTH: ' + aCrimeMonth);
         // add current crime to array of all crimes to display on map
         displayCrimes.push (aCrimeDetails);
       }
@@ -189,10 +190,8 @@ const getHistoricData = async aBoundingBox => {
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
       let aCrimeDate = getYearAndMonth (aCrime.month);
-      console.log('original: ' + aCrime.month + ' data object: ' + aCrimeDate);
       let aCrimeYear = aCrimeDate.getFullYear ();
       let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
-      console.log('converted to : ' + aCrimeMonth);
 
       // create new object with crime details to add
       const aCrimeDetails = {

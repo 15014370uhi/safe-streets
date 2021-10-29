@@ -1,10 +1,15 @@
 import L from 'leaflet';
 
+const geoapifyAPIKey = 'b0188d827da8401786390efebdbc0484'; //TODO move to env variables
+
 //Function which returns a text label for a given crime category
 export const getCrimeCategory = aCrimeCategory => {
   let crimeCat;
 
-  switch (aCrimeCategory) {
+  
+  //console.log('Crime Category: ' + JSON.stringify(aCrimeCategory));
+
+  switch (aCrimeCategory) {   
     case 'anti-social-behaviour':
       crimeCat = 'Anti-Social Behaviour';
       break;
@@ -20,7 +25,7 @@ export const getCrimeCategory = aCrimeCategory => {
       break;
 
     case 'criminal-damage-arson':
-      crimeCat = 'Criminal Damage & Arson';
+      crimeCat = 'Criminal Damage/Arson';
       break;
 
     case 'drugs':
@@ -63,7 +68,9 @@ export const getCrimeIcon = aCrimeCategory => {
   var iconName;
   var color;
   var iconType;
-  var geoapifyAPIKey = 'b0188d827da8401786390efebdbc0484'; //TODO move to env variables
+
+  console.log('Crime Category: ' + JSON.stringify(aCrimeCategory));
+
 
   switch (aCrimeCategory) {
     case 'anti-social-behaviour':
@@ -93,7 +100,7 @@ export const getCrimeIcon = aCrimeCategory => {
       break;
 
     case 'drugs':
-      color = 'black';
+      color = 'brown';
       iconName = 'syringe';
       iconType = 'awesome';
       break;
@@ -106,7 +113,7 @@ export const getCrimeIcon = aCrimeCategory => {
       break;
 
     case 'possession-of-weapons':
-      color = 'purple';
+      color = 'red';
       iconName = 'home';
       iconType = 'awesome';
       break;
@@ -126,7 +133,7 @@ export const getCrimeIcon = aCrimeCategory => {
       break;
 
     case 'vehicle-crime':
-      color = '%23513745';
+      color = '%238884d8';
       iconName = 'car';
       iconType = 'awesome';
       break;
@@ -134,7 +141,7 @@ export const getCrimeIcon = aCrimeCategory => {
     default:
       //intentially blank
       break;
-  }
+  };
 
   icon = new L.icon ({
     iconUrl: 'https://api.geoapify.com/v1/icon/?type=' +
@@ -153,3 +160,32 @@ export const getCrimeIcon = aCrimeCategory => {
   //return icon;
   return icon;
 };
+
+  export const getCenterPoint = () => {
+
+  const color = 'red';
+  const iconName = 'adjust';
+  const iconType = 'material'; 
+  const type = 'circle';
+
+  const icon = new L.icon ({
+    iconUrl: 'https://api.geoapify.com/v1/icon/?type=' + 
+    type + 
+    '&color=' + 
+    color + 
+    '&icon=' + 
+    iconName + 
+    '&iconType=' + 
+    iconType + 
+    '&noShadow&scaleFactor=2&apiKey=' + //'&noShadow&noWhiteCircle&scaleFactor=2&apiKey=' +
+    geoapifyAPIKey,
+    iconSize: [95, 100], // size of the icon
+    iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
+    popupAnchor: [20, -33], // point from which the popup should open relative to the iconAnchor   
+  });
+
+  //return icon;
+  return icon;
+};
+
+

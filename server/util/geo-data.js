@@ -139,17 +139,17 @@ const improveMarkerVisibility = displayCrimes => {
 
   // values to adjust crime marker location by
   var locationValues = [    
-    0.00015,  
-    0.0002,
-    0.00025,
-    0.0003,   
-    0.0004,     
+    0.00010,  
+    0.00021,
+    0.00027,
+    0.00031,
+    0.00039, 
     0.0,
-    -0.00015,    
+    -0.00013,    
     -0.0002, 
     -0.00025  
-    -0.0003,   
-    -0.0004,  
+    -0.00030,   
+    -0.0004,
   ];
 
   //Iterate over all crimes - adjust the lat and lon of any duplicates so they show on map better
@@ -173,8 +173,8 @@ const improveMarkerVisibility = displayCrimes => {
     }
   }
   
-  // store max of 90 crimes, to cater to mapquest API map markers imposed limit
-  displayCrimes = displayCrimes.slice (0, 90);
+  // store max of 200 crimes, to cater to mapquest API map markers
+  displayCrimes = displayCrimes.slice (0, 200); //TODO historic data should not be sliced
 
   return displayCrimes;
 };
