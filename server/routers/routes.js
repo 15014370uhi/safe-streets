@@ -74,12 +74,12 @@ router.post ('/', async (req, res) => {
   if (typeof policeForce !== 'undefined') {
 
     // get crime predictions for this location, for the following month
-    var flaskData = await getProbabilities (policeForce, latitude, longitude);
+    var predictions = await getProbabilities (policeForce, latitude, longitude);
   }
 
   res.send ({
     displaycrimes: displayCrimes,
-    flaskdata: flaskData,
+    predictions: predictions,
     historicdata: displayCrimesHistoric,
     filters: filters,
     isnamesearch: isNameSearch,

@@ -13,7 +13,7 @@ const getAPIResponse = async payload => {
       .post ('http://localhost:4000/api/map', payload)
       .then (res => {
         const response = {          
-          flaskdata: res.data.flaskdata,
+          predictions: res.data.predictions,
           data: res.data.historicdata, 
           filters: res.data.filters,
           isnamesearch: res.data.isnamesearch,

@@ -69,7 +69,7 @@ export const getCrimeIcon = aCrimeCategory => {
   var color;
   var iconType;
 
-  console.log('Crime Category: ' + JSON.stringify(aCrimeCategory));
+  //console.log('Crime Category: ' + JSON.stringify(aCrimeCategory));
 
 
   switch (aCrimeCategory) {
@@ -163,7 +163,7 @@ export const getCrimeIcon = aCrimeCategory => {
 
   export const getCenterPoint = () => {
 
-  const color = 'red';
+  const color = 'black';
   const iconName = 'adjust';
   const iconType = 'material'; 
   const type = 'circle';

@@ -166,7 +166,7 @@ const Search = props => {
               'Please note that Greater Manchester crime data is currently restricted due to an ongoing investigation into missing police data.'
             );
             setResultsData ({
-              flaskdata: response.flaskdata.data,
+              predictions: response.predictions.data,
               historicdata: response.data,
             });
           } else if (noCrimesDetected) {
@@ -196,65 +196,12 @@ const Search = props => {
             
             // pass historic and flask data to results data context
             setResultsData ({
-              flaskdata: response.flaskdata.data,
+              predictions: response.predictions.data,
               historicdata: response.data,
-            }); //TODO can also add other data - just have 1 CONTEXT for everything???
+            }); 
 
             setCrimeData (response.displaycrimes);
-            setCenterPoint([response.lat, response.lon]);
-           
-            //TODO TEST
-            const returnedFlaskData = response.flaskdata.data;
-
-            // //TODO TEST display of flask dataKey
-            const anti_social_behaviour =
-              returnedFlaskData.Anti_social_behaviour;
-            const burglary = returnedFlaskData.Burglary;
-            const criminal_damage_and_arson =
-              returnedFlaskData.Criminal_damage_and_arson;
-            const drugs = returnedFlaskData.Drugs;
-            const possession_of_weapons =
-              returnedFlaskData.Possession_of_weapons;
-            const public_order = returnedFlaskData.Public_order;
-            const theft = returnedFlaskData.Theft;
-            const shoplifting = returnedFlaskData.Shoplifting;
-            const vehicle_crime = returnedFlaskData.Vehicle_crime;
-            const violent_crime = returnedFlaskData.Violent_crime;
-
-            //TODO Convert to graphic data within modal for prediction and historic data
-            alert (
-              'Predicted Crime Probabilities for this month: \n' +
-                'Anti-Social = ' +
-                parseFloat (anti_social_behaviour).toFixed (2) +
-                '%\n' +
-                'Burglary = ' +
-                parseFloat (burglary).toFixed (2) +
-                '%\n' +
-                'Criminal Damage & Arson = ' +
-                parseFloat (criminal_damage_and_arson).toFixed (2) +
-                '%\n' +
-                'Drugs = ' +
-                parseFloat (drugs).toFixed (2) +
-                '%\n' +
-                'Possession of Weapons = ' +
-                parseFloat (possession_of_weapons).toFixed (2) +
-                '%\n' +
-                'Public Order = ' +
-                parseFloat (public_order).toFixed (2) +
-                '%\n' +
-                'Theft = ' +
-                parseFloat (theft).toFixed (2) +
-                '%\n' +
-                'Vehicle Crime = ' +
-                parseFloat (vehicle_crime).toFixed (2) +
-                '%\n' +
-                'Violent Crime = ' +
-                parseFloat (violent_crime).toFixed (2) +
-                '%\n' +
-                'Shoplifting = ' +
-                parseFloat (shoplifting).toFixed (2) +
-                '%\n'
-            );
+            setCenterPoint([response.lat, response.lon]);           
 
             history.push (`/results`);
           }

@@ -118,7 +118,7 @@ div.dropdown-menu.show {
   margin-top:25px !important;
 }
 
-/* Styling of selected search type */
+/* styling of selected search type */
 .notSelectedFieldSet {
   padding: 10px;
   padding-top: 10px;
@@ -337,6 +337,7 @@ li.list-group-item.profile-favourites-list:hover {
 
 /* search form page */
 .form-card {
+  padding-top: 90px;
   margin-top: 30px;
   padding-left: 12%;
 }
@@ -436,8 +437,10 @@ form>fieldset {
 
 /* map display screen */
 .map-container{
+  padding-top: 100px; 
   position: relative;   
 }
+
 
 .mapDisplay {
   display: block;
@@ -451,7 +454,7 @@ form>fieldset {
 }
 
 .btn-back {
-  position: sticky;
+  position: fixed;
   font-size: 4em;
   padding-top: 12px !important;
   padding-bottom: 2px !important;
@@ -460,13 +463,13 @@ form>fieldset {
   border: 3px solid rgb(40, 46, 138);
   border-radius: 15px;
   box-shadow: 0 14px 18px rgb(4, 8, 56); 
-  left: 1%;
-  top: 1%;
+  left: 1.5%;
+  top: 14%;
   z-index: 1000;
 }
 
 .btn-open-filter {
-  position: sticky;
+  position: fixed;
   font-size: 3em;   
   padding-left: 20px; 
   padding-right: 20px; 
@@ -474,8 +477,8 @@ form>fieldset {
   border: 4px solid rgb(68, 84, 88);
   border-radius: 10px;
   box-shadow: 0 14px 18px rgb(4, 8, 56);  
-  left: 88%;  
-  top: 1%;
+  left: 90%;  
+  top: 14%;
   z-index: 1000;
 }
 
@@ -511,7 +514,7 @@ form>fieldset {
 }
 
 
-.btn-display-data {
+.btn-display-historiccrimes {
   position: fixed;
   font-size: 3em; 
   padding-top: 12px !important;
@@ -522,6 +525,22 @@ form>fieldset {
   border-radius: 90px;
   box-shadow: 0 14px 18px rgb(82, 73, 24);
   bottom: 5%;
+  left: 1%;
+  z-index: 1000;
+}
+
+
+.btn-display-predictions {
+  position: fixed;
+  font-size: 3em; 
+  padding-top: 12px !important;
+  padding-bottom: 10px !important;
+  padding-left: 1px !important;
+  padding-right: 20px !important;
+  border: 6px solid rgba(42, 138, 13, 0.849);
+  border-radius: 90px;
+  box-shadow: 0 14px 18px rgb(68, 58, 1);
+  bottom: 20%;
   left: 1%;
   z-index: 1000;
 }

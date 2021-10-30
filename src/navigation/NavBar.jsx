@@ -14,8 +14,9 @@ const NavBar = (props) => {
 	const handleClick = () => setClick(!click);
 	const closeMobileMenu = () => setClick(false);
 
+	//TODO added fixed top to navbar
 	return (
-		<Navbar>
+		<Navbar className="navbar-full" fixed="top"> 
 			<Navbar.Brand as={NavLink} to="/" className="navbar-logo">
 				<Logo />
 				<div className="navbar-logo-text">

@@ -14,8 +14,8 @@ import {
 //style components
 import { MDBIcon } from "mdbreact";
 
-const ShowDataModal = (props) => {
-	const [resultsData, setResultsData] = useContext(ResultsData);
+const ShowHistoricCrimeModal = (props) => {
+	const [resultsData] = useContext(ResultsData);
 
 	// array of month names
 	var months = [
@@ -62,15 +62,15 @@ const ShowDataModal = (props) => {
 			}
 
 			var monthlyStats = {
-				name: months[currentGraphMonth - 1],
+				"name": months[currentGraphMonth - 1],
 				"Anti-Social Behaviour": 0,
-				Burglary: 0,
+				"Burglary": 0,
 				"Criminal Damage & Arson": 0,
-				Drugs: 0,
+				"Drugs": 0,
 				"Public Order": 0,
 				"Possession of Weapons": 0,
-				Shoplifting: 0,
-				Theft: 0,
+				"Shoplifting": 0,
+				"Theft": 0,
 				"Vehicle Crime": 0,
 				"Violent Crime": 0,
 			};
@@ -262,10 +262,11 @@ const ShowDataModal = (props) => {
 							fill="#f40e0e"
 						/>
 					</AreaChart>
+					
 				</ResponsiveContainer>
 			</Modal.Body>
 		</Modal>
 	);
 };
 
-export default ShowDataModal;
+export default ShowHistoricCrimeModal;
