@@ -1,0 +1,30 @@
+
+      case 'Anti-Social Behaviour':
+      color = '%232b704c';
+    
+    case 'Theft
+      color = 'purple';      
+
+    case 'Burglary':
+      color = '%23493baf';   //  %23  =  #
+
+    case 'Criminal Damage and Arson':
+      color = 'yellow';
+
+    case 'Drugs':
+      color = 'brown';
+
+    case 'Public Order':
+      color = '%23570345';
+
+    case 'Possession of Weapons':
+      color = 'red';
+
+    case 'Shoplifting':
+      color = 'orange';
+
+    case 'Violent-crime':
+      color = '%23f40e0e';
+
+    case 'Vehicle Crime':
+      color = '%238884d8';

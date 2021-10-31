@@ -162,10 +162,9 @@ const ShowHistoricCrimeModal = (props) => {
 
 	return (
 		<Modal
+			dialogClassName="modal-dialog modal-xl"
 			show={props.show}
-			onHide={props.onHide}
-			animation={false}
-			size="lg"
+			onHide={props.onHide}				
 			centered>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
@@ -176,7 +175,7 @@ const ShowHistoricCrimeModal = (props) => {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<ResponsiveContainer width={"99%"} height={550}>
+				<ResponsiveContainer width={"100%"} height={600}>
 					<AreaChart
 						width={500}
 						height={400}

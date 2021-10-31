@@ -592,6 +592,26 @@ form>fieldset {
 }
 
 
+.probabilityModal-icon {  
+  padding-right: 30px;  
+}
+
+.prediction-modal-heading {
+  font-size: 1.4em;
+}
+
+.chart-labellist {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+/* recharts axis text */
+.yAxis {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+
 /* MEDIA Queries */
 @media screen and (max-width: 1024px) {
 

@@ -1,18 +1,15 @@
 import React, { useContext, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { ResultsData } from "../contexts/ResultsDataContext";
-import uuid from "react-uuid";
 
 import {
+	ResponsiveContainer,
 	BarChart,
 	Bar,
-	Cell,
+	LabelList,
 	XAxis,
 	YAxis,
-	CartesianGrid,
-	Tooltip,
-	Legend,
-	ResponsiveContainer,
+	Cell,
 } from "recharts";
 
 //style components
@@ -21,39 +18,43 @@ import { MDBIcon } from "mdbreact";
 const ShowPredictionsModal = (props) => {
 	const [resultsData] = useContext(ResultsData);
 	const predictions = resultsData.predictions;
-
-	//TODO test
-	const activeIndex = useState(0);
-	const [activeItem, setActiveItem] = useState(0);
-	const [chartData, setChartData] = useState([]);
-
-	const handleClick = (index) => {
-		setActiveItem({
-			activeIndex: index,
-		});
-	};
+	const [crimeColours, setCrimeColours] = useState([
+		"#2b704c", //anti-social-behaviour
+		"purple", //theft
+		"#493baf", //burglary
+		"yellow", //criminal_damage_and_arson
+		"brown", //drugs
+		"#570345", //public_order
+		"red", //possession_of_weapons
+		"#f40e0e", //violent_crime //TODO change this value for all
+		"#8884d8", //vehicle_crime
+		"orange", //shoplifting
+	]); // chart colours
 
 	// array of month names
 	var months = [
-		"Jan",
-		"Feb",
-		"Mar",
-		"Apr",
+		"January",
+		"February",
+		"March",
+		"April",
 		"May",
-		"Jun",
-		"Jul",
-		"Aug",
-		"Sep",
-		"Oct",
-		"Nov",
-		"Dec",
+		"June",
+		"July",
+		"August",
+		"September",
+		"October",
+		"November",
+		"December",
 	];
+
+	var aCurrentMonth = months[new Date().getMonth() + 1];
 
 	const getPredictedMonth = () => {
 		//get final graph month to display
 		let predictedMonth = new Date().getMonth() + 1; //zero indexed
 		predictedMonth = months[predictedMonth];
 
+		console.log("predictionMonth >>>>>>>>  : " + predictedMonth);
 		return predictedMonth;
 	};
 
@@ -65,46 +66,46 @@ const ShowPredictionsModal = (props) => {
 	};
 
 	const getCrimeCategory = (aCrimeCategory) => {
-		let crimeCat = "";
+		let crimeCategory = "";
 		switch (aCrimeCategory) {
 			case "Anti_social_behaviour":
-				crimeCat = "Anti-Social Behaviour";
+				crimeCategory = "Anti-Social Behaviour";
 				break;
 
 			case "Theft":
-				crimeCat = "Theft";
+				crimeCategory = "Theft";
 				break;
 
 			case "Burglary":
-				crimeCat = "Burglary";
+				crimeCategory = "Burglary";
 				break;
 
 			case "Criminal_damage_and_arson":
-				crimeCat = "Criminal Damage & Arson";
+				crimeCategory = "Criminal Damage & Arson";
 				break;
 
 			case "Drugs":
-				crimeCat = "Drugs";
+				crimeCategory = "Drugs";
 				break;
 
 			case "Public_order":
-				crimeCat = "Public Order";
+				crimeCategory = "Public Order";
 				break;
 
 			case "Possession_of_weapons":
-				crimeCat = "Possession of Weapons";
+				crimeCategory = "Possession of Weapons";
 				break;
 
 			case "Violent_crime":
-				crimeCat = "Violent Crime";
+				crimeCategory = "Violent Crime";
 				break;
 
 			case "Vehicle_crime":
-				crimeCat = "Vehicle Crime";
+				crimeCategory = "Vehicle Crime";
 				break;
 
 			case "Shoplifting":
-				crimeCat = "Shoplifting";
+				crimeCategory = "Shoplifting";
 				break;
 
 			default:
@@ -112,7 +113,7 @@ const ShowPredictionsModal = (props) => {
 				break;
 		}
 
-		return crimeCat;
+		return crimeCategory;
 	};
 
 	const data = [];
@@ -125,36 +126,64 @@ const ShowPredictionsModal = (props) => {
 		var dataToAdd = {
 			crime: crimeCategory,
 			probability: percentage,
+			label: percentage + "%",
 		};
 
 		data.push(dataToAdd);
-		
 	}
-
-	//setChartData(data);
 
 	return (
 		<Modal
+			dialogClassName="modal-dialog modal-xl"
 			show={props.show}
 			onHide={props.onHide}
-			animation={false}
-			size="lg"
 			centered>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
-					<h3 className="my-3">
-						<MDBIcon className="addFavModal-icon" icon="bookmark" />
-						Probability of crimes for {getPredictedMonth}
-					</h3>
+					<h2 className="my-3 prediction-modal-heading">
+						<MDBIcon
+							className="probabilityModal-icon"
+							icon="fa fa-brain fa-lg"
+						/>
+						Probability of crimes occuring during {aCurrentMonth}
+					</h2>
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<ResponsiveContainer width="100%" height={100}>
-					<BarChart width={150} height={40} data={chartData}>
-					
+				<ResponsiveContainer width={"100%"} height={600}>
+					<BarChart
+						data={data}
+						layout="vertical"
+						barCategoryGap={4}
+						margin={{ top: 0, right: 0, left: 22, bottom: 0 }}>
+						<XAxis type="number" hide />
+						<YAxis
+							type="category"
+							width={220}
+							dataKey="crime"
+							tickMargin={10}
+						/>
+
+						<Bar
+							dataKey="probability"
+							fill={"blue"}
+							animationDuration={1000}
+							radius={[0, 8, 8, 0]}>
+							<LabelList
+								className="chart-labellist"
+								dataKey="label"
+								position="right"
+								style={{ fill: "black" }}
+							/>
+							{data.map((entry, index) => (
+								<Cell
+									key={`cell-${index}`}
+									fill={crimeColours[index]}
+								/>
+							))}
+						</Bar>
 					</BarChart>
 				</ResponsiveContainer>
-				<p className="content">{`"${activeItem.crime}": ${activeItem.probability}`}</p>
 			</Modal.Body>
 		</Modal>
 	);

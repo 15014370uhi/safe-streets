@@ -1,0 +1,33 @@
+<BarChart
+						data={data}
+						layout="horizontal"
+						margin={{ left: 90, right: 50 }}>
+						<XAxis hide axisLine={false} type="number" />
+						<YAxis
+							type="category"
+							width={110}
+							padding={{ left: 50 }}
+							dataKey="crime"
+						/>
+						<Bar
+							dataKey="probability"
+							barSize={80}
+							radius={[20, 20, 20, 20]}
+							fill="#8884d8"
+							background={{
+								fill: "#eee",
+								radius: [20, 20, 20, 20],
+							}}
+						/>
+					</BarChart>
+
+
+
+
+<Bar
+						dataKey="probability"
+						fill="#8884d8"						
+                        animationDuration={1000} 
+						radius={[0, 8, 8, 0]}>                      
+						<LabelList dataKey="label" position="insideRight" style={{ fill: "white" }} />                        						
+						</Bar>
