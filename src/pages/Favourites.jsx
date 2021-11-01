@@ -20,15 +20,15 @@ const Favourites = (props) => {
 	}, []);
 
 	//function which gets data for a single saved favourite
-	const getFavourite = async (aMapURL) => {
+	const getFavourite = async (aTitle) => {
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		await userRef
 			.get()
 			.then(function (doc) {
 				if (doc.exists) {
 					const aFavourite = doc
-						.data()
-						.favourites.find(({mapURL}) => mapURL === aMapURL); 					
+						.data() //TODO needs to retrieve using something other than mapURL
+						.favourites.find(({title}) => title === aTitle); 					
 					updateMap(aFavourite);
 				} else {
 					console.log('No Matching favourite!');
@@ -39,22 +39,20 @@ const Favourites = (props) => {
 			});
 	};
 
-	//updates the mapDetails context
+	// updates the mapDetails context
 	const updateMap = (aFavourite) => {	
-		//update context to latest data 
+		//update context with data from saved favourite
 		setMapDetails((mapDetails) => ({
-			mapURL: aFavourite.mapURL,
-			locationname: aFavourite.isnamesearch,
+			allCrimes: aFavourite.allCrimes,
 			lat: aFavourite.lat,
 			lon: aFavourite.lon,
-			numberofmonths: aFavourite.numberofmonths,
-			filters: aFavourite.filters,
+			filters: aFavourite.filters
 		}));
 	};
 
-	//display favourited map when clicked
-	const displayMap = async (aMapURL) => {
-		await getFavourite(aMapURL);		
+	// display favourited map when clicked //TODO change to title or id or something
+	const displayMap = async (aTitle) => {
+		await getFavourite(aTitle);		
 		history.push(`/results`, {
 			isfavourite: 'true', //boolean flag to determine if map a previously favourited map or new search result
 		});
@@ -80,8 +78,8 @@ const Favourites = (props) => {
 			});
 	};
 
-	//remove a favourite from a user's collection of all favourites
-	const deleteFavourite = (aMapURL) => {
+	// remove a favourite from a user's collection of all favourites
+	const deleteFavourite = (aTitle) => {
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
@@ -89,8 +87,8 @@ const Favourites = (props) => {
 				if (doc.exists) {
 					const favouritesToKeep = doc
 						.data()
-						.favourites.filter(
-							(favourite) => favourite.mapURL !== aMapURL //TODO check how favs are deleted - needs to be unique so as not to delete several
+						.favourites.filter( //TODO delete favourite by some doc ID? or by crimes?
+							(favourite) => favourite.title !== aTitle //TODO check how favs are deleted - needs to be unique so as not to delete several
 						);
 					//update firestore doc with the filtered favourites
 					userRef.update({
@@ -128,9 +126,11 @@ const Favourites = (props) => {
 							{localFavourites.map((favourite) => (
 								<Favourite
 									key={uuid()}
-									title={favourite.title}
-									description={favourite.description}
-									mapurl={favourite.mapURL}
+									allCrimes={favourite.allCrimes}
+									title={favourite.title}	
+									locationName={favourite.locationName}
+									lat={favourite.lat}															
+									lon={favourite.lon}									
 									timestamp={favourite.timestamp}
 									deleteFavourite={deleteFavourite}
 									displayMap={displayMap}

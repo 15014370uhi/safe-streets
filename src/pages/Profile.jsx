@@ -1,16 +1,16 @@
-import React, {useContext, useState, useEffect} from 'react';
-import {UserContext} from '../auth/UserProvider';
-import {MapDetails} from '../contexts/MapDetailsContext';
-import {Redirect} from '@reach/router';
+import React, { useContext, useState, useEffect } from "react";
+import { UserContext } from "../auth/UserProvider";
+import { MapDetails } from "../contexts/MapDetailsContext";
+import { Redirect } from "@reach/router";
 import {
 	auth,
 	deleteUserDocument,
 	deleteUserAccount,
 	reauthenticateUser,
-} from '../firebase';
-import uuid from 'react-uuid';
-import firebase from 'firebase';
-import {useHistory} from 'react-router-dom';
+} from "../firebase";
+import uuid from "react-uuid";
+import firebase from "firebase";
+import { useHistory } from "react-router-dom";
 import {
 	MDBCard,
 	MDBCardBody,
@@ -24,13 +24,13 @@ import {
 	MDBContainer,
 	MDBIcon,
 	MDBInput,
-} from 'mdb-react-ui-kit';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+} from "mdb-react-ui-kit";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
 
 const Profile = () => {
 	const [localFavourites, setLocalFavourites] = useState([]);
-	const [password, setPassword] = useState('');
+	const [password, setPassword] = useState("");
 	const [error, setError] = useState(null);
 	const user = useContext(UserContext);
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
@@ -48,7 +48,7 @@ const Profile = () => {
 
 	//remove a favourite from a user's collection of all favourites
 	const deleteFavourite = (aFavourite) => {
-		var userRef = firebase.firestore().collection('users').doc(user.uid);
+		var userRef = firebase.firestore().collection("users").doc(user.uid);
 		userRef
 			.get()
 			.then(function (doc) {
@@ -67,11 +67,11 @@ const Profile = () => {
 					//update favourites state
 					setLocalFavourites(favouritesToKeep);
 				} else {
-					console.log('No favourites!');
+					console.log("No favourites!");
 				}
 			})
 			.catch(function (error) {
-				console.log('Error getting favourites:', error);
+				console.log("Error getting favourites:", error);
 			});
 	};
 
@@ -80,7 +80,7 @@ const Profile = () => {
 		if (user) {
 			var userRef = await firebase
 				.firestore()
-				.collection('users')
+				.collection("users")
 				.doc(user.uid);
 			userRef
 				.get()
@@ -89,18 +89,18 @@ const Profile = () => {
 						//set favourites to all user favourites
 						setLocalFavourites(doc.data().favourites);
 					} else {
-						console.log('No favourites!');
+						console.log("No favourites!");
 					}
 				})
 				.catch(function (error) {
-					console.log('Error getting favourites:', error);
+					console.log("Error getting favourites:", error);
 				});
 		}
 	};
 
 	//function which handles user input changes
 	const onChangeHandler = (e) => {
-		const {value} = e.currentTarget;
+		const { value } = e.currentTarget;
 		setPassword(value);
 	};
 
@@ -117,22 +117,22 @@ const Profile = () => {
 		//reauthenticate user with password input
 		await reauthenticateUser(password)
 			.then((res) => {
-				console.log('User reauthenticated successfully: ', res);
+				console.log("User reauthenticated successfully: ", res);
 
 				//delete all user document data from firestore
 				deleteUserDocument()
 					.then((res) => {
-						console.log('User Document successfully deleted', res);
+						console.log("User Document successfully deleted", res);
 
 						//delete user authentication account entry from firebase
 						deleteUserAccount()
 							.then((res) => {
 								console.log(
-									'User Authentication Account successfully deleted'
+									"User Authentication Account successfully deleted"
 								);
 
 								alert(
-									'Your account and saved data has been sucessfully deleted.'
+									"Your account and saved data has been sucessfully deleted."
 								);
 
 								//redirect to register page
@@ -140,35 +140,31 @@ const Profile = () => {
 								history.push(path);
 							})
 							.catch((error) => {
-								console.log('Error deleting user data', error);
+								console.log("Error deleting user data", error);
 							});
 					})
 					.catch((error) => {
 						setError(error.message);
-						console.log('Error deleting user document', error);
+						console.log("Error deleting user document", error);
 					});
 			})
 			.catch((error) => {
 				setError(error.message);
-				console.log('Error deleting user account', error);
+				console.log("Error deleting user account", error);
 			});
 	};
 
 	//display favourited map which was clicked on
 	const displayMap = (aFavourite) => {
 		setMapDetails({
-			mapURL: aFavourite.mapURL,
-			locationname: aFavourite.locationname,
-			isnamesearch: aFavourite.isnamesearch,
 			lat: aFavourite.lat,
 			lon: aFavourite.lon,
-			numberofmonths: aFavourite.numberofmonths,
 			filters: aFavourite.filters,
 		});
 
 		//redirect to register user page
 		history.push(`/results`, {
-			isfavourite: 'true', //boolean flag to determine if map a previously favourited or new search
+			isfavourite: "true", //boolean flag to determine if map a previously favourited or new search
 		});
 	};
 
@@ -185,6 +181,7 @@ const Profile = () => {
 								Email: {user.email}
 							</label>
 						</MDBCardText>
+						-
 					</MDBCardBody>
 					<MDBCardHeader className="profile-heading">
 						<h2 className="profile-main-heading">

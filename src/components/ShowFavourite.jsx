@@ -20,6 +20,9 @@ const ShowFavourite = ({
 	deleteFavouriteByMapURL,
 	displayFavouriteMap,
 }) => {
+
+	console.log('ShowFavourite CALLED');
+	
 	let history = useHistory();
 
 	const removeFavourite = (e) => {};

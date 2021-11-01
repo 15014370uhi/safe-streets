@@ -2,35 +2,6 @@ const {getYearAndMonth, populateCrimeDates} = require ('./date-helpers');
 const {improveMarkerVisibility} = require ('./geo-data');
 const axios = require ('axios');
 
-/**
- * Function which returns an array of all user selected crime filters to apply
- * 
- * @param {array} filters All user selected filters
- * 
- * @return {array} All the selected filters to apply to crimes
- */
-const applyFilters = filters => {
-  const allCategories = [
-    'anti-social-behaviour',
-    'criminal-damage-arson',
-    'burglary',
-    'drugs',
-    'theft',
-    'public-order',
-    'possession-of-weapons',
-    'shoplifting',
-    'violent-crime',
-    'vehicle-crime',
-  ];
-
-  // if crime is not to be hidden, add to array of crimes to display
-  const crimesToDisplay = allCategories.filter (
-    aCategory => !filters.includes (aCategory)
-  );
-
-  // return array of crimes to include on map (not filtered)
-  return crimesToDisplay;
-};
 
 /**   
  * Function which returns crime data for a spcific month 
@@ -42,6 +13,8 @@ const applyFilters = filters => {
  * @return {array} crime data for all crimes commited within bounding box map area for a given month  
  */
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
+
+  console.log('GetCrimeData received: ' + JSON.stringify(crimeDateCheck) + ' ' + JSON.stringify(boundingBox));
   
   let latTopLeft = parseFloat(boundingBox[0]).toFixed(5);
   let lonTopLeft = parseFloat(boundingBox[1]).toFixed(5);
@@ -100,9 +73,9 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
 };
 
 // Function which creates an array of all crimes to be displayed on map
-const populateDisplayCrimes = async (crimes, filters) => {
+const populateAllCrimes = async (crimes) => {
 
-  var displayCrimes = [];
+  var allCrimes = [];
 
   // add crime details for each crime
   for (let crimeCollection of crimes) {
@@ -116,28 +89,8 @@ const populateDisplayCrimes = async (crimes, filters) => {
       let aCrimeYear = aCrimeDate.getFullYear ();
       let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
 
-      // if crime map filters were selected by user
-      if (filters.length > 0) {
-        // call function which creates a list of crime categories to display on map
-        const categoriesToInclude = applyFilters (filters);
-
-        for (let aCategory of categoriesToInclude) {
-          if (aCrimeCategory === aCategory) {
-            // create new object with crime details to add
-            const aCrimeDetails = {
-              category: aCrimeCategory,
-              latitude: aCrimeLat,
-              longitude: aCrimeLon,
-              month: aCrimeMonth,
-              year: aCrimeYear,
-            };
-
-            // add current crime to array of all crimes to display on map
-            displayCrimes.push (aCrimeDetails);
-          }
-        }
-      } else {
-        // no filters supplied to API, create new object with crime details to add
+      
+        // create new object with crime details to add
         const aCrimeDetails = {
           category: aCrimeCategory,
           latitude: aCrimeLat,
@@ -145,23 +98,22 @@ const populateDisplayCrimes = async (crimes, filters) => {
           month: aCrimeMonth,
           year: aCrimeYear,
         };
-
-        //console.log('ADDING crime with MONTH: ' + aCrimeMonth);
+       
         // add current crime to array of all crimes to display on map
-        displayCrimes.push (aCrimeDetails);
-      }
+        allCrimes.push (aCrimeDetails);
+      
     }
   }
 
   // adjust crime marker locations to improve visibility
-  displayCrimes = improveMarkerVisibility (displayCrimes);
+  allCrimes = improveMarkerVisibility (allCrimes);
 
-  return displayCrimes;
+  return allCrimes;
 };
 
 
 // Function which retrieves the previous 12 months crime data
-const getHistoricData = async aBoundingBox => {
+const getHistoricCrimes = async aBoundingBox => {
   var crimeMonthsArrayHistoric = populateCrimeDates (12);
   var crimesHistoric = [];
   let crimesDuringMonthHistoric = []; //array to hold a specific month's crimes
@@ -180,7 +132,7 @@ const getHistoricData = async aBoundingBox => {
   }
 
   // declare crime variables
-  let displayCrimesHistoric = []; 
+  let historicCrimes = []; 
 
   // add crime details for each crime
   for (let crimeCollection of crimesHistoric) {
@@ -202,12 +154,11 @@ const getHistoricData = async aBoundingBox => {
         year: aCrimeYear,
       };
       // add current crime to array of all crimes to display on map
-      displayCrimesHistoric.push (aCrimeDetails);
+      historicCrimes.push (aCrimeDetails);
     }
   }
 
-  //console.log('Returning historic crimes:  >>>>>>>>>>>>>>>>>> ' + JSON.stringify(displayCrimesHistoric));
-  return displayCrimesHistoric;
+  return historicCrimes;
 };
 
 
@@ -342,8 +293,7 @@ const getPoliceForce = async (aLatitude, aLongitude) => {
 module.exports = {
   getPoliceForce,
   getCrimeData,
-  populateDisplayCrimes,
+  populateAllCrimes,
   getSector,
-  getHistoricData,
-  applyFilters,
+  getHistoricCrimes,
 };

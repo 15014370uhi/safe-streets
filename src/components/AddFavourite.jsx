@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {addUserFavourite} from '../firebase';
 import {useHistory} from 'react-router-dom';
 
-// Style components
+// style components
 import {
   MDBContainer,
   MDBRow,
@@ -35,11 +35,11 @@ const AddFavourite = props => {
   // Function to handle user form input
   const onChangeHandler = e => {
     const {name, value} = e.currentTarget;
-    // If mapURL input, set email state
+    // if mapURL input, set email state
     if (name === 'mapURL') {
       setMapURL (value);
     } else if (name === 'title') {
-      // If title input, set title state
+      // if title input, set title state
       setTitle (value);
     }
   };

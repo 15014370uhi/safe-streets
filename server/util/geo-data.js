@@ -11,6 +11,8 @@ mapquest.key = process.env.MAPQUEST_API_KEY;
  * @return {object} Object containing latitude and longitude
  */
 const getLatLon = async locationName => {
+
+  console.log('getLatLon received >>>>>>>>>> ', locationName);
   
  //API key
  const apiKey = process.env.MAPQUEST_API_KEY;
@@ -63,6 +65,9 @@ const getLatLon = async locationName => {
    * @return {array} Bounding box of map area
    */
 const getBoundingBox = (latLocation, lonLocation) => {
+
+  console.log('getBoundingBox: ' + latLocation + ' ' + lonLocation);
+
   latLocation = parseFloat (latLocation);
   lonLocation = parseFloat (lonLocation);
 
@@ -121,7 +126,7 @@ const getBoundingBox = (latLocation, lonLocation) => {
 };
 
 // function which improves the visibility of overlapping and identically positioned
-// map markers, by adding a random value to latitude and longitude positions
+// map markers, by adding a random value to latitude and longitude positions of crimes
 const improveMarkerVisibility = displayCrimes => {  
   var referenceLats = []; // to store duplicate latitudes
   var referencelons = []; // to store duplicate longitudes

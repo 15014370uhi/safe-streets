@@ -18,7 +18,7 @@ const FiltersModal = (props) => {
 			isActive: true, // boolean flag to determine whether to display this crime on map
 		},
 		{
-			label: "Arson",
+			label: "Arson", //TODO criminam damage and arson
 			categories: ["criminal-damage-arson"],
 			isActive: true,
 		},
@@ -69,8 +69,7 @@ const FiltersModal = (props) => {
 	]);
 
 	useEffect(() => {
-		setPreviousFilters(props.mapdetails.filters);
-		
+		setPreviousFilters(props.mapdetails.filters);		
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -120,10 +119,9 @@ const FiltersModal = (props) => {
 	};
 
 	// function to apply selected filters to map display
-	const applyFilters = async () => {
-		//TODO animate apply filters button		
+	const applyFilters = async () => {		
 		props.onHide(); //hide filter modal interface
-		props.updateMap(filters);
+		props.updateFilteredCrimes(filters);
 	};
 
 	const resetFilters = () => {

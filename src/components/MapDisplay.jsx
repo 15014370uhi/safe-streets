@@ -62,9 +62,9 @@ const MapDisplay = () => {
 	}, []);
 
 	// function which updates the filtered crimes on map
-	const updateMap = async (filters) => {
+	const updateFilteredCrimes = async (filters) => {
 		var crimesFiltered = populateDisplayCrimes(
-			mapDetails.displaycrimes,
+			mapDetails.allCrimes,
 			filters
 		);
 		setCrimeData(crimesFiltered);
@@ -122,7 +122,7 @@ const MapDisplay = () => {
 				<FiltersModal
 					show={showFiltersModal}
 					onHide={() => setShowFiltersModal(false)}
-					updateMap={updateMap}
+					updateFilteredCrimes={updateFilteredCrimes}
 					mapdetails={mapDetails}
 					setmapdetails={setMapDetails}
 				/>

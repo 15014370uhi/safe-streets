@@ -12,35 +12,33 @@ const AddFavouriteModal = (props) => {
 	const [charCount, setCharCount] = useState(50);
 	const history = useHistory();
 
-	//function which adds a new user favourite
+	// function which adds a new user favourite
 	const createNewFavourite = async (e) => {
 		props.onHide();
 
 		try {
 			await addUserFavourite(
-				title,
-				props.mapdetails.mapURL,  
-				props.mapdetails.locationname,
-				props.mapdetails.isnamesearch,
+				title,		
+				props.mapdetails.allCrimes,		
+				props.mapdetails.locationName,
 				props.mapdetails.lat,
 				props.mapdetails.lon,
-				props.mapdetails.numberofmonths,
 				props.mapdetails.filters
 			);
 
-			//change icon from add fav + to remove fav -
+			// change icon from add fav + to remove fav -
 			history.push(`/results`, {
 				isfavourite: 'true', // if was a previously favourited map
-			}); //flag current map as a favourite
+			}); // flag current map as a favourite
 		} catch (error) {
 			console.log('Error adding favourite' + error);
 		}
 	};
 
-	//function to handle user form input
+	// function to handle user form input
 	const onChangeHandler = (e) => {
 		const {name, value} = e.currentTarget;
-		//if title input, set title state
+		// if title input, set title state
 		if (name === 'title') {
 			setTitle(value);
 			setCharCount(50 - value.length);
@@ -84,7 +82,7 @@ const AddFavouriteModal = (props) => {
 					/>
 					<label>({charCount} Characters Remaining)</label>
 				</div>
-			</Modal.Body>
+			</Modal.Body>-
 
 			<Modal.Footer>
 				<Button variant="red" onClick={props.onHide}>

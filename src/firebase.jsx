@@ -78,13 +78,11 @@ export const generateUserDocument = async (user, additionalData) => {
 
 // Function to add a new favourite to a user collection of all favourites
 export const addUserFavourite = async (
-	title,
-	mapurl,
-	locationname,
-	isnamesearch,
+	title,	
+	allCrimes,
+	locationname,	
 	lat,
-	lon,
-	numberofmonths,
+	lon,	
 	filters
 ) => {
 	var user = firebase.auth().currentUser;
@@ -94,12 +92,10 @@ export const addUserFavourite = async (
 	// create a new favourite object
 	var newFavourite = {
 		title: title,
-		mapURL: mapurl,
-		locationname: locationname,
-		isnamesearch: isnamesearch,
+		allCrimes: allCrimes,
+		locationname: locationname,		
 		lat: lat,
-		lon: lon,
-		numberofmonths: numberofmonths,
+		lon: lon,		
 		timestamp: timestamp,
 		filters: filters,
 	};

@@ -6,7 +6,7 @@ import {useHistory} from 'react-router-dom';
 import {CenterPoint} from '../contexts/CenterPointContext';
 import Form from '../components/Form';
 import Spinner from 'react-bootstrap/Spinner';
-import {getMapURL} from '../util/GetMapURL';
+import {getCrimeData} from '../util/GetCrimeData';
 
 // style components
 import {MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardHeader} from 'mdbreact';
@@ -22,20 +22,16 @@ const Search = props => {
   const history = useHistory ();
   const [mapDetails, setMapDetails] = useContext (MapDetails);
   const [resultsData, setResultsData] = useContext (ResultsData);
-  const [crimeData, setCrimeData] = useContext (Crimes);
+  const [crimeData, setCrimeData] = useContext (Crimes); //TODO not needed?
   const [centerPoint, setCenterPoint] = useContext (CenterPoint);
 
 
   // function which updates the map context
-  const updateMap = (aMapURL, aLat, aLon, wasNameSearch, displayCrimes) => {
+  const updateMap = (aLat, aLon, allCrimes) => {
     setMapDetails ({
-      displaycrimes: displayCrimes,
-      mapURL: aMapURL,
-      locationname: locationName,
-      isnamesearch: wasNameSearch,
+      allCrimes: allCrimes,  
       lat: aLat,
       lon: aLon,
-      numberofmonths: numberOfMonths,
       filters: [],
     });
   };
@@ -99,6 +95,8 @@ const Search = props => {
       // variable boolean flag to determine whether lat and lon coordinates are wthin the UK
       let coordinatesWithinUK = isWithinUK (lat, lon);
 
+      console.log('Form data: coordinatesWithinUK>' + coordinatesWithinUK);
+
       // if named location search selected, but form input was empty
       if (isANameSearch && locationName === '') {
         alert ('The location is empty, please enter a location!');
@@ -114,6 +112,8 @@ const Search = props => {
           'Your latitude and longitude coordinates are outside of the UK!'
         );
       } else {
+        console.log('Form was validated');
+
         // form input was validated, display loading icon
         setSubmitText (
           <div>
@@ -130,21 +130,22 @@ const Search = props => {
           </div>
         );
 
-        // data to pass to API
+        // search data to pass to API
+
+
         const payload = {
-          locationname: locationName,
-          isnamesearch: isANameSearch,
+          locationName: locationName,
+          isNameSearch: isANameSearch,
           lat: lat,
           lon: lon,
-          numberofmonths: numberOfMonths,
-          filters: [],
+          numberOfMonths: numberOfMonths,         
         };
 
         // call function which calls API for user search
-        const response = await getMapURL (payload);
+        const response = await getCrimeData (payload);
 
         // check if no crimes were recorded for search criteria
-        const noCrimesDetected = response.nocrimes;
+        const noCrimesDetected = response.noCrimes;
 
         // check for invalid lat and lon response, due to mispelled/invalid location name
         let isValidLocation = isWithinUK (response.lat, response.lon);
@@ -159,7 +160,7 @@ const Search = props => {
           // no crimes found + manchester search
           if (
             noCrimesDetected &&
-            response.policeforce === 'greater-manchester'
+            response.policeForce === 'greater-manchester'
           ) {
             setSubmitText ('Submit');
             alert (
@@ -167,7 +168,7 @@ const Search = props => {
             );
             setResultsData ({
               predictions: response.predictions.data,
-              historicdata: response.data,
+              historicCrimes: response.historicCrimes,
             });
           } else if (noCrimesDetected) {
             // no crimes found & is not a manchester search
@@ -175,7 +176,7 @@ const Search = props => {
             alert ('No crime data found for this search!');
           } else {
             // Crimes found & location is valid
-            if (response.policeforce === 'greater-manchester') {
+            if (response.policeForce === 'greater-manchester') {
               alert (
                 'Please note: Greater Manchester crime data is currently restricted due to an ongoing investigation into missing police crime data.'
               );
@@ -187,20 +188,18 @@ const Search = props => {
 
             // pass response data to function
             updateMap (
-              response.mapurl,
               response.lat,
               response.lon,
-              response.isnamesearch,
-              response.displaycrimes
+              response.allCrimes
             );
             
-            // pass historic and flask data to results data context
+            // pass historic crime data and flask prediction data to results context
             setResultsData ({
               predictions: response.predictions.data,
-              historicdata: response.data,
+              historicCrimes: response.historicCrimes,
             }); 
 
-            setCrimeData (response.displaycrimes);
+            setCrimeData (response.allCrimes);
             setCenterPoint([response.lat, response.lon]);           
 
             history.push (`/results`);
