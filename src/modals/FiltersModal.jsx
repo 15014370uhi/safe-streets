@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import ButtonFilterCrime from "../components/ButtonFilterCrime";
@@ -8,23 +8,21 @@ import uuid from "react-uuid";
 let filters = [];
 
 const FiltersModal = (props) => {
-	const [appliedFilters, setAppliedFilters] = useState([]);
-
 	// filter buttons
 	const [crimeButtons, setCrimeButtons] = useState([
 		{
 			label: "Anti-Social Behaviour", // button label text
 			categories: ["anti-social-behaviour"], // element categories[0] used as button id
 			isActive: true, // boolean flag to determine whether to display this crime on map
-		},
-		{
-			label: "Arson", //TODO criminam damage and arson
-			categories: ["criminal-damage-arson"],
-			isActive: true,
-		},
+		},		
 		{
 			label: "Burglary",
 			categories: ["burglary"],
+			isActive: true,
+		},
+		{
+			label: "Criminal Damage & Arson", //TODO criminam damage and arson
+			categories: ["criminal-damage-arson"],
 			isActive: true,
 		},
 		{
@@ -68,26 +66,6 @@ const FiltersModal = (props) => {
 		},
 	]);
 
-	useEffect(() => {
-		setPreviousFilters(props.mapdetails.filters);		
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
-	// apply any filters supplied as props from previously filtered favourite
-	const setPreviousFilters = (filtersToApply) => {
-		// set filters state to loaded filters
-		setAppliedFilters(filtersToApply);
-		// console.log('Filters Modal - PREVIOUS filters: ', props.mapdetails.filters);
-		filtersToApply.forEach((aFilterCategory) => {
-			const indexOfButtonToUpdate = crimeButtons.findIndex((aButton) =>
-				aButton.categories.includes(aFilterCategory)
-			);
-
-			// call function with label of corresponding button
-			changeFilterState(crimeButtons[indexOfButtonToUpdate].label);
-		});
-	};
-
 	// function to handle user form input
 	const changeFilterState = (label) => {
 		const indexOfButtonToUpdate = crimeButtons.findIndex(
@@ -119,7 +97,7 @@ const FiltersModal = (props) => {
 	};
 
 	// function to apply selected filters to map display
-	const applyFilters = async () => {		
+	const applyFilters = async () => {
 		props.onHide(); //hide filter modal interface
 		props.updateFilteredCrimes(filters);
 	};

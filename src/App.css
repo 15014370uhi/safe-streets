@@ -334,6 +334,10 @@ li.list-group-item.profile-favourites-list:hover {
  font-weight: bold;
 }
 
+.favourites-container {
+  padding-top: 50px;
+}
+
 
 /* search form page */
 .form-card {

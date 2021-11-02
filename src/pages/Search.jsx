@@ -22,13 +22,14 @@ const Search = props => {
   const history = useHistory ();
   const [mapDetails, setMapDetails] = useContext (MapDetails);
   const [resultsData, setResultsData] = useContext (ResultsData);
-  const [crimeData, setCrimeData] = useContext (Crimes); //TODO not needed?
+  const [crimestoDisplay, setCrimestoDisplay] = useContext (Crimes); //TODO not needed?
   const [centerPoint, setCenterPoint] = useContext (CenterPoint);
 
 
   // function which updates the map context
-  const updateMap = (aLat, aLon, allCrimes) => {
+  const setMapData = (aLocationName, aLat, aLon, allCrimes) => {
     setMapDetails ({
+      locationName: aLocationName,
       allCrimes: allCrimes,  
       lat: aLat,
       lon: aLon,
@@ -85,34 +86,31 @@ const Search = props => {
     e.preventDefault ();
 
     // declare boolean flag to determine whether this is a name search or not
-    let isANameSearch = radioButton === '0';
+    let isNameSearch = radioButton === '0';
 
     // form validation
-    if (!isANameSearch && (isNaN (lat) || isNaN (lon))) {
+    if (!isNameSearch && (isNaN (lat) || isNaN (lon))) {
       setError ('Latitude and Longitude must be valid numbers');
       alert ('Latitude and Longitude must be number coordinates');
     } else {
       // variable boolean flag to determine whether lat and lon coordinates are wthin the UK
       let coordinatesWithinUK = isWithinUK (lat, lon);
 
-      console.log('Form data: coordinatesWithinUK>' + coordinatesWithinUK);
-
       // if named location search selected, but form input was empty
-      if (isANameSearch && locationName === '') {
+      if (isNameSearch && locationName === '') {
         alert ('The location is empty, please enter a location!');
-      } else if (!isANameSearch && (lat === '' || lon === '')) {
+      } else if (!isNameSearch && (lat === '' || lon === '')) {
         // if lat and lon search, but lat or lon input boxes are empty
         alert ('Please add coordinates for both latitude and longitude!');
-      } else if (!isANameSearch && (isNaN (lat) || isNaN (lon))) {
+      } else if (!isNameSearch && (isNaN (lat) || isNaN (lon))) {
         // if lat and lon search, but either the lat or lon value is not a number
         alert ('Your latitude and longitude coordinates must be numbers only!');
-      } else if (!isANameSearch && !coordinatesWithinUK) {
+      } else if (!isNameSearch && !coordinatesWithinUK) {
         // if lat and lon search, but coordinates are outside the bounds of UK
         alert (
           'Your latitude and longitude coordinates are outside of the UK!'
         );
       } else {
-        console.log('Form was validated');
 
         // form input was validated, display loading icon
         setSubmitText (
@@ -131,11 +129,9 @@ const Search = props => {
         );
 
         // search data to pass to API
-
-
         const payload = {
           locationName: locationName,
-          isNameSearch: isANameSearch,
+          isNameSearch: isNameSearch,
           lat: lat,
           lon: lon,
           numberOfMonths: numberOfMonths,         
@@ -187,7 +183,8 @@ const Search = props => {
             setLon (response.lon);
 
             // pass response data to function
-            updateMap (
+            setMapData (
+              response.locationName,
               response.lat,
               response.lon,
               response.allCrimes
@@ -198,8 +195,8 @@ const Search = props => {
               predictions: response.predictions.data,
               historicCrimes: response.historicCrimes,
             }); 
-
-            setCrimeData (response.allCrimes);
+            
+            setCrimestoDisplay (response.allCrimes);
             setCenterPoint([response.lat, response.lon]);           
 
             history.push (`/results`);

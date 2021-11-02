@@ -6,18 +6,12 @@ import {UserContext} from '../auth/UserProvider';
 import Navbar from '../navigation/NavBar';
 import Search from '../pages/Search';
 import Favourites from '../pages/Favourites';
-import AddFavourite from './AddFavourite';
 import MapDisplay from './MapDisplay';
 import ShowFavourite from './ShowFavourite';
 import {Route, Switch, Redirect} from 'react-router-dom';
 
 const Application = () => {
   const user = useContext (UserContext);
-  const mapURL = useRef('');
-
-  const setMapURL = (aMapURL) => {
-    mapURL.current = aMapURL;
-  }
 
   return (
     <React.Fragment>
@@ -25,10 +19,9 @@ const Application = () => {
       {user
         ? <div>
             <Switch>
-            <Route exact path="/results" render={props => <MapDisplay mapurl={mapURL} setMapURL={setMapURL} />} />   
-            <Route exact path="/search" render={props => <Search setMapURL={setMapURL} />} />              
+            <Route exact path="/results" render={props => <MapDisplay />} />   
+            <Route exact path="/search" render={props => <Search />} />              
               <Route exact path="/favourite" component={ShowFavourite} />
-              <Route exact path="/addFavourite" component={AddFavourite} />
               <Route exact path="/favourites" component={Favourites} />
               <Route exact path="/profile" component={Profile} />
               <Route exact path="/">

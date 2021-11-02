@@ -8,7 +8,7 @@ import { CenterPoint } from "../contexts/CenterPointContext";
 
 // import utility functions
 //import { getUpdatedMapURL } from "../util/GetMapURL";
-import { populateDisplayCrimes } from "../util/FilterIcons";
+import { populateDisplayCrimes } from "../util/FilterCrimeIcons";
 import { getMonthName } from "../util/DateHelper";
 import {
 	getCrimeCategory,
@@ -52,7 +52,7 @@ const MapDisplay = () => {
 	const [showPredictionsModal, setShowPredictionsModal] = useState(false); // data chart modal
 
 	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
-	const [crimeData, setCrimeData] = useContext(Crimes); // crimes data context
+	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
 	const [centerPoint] = useContext(CenterPoint); // reference to center point of search
 	
 	let history = useHistory();
@@ -63,11 +63,17 @@ const MapDisplay = () => {
 
 	// function which updates the filtered crimes on map
 	const updateFilteredCrimes = async (filters) => {
-		var crimesFiltered = populateDisplayCrimes(
-			mapDetails.allCrimes,
-			filters
-		);
-		setCrimeData(crimesFiltered);
+		var crimesFiltered = populateDisplayCrimes(mapDetails.allCrimes,filters);
+		setCrimesToDisplay(crimesFiltered);
+	
+		// update mapDetails with new filters
+		setMapDetails((mapDetails) => ({
+			allCrimes: mapDetails.allCrimes,
+			locationName: mapDetails.locationName,
+			lat: mapDetails.lat,
+			lon: mapDetails.lon,
+			filters: filters
+		}));
 	};
 
 	//default zoom level on map
@@ -84,7 +90,7 @@ const MapDisplay = () => {
 				whenCreated={() => setMap(map)}
 				zoomControl={false}>
 				{/* for each crime, add the correct marker to map */}
-				{crimeData.map((crime) => (
+				{crimesToDisplay.map((crime) => (
 					<Marker
 						key={uuid()}
 						position={[crime.latitude, crime.longitude]}
@@ -108,7 +114,7 @@ const MapDisplay = () => {
 					position={[centerPoint[0], centerPoint[1]]}
 					icon={getCenterPoint()}>
 					<Popup className="icon-popup">
-						{mapDetails.locationname}
+						{mapDetails.locationName}
 						<p>
 							({centerPoint[0]}, {centerPoint[1]})
 						</p>
@@ -122,9 +128,7 @@ const MapDisplay = () => {
 				<FiltersModal
 					show={showFiltersModal}
 					onHide={() => setShowFiltersModal(false)}
-					updateFilteredCrimes={updateFilteredCrimes}
-					mapdetails={mapDetails}
-					setmapdetails={setMapDetails}
+					updateFilteredCrimes={updateFilteredCrimes}					
 				/>
 
 				{/* add and remove favourites */}
@@ -137,13 +141,12 @@ const MapDisplay = () => {
 				)}
 
 				<RemoveFavouriteModal
-					mapurl={mapDetails.mapURL}
+					mapdetails={mapDetails}
 					show={showRemoveFavouritesModal}
 					onHide={() => setShowRemoveFavouritesModal(false)}
 				/>
 
-				<AddFavouriteModal
-					mapurl={mapDetails.mapURL}
+				<AddFavouriteModal					
 					show={showAddFavouriteModal}
 					onHide={() => setShowAddFavouriteModal(false)}
 					mapdetails={mapDetails}

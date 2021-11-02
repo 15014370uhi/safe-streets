@@ -4,6 +4,8 @@ import Button from 'react-bootstrap/Button';
 import {addUserFavourite} from '../firebase';
 import {useHistory} from 'react-router-dom';
 
+//TODO GET mapdetials form context?  
+
 //style components
 import {MDBInput, MDBIcon} from 'mdbreact';
 
@@ -16,9 +18,19 @@ const AddFavouriteModal = (props) => {
 	const createNewFavourite = async (e) => {
 		props.onHide();
 
+		console.log('AddFAVMODAL creating new favourite with: ' 
+	+ '\nTITLE: ' + title + 
+	' \nLOCATIONNAME: ' + props.mapdetails.locationName + 
+	' \nLAT:' + props.mapdetails.lat + 
+	' \nLON:' + props.mapdetails.lon + 
+	' \nFILTERS: ' + props.mapdetails.filters 	
+	//+ 'ALLCRIMES: >>>  ' + JSON.stringify(props.mapdetails.allCrimes)
+	);
+
+
 		try {
 			await addUserFavourite(
-				title,		
+				title,						
 				props.mapdetails.allCrimes,		
 				props.mapdetails.locationName,
 				props.mapdetails.lat,
@@ -82,7 +94,7 @@ const AddFavouriteModal = (props) => {
 					/>
 					<label>({charCount} Characters Remaining)</label>
 				</div>
-			</Modal.Body>-
+			</Modal.Body>
 
 			<Modal.Footer>
 				<Button variant="red" onClick={props.onHide}>

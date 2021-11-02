@@ -4,7 +4,7 @@ const {
   populateAllCrimes,
   getHistoricCrimes,
 } = require ('../util/crime-data');
-const {getMap, getLatLon, getBoundingBox} = require ('../util/geo-data');
+const {getLatLon, getBoundingBox} = require ('../util/geo-data');
 const {populateCrimeDates} = require ('../util/date-helpers');
 const {getProbabilities} = require ('../util/getCrimePredictions');
 const router = require ('express').Router ();
@@ -16,18 +16,15 @@ router.post ('/', async (req, res) => {
   const numberOfMonths = req.body.numberOfMonths; // number of months searched
   let latitude = req.body.lat; // latitude searched for
   let longitude = req.body.lon; // longitude searched for
-  var crimes = []; // array to hold crime data
+  var crimes = []; // array to hold all crime data
   var noCrimes = false; // if no crimes found
 
-  console.log('Router received args> isNamed:' + JSON.stringify(req.body.isNameSearch));
-
   // named location search used
-  if (isNameSearch) {    
+  if (isNameSearch) {
     //call function to convert named location to a set of lat and lon coordinates
-     var locationData = await getLatLon (locationName);    
-     latitude = locationData.latitude; // store lat coordinate of named location    
-     longitude = locationData.longitude; // store lon coordinate of named location
-     console.log('latitude: ' + latitude + ' lon: ' + longitude);
+    var locationData = await getLatLon (locationName);
+    latitude = locationData.latitude; // store lat coordinate of named location
+    longitude = locationData.longitude; // store lon coordinate of named location
   }
 
   // call method to get bounding box coordinates for an area centered on latitude and longitude
@@ -49,7 +46,7 @@ router.post ('/', async (req, res) => {
     }
   }
 
-  // store previous 12 months of crime data 
+  // store previous 12 months of crime data
   var historicCrimes = await getHistoricCrimes (boundingBox);
 
   // array to hold all crimes to be displayed on map
@@ -60,26 +57,22 @@ router.post ('/', async (req, res) => {
     noCrimes = true;
   }
 
-  // call function which generates map image URL with crime markers
-  //mapURL = getMap (boundingBox, allCrimes, latitude, longitude);
-
   // get police force and sector number for this search location
   var policeForce = await getPoliceForce (latitude, longitude);
 
   // check for valid police force/location
   if (typeof policeForce !== 'undefined') {
-
     // get crime predictions for this location, for the following month
     var predictions = await getProbabilities (policeForce, latitude, longitude);
   }
 
-  
   res.send ({
     allCrimes: allCrimes,
     predictions: predictions,
     historicCrimes: historicCrimes,
+    locationName: locationName,
     lat: latitude,
-    lon: longitude,    
+    lon: longitude,
     noCrimes: noCrimes,
     policeForce: policeForce,
   });

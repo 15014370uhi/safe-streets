@@ -11,8 +11,6 @@ mapquest.key = process.env.MAPQUEST_API_KEY;
  * @return {object} Object containing latitude and longitude
  */
 const getLatLon = async locationName => {
-
-  console.log('getLatLon received >>>>>>>>>> ', locationName);
   
  //API key
  const apiKey = process.env.MAPQUEST_API_KEY;
@@ -65,8 +63,6 @@ const getLatLon = async locationName => {
    * @return {array} Bounding box of map area
    */
 const getBoundingBox = (latLocation, lonLocation) => {
-
-  console.log('getBoundingBox: ' + latLocation + ' ' + lonLocation);
 
   latLocation = parseFloat (latLocation);
   lonLocation = parseFloat (lonLocation);
@@ -184,151 +180,7 @@ const improveMarkerVisibility = displayCrimes => {
   return displayCrimes;
 };
 
-/**   
- * function which returns a static map image URL containing 
- * crime locations centered at latLocation, lonLocation
- * 
- * @param {array} boundingBox The bounding box coordinates of map area
- * @param {array} crimeNodes All crime locations and type within map area
- * @param {string} latLocation The latitude of center point of map area
- * @param {string} lonLocation The longitude of center point of map area
- * 
- * @return {string} The URL of static map image with crime markers for each crime and center point  
- */
-const getMap = (boundingBox, crimeNodes, latLocation, lonLocation) => {
-
- //API key
- const apiKey = process.env.MAPQUEST_API_KEY;
-
-  //define base URL
-  let URLMap =
-    'https://www.mapquestapi.com/staticmap/v5/map?key=' 
-    + apiKey 
-    + '&boundingBox=';
-
-  //get reference to bounding box lat and lon coordinates
-  const latTopLeft = boundingBox[0];
-  const lonTopLeft = boundingBox[1];
-  const latBotRight = boundingBox[2];
-  const lonBotRight = boundingBox[3];
-
-  //declare variables to hold specific crime types display options
-  let category = '';
-  let colour = '';
-  let symbol = '';
-
-  //add bounding box coordinates, center point and center marker to base URL string
-  URLMap =
-    URLMap +
-    latTopLeft +
-    ',' +
-    lonTopLeft +
-    ',' +
-    latBotRight +
-    ',' +
-    lonBotRight +
-    '&locations=' +
-    latLocation +
-    ',' +
-    lonLocation + '|marker-7B0099'; //center point marker
 
 
 
-  // iterate through array of all crime records and add lat, lon, crime category and map marker to URL string
-  for (const aCrimeRecord of crimeNodes) {
-    // set specific display and URL format options based on crime type
-    switch (aCrimeRecord.category) {
-      // anti-social
-      case 'anti-social-behaviour':
-        category = 'Anti';
-        colour = '7B0099';
-        symbol = 'flag-sm-';
-        break;
-      // burglary
-      case 'burglary':
-        category = 'Burg';
-        colour = '7B0099';
-        symbol = 'flag-sm-';
-        break;
-      // criminal damage and arson
-      case 'criminal-damage-arson':
-        category = 'Arsn';
-        colour = 'FF0000';
-        symbol = 'flag-sm-';
-        break;
-      // drugs
-      case 'drugs':
-        category = 'Drugs';
-        colour = 'FFFF00';
-        symbol = 'flag-sm-';
-        break;
-      // general public order
-      case 'other-crime':
-      case 'public-order':
-        category = 'Order';
-        colour = '7B0099';
-        symbol = 'flag-sm-';
-        break;
-      // weapons
-      case 'possession-of-weapons':
-        category = 'Weapn';
-        colour = '7B0099';
-        symbol = 'flag-sm-';
-        break;
-      // shoplifting
-      case 'shoplifting':
-        category = 'Shop';
-        colour = '00FF00';
-        symbol = 'flag-sm-';
-        break;
-      // general Theft
-      case 'bicycle-theft':
-      case 'other-theft':
-      case 'theft-from-the-person':
-        category = 'Theft';
-        colour = '00FF00';
-        symbol = 'flag-sm-';
-        break;
-      // vehicle Crime
-      case 'vehicle-crime':
-        category = 'Vehic';
-        colour = '3B5998-22407F';
-        colour = '7B0099';
-        symbol = 'flag-sm-';
-        break;
-      // violent Crime
-      case 'violent-crime':
-      case 'robbery':
-        category = 'Viol';
-        colour = 'FF0000';
-        symbol = 'flag-sm-';
-        break;
-
-      default:
-        //intentially blank
-        break;
-    }
-
-    // construct URL string for current crime
-    URLMap =
-      URLMap +
-      '||' +
-      aCrimeRecord.latitude +
-      ',' +
-      aCrimeRecord.longitude +
-      '|' +
-      symbol +
-      colour +
-      '-' +
-      category;
-  }
-
-  // add standard URL string ending
-  URLMap = URLMap + '&zoom=10&size=1000,500@2x'; //TODO NOTE: zoom=lower value=closer,  size=width,length
-//&zoom=6&size=600,600@2x
- 
-  // return full URL for a static map with all crime locations marked
-  return URLMap;
-};
-
-module.exports = {getMap, getLatLon, getBoundingBox, improveMarkerVisibility};
+module.exports = {getLatLon, getBoundingBox, improveMarkerVisibility};

@@ -139,8 +139,8 @@ const ShowHistoricCrimeModal = (props) => {
 
 	var graphData = getSortedMonths();
 
-	for (const crime in resultsData.historicdata) {
-		let aCrimeRecord = resultsData.historicdata[crime];
+	for (const crime in resultsData.historicCrimes) {
+		let aCrimeRecord = resultsData.historicCrimes[crime];
 
 		// format crime category string
 		var aCategory = aCrimeRecord.category.replace(/-/g, " ");
@@ -170,7 +170,7 @@ const ShowHistoricCrimeModal = (props) => {
 				<Modal.Title id="contained-modal-title-vcenter">
 					<h3 className="my-3">
 						<MDBIcon className="addFavModal-icon" icon="bookmark" />
-						Crime data from previous year
+						Crime occurences per month in this area
 					</h3>
 				</Modal.Title>
 			</Modal.Header>
@@ -188,14 +188,14 @@ const ShowHistoricCrimeModal = (props) => {
 						}}>
 						<CartesianGrid strokeDasharray="3 3" />
 						<XAxis dataKey="name" />
-						<YAxis />
+						<YAxis type="number" domain={['dataMin', 'dataMax']}/>
 						<Tooltip />
 						<Area
 							type="monotone"
 							dataKey="Anti-Social Behaviour"
 							stackId="1"
-							stroke="#2b704c"
-							fill="#2b704c"
+							stroke="#8a0404"
+							fill="#8a0404"
 						/>
 						<Area
 							type="monotone"
@@ -208,8 +208,8 @@ const ShowHistoricCrimeModal = (props) => {
 							type="monotone"
 							dataKey="Criminal Damage & Arson"
 							stackId="1"
-							stroke="yellow"
-							fill="yellow"
+							stroke="orange"
+							fill="orange"
 						/>
 						<Area
 							type="monotone"

@@ -74,10 +74,10 @@ export const getCrimeIcon = aCrimeCategory => {
 
   switch (aCrimeCategory) {
     case 'anti-social-behaviour':
-      color = '%232b704c'; //e.g. %23 plus hex code c12b08
+      color = '%238a0404'; //e.g. %23 plus hex code c12b08   8a0404
       iconName = 'record-voice-over';
       iconType = 'material';
-      break;
+      break;    //%232b704c
 
     case 'bicycle-theft':
     case 'other-theft':
@@ -94,7 +94,7 @@ export const getCrimeIcon = aCrimeCategory => {
       break;
 
     case 'criminal-damage-arson':
-      color = 'yellow';
+      color = 'orange';
       iconName = 'fire-alt';
       iconType = 'awesome';
       break;
@@ -163,23 +163,19 @@ export const getCrimeIcon = aCrimeCategory => {
 
   export const getCenterPoint = () => {
 
-  const color = 'black';
-  const iconName = 'adjust';
-  const iconType = 'material'; 
-  const type = 'circle';
+  const color = '%23572ec7';
+  const iconName = 'map-marker'; //const iconName = 'adjust';
+  const type = 'material'; 
+  const iconType = 'awesome';
 
   const icon = new L.icon ({
     iconUrl: 'https://api.geoapify.com/v1/icon/?type=' + 
     type + 
-    '&color=' + 
-    color + 
-    '&icon=' + 
-    iconName + 
-    '&iconType=' + 
-    iconType + 
-    '&noShadow&scaleFactor=2&apiKey=' + //'&noShadow&noWhiteCircle&scaleFactor=2&apiKey=' +
+    '&color=' + color + 
+    '&size=xx-large&iconType=' + iconType +
+    '&iconSize=large&scaleFactor=2&apiKey=' + 
     geoapifyAPIKey,
-    iconSize: [95, 100], // size of the icon
+    iconSize: [75, 95], // size of the icon
     iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
     popupAnchor: [20, -33], // point from which the popup should open relative to the iconAnchor   
   });

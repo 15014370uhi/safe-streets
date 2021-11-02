@@ -1,4 +1,3 @@
-
 /**
  * Function which returns an array of all user selected crime filters to apply
  * 

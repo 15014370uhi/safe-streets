@@ -2,7 +2,6 @@ import axios from 'axios';
 
 // new search
 export const getCrimeData = async payload => {
-  console.log('calling API with payload: ' + JSON.stringify(payload));
   let dataResponse = await getAPIResponse (payload);
   return dataResponse;
 };
@@ -15,7 +14,8 @@ const getAPIResponse = async payload => {
       .then (res => {        
         const response = {          
           predictions: res.data.predictions,
-          historicCrimes: res.data.historicCrimes,          
+          historicCrimes: res.data.historicCrimes,   
+          locationName: res.data.locationName,       
           lat: res.data.lat,
           lon: res.data.lon,         
           noCrimes: res.data.noCrimes,
@@ -29,20 +29,3 @@ const getAPIResponse = async payload => {
       });
   });
 };
-
-
-
-// // function which applies crime icon filtering to a previously made search
-// export const getUpdatedMapURL = async aPayload => {
-//   let payload = {
-//     locationname: aPayload.locationname,
-//     isnamesearch: aPayload.isnamesearch,
-//     lat: aPayload.lat,
-//     lon: aPayload.lon,
-//     numberofmonths: aPayload.numberofmonths,
-//     filters: aPayload.filters,
-//   };
-//   const response = await getAPIResponse (payload);    
-//   return response; 
-// };
-

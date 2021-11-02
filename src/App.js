@@ -13,12 +13,12 @@ axios.defaults.withCredentials = true;
 const App = () => {
   const [mapDetails, setMapDetails] = useState ({});
   const [resultsData, setResultsData] = useState ({});
-  const [crimeData, setCrimeData] = useState ({});
+  const [crimesToDisplay, setCrimesToDisplay] = useState ({});
   const [centerPoint, setCenterPoint] = useState ({});
 
   return (
     <CenterPoint.Provider value={[centerPoint, setCenterPoint]}>
-      <Crimes.Provider value={[crimeData, setCrimeData]}>
+      <Crimes.Provider value={[crimesToDisplay, setCrimesToDisplay]}>
         <ResultsData.Provider value={[resultsData, setResultsData]}>
           <MapDetails.Provider value={[mapDetails, setMapDetails]}>
             <UserProvider>

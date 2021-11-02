@@ -44,6 +44,7 @@ const Favourites = (props) => {
 		//update context with data from saved favourite
 		setMapDetails((mapDetails) => ({
 			allCrimes: aFavourite.allCrimes,
+			locationName: aFavourite.locationName,
 			lat: aFavourite.lat,
 			lon: aFavourite.lon,
 			filters: aFavourite.filters
@@ -58,7 +59,7 @@ const Favourites = (props) => {
 		});
 	};
 
-	//function which retrieves the favourites for a user
+	// function which retrieves the favourites for a user
 	const getFavourites = async () => {
 		var userRef = await firebase
 			.firestore()
@@ -90,7 +91,7 @@ const Favourites = (props) => {
 						.favourites.filter( //TODO delete favourite by some doc ID? or by crimes?
 							(favourite) => favourite.title !== aTitle //TODO check how favs are deleted - needs to be unique so as not to delete several
 						);
-					//update firestore doc with the filtered favourites
+					// update firestore doc with the filtered favourites
 					userRef.update({
 						favourites: favouritesToKeep,
 					});
@@ -99,7 +100,7 @@ const Favourites = (props) => {
 						'Argument returned after deleting by mapURL: ' +
 							favouritesToKeep
 					);
-					//update favourites state
+					// update favourites state
 					setLocalFavourites(favouritesToKeep);
 				} else {
 					console.log('No favourites!');
@@ -111,7 +112,7 @@ const Favourites = (props) => {
 	};
 
 	return (
-		<Container>
+		<Container className={"favourites-container"}>
 			<Container>
 				{localFavourites.length ? (
 					<Container id="favouritesContainer">

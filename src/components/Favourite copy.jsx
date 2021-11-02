@@ -38,7 +38,7 @@ const Favourite = ({
 	const [map, setMap] = useState(null); // leaflet map object
 
 	//default zoom level on map
-	const zoom = 15;
+	const zoom = 16;
 
 	return (
 		<Col className="container-fluid mt-4">
@@ -50,7 +50,26 @@ const Favourite = ({
 					maxZoom={18}
 					style={{ height: "40vh" }}
 					whenCreated={() => setMap(map)}
-					zoomControl={false}>	
+					zoomControl={false}>
+					{/* for each crime, add the correct marker to map */}
+					{allCrimes.map((crime) => (
+						<Marker
+							key={uuid()}
+							position={[crime.latitude, crime.longitude]}
+							icon={getCrimeIcon(crime.category)}>
+							<Popup className="icon-popup">
+								{getCrimeCategory(crime.category)}
+								{"\n"}
+								<p>
+									{getMonthName(crime.month)}, {crime.year}
+								</p>
+								<p>
+									({crime.latitude}, {crime.longitude})
+								</p>
+							</Popup>
+						</Marker>
+					))}
+
 					{/* add center point marker */}
 					<Marker
 						key={uuid()}

@@ -19,14 +19,14 @@ const ShowPredictionsModal = (props) => {
 	const [resultsData] = useContext(ResultsData);
 	const predictions = resultsData.predictions;
 	const [crimeColours, setCrimeColours] = useState([
-		"#2b704c", //anti-social-behaviour
+		"#8a0404", //anti-social-behaviour
 		"purple", //theft
 		"#493baf", //burglary
-		"yellow", //criminal_damage_and_arson
+		"orange", //criminal_damage_and_arson
 		"brown", //drugs
 		"#570345", //public_order
 		"red", //possession_of_weapons
-		"#f40e0e", //violent_crime //TODO change this value for all
+		"#f40e0e", //violent_crime 
 		"#8884d8", //vehicle_crime
 		"orange", //shoplifting
 	]); // chart colours
@@ -122,7 +122,6 @@ const ShowPredictionsModal = (props) => {
 		var crimeCategory = getCrimeCategory(key);
 		var percentage = parseFloat(predictions[key]);
 
-		//console.log(crimeCategory + " " + percentage);
 		var dataToAdd = {
 			crime: crimeCategory,
 			probability: percentage,
@@ -150,12 +149,12 @@ const ShowPredictionsModal = (props) => {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<ResponsiveContainer width={"100%"} height={600}>
+				<ResponsiveContainer width={"99%"} height={500}>
 					<BarChart
 						data={data}
 						layout="vertical"
 						barCategoryGap={4}
-						margin={{ top: 0, right: 0, left: 22, bottom: 0 }}>
+						margin={{ top: 0, right: 65, left: 22, bottom: 0 }}>
 						<XAxis type="number" hide />
 						<YAxis
 							type="category"
@@ -163,11 +162,10 @@ const ShowPredictionsModal = (props) => {
 							dataKey="crime"
 							tickMargin={10}
 						/>
-
 						<Bar
 							dataKey="probability"
 							fill={"blue"}
-							animationDuration={1000}
+							animationDuration={900}
 							radius={[0, 8, 8, 0]}>
 							<LabelList
 								className="chart-labellist"

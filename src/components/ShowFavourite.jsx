@@ -16,12 +16,12 @@ import Image from 'react-bootstrap/Image';
 const ShowFavourite = ({
 	title,
 	mapurl,
+	locationName,
 	timestamp,
 	deleteFavouriteByMapURL,
 	displayFavouriteMap,
 }) => {
 
-	console.log('ShowFavourite CALLED');
 	
 	let history = useHistory();
 

@@ -13,8 +13,6 @@ const axios = require ('axios');
  * @return {array} crime data for all crimes commited within bounding box map area for a given month  
  */
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
-
-  console.log('GetCrimeData received: ' + JSON.stringify(crimeDateCheck) + ' ' + JSON.stringify(boundingBox));
   
   let latTopLeft = parseFloat(boundingBox[0]).toFixed(5);
   let lonTopLeft = parseFloat(boundingBox[1]).toFixed(5);

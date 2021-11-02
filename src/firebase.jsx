@@ -1,14 +1,15 @@
-import firebase from 'firebase/app'; //firebase
-import 'firebase/auth'; //firebase authentication
-import 'firebase/firestore'; //firebase firestore
+import firebase from "firebase/app"; // firebase
+import "firebase/auth"; // firebase authentication
+import "firebase/firestore"; // firebase firestore
+
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyBT4RoXDLZ505dMhCPkEuYPEeL1EUF_Wh0',
-	authDomain: 'safe-streets-app.firebaseapp.com',
-	projectId: 'safe-streets-app',
-	storageBucket: 'safe-streets-app.appspot.com',
-	messagingSenderId: '400130243033',
-	appId: '1:400130243033:web:3439d32591167991e041c8',
+	apiKey: "AIzaSyBT4RoXDLZ505dMhCPkEuYPEeL1EUF_Wh0",
+	authDomain: "safe-streets-app.firebaseapp.com",
+	projectId: "safe-streets-app",
+	storageBucket: "safe-streets-app.appspot.com",
+	messagingSenderId: "400130243033",
+	appId: "1:400130243033:web:3439d32591167991e041c8",
 };
 
 // Function which returns the latest user document from firestore
@@ -26,20 +27,20 @@ const getUserDocument = async (uid) => {
 			...userDocument.data(),
 		};
 	} catch (error) {
-		console.error('Error fetching user', error);
+		console.error("Error fetching user", error);
 	}
 };
 
-//function to create a new user with email and password
+// function to create a new user with email and password
 //TODO add email authenticating
 export const createUserWithEmailAndPassword = async (email, password) => {
 	try {
-		const {user} = await auth.createUserWithEmailAndPassword(
+		const { user } = await auth.createUserWithEmailAndPassword(
 			email,
 			password
 		);
 		console.log(
-			'User created with email: ' + user.email + '\nUID: ' + user.uid
+			"User created with email: " + user.email + "\nUID: " + user.uid
 		); // TEST
 		generateUserDocument(user);
 		return true;
@@ -48,7 +49,7 @@ export const createUserWithEmailAndPassword = async (email, password) => {
 	}
 };
 
-//function to create a user document
+// Function to create a user document //TODO document all functions
 export const generateUserDocument = async (user, additionalData) => {
 	// if user missing, exit
 	if (!user) {
@@ -61,7 +62,7 @@ export const generateUserDocument = async (user, additionalData) => {
 	// if user is logged in but no firestore document exists
 	if (!snapshot.exists) {
 		// get email of currently logged in user
-		const {email} = user;
+		const { email } = user;
 		try {
 			await userRef.set({
 				email, // set user email
@@ -69,33 +70,43 @@ export const generateUserDocument = async (user, additionalData) => {
 				...additionalData,
 			});
 		} catch (error) {
-			console.error('Firebase error: ', error.message);
+			console.error("Firebase error: ", error.message);
 		}
 	}
 	// call getUserDocument function with user UID
 	return getUserDocument(user.uid);
 };
 
-// Function to add a new favourite to a user collection of all favourites
+// Function to add a new favourite to a user collection of favourites
 export const addUserFavourite = async (
-	title,	
+	title,
 	allCrimes,
-	locationname,	
+	locationName,
 	lat,
-	lon,	
-	filters
+	lon,
+	filters	
 ) => {
 	var user = firebase.auth().currentUser;
-	var options = {year: 'numeric', month: 'long', day: 'numeric'};
+	var options = { year: "numeric", month: "long", day: "numeric" };
 	const timestamp = new Date().toLocaleDateString([], options);
+
+	console.log('FIREBASE.JSX creating new favourite with: ' 
+	+ '\nTITLE: ' + title + 
+	' \nLOCATIONNAME: ' + locationName + 
+	' \nLAT:' + lat + 
+	' \nLON:' + lon + 
+	' \nFILTERS: ' + filters + 
+	' \nTIMESTAMP: ' + timestamp 	
+	//+ 'ALLCRIMES: >>>  ' + JSON.stringify(allCrimes)
+	);
 
 	// create a new favourite object
 	var newFavourite = {
 		title: title,
 		allCrimes: allCrimes,
-		locationname: locationname,		
+		locationName: locationName,
 		lat: lat,
-		lon: lon,		
+		lon: lon,
 		timestamp: timestamp,
 		filters: filters,
 	};
@@ -112,23 +123,23 @@ export const addUserFavourite = async (
 				),
 			});
 		} catch (error) {
-			console.error('Error adding favourite', error);
+			console.error("Error adding favourite", error);
 		}
 	}
 	return getUserDocument(user.uid);
 };
 
-// reauthenticate user with password
+// re-authenticate user with password
 export const reauthenticateUser = async (password) => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
 	var credentials = firebase.auth.EmailAuthProvider.credential(
 		user.email,
 		password
-	);	
+	);
 	await user.reauthenticateWithCredential(credentials);
 };
 
-// Function to delete a user document in firestore
+// Function to delete a user document from firestore
 export const deleteUserDocument = async () => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
 
@@ -136,17 +147,17 @@ export const deleteUserDocument = async () => {
 	const userDocumentRef = firestore.doc(`users/${user.uid}`);
 
 	// delete user document from firestore
-	await userDocumentRef.delete(); 
+	await userDocumentRef.delete();
 };
 
-// Function to delete a user account from firebase authentication list
+// Function to delete a user account from firebase (authentication list)
 export const deleteUserAccount = async () => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
 
 	await user.delete(); //delete user authentication account record
 };
 
-//initialise firebase
+// initialise firebase
 if (!firebase.apps.length) {
 	firebase.initializeApp(firebaseConfig);
 } else {
