@@ -78,4 +78,49 @@ router.post ('/', async (req, res) => {
   });
 });
 
+
+//TODO TEST Getting historic separately
+router.post ('/historic', async (req, res) => {
+
+  let latitude = req.body.lat; // latitude searched for
+  let longitude = req.body.lon; // longitude searched for
+
+  // call method to get bounding box coordinates for an area centered on latitude and longitude
+  const boundingBox = getBoundingBox (latitude, longitude); 
+  
+  // store previous 12 months of crime data
+  var historicCrimes = await getHistoricCrimes (boundingBox);
+
+  //console.log('historicCrimes: ' + JSON.stringify(historicCrimes));
+
+  res.send ({    
+    historicCrimes: historicCrimes
+  });
+});
+
+
+
+
+//TODO TEST Getting predictions separately
+router.post ('/predictions', async (req, res) => {
+
+  let latitude = req.body.lat; // latitude searched for
+  let longitude = req.body.lon; // longitude searched for
+ 
+  // get police force and sector number for this search location
+  var policeForce = await getPoliceForce (latitude, longitude);
+
+  // check for valid police force/location
+  if (typeof policeForce !== 'undefined') {
+    // get crime predictions for this location, for the following month
+    var predictions = await getProbabilities (policeForce, latitude, longitude);
+  }
+
+  res.send ({    
+    predictions: predictions
+  });
+
+});
+
+
 module.exports = router;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import ButtonFilterCrime from "../components/ButtonFilterCrime";
@@ -7,14 +7,17 @@ import uuid from "react-uuid";
 // array to hold crimes to remove from map display
 let filters = [];
 
+//props.favouriteFilters
+
 const FiltersModal = (props) => {
+	//TODO expand props on all components
 	// filter buttons
 	const [crimeButtons, setCrimeButtons] = useState([
 		{
 			label: "Anti-Social Behaviour", // button label text
 			categories: ["anti-social-behaviour"], // element categories[0] used as button id
 			isActive: true, // boolean flag to determine whether to display this crime on map
-		},		
+		},
 		{
 			label: "Burglary",
 			categories: ["burglary"],
@@ -65,6 +68,74 @@ const FiltersModal = (props) => {
 			isActive: true,
 		},
 	]);
+
+	// Function which returns the button label for a crime category. //TODO save filters other way?
+	const getButtonLabel = (aCrimeCategory) => {
+		let label = "";
+
+		switch (aCrimeCategory) {
+			case "anti-social-behaviour":
+				label = "Anti-Social Behaviour";
+				break;
+
+			case "bicycle-theft":
+			case "other-theft":
+			case "theft-from-the-person":
+				label = "Theft";
+				break;
+
+			case "burglary":
+				label = "Burglary";
+				break;
+
+			case "criminal-damage-arson":
+				label = "Criminal Damage & Arson";
+				break;
+
+			case "drugs":
+				label = "Drugs";
+				break;
+
+			case "public-order":
+			case "other-crime":
+				label = "Public Order";
+				break;
+
+			case "possession-of-weapons":
+				label = "Weapons";
+				break;
+
+			case "violent-crime":
+			case "robbery":
+			case "violence-and-sexual-offences":
+				label = "Violent Crime";
+				break;
+
+			case "vehicle-crime":
+				label = "Vehicle Crime";
+				break;
+
+			case "shoplifting":
+				label = "Shoplifting";
+				break;
+
+			default:
+				//intentially blank
+				break;
+		}
+
+		return label;
+	};
+
+	useEffect(() => {
+		if (props.favouriteFilters.length > 0) {
+			for (let aFavouriteFilter of props.favouriteFilters) {
+				var aLabel = getButtonLabel(aFavouriteFilter);
+				changeFilterState(aLabel); // convert filters from saved favourite to button label
+			}
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// function to handle user form input
 	const changeFilterState = (label) => {

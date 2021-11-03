@@ -17,7 +17,7 @@ import { MDBIcon } from "mdbreact";
 
 const ShowPredictionsModal = (props) => {
 	const [resultsData] = useContext(ResultsData);
-	const predictions = resultsData.predictions;
+	const predictions = resultsData.predictions; //TODO when loading favourite - get predictions manually
 	const [crimeColours, setCrimeColours] = useState([
 		"#8a0404", //anti-social-behaviour
 		"purple", //theft

@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { MapDetails } from "../contexts/MapDetailsContext";
 import { Crimes } from "../contexts/CrimeDataContext";
 import { CenterPoint } from "../contexts/CenterPointContext";
-//import { ResultsData } from "../contexts/ResultsDataContext";
+import { ResultsData } from "../contexts/ResultsDataContext";
 
 // import utility functions
 //import { getUpdatedMapURL } from "../util/GetMapURL";
@@ -15,6 +15,11 @@ import {
 	getCrimeIcon,
 	getCenterPoint,
 } from "../util/AssignMapIcons";
+import {
+	getCrimeData,
+	getPredictions,
+	getHistoricCrimes,
+} from "../util/GetCrimeData";
 
 import uuid from "react-uuid";
 
@@ -47,6 +52,9 @@ const MapDisplay = () => {
 	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
 		useState(false);
 
+	//TODO test
+	const [resultsData, setResultsData] = useContext(ResultsData);
+
 	const [showFiltersModal, setShowFiltersModal] = useState(false); // filters modal
 	const [showHistoricCrimeModal, setShowHistoricCrimeModal] = useState(false); // data chart modal
 	const [showPredictionsModal, setShowPredictionsModal] = useState(false); // data chart modal
@@ -58,28 +66,50 @@ const MapDisplay = () => {
 	let history = useHistory();
 
 	useEffect(() => {
-		window.scrollTo(0, 0); // scroll map to top
-		 if (history.location.state?.isfavourite === "true") {
-		 	console.log("favourite detected in map display");
-		 	setMapFromFavourite();
-		 }
+		//window.scrollTo(0, 0); // scroll map to top
+		if (history.location.state?.isfavourite === "true") {
+			setMapFromFavourite();
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const setMapFromFavourite = () => {
-		console.log("setMapFromFavourite map details to mapDetails context");
-		// update mapDetails with new filters
-		setMapDetails((mapDetails) => ({
-			allCrimes: mapDetails.allCrimes,
-			locationName: mapDetails.locationName,
+	const setMapFromFavourite = async () => {
+		// set filters from saved favourite filters
+		updateFilteredCrimes(mapDetails.filters);
+
+		const payload = {
 			lat: mapDetails.lat,
-			lon: mapDetails.lon,
-			filters: mapDetails.filters,
-		}));
+			lon: mapDetails.lon, //will actually have lat and lon when calling from map display
+		};
+
+		// populate predictions and historic data
+		var predictionsResponse = await getPredictions(payload);
+		//var historicResponse = await getHistoricCrimes(payload);
+
+		//setResultsData({
+		//	predictions: predictionsResponse.predictions.data,
+		//historicCrimes: historicResponse.historicCrimes,
+		//});
+
+		//TODO can i set predictions and historicCrimes separately in
+		//TODO setresultsData? or maybe I need to split them entirely>?
+
+		//TODO Don't show historic crime data button until response received
+		//TODO from server?
+
+		//TODO FADE IN predictions and historic data buttons - when its a favourite?
+		//TODO give data time to load?
+
+		var historicResponse = await getHistoricCrimes(payload);
+		setResultsData({
+			predictions: predictionsResponse.predictions.data,
+			historicCrimes: historicResponse.historicCrimes,
+		});
 	};
 
 	// function which updates the filtered crimes on map
 	const updateFilteredCrimes = async (filters) => {
+		//console.log('Filters to apply: ', filters);
 		var crimesFiltered = populateDisplayCrimes(
 			mapDetails.allCrimes,
 			filters
@@ -98,8 +128,6 @@ const MapDisplay = () => {
 
 	//default zoom level on map
 	const zoom = 17;
-
-	//center={[centerPoint[0], centerPoint[1]]}
 
 	return (
 		<div className="map-container">
@@ -133,13 +161,11 @@ const MapDisplay = () => {
 				{/* add center point marker */}
 				<Marker
 					key={uuid()}
-					position={[centerPoint[0], centerPoint[1]]}
+					position={[mapDetails.lat, mapDetails.lon]}
 					icon={getCenterPoint()}>
 					<Popup className="icon-popup">
 						{mapDetails.locationName}
-						<p>
-							({centerPoint[0]}, {centerPoint[1]})
-						</p>
+						<p>({(mapDetails.lat, mapDetails.lon)})</p>
 					</Popup>
 				</Marker>
 
@@ -151,6 +177,7 @@ const MapDisplay = () => {
 					show={showFiltersModal}
 					onHide={() => setShowFiltersModal(false)}
 					updateFilteredCrimes={updateFilteredCrimes}
+					favouriteFilters={mapDetails.filters}
 				/>
 
 				{/* add and remove favourites */}
@@ -163,9 +190,9 @@ const MapDisplay = () => {
 				)}
 
 				<RemoveFavouriteModal
-					mapdetails={mapDetails}
 					show={showRemoveFavouritesModal}
 					onHide={() => setShowRemoveFavouritesModal(false)}
+					mapdetails={mapDetails}
 				/>
 
 				<AddFavouriteModal
@@ -173,6 +200,13 @@ const MapDisplay = () => {
 					onHide={() => setShowAddFavouriteModal(false)}
 					mapdetails={mapDetails}
 				/>
+
+				{/* prediction data from flask server */}
+				<ShowPredictionsModal
+					show={showPredictionsModal}
+					onHide={() => setShowPredictionsModal(false)}
+				/>
+				<ButtonShowPredictions setModalShow={setShowPredictionsModal} />
 
 				{/* historic data */}
 				<ShowHistoricCrimeModal
@@ -182,13 +216,6 @@ const MapDisplay = () => {
 				<ButtonShowHistoricCrimes
 					setModalShow={setShowHistoricCrimeModal}
 				/>
-
-				{/* prediction data from flask server */}
-				<ShowPredictionsModal
-					show={showPredictionsModal}
-					onHide={() => setShowPredictionsModal(false)}
-				/>
-				<ButtonShowPredictions setModalShow={setShowPredictionsModal} />
 
 				<TileLayer
 					attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -200,3 +227,23 @@ const MapDisplay = () => {
 };
 
 export default MapDisplay;
+
+//TODO Get prediction and historic data when loading a favourite
+//TODO might need to move the API calls to common file for all who use it
+//TODO or call the api directly from this component - better to try get it external file in util
+
+// {/* historic data */}
+// <ShowHistoricCrimeModal
+// 				show={showHistoricCrimeModal}
+// 				onHide={() => setShowHistoricCrimeModal(false)}
+// 			/>
+// 			<ButtonShowHistoricCrimes
+// 				setModalShow={setShowHistoricCrimeModal}
+// 			/>
+
+// {/* prediction data from flask server */}
+// <ShowPredictionsModal
+// 	show={showPredictionsModal}
+// 	onHide={() => setShowPredictionsModal(false)}
+// />
+// <ButtonShowPredictions setModalShow={setShowPredictionsModal} />

@@ -10,7 +10,7 @@ const RemoveFavouriteModal = (props) => {
 	let history = useHistory();
 
 	// function to remove a favourite from a user's collection of favourites based on title
-	const deleteFavourite = async (aMapURL) => {
+	const deleteFavourite = async (aTimestamp) => {
 		var userRef = firebase.firestore().collection("users").doc(user.uid);
 		await userRef
 			.get()
@@ -18,16 +18,16 @@ const RemoveFavouriteModal = (props) => {
 				if (doc.exists) {
 					const favouritesToKeep = doc
 						.data()
-						.favourites.filter(
-							(favourite) => favourite.mapURL !== aMapURL
-						);
+						.favourites.filter((favourite) => 
+						favourite.timestamp !== aTimestamp 							
+					);			
 					//update firestore user document with the filtered favourites
 					userRef.update({
 						favourites: favouritesToKeep,
 					});
 
 					//redirect to favourites page
-					let path = `/favourites`;
+					let path = `/favourites`; //TODO 
 					history.push(path);
 				} else {
 					console.log("No favourites!");
@@ -57,7 +57,7 @@ const RemoveFavouriteModal = (props) => {
 				<Button
 					variant="red"
 					type="submit"
-					onClick={() => deleteFavourite(props.mapurl)}>
+					onClick={() => deleteFavourite(props.timestamp)}>
 					Delete Favourite
 				</Button>
 			</Modal.Footer>

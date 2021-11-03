@@ -4,10 +4,7 @@ const geoapifyAPIKey = 'b0188d827da8401786390efebdbc0484'; //TODO move to env va
 
 //Function which returns a text label for a given crime category
 export const getCrimeCategory = aCrimeCategory => {
-  let crimeCat;
-
-  
-  //console.log('Crime Category: ' + JSON.stringify(aCrimeCategory));
+  let crimeCat;  
 
   switch (aCrimeCategory) {   
     case 'anti-social-behaviour':
@@ -68,9 +65,6 @@ export const getCrimeIcon = aCrimeCategory => {
   var iconName;
   var color;
   var iconType;
-
-  //console.log('Crime Category: ' + JSON.stringify(aCrimeCategory));
-
 
   switch (aCrimeCategory) {
     case 'anti-social-behaviour':

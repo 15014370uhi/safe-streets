@@ -129,7 +129,7 @@ const Search = props => {
         );
 
         // search data to pass to API
-        const payload = {
+        var payload = {
           locationName: locationName,
           isNameSearch: isNameSearch,
           lat: lat,

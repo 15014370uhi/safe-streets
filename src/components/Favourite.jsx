@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import uuid from "react-uuid";
 import Card from "react-bootstrap/Card";
@@ -34,7 +34,6 @@ const Favourite = ({
 
 	//default zoom level on map
 	const zoom = 15;
-
 	
 
 	return (
@@ -72,15 +71,15 @@ const Favourite = ({
 					<Button
 						className="favourite-card-display-button"
 						onClick={() => {
-							displayMap(title);
-						}}
+							displayMap(timestamp);
+						}}						
 						variant="primary">
 						Display Map
 					</Button>
 					<i
 						className="far fa-trash-alt fa-lg trash-favourites"
 						onClick={() => {
-							deleteFavourite(title, timestamp, locationName);
+							deleteFavourite(timestamp);
 						}}
 					/>
 				</Card.Body>

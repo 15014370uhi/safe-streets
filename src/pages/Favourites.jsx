@@ -23,8 +23,9 @@ const Favourites = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	//function which gets data for a single saved favourite
-	const getFavourite = async (aTitle) => {
+	// Function which retrieves a favourite record from firebase for a user 
+	const getFavourite = async (aTimestamp) => {
+		//console.log('getFavourite', aTimestamp);
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		await userRef
 			.get()
@@ -32,8 +33,9 @@ const Favourites = (props) => {
 				if (doc.exists) {
 					const aFavourite = doc
 						.data() 
-						.favourites.find(({title}) => title === aTitle); 					
+						.favourites.find(({timestamp}) => timestamp === aTimestamp); 					
 					updateMap(aFavourite);
+					//console.log('aFavourite.lat ' + aFavourite.lat + ', ' + aFavourite.lon);
 				} else {
 					console.log('No Matching favourite!');
 				}
@@ -53,16 +55,17 @@ const Favourites = (props) => {
 			lon: aFavourite.lon,
 			filters: aFavourite.filters
 		}));
-
-		//TODO set displayCrimes to all crimes 
+		
 		setCrimesToDisplay(aFavourite.allCrimes);
 	};
 
-	// display favourited map when clicked //TODO change to title or id or something
-	const displayMap = async (aTitle) => {
-		await getFavourite(aTitle);		
+	// display favourited map when clicked 
+	const displayMap = async (aTimestamp) => {
+		//console.log('displaymap received:', aTimestamp);
+		await getFavourite(aTimestamp);		
 		history.push(`/results`, {
 			isfavourite: 'true', //boolean flag to determine if map a previously favourited map or new search result
+			timestamp: aTimestamp, //
 		});
 	};
 
@@ -76,7 +79,8 @@ const Favourites = (props) => {
 			.get()
 			.then(function (doc) {
 				if (doc.exists) {
-					setLocalFavourites(doc.data().favourites);
+					setLocalFavourites(doc.data().favourites); //TODO move favourites functions to separate
+					//console.log('favourites from user account: ', doc.data().favourites);
 				} else {
 					console.log('No favourites!');
 				}
@@ -87,8 +91,7 @@ const Favourites = (props) => {
 	};
 
 	// remove a favourite from a user's collection of all favourites
-	const deleteFavourite = (aTitle, aTimestamp, aLocationName) => {
-		console.log('\ndeleteFavourite:', aTitle, aTimestamp, aLocationName);
+	const deleteFavourite = (aTimestamp) => {		
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
@@ -98,14 +101,11 @@ const Favourites = (props) => {
 					.data()
 					.favourites.filter((favourite) => 
 						favourite.timestamp !== aTimestamp 							
-					);
-						
+					);						
 					// update firestore doc with the filtered favourites
 					userRef.update({
 						favourites: favouritesToKeep,
-					});
-
-					
+					});					
 					// update favourites state
 					setLocalFavourites(favouritesToKeep);
 				} else {
@@ -116,6 +116,8 @@ const Favourites = (props) => {
 				console.log('Error getting favourites:', error);
 			});
 	};
+
+
 
 	return (
 		<Container className={"favourites-container"}>

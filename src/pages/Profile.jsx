@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../auth/UserProvider";
 import { MapDetails } from "../contexts/MapDetailsContext";
+import { Crimes } from "../contexts/CrimeDataContext";
 import { Redirect } from "@reach/router";
 import {
 	auth,
@@ -34,6 +35,7 @@ const Profile = () => {
 	const [error, setError] = useState(null);
 	const user = useContext(UserContext);
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
+	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
 
 	//modal dialog state for user account deletion
 	const [show, setShow] = useState(false);
@@ -46,7 +48,7 @@ const Profile = () => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	//remove a favourite from a user's collection of all favourites
+	// remove a favourite from a user's collection of all favourites
 	const deleteFavourite = (aFavourite) => {
 		var userRef = firebase.firestore().collection("users").doc(user.uid);
 		userRef
@@ -57,7 +59,7 @@ const Profile = () => {
 						.data()
 						.favourites.filter(
 							(favourite) =>
-								favourite.mapURL !== aFavourite.mapURL
+								favourite.timestamp !== aFavourite.timestamp
 						);
 					//update firestore doc with the filtered favourites
 					userRef.update({
@@ -112,9 +114,9 @@ const Profile = () => {
 			.catch((err) => console.log(err));
 	};
 
-	//function to delete the current user's account
+	// Function to delete the current user's account
 	const deleteUserHandler = async (e) => {
-		//reauthenticate user with password input
+		// re-authenticate user with password input
 		await reauthenticateUser(password)
 			.then((res) => {
 				console.log("User reauthenticated successfully: ", res);
@@ -154,17 +156,23 @@ const Profile = () => {
 			});
 	};
 
-	//display favourited map which was clicked on
+	// display favourited map which was clicked on
 	const displayMap = (aFavourite) => {
-		setMapDetails({
+		
+		setMapDetails((mapDetails) => ({
+			allCrimes: aFavourite.allCrimes,
+			locationName: aFavourite.locationName,
 			lat: aFavourite.lat,
 			lon: aFavourite.lon,
-			filters: aFavourite.filters,
-		});
+			filters: aFavourite.filters
+		}));
 
-		//redirect to register user page
+		setCrimesToDisplay(aFavourite.allCrimes);
+
+		//redirect to results page
 		history.push(`/results`, {
 			isfavourite: "true", //boolean flag to determine if map a previously favourited or new search
+			timestamp: aFavourite.timestamp,
 		});
 	};
 
