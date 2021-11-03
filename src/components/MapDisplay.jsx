@@ -54,36 +54,58 @@ const MapDisplay = () => {
 	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
 	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
 	const [centerPoint] = useContext(CenterPoint); // reference to center point of search
-	
+
 	let history = useHistory();
 
 	useEffect(() => {
 		window.scrollTo(0, 0); // scroll map to top
+		 if (history.location.state?.isfavourite === "true") {
+		 	console.log("favourite detected in map display");
+		 	setMapFromFavourite();
+		 }
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// function which updates the filtered crimes on map
-	const updateFilteredCrimes = async (filters) => {
-		var crimesFiltered = populateDisplayCrimes(mapDetails.allCrimes,filters);
-		setCrimesToDisplay(crimesFiltered);
-	
+	const setMapFromFavourite = () => {
+		console.log("setMapFromFavourite map details to mapDetails context");
 		// update mapDetails with new filters
 		setMapDetails((mapDetails) => ({
 			allCrimes: mapDetails.allCrimes,
 			locationName: mapDetails.locationName,
 			lat: mapDetails.lat,
 			lon: mapDetails.lon,
-			filters: filters
+			filters: mapDetails.filters,
+		}));
+	};
+
+	// function which updates the filtered crimes on map
+	const updateFilteredCrimes = async (filters) => {
+		var crimesFiltered = populateDisplayCrimes(
+			mapDetails.allCrimes,
+			filters
+		);
+		setCrimesToDisplay(crimesFiltered);
+
+		// update mapDetails with new filters
+		setMapDetails((mapDetails) => ({
+			allCrimes: mapDetails.allCrimes,
+			locationName: mapDetails.locationName,
+			lat: mapDetails.lat,
+			lon: mapDetails.lon,
+			filters: filters,
 		}));
 	};
 
 	//default zoom level on map
 	const zoom = 17;
 
+	//center={[centerPoint[0], centerPoint[1]]}
+
 	return (
 		<div className="map-container">
 			<MapContainer
 				className="markercluster-map"
-				center={[centerPoint[0], centerPoint[1]]}
+				center={[mapDetails.lat, mapDetails.lon]}
 				zoom={zoom}
 				maxZoom={18}
 				style={{ height: "90vh" }}
@@ -128,7 +150,7 @@ const MapDisplay = () => {
 				<FiltersModal
 					show={showFiltersModal}
 					onHide={() => setShowFiltersModal(false)}
-					updateFilteredCrimes={updateFilteredCrimes}					
+					updateFilteredCrimes={updateFilteredCrimes}
 				/>
 
 				{/* add and remove favourites */}
@@ -146,7 +168,7 @@ const MapDisplay = () => {
 					onHide={() => setShowRemoveFavouritesModal(false)}
 				/>
 
-				<AddFavouriteModal					
+				<AddFavouriteModal
 					show={showAddFavouriteModal}
 					onHide={() => setShowAddFavouriteModal(false)}
 					mapdetails={mapDetails}

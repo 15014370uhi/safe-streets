@@ -87,18 +87,10 @@ export const addUserFavourite = async (
 	filters	
 ) => {
 	var user = firebase.auth().currentUser;
-	var options = { year: "numeric", month: "long", day: "numeric" };
-	const timestamp = new Date().toLocaleDateString([], options);
+	var options = { year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric", second: "numeric"};
+	//	var options = { year: "numeric", month: "long", day: "numeric" };
 
-	console.log('FIREBASE.JSX creating new favourite with: ' 
-	+ '\nTITLE: ' + title + 
-	' \nLOCATIONNAME: ' + locationName + 
-	' \nLAT:' + lat + 
-	' \nLON:' + lon + 
-	' \nFILTERS: ' + filters + 
-	' \nTIMESTAMP: ' + timestamp 	
-	//+ 'ALLCRIMES: >>>  ' + JSON.stringify(allCrimes)
-	);
+	const timestamp = new Date().toLocaleDateString([], options);
 
 	// create a new favourite object
 	var newFavourite = {

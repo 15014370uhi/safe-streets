@@ -7,11 +7,15 @@ import Container from 'react-bootstrap/Container';
 import firebase from 'firebase';
 import CardDeck from 'react-bootstrap/CardDeck';
 import {useHistory} from 'react-router-dom';
+import { Crimes } from "../contexts/CrimeDataContext";
+
 
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
 	const user = useContext(UserContext); //get User Context for ID
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
+	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
+
 	const history = useHistory();
 
 	useEffect(() => {
@@ -27,7 +31,7 @@ const Favourites = (props) => {
 			.then(function (doc) {
 				if (doc.exists) {
 					const aFavourite = doc
-						.data() //TODO needs to retrieve using something other than mapURL
+						.data() 
 						.favourites.find(({title}) => title === aTitle); 					
 					updateMap(aFavourite);
 				} else {
@@ -49,6 +53,9 @@ const Favourites = (props) => {
 			lon: aFavourite.lon,
 			filters: aFavourite.filters
 		}));
+
+		//TODO set displayCrimes to all crimes 
+		setCrimesToDisplay(aFavourite.allCrimes);
 	};
 
 	// display favourited map when clicked //TODO change to title or id or something
@@ -80,26 +87,25 @@ const Favourites = (props) => {
 	};
 
 	// remove a favourite from a user's collection of all favourites
-	const deleteFavourite = (aTitle) => {
+	const deleteFavourite = (aTitle, aTimestamp, aLocationName) => {
+		console.log('\ndeleteFavourite:', aTitle, aTimestamp, aLocationName);
 		var userRef = firebase.firestore().collection('users').doc(user.uid);
 		userRef
 			.get()
 			.then(function (doc) {
 				if (doc.exists) {
 					const favouritesToKeep = doc
-						.data()
-						.favourites.filter( //TODO delete favourite by some doc ID? or by crimes?
-							(favourite) => favourite.title !== aTitle //TODO check how favs are deleted - needs to be unique so as not to delete several
-						);
+					.data()
+					.favourites.filter((favourite) => 
+						favourite.timestamp !== aTimestamp 							
+					);
+						
 					// update firestore doc with the filtered favourites
 					userRef.update({
 						favourites: favouritesToKeep,
 					});
 
-					console.log(
-						'Argument returned after deleting by mapURL: ' +
-							favouritesToKeep
-					);
+					
 					// update favourites state
 					setLocalFavourites(favouritesToKeep);
 				} else {
@@ -141,6 +147,8 @@ const Favourites = (props) => {
 					</Container>
 				) : (
 					<div>
+					<br />
+					<br />
 					<br />
 					<br />
 						<h1>You have no favourites yet.</h1>

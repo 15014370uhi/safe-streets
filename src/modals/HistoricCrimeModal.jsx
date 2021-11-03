@@ -162,6 +162,7 @@ const ShowHistoricCrimeModal = (props) => {
 
 	return (
 		<Modal
+			animation={false}
 			dialogClassName="modal-dialog modal-xl"
 			show={props.show}
 			onHide={props.onHide}				

@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "react-bootstrap/Button";
 import uuid from "react-uuid";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/col";
 import {
-	getCrimeCategory,
-	getCrimeIcon,
 	getCenterPoint,
 } from "../util/AssignMapIcons";
-
-import { populateAllCrimes } from "../util/FilterCrimeIcons";
-import { getMonthName } from "../util/DateHelper";
 
 // import leaflet related
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
@@ -39,6 +34,8 @@ const Favourite = ({
 
 	//default zoom level on map
 	const zoom = 15;
+
+	
 
 	return (
 		<Col className="container-fluid mt-4">
@@ -83,7 +80,7 @@ const Favourite = ({
 					<i
 						className="far fa-trash-alt fa-lg trash-favourites"
 						onClick={() => {
-							deleteFavourite(title);
+							deleteFavourite(title, timestamp, locationName);
 						}}
 					/>
 				</Card.Body>
@@ -91,7 +88,7 @@ const Favourite = ({
 					<small className="text-muted">
 						{" "}
 						Date created:
-						<h5>{timestamp}</h5>
+						<h5>{timestamp.slice(0, -10)}</h5>
 					</small>
 				</Card.Footer>
 			</Card>
@@ -100,11 +97,3 @@ const Favourite = ({
 };
 
 export default Favourite;
-
-// <Card.Img
-// 					variant="top"
-// 					src={mapurl}
-// 					onClick={() => {
-// 						displayMap(title);
-// 					}}
-// 				/>
