@@ -158,13 +158,12 @@ const Profile = () => {
 
 	// display favourited map which was clicked on
 	const displayMap = (aFavourite) => {
-		
 		setMapDetails((mapDetails) => ({
 			allCrimes: aFavourite.allCrimes,
 			locationName: aFavourite.locationName,
 			lat: aFavourite.lat,
 			lon: aFavourite.lon,
-			filters: aFavourite.filters
+			filters: aFavourite.filters,
 		}));
 
 		setCrimesToDisplay(aFavourite.allCrimes);

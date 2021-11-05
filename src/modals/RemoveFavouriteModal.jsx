@@ -2,12 +2,23 @@ import React, { useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import firebase from "firebase";
+import {testDeleteFavourite} from '../firebase';
 import { useHistory } from "react-router-dom";
 import { UserContext } from "../auth/UserProvider";
 
 const RemoveFavouriteModal = (props) => {
 	const user = useContext(UserContext); // Get User Context for ID
 	let history = useHistory();
+
+
+	const testDeleteFav = async (aTimestamp) => {
+		console.log('testDeleteFavourite: ' + aTimestamp);
+		var favouritesReturned = await testDeleteFavourite(aTimestamp);
+		console.log('Favourites returned: ' + JSON.stringify(favouritesReturned));
+		props.onHide(); //hide modal interface
+	};
+
+
 
 	// function to remove a favourite from a user's collection of favourites based on title
 	const deleteFavourite = async (aTimestamp) => {
@@ -18,17 +29,20 @@ const RemoveFavouriteModal = (props) => {
 				if (doc.exists) {
 					const favouritesToKeep = doc
 						.data()
-						.favourites.filter((favourite) => 
-						favourite.timestamp !== aTimestamp 							
-					);			
-					//update firestore user document with the filtered favourites
+						.favourites.filter(
+							(favourite) => favourite.timestamp !== aTimestamp
+						);
+					//update firestore user document with the favourites
 					userRef.update({
 						favourites: favouritesToKeep,
 					});
 
 					//redirect to favourites page
-					let path = `/favourites`; //TODO 
-					history.push(path);
+					//let path = `/favourites`; //TODO
+					//history.push(path);
+					//TODO favourite not deleting
+					//TEST
+					props.onHide(); //hide modal interface
 				} else {
 					console.log("No favourites!");
 				}
@@ -57,7 +71,7 @@ const RemoveFavouriteModal = (props) => {
 				<Button
 					variant="red"
 					type="submit"
-					onClick={() => deleteFavourite(props.timestamp)}>
+					onClick={() => testDeleteFav(props.timestamp)}>
 					Delete Favourite
 				</Button>
 			</Modal.Footer>

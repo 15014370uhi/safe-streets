@@ -54,16 +54,15 @@ const MapDisplay = () => {
 
 	//TODO test
 	const [resultsData, setResultsData] = useContext(ResultsData);
-
 	const [showFiltersModal, setShowFiltersModal] = useState(false); // filters modal
 	const [showHistoricCrimeModal, setShowHistoricCrimeModal] = useState(false); // data chart modal
 	const [showPredictionsModal, setShowPredictionsModal] = useState(false); // data chart modal
-
 	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
 	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
 	const [centerPoint] = useContext(CenterPoint); // reference to center point of search
 
 	let history = useHistory();
+	var timestamp = '';
 
 	useEffect(() => {
 		//window.scrollTo(0, 0); // scroll map to top
@@ -82,14 +81,11 @@ const MapDisplay = () => {
 			lon: mapDetails.lon, //will actually have lat and lon when calling from map display
 		};
 
-		// populate predictions and historic data
-		var predictionsResponse = await getPredictions(payload);
-		//var historicResponse = await getHistoricCrimes(payload);
-
-		//setResultsData({
-		//	predictions: predictionsResponse.predictions.data,
-		//historicCrimes: historicResponse.historicCrimes,
-		//});
+		
+		
+		if(history.location.state.timestamp){
+			timestamp = history.location.state.timestamp;
+		}; 
 
 		//TODO can i set predictions and historicCrimes separately in
 		//TODO setresultsData? or maybe I need to split them entirely>?
@@ -99,7 +95,9 @@ const MapDisplay = () => {
 
 		//TODO FADE IN predictions and historic data buttons - when its a favourite?
 		//TODO give data time to load?
-
+		
+		// populate predictions and historic data
+		var predictionsResponse = await getPredictions(payload);
 		var historicResponse = await getHistoricCrimes(payload);
 		setResultsData({
 			predictions: predictionsResponse.predictions.data,
@@ -192,7 +190,8 @@ const MapDisplay = () => {
 				<RemoveFavouriteModal
 					show={showRemoveFavouritesModal}
 					onHide={() => setShowRemoveFavouritesModal(false)}
-					mapdetails={mapDetails}
+					mapdetails={mapDetails}					
+					timestamp = {timestamp}
 				/>
 
 				<AddFavouriteModal
