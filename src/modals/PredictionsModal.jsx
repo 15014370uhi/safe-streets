@@ -54,7 +54,7 @@ const ShowPredictionsModal = (props) => {
 		let predictedMonth = new Date().getMonth() + 1; //zero indexed
 		predictedMonth = months[predictedMonth];
 
-		console.log("predictionMonth >>>>>>>>  : " + predictedMonth);
+		//console.log("predictionMonth >>>>>>>>  : " + predictedMonth);
 		return predictedMonth;
 	};
 

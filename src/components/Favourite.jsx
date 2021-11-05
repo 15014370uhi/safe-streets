@@ -20,8 +20,7 @@ import "leaflet/dist/leaflet.css";
  * @param {string} timestamp - Date the favourite was created
  * @param {string} deleteFavourite - Reference to function which deletes the favourite from the user's favourites
  */
-const Favourite = ({
-	allCrimes,
+const Favourite = ({	
 	title,
 	locationName,
 	lat,
@@ -35,16 +34,15 @@ const Favourite = ({
 	//default zoom level on map
 	const zoom = 15;
 	
-
 	return (
 		<Col className="container-fluid mt-4">
-			<Card key={uuid()} border="info" style={{ width: "20rem" }}>
+			<Card key={uuid()} border="info" style={{ width: "18rem" }}>
 				<MapContainer
 					className="markercluster-map"
 					center={[lat, lon]}
 					zoom={zoom}
 					maxZoom={18}
-					style={{ height: "40vh" }}
+					style={{ height: "33vh" }}
 					whenCreated={() => setMap(map)}
 					zoomControl={false}>	
 					{/* add center point marker */}
@@ -66,7 +64,7 @@ const Favourite = ({
 					/>
 				</MapContainer>
 
-				<Card.Header>{title}</Card.Header>
+				<Card.Header><h3>{title}</h3></Card.Header>
 				<Card.Body className="favourite-card-body" bg="light">
 					<Button
 						className="favourite-card-display-button"
@@ -86,8 +84,8 @@ const Favourite = ({
 				<Card.Footer>
 					<small className="text-muted">
 						{" "}
-						Date created:
-						<h5>{timestamp.slice(0, -10)}</h5>
+						<h5>Date created:</h5>
+						<h4>{timestamp.slice(0, -10)}</h4>
 					</small>
 				</Card.Footer>
 			</Card>

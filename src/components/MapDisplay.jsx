@@ -60,9 +60,9 @@ const MapDisplay = () => {
 	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
 	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
 	const [centerPoint] = useContext(CenterPoint); // reference to center point of search
+	const [timestamp, setTimestamp] = useState(''); //
 
-	let history = useHistory();
-	var timestamp = '';
+	let history = useHistory();	
 
 	useEffect(() => {
 		//window.scrollTo(0, 0); // scroll map to top
@@ -72,6 +72,11 @@ const MapDisplay = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	
+	const setFavouriteButton = async (buttonState) => {
+		history.location.state.isfavourite = buttonState;
+	};
+
 	const setMapFromFavourite = async () => {
 		// set filters from saved favourite filters
 		updateFilteredCrimes(mapDetails.filters);
@@ -80,13 +85,11 @@ const MapDisplay = () => {
 			lat: mapDetails.lat,
 			lon: mapDetails.lon, //will actually have lat and lon when calling from map display
 		};
-
-		
 		
 		if(history.location.state.timestamp){
-			timestamp = history.location.state.timestamp;
+			setTimestamp(history.location.state.timestamp);
 		}; 
-
+		
 		//TODO can i set predictions and historicCrimes separately in
 		//TODO setresultsData? or maybe I need to split them entirely>?
 
@@ -192,6 +195,7 @@ const MapDisplay = () => {
 					onHide={() => setShowRemoveFavouritesModal(false)}
 					mapdetails={mapDetails}					
 					timestamp = {timestamp}
+					setFavouriteButton = {setFavouriteButton}
 				/>
 
 				<AddFavouriteModal

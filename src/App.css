@@ -336,6 +336,14 @@ li.list-group-item.profile-favourites-list:hover {
 
 .favourites-container {
   padding-top: 50px;
+  margin-left: 20%;
+}
+
+.favourites-title {
+  font-size: 2em;
+  padding-left: 2%;
+  font-weight: bold;
+  margin-top: 50px;  
 }
 
 
@@ -472,6 +480,22 @@ form>fieldset {
   z-index: 1000;
 }
 
+.div-no-favourites{
+  margin: 10%;
+  display:inline-block;
+}
+
+.text-no-favourites {
+  padding: 0;
+  margin-left: 40px;
+  text-align: center;
+}
+
+.favourites-container > .btn-back {
+  font-size: 3em;   
+}
+
+
 .btn-open-filter {
   position: fixed;
   font-size: 3em;   
@@ -540,11 +564,11 @@ form>fieldset {
   padding-top: 12px !important;
   padding-bottom: 10px !important;
   padding-left: 1px !important;
-  padding-right: 20px !important;
+  padding-right: 35px !important;
   border: 6px solid rgba(42, 138, 13, 0.849);
   border-radius: 90px;
   box-shadow: 0 14px 18px rgb(68, 58, 1);
-  bottom: 20%;
+  bottom: 17%;
   left: 1%;
   z-index: 1000;
 }
