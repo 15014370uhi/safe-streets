@@ -1,12 +1,12 @@
-import React, {useContext, useState} from 'react';
-import {UserContext} from '../auth/UserProvider';
-import {ReactComponent as Logo} from '../images/logo.svg';
-import {auth} from '../firebase';
-import DropdownItem from 'react-bootstrap/esm/DropdownItem';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import Nav from 'react-bootstrap/Nav';
-import {NavLink} from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import { UserContext } from "../auth/UserProvider";
+import { ReactComponent as Logo } from "../images/logo.svg";
+import { auth } from "../firebase";
+import DropdownItem from "react-bootstrap/esm/DropdownItem";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import Nav from "react-bootstrap/Nav";
+import { NavLink } from "react-router-dom";
 
 const NavBar = (props) => {
 	const user = useContext(UserContext);
@@ -15,7 +15,7 @@ const NavBar = (props) => {
 	const closeMobileMenu = () => setClick(false);
 
 	return (
-		<Navbar className="navbar-full" fixed="top"> 
+		<Navbar className="navbar-full" fixed="top">
 			<Navbar.Brand as={NavLink} to="/" className="navbar-logo">
 				<Logo />
 				<div className="navbar-logo-text">
@@ -25,13 +25,13 @@ const NavBar = (props) => {
 			{user ? (
 				<Nav>
 					<div className="menu-icon" onClick={handleClick}>
-						<i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+						<i className={click ? "fas fa-times" : "fas fa-bars"} />
 					</div>
 
 					<li className="nav-item mobile-show mobile-nav-search">
 						<Nav.Link
 							as={NavLink}
-							to="/search"							
+							to="/search"
 							onClick={closeMobileMenu}>
 							<i className="fas fa-search fa-2x mobile-search" />
 							<label className="nav-icon-label search-icon-label">
@@ -40,7 +40,7 @@ const NavBar = (props) => {
 						</Nav.Link>
 					</li>
 
-					<ul className={click ? 'nav-menu active' : 'nav-menu'}>
+					<ul className={click ? "nav-menu active" : "nav-menu"}>
 						<li className="nav-item mobile-hide">
 							<Nav.Link
 								as={NavLink}
@@ -59,7 +59,7 @@ const NavBar = (props) => {
 								to="/favourites"
 								onClick={closeMobileMenu}>
 								<i className="fas fa-bookmark fa-2x mobile-icon" />
-								<label className="nav-icon-label label-dropdown">
+								<label className="nav-icon-label label-dropdown favourites-dropdown">
 									Favourites
 								</label>
 							</Nav.Link>
@@ -124,10 +124,10 @@ const NavBar = (props) => {
 			) : (
 				<Nav>
 					<div className="menu-icon" onClick={handleClick}>
-						<i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+						<i className={click ? "fas fa-times" : "fas fa-bars"} />
 					</div>
 
-					<ul className={click ? 'nav-menu active' : 'nav-menu'}>
+					<ul className={click ? "nav-menu active" : "nav-menu"}>
 						<li className="nav-item">
 							<Nav.Link
 								as={NavLink}

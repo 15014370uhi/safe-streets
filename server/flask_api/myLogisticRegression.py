@@ -74,9 +74,7 @@ def getProbability(month, year, lat, lon, sector):
     X = np.hstack((X[:, :2], oneHotEncodedCluster))
     
     # get probability for crime categories
-    prediction = logisticRegressionModel.predict_proba(X)[0] 
-    
-    #print(prediction); 
+    prediction = logisticRegressionModel.predict_proba(X)[0]     
         
     # generate result object
     result = getResult(prediction)

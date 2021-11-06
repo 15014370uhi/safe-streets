@@ -9,7 +9,7 @@ const {populateCrimeDates} = require ('../util/date-helpers');
 const {getProbabilities} = require ('../util/getCrimePredictions');
 const router = require ('express').Router ();
 
-//POST route
+// route for a user search
 router.post ('/', async (req, res) => {
   const isNameSearch = req.body.isNameSearch; // boolean if name search
   const locationName = req.body.locationName; // the name of location searched
@@ -78,35 +78,27 @@ router.post ('/', async (req, res) => {
   });
 });
 
-
-//TODO TEST Getting historic separately
+// route for only historic crime data
 router.post ('/historic', async (req, res) => {
-
   let latitude = req.body.lat; // latitude searched for
   let longitude = req.body.lon; // longitude searched for
 
   // call method to get bounding box coordinates for an area centered on latitude and longitude
-  const boundingBox = getBoundingBox (latitude, longitude); 
-  
+  const boundingBox = getBoundingBox (latitude, longitude);
+
   // store previous 12 months of crime data
   var historicCrimes = await getHistoricCrimes (boundingBox);
 
-  //console.log('historicCrimes: ' + JSON.stringify(historicCrimes));
-
-  res.send ({    
-    historicCrimes: historicCrimes
+  res.send ({
+    historicCrimes: historicCrimes,
   });
 });
 
-
-
-
-//TODO TEST Getting predictions separately
+// route for only machine learning crime predictions from flask server
 router.post ('/predictions', async (req, res) => {
-
   let latitude = req.body.lat; // latitude searched for
   let longitude = req.body.lon; // longitude searched for
- 
+
   // get police force and sector number for this search location
   var policeForce = await getPoliceForce (latitude, longitude);
 
@@ -116,11 +108,9 @@ router.post ('/predictions', async (req, res) => {
     var predictions = await getProbabilities (policeForce, latitude, longitude);
   }
 
-  res.send ({    
-    predictions: predictions
+  res.send ({
+    predictions: predictions,
   });
-
 });
-
 
 module.exports = router;

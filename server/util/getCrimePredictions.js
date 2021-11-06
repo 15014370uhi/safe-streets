@@ -4,9 +4,7 @@ const {getSector} = require ('../util/crime-data');
 // Function which calls the flask server to obtain crime predictions for current area
 const getProbabilities = async (policeForce, latitude, longitude) => {
   var predictions;
-
   var sector = getSector (policeForce); // get name of police sector for this location
-
   const today = new Date (); // get Date object
   const predictionYear = today.getFullYear (); // get current year
   const predictionMonth = today.getMonth () + 1; // get next month

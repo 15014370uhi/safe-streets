@@ -1,12 +1,11 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
-import {deleteUserFavourite} from '../firebase';
+import { deleteUserFavourite } from "../firebase";
 
-const RemoveFavouriteModal = (props) => {	
-
-	const deleteFavourite = async () => {			
-		await deleteUserFavourite(props.timestamp);			
+const RemoveFavouriteModal = (props) => {
+	const deleteFavourite = async () => {
+		await deleteUserFavourite(props.timestamp);
 		props.setFavouriteButton("false");
 		props.onHide(); //hide modal interface
 	};

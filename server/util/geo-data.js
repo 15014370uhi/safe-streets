@@ -2,7 +2,6 @@ const mapquest = require ('mapquest');
 const axios = require ('axios');
 mapquest.key = process.env.MAPQUEST_API_KEY;
 
- 
 /**   
  * function which returns the latitude and longitude of a named UK street location
  * 
@@ -11,12 +10,11 @@ mapquest.key = process.env.MAPQUEST_API_KEY;
  * @return {object} Object containing latitude and longitude
  */
 const getLatLon = async locationName => {
-  
- //API key
- const apiKey = process.env.MAPQUEST_API_KEY;
+  //API key
+  const apiKey = process.env.MAPQUEST_API_KEY;
 
   //declare array to hold results
-  var geoLocationData = {}; 
+  var geoLocationData = {};
 
   //construct base URL
   const baseURL = 'http://open.mapquestapi.com/geocoding/v1/address?key=';
@@ -63,7 +61,6 @@ const getLatLon = async locationName => {
    * @return {array} Bounding box of map area
    */
 const getBoundingBox = (latLocation, lonLocation) => {
-
   latLocation = parseFloat (latLocation);
   lonLocation = parseFloat (lonLocation);
 
@@ -116,14 +113,14 @@ const getBoundingBox = (latLocation, lonLocation) => {
     latBotLeft,
     lonBotLeft
   );
-  
+
   //return bounding box coordinates
   return boundingBox;
 };
 
 // function which improves the visibility of overlapping and identically positioned
 // map markers, by adding a random value to latitude and longitude positions of crimes
-const improveMarkerVisibility = displayCrimes => {  
+const improveMarkerVisibility = displayCrimes => {
   var referenceLats = []; // to store duplicate latitudes
   var referencelons = []; // to store duplicate longitudes
 
@@ -139,21 +136,20 @@ const improveMarkerVisibility = displayCrimes => {
   var uniqueLons = [...new Set (referencelons)];
 
   // values to adjust crime marker location by
-  var locationValues = [    
-    0.00010,  
+  var locationValues = [
+    0.00010,
     0.00021,
     0.00027,
     0.00031,
-    0.00039, 
+    0.00039,
     0.0,
-    -0.00013,    
-    -0.0002, 
-    -0.00025  
-    -0.00030,   
+    -0.00013,
+    -0.0002,
+    -0.00025 - 0.00030,
     -0.0004,
   ];
 
-  //Iterate over all crimes - adjust the lat and lon of any duplicates so they show on map better
+  // iterate over all crimes - adjust the lat and lon of any duplicates so they show on map better
   for (let aCrimeRecord of displayCrimes) {
     if (uniqueLats.includes (aCrimeRecord.latitude)) {
       var randomValue =
@@ -173,14 +169,11 @@ const improveMarkerVisibility = displayCrimes => {
       aCrimeRecord.longitude = newLonVal;
     }
   }
-  
+
   // store max of 200 crimes, to cater to mapquest API map markers
   displayCrimes = displayCrimes.slice (0, 200); //TODO historic data should not be sliced
 
   return displayCrimes;
 };
-
-
-
 
 module.exports = {getLatLon, getBoundingBox, improveMarkerVisibility};

@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
-import {addUserFavourite} from '../firebase';
-import {useHistory} from 'react-router-dom';
+import React, { useState } from "react";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+import { addUserFavourite } from "../firebase";
+import { useHistory } from "react-router-dom";
 
-//style components
-import {MDBInput, MDBIcon} from 'mdbreact';
+// style components
+import { MDBInput, MDBIcon } from "mdbreact";
 
 const AddFavouriteModal = (props) => {
-	const [title, setTitle] = useState('');
+	const [title, setTitle] = useState("");
 	const [charCount, setCharCount] = useState(50);
 	const history = useHistory();
 
@@ -18,8 +18,8 @@ const AddFavouriteModal = (props) => {
 
 		try {
 			await addUserFavourite(
-				title,						
-				props.mapdetails.allCrimes,		
+				title,
+				props.mapdetails.allCrimes,
 				props.mapdetails.locationName,
 				props.mapdetails.lat,
 				props.mapdetails.lon,
@@ -27,19 +27,19 @@ const AddFavouriteModal = (props) => {
 			);
 
 			// change icon from add fav + to remove fav -
-			history.push(`/results`, {
-				isfavourite: 'true', // if was a previously favourited map
-			}); // flag current map as a favourite
+			history.push(`/mapdisplay`, {
+				isfavourite: "true", // if was a previously favourited map
+			});
 		} catch (error) {
-			console.log('Error adding favourite' + error);
+			console.log("Error adding favourite" + error);
 		}
 	};
 
 	// function to handle user form input
 	const onChangeHandler = (e) => {
-		const {name, value} = e.currentTarget;
+		const { name, value } = e.currentTarget;
 		// if title input, set title state
-		if (name === 'title') {
+		if (name === "title") {
 			setTitle(value);
 			setCharCount(50 - value.length);
 		}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import UKMapImage from "../images/alternative/ukVectorGuide.svg";
+import UKMapImage from "../images/ukVectorGuide.svg";
 import UKIconImage from "../images/uk-icon.png";
 
 // style components
@@ -148,7 +148,7 @@ const Search = (props) => {
 				<Dropdown.Menu>
 					<Dropdown.Item eventKey="3">3 Months</Dropdown.Item>
 					<Dropdown.Item eventKey="6">6 Months</Dropdown.Item>
-					<Dropdown.Item eventKey="12">12 Months</Dropdown.Item>					
+					<Dropdown.Item eventKey="12">12 Months</Dropdown.Item>
 				</Dropdown.Menu>
 			</Dropdown>
 

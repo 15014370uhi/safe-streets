@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {auth} from '../firebase';
-import {Link} from 'react-router-dom';
+import React, { useState } from "react";
+import { auth } from "../firebase";
+import { Link } from "react-router-dom";
 
 //styled components
 import {
@@ -14,11 +14,11 @@ import {
 	MDBCardHeader,
 	MDBBtn,
 	MDBInput,
-} from 'mdbreact';
+} from "mdbreact";
 
 const Login = () => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 	const [error, setError] = useState(null);
 
 	//sign in user with firebase sign in method
@@ -27,17 +27,17 @@ const Login = () => {
 
 		//sign user in with firebase sign in method
 		auth.signInWithEmailAndPassword(email, password).catch((error) => {
-			setError('' + error);
+			setError("" + error);
 		});
 	};
 
 	//function to handle user form input
 	const onChangeHandler = (e) => {
-		const {name, value} = e.currentTarget;
+		const { name, value } = e.currentTarget;
 		//if email input set email state
-		if (name === 'email') {
+		if (name === "email") {
 			setEmail(value);
-		} else if (name === 'password') {
+		} else if (name === "password") {
 			//if password input, set password state
 			setPassword(value);
 		}
@@ -51,14 +51,19 @@ const Login = () => {
 						<MDBCardBody>
 							<MDBCardHeader className="form-header bg-primary rounded">
 								<h1 className="my-3">
-									<MDBIcon className='login-icon-lock' icon="lock" size="lg" />Login
+									<MDBIcon
+										className="login-icon-lock"
+										icon="lock"
+										size="lg"
+									/>
+									Login
 								</h1>
 							</MDBCardHeader>
 							<form className="login-sign-header">
 								<div className="grey-text login-sign-topinput">
-									<MDBInput 
-										label="Type your email"	
-										size="lg"								
+									<MDBInput
+										label="Type your email"
+										size="lg"
 										icon="envelope"
 										autoComplete="email"
 										autoFocus

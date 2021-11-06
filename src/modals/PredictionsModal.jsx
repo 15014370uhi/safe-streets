@@ -16,7 +16,7 @@ import {
 import { MDBIcon } from "mdbreact";
 
 const ShowPredictionsModal = (props) => {
-	const [resultsData] = useContext(ResultsData);
+	const [resultsData, setResultsData] = useContext(ResultsData);
 	const predictions = resultsData.predictions; //TODO when loading favourite - get predictions manually
 	const [crimeColours, setCrimeColours] = useState([
 		"#8a0404", //anti-social-behaviour
@@ -26,11 +26,10 @@ const ShowPredictionsModal = (props) => {
 		"brown", //drugs
 		"#570345", //public_order
 		"red", //possession_of_weapons
-		"#f40e0e", //violent_crime 
+		"#f40e0e", //violent_crime
 		"#8884d8", //vehicle_crime
 		"orange", //shoplifting
-	]); // chart colours
-
+	]); 
 	// array of month names
 	var months = [
 		"January",

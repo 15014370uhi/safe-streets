@@ -1,22 +1,22 @@
-const express = require('express');
-const dotenv = require('dotenv');
-const cors = require('cors');
+const express = require ('express');
+const dotenv = require ('dotenv');
+const cors = require ('cors');
 const routes = require ('./routers/routes');
-const app = express();
+const app = express ();
 
 //allow environmental variables
-dotenv.config();
+dotenv.config ();
 
-//set port to server env variable or port 4000 
-const PORT = process.env.PORT || 4000; 
+//set port to server env variable or port 4000
+const PORT = process.env.PORT || 4000;
 
 //middleware
-app.use (express.json ()); 
-app.use(
-  cors({
+app.use (express.json ());
+app.use (
+  cors ({
     origin: [
-      "http://localhost:3000",
-      "http://virtual-revolution.com/safe-streets/",  
+      'http://localhost:3000',
+      'http://virtual-revolution.com/safe-streets/',
     ],
     credentials: true,
   })
@@ -24,10 +24,8 @@ app.use(
 
 //start server
 app.listen (PORT, () => {
-    console.log (`Server is running on port ${PORT}`);
-  });
- 
+  console.log (`Server is running on port ${PORT}`);
+});
+
 //set api route
-app.use('/api/map', routes);
-
-
+app.use ('/api/map', routes);

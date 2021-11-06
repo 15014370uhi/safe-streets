@@ -35,9 +35,9 @@ const Profile = () => {
 	const [error, setError] = useState(null);
 	const user = useContext(UserContext);
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
-	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
+	const [crimestoDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
 
-	//modal dialog state for user account deletion
+	// modal dialog state for user account deletion
 	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
@@ -61,12 +61,12 @@ const Profile = () => {
 							(favourite) =>
 								favourite.timestamp !== aFavourite.timestamp
 						);
-					//update firestore doc with the filtered favourites
+					// update firestore doc with the filtered favourites
 					userRef.update({
 						favourites: favouritesToKeep,
 					});
 
-					//update favourites state
+					// update favourites state
 					setLocalFavourites(favouritesToKeep);
 				} else {
 					console.log("No favourites!");
@@ -77,7 +77,7 @@ const Profile = () => {
 			});
 	};
 
-	//function which retrieves the favourites for a user
+	// function which retrieves the favourites for a user
 	const getUserDetails = async () => {
 		if (user) {
 			var userRef = await firebase
@@ -88,7 +88,7 @@ const Profile = () => {
 				.get()
 				.then(function (doc) {
 					if (doc.exists) {
-						//set favourites to all user favourites
+						// set favourites to all user favourites
 						setLocalFavourites(doc.data().favourites);
 					} else {
 						console.log("No favourites!");
@@ -100,13 +100,13 @@ const Profile = () => {
 		}
 	};
 
-	//function which handles user input changes
+	// function which handles user input changes
 	const onChangeHandler = (e) => {
 		const { value } = e.currentTarget;
 		setPassword(value);
 	};
 
-	//sign out user
+	// sign out user
 	const onSignOutHandler = async () => {
 		await auth
 			.signOut()
@@ -119,25 +119,25 @@ const Profile = () => {
 		// re-authenticate user with password input
 		await reauthenticateUser(password)
 			.then((res) => {
-				console.log("User reauthenticated successfully: ", res);
+				//console.log("User reauthenticated successfully: ", res);
 
-				//delete all user document data from firestore
+				// delete all user document data from firestore
 				deleteUserDocument()
 					.then((res) => {
-						console.log("User Document successfully deleted", res);
+						//console.log("User Document successfully deleted", res);
 
-						//delete user authentication account entry from firebase
+						// delete user authentication account entry from firebase
 						deleteUserAccount()
 							.then((res) => {
 								console.log(
-									"User Authentication Account successfully deleted"
+									"User Account successfully deleted"
 								);
 
 								alert(
 									"Your account and saved data has been sucessfully deleted."
 								);
 
-								//redirect to register page
+								// redirect to register page
 								let path = `/register`;
 								history.push(path);
 							})
@@ -168,9 +168,9 @@ const Profile = () => {
 
 		setCrimesToDisplay(aFavourite.allCrimes);
 
-		//redirect to results page
-		history.push(`/results`, {
-			isfavourite: "true", //boolean flag to determine if map a previously favourited or new search
+		// redirect to results page
+		history.push(`/mapdisplay`, {
+			isfavourite: "true", // if map a previously favourited or new search
 			timestamp: aFavourite.timestamp,
 		});
 	};
@@ -188,7 +188,6 @@ const Profile = () => {
 								Email: {user.email}
 							</label>
 						</MDBCardText>
-						-
 					</MDBCardBody>
 					<MDBCardHeader className="profile-heading">
 						<h2 className="profile-main-heading">

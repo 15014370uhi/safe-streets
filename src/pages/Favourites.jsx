@@ -3,7 +3,11 @@ import Favourite from "../components/Favourite";
 import { MapDetails } from "../contexts/MapDetailsContext";
 import uuid from "react-uuid";
 import Container from "react-bootstrap/Container";
-import {deleteUserFavourite, getUserFavourites, getUserFavourite} from '../firebase';
+import {
+	deleteUserFavourite,
+	getUserFavourites,
+	getUserFavourite,
+} from "../firebase";
 import ButtonBack from "../components/ButtonBack";
 import CardDeck from "react-bootstrap/CardDeck";
 import { useHistory } from "react-router-dom";
@@ -16,11 +20,10 @@ const Favourites = (props) => {
 
 	const history = useHistory();
 
-	useEffect(() => {		
+	useEffect(() => {
 		getFavourites();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-	
 
 	// updates the mapDetails context
 	const updateMap = (aFavourite) => {
@@ -40,31 +43,31 @@ const Favourites = (props) => {
 		var aFavourite = await getUserFavourite(aTimestamp); //TODO TEST
 		updateMap(aFavourite);
 
-		history.push(`/results`, {
+		history.push(`/mapdisplay`, {
 			isfavourite: "true", //if map a previously favourited map or new search result
-			timestamp: aTimestamp, 
+			timestamp: aTimestamp,
 		});
 	};
 
-	// Function which deletes a specific favourited map 
-	const deleteFavourite = async (aTimestamp) => {		
+	// Function which deletes a specific favourited map
+	const deleteFavourite = async (aTimestamp) => {
 		await deleteUserFavourite(aTimestamp);
-		getFavourites();		
+		getFavourites();
 	};
 
 	// Function which gets all user favourited maps
-	const getFavourites = async() => {
+	const getFavourites = async () => {
 		var favouritesReturned = await getUserFavourites();
 		setLocalFavourites(favouritesReturned);
 	};
 
 	return (
 		<Container className={"favourites-container"}>
-		<ButtonBack id="back-btn-favourites" />
-			<Container>			
+			<ButtonBack id="back-btn-favourites" />
+			<Container>
 				{localFavourites.length ? (
 					<Container id="favourites-list-Container">
-						<br />						
+						<br />
 						<h3 className="favourites-title">
 							You have {localFavourites.length}
 							{localFavourites.length > 1
@@ -74,9 +77,9 @@ const Favourites = (props) => {
 						<CardDeck>
 							{localFavourites.map((favourite) => (
 								<Favourite
-									key={uuid()}									
+									key={uuid()}
 									deleteFavourite={deleteFavourite}
-									displayMap={displayMap}									
+									displayMap={displayMap}
 									title={favourite.title}
 									locationName={favourite.locationName}
 									lat={favourite.lat}
@@ -87,10 +90,10 @@ const Favourites = (props) => {
 						</CardDeck>
 					</Container>
 				) : (
-					<div className="div-no-favourites">					
+					<div className="div-no-favourites">
 						<br />
 						<h1 className="text-no-favourites">
-						You have no favourites yet.
+							You have no favourites yet.
 						</h1>
 					</div>
 				)}

@@ -2,7 +2,6 @@ const {getYearAndMonth, populateCrimeDates} = require ('./date-helpers');
 const {improveMarkerVisibility} = require ('./geo-data');
 const axios = require ('axios');
 
-
 /**   
  * Function which returns crime data for a spcific month 
  * within a lat/lon bounding box geographical area
@@ -13,18 +12,17 @@ const axios = require ('axios');
  * @return {array} crime data for all crimes commited within bounding box map area for a given month  
  */
 const getCrimeData = async (crimeDateCheck, boundingBox) => {
-  
-  let latTopLeft = parseFloat(boundingBox[0]).toFixed(5);
-  let lonTopLeft = parseFloat(boundingBox[1]).toFixed(5);
+  let latTopLeft = parseFloat (boundingBox[0]).toFixed (5);
+  let lonTopLeft = parseFloat (boundingBox[1]).toFixed (5);
 
-  let latBotRight = parseFloat(boundingBox[2]).toFixed(5);
-  let lonBotRight = parseFloat(boundingBox[3]).toFixed(5);
+  let latBotRight = parseFloat (boundingBox[2]).toFixed (5);
+  let lonBotRight = parseFloat (boundingBox[3]).toFixed (5);
 
-  let latTopRight = parseFloat(boundingBox[4]).toFixed(5);
-  let lonTopRight = parseFloat(boundingBox[5]).toFixed(5);
+  let latTopRight = parseFloat (boundingBox[4]).toFixed (5);
+  let lonTopRight = parseFloat (boundingBox[5]).toFixed (5);
 
-  let latBotLeft = parseFloat(boundingBox[6]).toFixed(5);
-  let lonBotLeft = parseFloat(boundingBox[7]).toFixed(5);
+  let latBotLeft = parseFloat (boundingBox[6]).toFixed (5);
+  let lonBotLeft = parseFloat (boundingBox[7]).toFixed (5);
 
   // variable to hold crime data
   let crimeData;
@@ -71,14 +69,12 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
 };
 
 // Function which creates an array of all crimes to be displayed on map
-const populateAllCrimes = async (crimes) => {
-
+const populateAllCrimes = async crimes => {
   var allCrimes = [];
 
   // add crime details for each crime
   for (let crimeCollection of crimes) {
     for (let aCrime of crimeCollection) {
-
       // store details of current crime
       let aCrimeCategory = aCrime.category;
       let aCrimeLat = aCrime.location.latitude;
@@ -87,19 +83,17 @@ const populateAllCrimes = async (crimes) => {
       let aCrimeYear = aCrimeDate.getFullYear ();
       let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
 
-      
-        // create new object with crime details to add
-        const aCrimeDetails = {
-          category: aCrimeCategory,
-          latitude: aCrimeLat,
-          longitude: aCrimeLon,
-          month: aCrimeMonth,
-          year: aCrimeYear,
-        };
-       
-        // add current crime to array of all crimes to display on map
-        allCrimes.push (aCrimeDetails);
-      
+      // create new object with crime details to add
+      const aCrimeDetails = {
+        category: aCrimeCategory,
+        latitude: aCrimeLat,
+        longitude: aCrimeLon,
+        month: aCrimeMonth,
+        year: aCrimeYear,
+      };
+
+      // add current crime to array of all crimes to display on map
+      allCrimes.push (aCrimeDetails);
     }
   }
 
@@ -108,7 +102,6 @@ const populateAllCrimes = async (crimes) => {
 
   return allCrimes;
 };
-
 
 // Function which retrieves the previous 12 months crime data
 const getHistoricCrimes = async aBoundingBox => {
@@ -130,7 +123,7 @@ const getHistoricCrimes = async aBoundingBox => {
   }
 
   // declare crime variables
-  let historicCrimes = []; 
+  let historicCrimes = [];
 
   // add crime details for each crime
   for (let crimeCollection of crimesHistoric) {
@@ -159,9 +152,7 @@ const getHistoricCrimes = async aBoundingBox => {
   return historicCrimes;
 };
 
-
-
-// function which returns the sector for a given police force 
+// function which returns the sector for a given police force
 const getSector = aPoliceForce => {
   var sector;
 

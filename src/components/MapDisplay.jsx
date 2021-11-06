@@ -3,11 +3,9 @@ import React, { useState, useEffect, useContext } from "react";
 // import contexts
 import { MapDetails } from "../contexts/MapDetailsContext";
 import { Crimes } from "../contexts/CrimeDataContext";
-import { CenterPoint } from "../contexts/CenterPointContext";
 import { ResultsData } from "../contexts/ResultsDataContext";
 
 // import utility functions
-//import { getUpdatedMapURL } from "../util/GetMapURL";
 import { populateDisplayCrimes } from "../util/FilterCrimeIcons";
 import { getMonthName } from "../util/DateHelper";
 import {
@@ -15,11 +13,7 @@ import {
 	getCrimeIcon,
 	getCenterPoint,
 } from "../util/AssignMapIcons";
-import {
-	getCrimeData,
-	getPredictions,
-	getHistoricCrimes,
-} from "../util/GetCrimeData";
+import { getPredictions, getHistoricCrimes } from "../util/GetCrimeData";
 
 import uuid from "react-uuid";
 
@@ -52,27 +46,23 @@ const MapDisplay = () => {
 	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
 		useState(false);
 
-	//TODO test
 	const [resultsData, setResultsData] = useContext(ResultsData);
 	const [showFiltersModal, setShowFiltersModal] = useState(false); // filters modal
 	const [showHistoricCrimeModal, setShowHistoricCrimeModal] = useState(false); // data chart modal
 	const [showPredictionsModal, setShowPredictionsModal] = useState(false); // data chart modal
 	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
 	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
-	const [centerPoint] = useContext(CenterPoint); // reference to center point of search
-	const [timestamp, setTimestamp] = useState(''); //
+	const [timestamp, setTimestamp] = useState(""); //
 
-	let history = useHistory();	
+	let history = useHistory();
 
 	useEffect(() => {
-		//window.scrollTo(0, 0); // scroll map to top
 		if (history.location.state?.isfavourite === "true") {
 			setMapFromFavourite();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	
 	const setFavouriteButton = async (buttonState) => {
 		history.location.state.isfavourite = buttonState;
 	};
@@ -83,22 +73,13 @@ const MapDisplay = () => {
 
 		const payload = {
 			lat: mapDetails.lat,
-			lon: mapDetails.lon, //will actually have lat and lon when calling from map display
+			lon: mapDetails.lon,
 		};
-		
-		if(history.location.state.timestamp){
+
+		if (history.location.state.timestamp) {
 			setTimestamp(history.location.state.timestamp);
-		}; 
-		
-		//TODO can i set predictions and historicCrimes separately in
-		//TODO setresultsData? or maybe I need to split them entirely>?
+		}
 
-		//TODO Don't show historic crime data button until response received
-		//TODO from server?
-
-		//TODO FADE IN predictions and historic data buttons - when its a favourite?
-		//TODO give data time to load?
-		
 		// populate predictions and historic data
 		var predictionsResponse = await getPredictions(payload);
 		var historicResponse = await getHistoricCrimes(payload);
@@ -110,7 +91,6 @@ const MapDisplay = () => {
 
 	// function which updates the filtered crimes on map
 	const updateFilteredCrimes = async (filters) => {
-		//console.log('Filters to apply: ', filters);
 		var crimesFiltered = populateDisplayCrimes(
 			mapDetails.allCrimes,
 			filters
@@ -166,7 +146,9 @@ const MapDisplay = () => {
 					icon={getCenterPoint()}>
 					<Popup className="icon-popup">
 						{mapDetails.locationName}
-						<p>({(mapDetails.lat, mapDetails.lon)})</p>
+						<p>
+							({mapDetails.lat}, {mapDetails.lon})
+						</p>
 					</Popup>
 				</Marker>
 
@@ -193,9 +175,9 @@ const MapDisplay = () => {
 				<RemoveFavouriteModal
 					show={showRemoveFavouritesModal}
 					onHide={() => setShowRemoveFavouritesModal(false)}
-					mapdetails={mapDetails}					
-					timestamp = {timestamp}
-					setFavouriteButton = {setFavouriteButton}
+					mapdetails={mapDetails}
+					timestamp={timestamp}
+					setFavouriteButton={setFavouriteButton}
 				/>
 
 				<AddFavouriteModal
@@ -230,23 +212,3 @@ const MapDisplay = () => {
 };
 
 export default MapDisplay;
-
-//TODO Get prediction and historic data when loading a favourite
-//TODO might need to move the API calls to common file for all who use it
-//TODO or call the api directly from this component - better to try get it external file in util
-
-// {/* historic data */}
-// <ShowHistoricCrimeModal
-// 				show={showHistoricCrimeModal}
-// 				onHide={() => setShowHistoricCrimeModal(false)}
-// 			/>
-// 			<ButtonShowHistoricCrimes
-// 				setModalShow={setShowHistoricCrimeModal}
-// 			/>
-
-// {/* prediction data from flask server */}
-// <ShowPredictionsModal
-// 	show={showPredictionsModal}
-// 	onHide={() => setShowPredictionsModal(false)}
-// />
-// <ButtonShowPredictions setModalShow={setShowPredictionsModal} />

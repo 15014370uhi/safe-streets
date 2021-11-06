@@ -1,6 +1,6 @@
-import React, {useState} from 'react';
-import {createUserWithEmailAndPassword} from '../firebase';
-import {Link, useHistory} from 'react-router-dom';
+import React, { useState } from "react";
+import { createUserWithEmailAndPassword } from "../firebase";
+import { Link, useHistory } from "react-router-dom";
 
 //styled components
 import {
@@ -14,11 +14,11 @@ import {
 	MDBCardHeader,
 	MDBBtn,
 	MDBInput,
-} from 'mdbreact';
+} from "mdbreact";
 
 const Register = (props) => {
-	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 	const [formError, setFormError] = useState(null);
 	const history = useHistory();
 
@@ -37,10 +37,10 @@ const Register = (props) => {
 	};
 
 	const onChangeHandler = (e) => {
-		const {name, value} = e.currentTarget;
-		if (name === 'email') {
+		const { name, value } = e.currentTarget;
+		if (name === "email") {
 			setEmail(value);
-		} else if (name === 'password') {
+		} else if (name === "password") {
 			setPassword(value);
 		}
 	};
@@ -53,7 +53,12 @@ const Register = (props) => {
 						<MDBCardBody>
 							<MDBCardHeader className="form-header bg-primary rounded">
 								<h1 className="my-3">
-									<MDBIcon className='register-icon-user' icon="user-circle" size='lg'/> Sign Up
+									<MDBIcon
+										className="register-icon-user"
+										icon="user-circle"
+										size="lg"
+									/>{" "}
+									Sign Up
 								</h1>
 							</MDBCardHeader>
 							<form className="login-sign-header">

@@ -15,7 +15,7 @@ import {
 import { MDBIcon } from "mdbreact";
 
 const ShowHistoricCrimeModal = (props) => {
-	const [resultsData] = useContext(ResultsData);
+	const [resultsData, setResultsData] = useContext(ResultsData);
 
 	// array of month names
 	var months = [
@@ -62,15 +62,15 @@ const ShowHistoricCrimeModal = (props) => {
 			}
 
 			var monthlyStats = {
-				"name": months[currentGraphMonth - 1],
+				name: months[currentGraphMonth - 1],
 				"Anti-Social Behaviour": 0,
-				"Burglary": 0,
+				Burglary: 0,
 				"Criminal Damage & Arson": 0,
-				"Drugs": 0,
+				Drugs: 0,
 				"Public Order": 0,
 				"Possession of Weapons": 0,
-				"Shoplifting": 0,
-				"Theft": 0,
+				Shoplifting: 0,
+				Theft: 0,
 				"Vehicle Crime": 0,
 				"Violent Crime": 0,
 			};
@@ -165,7 +165,7 @@ const ShowHistoricCrimeModal = (props) => {
 			animation={false}
 			dialogClassName="modal-dialog modal-xl"
 			show={props.show}
-			onHide={props.onHide}				
+			onHide={props.onHide}
 			centered>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
@@ -189,7 +189,7 @@ const ShowHistoricCrimeModal = (props) => {
 						}}>
 						<CartesianGrid strokeDasharray="3 3" />
 						<XAxis dataKey="name" />
-						<YAxis type="number" domain={['dataMin', 'dataMax']}/>
+						<YAxis type="number" domain={["dataMin", "dataMax"]} />
 						<Tooltip />
 						<Area
 							type="monotone"
@@ -262,7 +262,6 @@ const ShowHistoricCrimeModal = (props) => {
 							fill="#f40e0e"
 						/>
 					</AreaChart>
-					
 				</ResponsiveContainer>
 			</Modal.Body>
 		</Modal>
