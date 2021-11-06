@@ -134,7 +134,7 @@ const Profile = () => {
 								);
 
 								alert(
-									"Your account and saved data has been sucessfully deleted."
+									"Your account has been sucessfully deleted."
 								);
 
 								// redirect to register page

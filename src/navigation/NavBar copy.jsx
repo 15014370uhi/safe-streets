@@ -121,7 +121,33 @@ const NavBar = (props) => {
 						</NavDropdown>
 					</ul>
 				</Nav>
-			) : (<Nav> </Nav>) }
+			) : (
+				<Nav>
+					<div className="menu-icon" onClick={handleClick}>
+						<i className={click ? "fas fa-times" : "fas fa-bars"} />
+					</div>
+
+					<ul className={click ? "nav-menu active" : "nav-menu"}>
+						<li className="nav-item">
+							<Nav.Link
+								as={NavLink}
+								to="/register"
+								onClick={closeMobileMenu}>
+								Register
+							</Nav.Link>
+						</li>
+
+						<li className="nav-item">
+							<Nav.Link
+								as={NavLink}
+								to="/"
+								onClick={closeMobileMenu}>
+								Login
+							</Nav.Link>
+						</li>
+					</ul>
+				</Nav>
+			)}
 		</Navbar>
 	);
 };

@@ -27,10 +27,10 @@ const Register = (props) => {
 
 		createUserWithEmailAndPassword(email, password).then((res) => {
 			if (res !== true) {
-				//error creating user
-				setFormError(res); //set error message
+				// error creating user
+				setFormError(res); // set error message
 			} else {
-				let path = `/search`; //success, redirect to search page
+				let path = `/search`; // success, redirect to search page
 				history.push(path);
 			}
 		});
@@ -46,7 +46,7 @@ const Register = (props) => {
 	};
 
 	return (
-		<MDBContainer>
+		<MDBContainer className="register-container">
 			<MDBRow>
 				<MDBCol md="7">
 					<MDBCard>
@@ -102,7 +102,7 @@ const Register = (props) => {
 
 									<MDBBtn
 										color="blue"
-										className="mb-3"
+										className="btn-signup mb-3"
 										type="submit"
 										onClick={(event) => {
 											createUserWithEmailAndPasswordHandler(

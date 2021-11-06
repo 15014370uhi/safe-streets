@@ -21,24 +21,24 @@ const Login = () => {
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState(null);
 
-	//sign in user with firebase sign in method
+	// sign in user with firebase sign in method
 	const signInWithEmailAndPasswordHandler = (e, email, password) => {
 		e.preventDefault();
 
-		//sign user in with firebase sign in method
+		// sign user in with firebase sign in method
 		auth.signInWithEmailAndPassword(email, password).catch((error) => {
 			setError("" + error);
 		});
 	};
 
-	//function to handle user form input
+	// Function to handle user form input
 	const onChangeHandler = (e) => {
 		const { name, value } = e.currentTarget;
-		//if email input set email state
+		// if email input set email state
 		if (name === "email") {
 			setEmail(value);
 		} else if (name === "password") {
-			//if password input, set password state
+			// if password input, set password state
 			setPassword(value);
 		}
 	};
@@ -101,7 +101,7 @@ const Login = () => {
 									)}
 									<MDBBtn
 										color="blue"
-										className="mb-3"
+										className="btn-login mb-3"
 										type="submit"
 										onClick={(e) => {
 											signInWithEmailAndPasswordHandler(

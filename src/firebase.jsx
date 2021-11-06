@@ -40,7 +40,7 @@ export const createUserWithEmailAndPassword = async (email, password) => {
 		);
 		console.log(
 			"User created with email: " + user.email + "\nUID: " + user.uid
-		); // TEST
+		); 
 		generateUserDocument(user);
 		return true;
 	} catch (error) {
