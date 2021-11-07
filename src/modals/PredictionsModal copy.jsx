@@ -17,6 +17,7 @@ import { MDBIcon } from "mdbreact";
 
 const ShowPredictionsModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
+	const predictions = resultsData.predictions; //TODO when loading favourite - get predictions manually
 	const [crimeColours, setCrimeColours] = useState([
 		"#8a0404", //anti-social-behaviour
 		"purple", //theft
@@ -28,7 +29,7 @@ const ShowPredictionsModal = (props) => {
 		"#f40e0e", //violent_crime
 		"#8884d8", //vehicle_crime
 		"orange", //shoplifting
-	]);
+	]); 
 	// array of month names
 	var months = [
 		"January",
@@ -51,12 +52,15 @@ const ShowPredictionsModal = (props) => {
 		//get final graph month to display
 		let predictedMonth = new Date().getMonth() + 1; //zero indexed
 		predictedMonth = months[predictedMonth];
+
+		//console.log("predictionMonth >>>>>>>>  : " + predictedMonth);
 		return predictedMonth;
 	};
 
 	const getCurrentMonth = () => {
 		let currentMonth = new Date().getMonth() + 1; //zero indexed
 		currentMonth = months[currentMonth];
+
 		return currentMonth;
 	};
 
@@ -111,22 +115,20 @@ const ShowPredictionsModal = (props) => {
 		return crimeCategory;
 	};
 
-	var data = [];
+	const data = [];
 
-	if ( resultsData.predictions ){
-	for (const [key, value] of Object.entries(resultsData.predictions)) {		
+	for (const [key, value] of Object.entries(predictions)) {
 		var crimeCategory = getCrimeCategory(key);
-		var percentage = parseFloat(resultsData.predictions[key]);
+		var percentage = parseFloat(predictions[key]);
 
 		var dataToAdd = {
 			crime: crimeCategory,
 			probability: percentage,
 			label: percentage + "%",
 		};
+
 		data.push(dataToAdd);
-	}	
 	}
-	
 
 	return (
 		<Modal
@@ -147,8 +149,8 @@ const ShowPredictionsModal = (props) => {
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<ResponsiveContainer width={"100%"} height={500}>
-					<BarChart						
+				<ResponsiveContainer width={"99%"} height={500}>
+					<BarChart
 						data={data}
 						layout="vertical"
 						barCategoryGap={4}
@@ -163,7 +165,7 @@ const ShowPredictionsModal = (props) => {
 						<Bar
 							dataKey="probability"
 							fill={"blue"}
-							animationDuration={1700}
+							animationDuration={900}
 							radius={[0, 8, 8, 0]}>
 							<LabelList
 								className="chart-labellist"

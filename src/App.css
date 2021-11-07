@@ -128,6 +128,10 @@ div.dropdown-menu.show {
   font-size: 2em;
 }
 
+.main-link {
+  font-size: 1.5em;
+}
+
 /* styling of selected search type */
 .notSelectedFieldSet {
   padding: 10px;
@@ -352,10 +356,10 @@ li.list-group-item.profile-favourites-list:hover {
 }
 
 .favourites-title {
-  font-size: 2em;
-  padding-left: 2%;
+  font-size: 3em;
   font-weight: bold;
-  margin-top: 50px;
+  margin-top: 60px;
+  text-align: center;
 }
 
 
@@ -514,17 +518,6 @@ form>fieldset {
   z-index: 1000;
 }
 
-.div-no-favourites {
-  margin: 10%;
-  display: inline-block;
-}
-
-.text-no-favourites {
-  padding: 0;
-  margin-left: 40px;
-  text-align: center;
-}
-
 .favourites-container>.btn-back {
   font-size: 3em;
 }
@@ -663,6 +656,7 @@ form>fieldset {
 .prediction-modal-heading {
   font-size: 1.4em;
 }
+
 
 .chart-labellist {
   font-size: 1.4em;

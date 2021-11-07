@@ -116,7 +116,7 @@ const Login = () => {
 							</form>
 
 							<MDBModalFooter>
-								<div className="font-weight-light">
+								<div className="font-weight-light main-link">
 									Don't have an account?
 									<Link
 										to="/register"

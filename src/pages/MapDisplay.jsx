@@ -26,12 +26,12 @@ import RemoveFavouriteModal from "../modals/RemoveFavouriteModal";
 import FiltersModal from "../modals/FiltersModal";
 
 // import buttons
-import ButtonAddToFavs from "./ButtonAddToFavs";
-import ButtonRemoveFromFavs from "./ButtonRemoveFromFavs";
-import ButtonShowFilters from "./ButtonShowFilters";
-import ButtonShowPredictions from "./ButtonShowPredictions";
-import ButtonBack from "./ButtonBack";
-import ButtonShowHistoricCrimes from "./ButtonShowHistoricCrimes";
+import ButtonAddToFavs from "../components/ButtonAddToFavs";
+import ButtonRemoveFromFavs from "../components/ButtonRemoveFromFavs";
+import ButtonShowFilters from "../components/ButtonShowFilters";
+import ButtonShowPredictions from "../components/ButtonShowPredictions";
+import ButtonBack from "../components/ButtonBack";
+import ButtonShowHistoricCrimes from "../components/ButtonShowHistoricCrimes";
 
 // import leaflet related
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
@@ -81,10 +81,11 @@ const MapDisplay = () => {
 		}
 
 		// populate predictions and historic data
-		var predictionsResponse = await getPredictions(payload);
+		var predictionsResponse = await getPredictions(payload);		
 		var historicResponse = await getHistoricCrimes(payload);
+		
 		setResultsData({
-			predictions: predictionsResponse.predictions.data,
+			predictions: predictionsResponse.predictions,
 			historicCrimes: historicResponse.historicCrimes,
 		});
 	};
@@ -190,6 +191,7 @@ const MapDisplay = () => {
 				<ShowPredictionsModal
 					show={showPredictionsModal}
 					onHide={() => setShowPredictionsModal(false)}
+					predictions={resultsData.predictions}
 				/>
 				<ButtonShowPredictions setModalShow={setShowPredictionsModal} />
 

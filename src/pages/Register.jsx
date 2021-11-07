@@ -117,7 +117,7 @@ const Register = (props) => {
 							</form>
 
 							<MDBModalFooter>
-								<div className="font-weight-light">
+								<div className="font-weight-light main-link">
 									Already have an account?
 									<Link
 										to="/"

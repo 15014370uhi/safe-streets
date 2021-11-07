@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import Form from "../components/Form";
 import Spinner from "react-bootstrap/Spinner";
 import { getCrimeData } from "../util/GetCrimeData";
+import axios from "axios";
 
 // style components
 import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardHeader } from "mdbreact";
@@ -137,8 +138,38 @@ const Search = (props) => {
 					numberOfMonths: numberOfMonths,
 				};
 
-				// call function which calls API for user search
-				const response = await getCrimeData(payload);
+				var response;
+
+				//TODO TESTING ALTERNATIVELY
+				// function which completes an API call to obtain crime data
+				await axios
+					.post("http://localhost:4000/api/map", payload)
+					.then((res) => {
+						response = {
+							predictions: res.data.predictions,
+							historicCrimes: res.data.historicCrimes,
+							locationName: res.data.locationName,
+							lat: res.data.lat,
+							lon: res.data.lon,
+							noCrimes: res.data.noCrimes,
+							policeForce: res.data.policeForce,
+							allCrimes: res.data.allCrimes,
+						};
+					})
+					.catch((error) => {
+						console.log(
+							"error in obtaining node API response: ",
+							error
+						);
+					});
+
+					//PREVIOUS
+					// call function which calls API for user search
+				//const response = getCrimeData(payload);
+				//TODO END TEST
+
+				
+				console.log("response in search: " + JSON.stringify(response));
 
 				// check if no crimes were recorded for search criteria
 				const noCrimesDetected = response.noCrimes;
@@ -164,7 +195,6 @@ const Search = (props) => {
 						alert(
 							"Please note that Greater Manchester crime data is currently restricted due to an ongoing investigation into missing police data."
 						);
-						// set prediction and historic data
 						setResultsData({
 							predictions: response.predictions,
 							historicCrimes: response.historicCrimes,

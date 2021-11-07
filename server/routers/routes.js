@@ -68,7 +68,7 @@ router.post ('/', async (req, res) => {
 
   res.send ({
     allCrimes: allCrimes,
-    predictions: predictions,
+    predictions: predictions.data,
     historicCrimes: historicCrimes,
     locationName: locationName,
     lat: latitude,
@@ -109,7 +109,7 @@ router.post ('/predictions', async (req, res) => {
   }
 
   res.send ({
-    predictions: predictions,
+    predictions: predictions.data,
   });
 });
 
