@@ -38,7 +38,7 @@ const Search = (props) => {
 						: "notSelectedFieldSet"
 				}>
 				<label>
-					Search by location
+					Search by location (England)
 					<input
 						className="form-radio"
 						type="radio"
@@ -126,7 +126,7 @@ const Search = (props) => {
 						open
 						onClick={handleShowImage}>
 						<img
-							className="image"
+							className="uk-guide-map"
 							src={UKMapImage}
 							onClick={handleShowImage}
 							alt="UK Map"

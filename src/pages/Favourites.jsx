@@ -12,6 +12,7 @@ import ButtonBack from "../components/ButtonBack";
 import CardDeck from "react-bootstrap/CardDeck";
 import { useHistory } from "react-router-dom";
 import { Crimes } from "../contexts/CrimeDataContext";
+import FadeIn from "react-fade-in";
 
 const Favourites = (props) => {
 	const [localFavourites, setLocalFavourites] = useState([]);
@@ -40,7 +41,7 @@ const Favourites = (props) => {
 
 	// display favourited map when clicked
 	const displayMap = async (aTimestamp) => {
-		var aFavourite = await getUserFavourite(aTimestamp); 
+		var aFavourite = await getUserFavourite(aTimestamp);
 		updateMap(aFavourite);
 
 		history.push(`/mapdisplay`, {
@@ -64,40 +65,34 @@ const Favourites = (props) => {
 	return (
 		<Container className={"favourites-container"}>
 			<ButtonBack id="back-btn-favourites" />
-			<Container>
-				{localFavourites.length ? (
-					<Container id="favourites-list-Container">
-						<br />
-						<h3 className="favourites-title">
+			<FadeIn delay={240}>
+				<Container>					
+						<Container id="favourites-list-Container">
+						<h3
+							className="favourites-title"
+							style={{ opacity: "0.8" }}>
 							You have {localFavourites.length}
-							{localFavourites.length > 1
-								? " favourites"
-								: " favourite"}
+							{localFavourites.length > 1 || localFavourites.length === 0
+								? " favourites saved"
+								: " favourite saved"}
 						</h3>
-						<CardDeck>
-							{localFavourites.map((favourite) => (
-								<Favourite
-									key={uuid()}
-									deleteFavourite={deleteFavourite}
-									displayMap={displayMap}
-									title={favourite.title}
-									locationName={favourite.locationName}
-									lat={favourite.lat}
-									lon={favourite.lon}
-									timestamp={favourite.timestamp}
-								/>
-							))}
-						</CardDeck>
-					</Container>
-				) : (
-					<div className="div-no-favourites">
-						<br />
-						<h1 className="text-no-favourites">
-							You have no favourites yet.
-						</h1>
-					</div>
-				)}
-			</Container>
+							<CardDeck>
+								{localFavourites.map((favourite) => (
+									<Favourite
+										key={uuid()}
+										deleteFavourite={deleteFavourite}
+										displayMap={displayMap}
+										title={favourite.title}
+										locationName={favourite.locationName}
+										lat={favourite.lat}
+										lon={favourite.lon}
+										timestamp={favourite.timestamp}
+									/>
+								))}
+							</CardDeck>
+						</Container>					
+				</Container>
+			</FadeIn>
 		</Container>
 	);
 };

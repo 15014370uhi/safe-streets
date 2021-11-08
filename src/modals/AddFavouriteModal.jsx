@@ -41,7 +41,7 @@ const AddFavouriteModal = (props) => {
 		// if title input, set title state
 		if (name === "title") {
 			setTitle(value);
-			setCharCount(50 - value.length);
+			setCharCount(42 - value.length);
 		}
 	};
 
@@ -67,7 +67,7 @@ const AddFavouriteModal = (props) => {
 						className="favourite-input-title"
 						required
 						label="Enter a title..."
-						maxLength="50"
+						maxLength="42"
 						background
 						size="lg"
 						autoFocus

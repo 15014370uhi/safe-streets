@@ -32,7 +32,7 @@ const Favourite = ({
 
 	return (
 		<Col className="container-fluid mt-4">
-			<Card key={uuid()} border="info" style={{ width: "18rem" }}>
+			<Card className="favourite-card" key={uuid()} border="info" style={{ width: "18rem" }}>
 				<MapContainer
 					className="markercluster-map"
 					center={[lat, lon]}
@@ -60,7 +60,7 @@ const Favourite = ({
 					/>
 				</MapContainer>
 
-				<Card.Header>
+				<Card.Header className="favourite-card-header">
 					<h3>{title}</h3>
 				</Card.Header>
 				<Card.Body className="favourite-card-body" bg="light">
