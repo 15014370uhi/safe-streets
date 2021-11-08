@@ -563,6 +563,11 @@ form>fieldset {
   z-index: 1000;
 }
 
+.filter-text {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
 .btn-add-to-favourites {
   position: fixed;
   font-size: 4em;

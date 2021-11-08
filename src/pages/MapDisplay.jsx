@@ -126,7 +126,7 @@ const MapDisplay = () => {
 					<Marker
 						key={uuid()}
 						position={[crime.latitude, crime.longitude]}
-						icon={getCrimeIcon(crime.category)}>
+						icon={getCrimeIcon(crime.category, false)}>
 						<Popup className="icon-popup">
 							{getCrimeCategory(crime.category)}
 							{"\n"}
@@ -161,7 +161,7 @@ const MapDisplay = () => {
 					show={showFiltersModal}
 					onHide={() => setShowFiltersModal(false)}
 					updateFilteredCrimes={updateFilteredCrimes}
-					favouriteFilters={mapDetails.filters}
+					favouriteFilters={mapDetails.filters}										
 				/>
 
 				{/* add and remove favourites */}

@@ -1,8 +1,8 @@
 import L from "leaflet";
 
-const geoapifyAPIKey = "b0188d827da8401786390efebdbc0484"; //TODO move to env variables
+const geoapifyAPIKey = "b0188d827da8401786390efebdbc0484";
 
-//Function which returns a text label for a given crime category
+// Function which returns a text label for a given crime category
 export const getCrimeCategory = (aCrimeCategory) => {
 	let crimeCat;
 
@@ -60,7 +60,7 @@ export const getCrimeCategory = (aCrimeCategory) => {
 };
 
 // Function which returns the correct map icon for a crime category
-export const getCrimeIcon = (aCrimeCategory) => {
+export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 	var icon;
 	var iconName;
 	var color;
@@ -68,10 +68,10 @@ export const getCrimeIcon = (aCrimeCategory) => {
 
 	switch (aCrimeCategory) {
 		case "anti-social-behaviour":
-			color = "%238a0404"; //e.g. %23 plus hex code c12b08   8a0404
+			color = "%238a0404"; //e.g. %23 plus hex code c12b08
 			iconName = "record-voice-over";
 			iconType = "material";
-			break; //%232b704c
+			break;
 
 		case "bicycle-theft":
 		case "other-theft":
@@ -137,22 +137,41 @@ export const getCrimeIcon = (aCrimeCategory) => {
 			break;
 	}
 
-	icon = new L.icon({
-		iconUrl:
-			"https://api.geoapify.com/v1/icon/?type=" +
-			iconType +
-			"&color=" +
-			color +
-			"&size=xx-large&icon=" +
-			iconName +
-			"&textSize=large&noWhiteCircle&scaleFactor=2&apiKey=" +
-			geoapifyAPIKey,
-		iconSize: [65, 90], // size of the icon
-		iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
-		popupAnchor: [20, -33], // point from which the popup should open relative to the iconAnchor
-	});
+	if (isForButton) {
+		// create icon for filter button
+		var size = "x-large"; //x-large large small (default medium no need to declare)
 
-	//return icon;
+		icon = new L.icon({
+			iconUrl:
+				"https://api.geoapify.com/v1/icon/?type=circle&color=" +
+				color +
+				"&size=" +
+				size +
+				"&icon=" +
+				iconName +
+				"&iconType=" +
+				iconType +
+				"&iconSize=large&noShadow&noWhiteCircle&apiKey=" +
+				geoapifyAPIKey,
+			iconSize: [75, 95], // size of the icon
+		});
+	} else {
+		// create icon for map icons
+		icon = new L.icon({
+			iconUrl:
+				"https://api.geoapify.com/v1/icon/?type=" +
+				iconType +
+				"&color=" +
+				color +
+				"&size=xx-large&icon=" +
+				iconName +
+				"&textSize=large&noWhiteCircle&scaleFactor=2&apiKey=" +
+				geoapifyAPIKey,
+			iconSize: [65, 90], // size of the icon
+			iconAnchor: [15.5, 42], // point of icon corresponding to marker location
+			popupAnchor: [20, -33], // point popup is relative to the iconAnchor
+		});
+	}
 	return icon;
 };
 
@@ -172,10 +191,8 @@ export const getCenterPoint = () => {
 			"&iconSize=large&scaleFactor=2&apiKey=" +
 			geoapifyAPIKey,
 		iconSize: [75, 95], // size of the icon
-		iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
-		popupAnchor: [20, -33], // point from which the popup should open relative to the iconAnchor
+		iconAnchor: [15.5, 42], // point of icon corresponding to marker location
+		popupAnchor: [20, -33], // point popup is relative to the iconAnchor
 	});
-
-	//return icon;
 	return icon;
 };

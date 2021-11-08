@@ -3,7 +3,6 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import ButtonFilterCrime from "../components/ButtonFilterCrime";
 import uuid from "react-uuid";
-import {getCrimeIcon} from "../util/AssignMapIcons";
 
 // array to hold crimes to remove from map display
 let filters = [];
@@ -129,7 +128,7 @@ const FiltersModal = (props) => {
 		if (props.favouriteFilters.length > 0) {
 			for (let aFavouriteFilter of props.favouriteFilters) {
 				var aLabel = getButtonLabel(aFavouriteFilter);
-				changeFilterState(aLabel); // convert saved filters to button label
+				changeFilterState(aLabel); // convert filters from saved favourite to button label
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -204,7 +203,7 @@ const FiltersModal = (props) => {
 						categories={aButton.categories}
 						isActive={aButton.isActive}
 						changeFilterState={changeFilterState}
-						getCrimeIcon={getCrimeIcon}
+						getCrimeIcon={props.getCrimeIcon}
 					/>
 				))}
 			</Modal.Body>

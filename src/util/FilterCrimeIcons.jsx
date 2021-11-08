@@ -27,7 +27,7 @@ const applyFilters = (filters) => {
 	return crimesToDisplay;
 };
 
-// function which creates an array of all crimes to be displayed on map
+// Function which creates an array of all crimes to be displayed on map
 export const populateDisplayCrimes = (crimes, filters) => {
 	var displayCrimes = [];
 
