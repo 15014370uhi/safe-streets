@@ -255,6 +255,7 @@ const getSector = aPoliceForce => {
  * @return {string} The name of police force for current search location 
  */
 const getPoliceForce = async (aLatitude, aLongitude) => {
+
   var aPoliceForce; // name of police force
 
   const baseURL = 'https://data.police.uk/api/locate-neighbourhood?q=';

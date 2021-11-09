@@ -176,4 +176,21 @@ const improveMarkerVisibility = displayCrimes => {
   return displayCrimes;
 };
 
-module.exports = {getLatLon, getBoundingBox, improveMarkerVisibility};
+
+/**
+	 * Function which checks if a latitude, longitude coordinate lies
+	 * within the united kingdom boundary or not
+	 * @param {Number} lat The latitude coordinate
+	 * @param {Number} lon The longituded coordinate
+	 *
+	 * @returns {Boolean} isValidCoordinate Returns true if coordinate lies within UK
+	 */
+ const isWithinUK = (lat, lon) => {
+		let isValidCoordinate = true;
+		if (lat < 49.88 || lat > 60.86 || lon < -8.21 || lon > 1.77) {
+			isValidCoordinate = false;
+		}
+		return isValidCoordinate;
+	};
+
+module.exports = {getLatLon, getBoundingBox, improveMarkerVisibility, isWithinUK};

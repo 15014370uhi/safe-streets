@@ -5,7 +5,7 @@ import { Crimes } from "../contexts/CrimeDataContext";
 import { useHistory } from "react-router-dom";
 import Form from "../components/Form";
 import Spinner from "react-bootstrap/Spinner";
-import { getCrimeData, getThreatLevel } from "../util/GetCrimeData";
+import { getCrimeData } from "../util/GetCrimeData";
 
 // style components
 import { MDBRow, MDBCol, MDBCard, MDBCardBody, MDBCardHeader } from "mdbreact";
@@ -193,14 +193,10 @@ const Search = (props) => {
 							response.allCrimes
 						);
 
-						// get crime threat level for area
-						var threatLevel = getThreatLevel(response.predictions);						
-
 						// pass historic crime data and flask prediction data to results context
 						setResultsData({
 							predictions: response.predictions,
 							historicCrimes: response.historicCrimes,
-							threatLevel: threatLevel,
 						});
 
 						setCrimestoDisplay(response.allCrimes);

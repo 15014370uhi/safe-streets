@@ -13,7 +13,7 @@ import {
 	getCrimeIcon,
 	getCenterPoint,
 } from "../util/AssignMapIcons";
-import { getPredictions, getHistoricCrimes } from "../util/GetCrimeData";
+import { getPredictions, getHistoricCrimes, getThreatLevel} from "../util/GetCrimeData";
 
 import uuid from "react-uuid";
 
@@ -21,7 +21,7 @@ import uuid from "react-uuid";
 import AddFavouriteModal from "../modals/AddFavouriteModal";
 import ShowHistoricCrimeModal from "../modals/HistoricCrimeModal";
 import ShowPredictionsModal from "../modals/PredictionsModal";
-
+import CrimeWarningModal from "../modals/CrimeWarningModal";
 import RemoveFavouriteModal from "../modals/RemoveFavouriteModal";
 import FiltersModal from "../modals/FiltersModal";
 
@@ -30,6 +30,8 @@ import ButtonAddToFavs from "../components/ButtonAddToFavs";
 import ButtonRemoveFromFavs from "../components/ButtonRemoveFromFavs";
 import ButtonShowFilters from "../components/ButtonShowFilters";
 import ButtonShowPredictions from "../components/ButtonShowPredictions";
+import ButtonShowWarnings from "../components/ButtonShowWarnings";
+
 import ButtonBack from "../components/ButtonBack";
 import ButtonShowHistoricCrimes from "../components/ButtonShowHistoricCrimes";
 
@@ -50,9 +52,11 @@ const MapDisplay = () => {
 	const [showFiltersModal, setShowFiltersModal] = useState(false); // filters modal
 	const [showHistoricCrimeModal, setShowHistoricCrimeModal] = useState(false); // data chart modal
 	const [showPredictionsModal, setShowPredictionsModal] = useState(false); // data chart modal
+	const [showWarningsModal, setShowWarningsModal] = useState(false); // filters modal
 	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
 	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
-	const [timestamp, setTimestamp] = useState(""); //
+	const [timestamp, setTimestamp] = useState(""); 
+
 
 	let history = useHistory();
 
@@ -80,13 +84,15 @@ const MapDisplay = () => {
 			setTimestamp(history.location.state.timestamp);
 		}
 
-		// populate predictions and historic data
+		// populate predictions and historic data for favourite
 		var predictionsResponse = await getPredictions(payload);		
 		var historicResponse = await getHistoricCrimes(payload);
+		var threatLevel = getThreatLevel(predictionsResponse.predictions);
 		
 		setResultsData({
 			predictions: predictionsResponse.predictions,
 			historicCrimes: historicResponse.historicCrimes,
+			threatLevel: threatLevel,
 		});
 	};
 
@@ -107,6 +113,8 @@ const MapDisplay = () => {
 			filters: filters,
 		}));
 	};
+
+	
 
 	//default zoom level on map
 	const zoom = 17;
@@ -155,6 +163,17 @@ const MapDisplay = () => {
 
 				<ButtonBack />
 
+				{/* modal for crime warnings */}
+				<ButtonShowWarnings 
+					setModalShow={setShowWarningsModal}
+					threatLevel={resultsData.threatLevel}
+				/>
+				<CrimeWarningModal 
+					show={showWarningsModal}
+					onHide={() => setShowWarningsModal(false)}
+					threatLevel={resultsData.threatLevel}
+				/>
+
 				{/* filters */}
 				<ButtonShowFilters setModalShow={setShowFiltersModal} />
 				<FiltersModal
@@ -190,8 +209,7 @@ const MapDisplay = () => {
 				{/* prediction data from flask server */}
 				<ShowPredictionsModal
 					show={showPredictionsModal}
-					onHide={() => setShowPredictionsModal(false)}
-					predictions={resultsData.predictions}
+					onHide={() => setShowPredictionsModal(false)}					
 				/>
 				<ButtonShowPredictions setModalShow={setShowPredictionsModal} />
 

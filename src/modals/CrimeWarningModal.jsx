@@ -2,23 +2,20 @@ import React, { useContext, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { ResultsData } from "../contexts/ResultsDataContext";
 import FadeIn from "react-fade-in";
+import uuid from "react-uuid";
+
 
 import {
-	ResponsiveContainer,
-	BarChart,
-	Bar,
-	LabelList,
-	XAxis,
-	YAxis,
-	Cell,
+	ResponsiveContainer	
 } from "recharts";
 
 //style components
 import { MDBIcon } from "mdbreact";
 
-const ShowPredictionsModal = (props) => {
+const CrimeWarningModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
-	const [crimeColours, setCrimeColours] = useState([ //TODO move to external file ref for all
+
+	const [crimeColours, setCrimeColours] = useState([
 		"darkslateblue", //anti-social-behaviour
 		"blue", //theft
 		"hotpink", //burglary
@@ -112,24 +109,26 @@ const ShowPredictionsModal = (props) => {
 		return crimeCategory;
 	};
 
-	var chartData = [];
+
+	var highThreats = [];
+	
 
 	if (resultsData.predictions) {
 		for (var index in resultsData.predictions) {
 			var crimeCategory = getCrimeCategory(index);
 			var percentage = parseFloat(resultsData.predictions[index]);
-
+			
 			var crimeData = {
 				crime: crimeCategory,
 				probability: percentage,
 				label: percentage + "%",
 			};
-			chartData.push(crimeData);
-		}
+			
+			if(percentage > 20){
+				highThreats.push(crimeData);				
+			};
 	}
-
-	
-	
+}
 
 
 	return (
@@ -143,54 +142,35 @@ const ShowPredictionsModal = (props) => {
 				<Modal.Title id="contained-modal-title-vcenter">
 					<h2 className="my-3 prediction-modal-heading">
 						<MDBIcon
-							className="probabilityModal-icon"
-							icon="fa fa-brain fa-lg"
+							className="crime-warnings-icon"
+							icon="fa fa-exclamation fa-lg"
 						/>
-						Probability of crimes occuring during {aCurrentMonth}
+						High threat level for the following crimes..
 					</h2>
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>	
-			<FadeIn delay={250}>		
-				<ResponsiveContainer width={"100%"} height={500}>			
-					<BarChart
-						data={chartData}
-						layout="vertical"						
-						barCategoryGap={4}
-						margin={{ top: 0, right: 65, left: 22, bottom: 0 }}>	
-												
-						<XAxis type="number" hide />
-						<YAxis
-							type="category"
-							width={220}
-							dataKey="crime"
-							tickMargin={10}
-						/>
-						
-						<Bar
-							dataKey="probability"
-							fill={"blue"}
-							animationDuration={2000}
-							radius={[0, 8, 8, 0]}>
-							<LabelList
-								className="chart-labellist"
-								dataKey="label"
-								position="right"
-								style={{ fill: "black" }}
-							/>
-							{chartData.map((entry, index) => (
-								<Cell
-									key={`cell-${index}`}
-									fill={crimeColours[index]}
-								/>
-							))}
-						</Bar>						
-					</BarChart>					
-				</ResponsiveContainer>	
-				</FadeIn>		
+			{highThreats.map((aCrime) => (
+				<p className="crime-warning-item"
+				key={uuid()}>
+				{aCrime.crime} {' '}						
+				{aCrime.label}
+				</p>)
+				)}
+			
 			</Modal.Body>			
 		</Modal>
 	);
 };
 
-export default ShowPredictionsModal;
+export default CrimeWarningModal;
+
+
+// <FadeIn delay={150}>		
+// 				<ResponsiveContainer width={"100%"} height={100}>			
+// 									warning high threat
+// 				</ResponsiveContainer>	
+// 				<ResponsiveContainer width={"100%"} height={100}>			
+// 									warning medium threat
+// 				</ResponsiveContainer>	
+// 				</FadeIn>		
