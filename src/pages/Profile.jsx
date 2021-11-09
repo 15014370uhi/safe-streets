@@ -189,7 +189,7 @@ const Profile = () => {
 	return (
 		<React.Fragment>
 			{user ? (
-				<FadeIn delay={200}>
+				<FadeIn delay={250}>
 					<MDBCard className="profile-card">
 						<MDBCardHeader className="profile-heading">
 							<h1 className="profile-main-heading">Profile</h1>
@@ -219,7 +219,6 @@ const Profile = () => {
 										}										
 										timestamp={favourite.timestamp}
 										updateUserFavourites={getUserDetails}
-
 									/>
 
 									<MDBListGroupItem className="profile-favourites-list">

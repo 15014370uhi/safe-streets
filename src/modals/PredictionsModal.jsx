@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { ResultsData } from "../contexts/ResultsDataContext";
+import FadeIn from "react-fade-in";
 
 import {
 	ResponsiveContainer,
@@ -18,16 +19,16 @@ import { MDBIcon } from "mdbreact";
 const ShowPredictionsModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
 	const [crimeColours, setCrimeColours] = useState([
-		"#8a0404", //anti-social-behaviour
-		"purple", //theft
-		"#493baf", //burglary
-		"orange", //criminal_damage_and_arson
+		"darkslateblue", //anti-social-behaviour
+		"blue", //theft
+		"hotpink", //burglary
+		"orangered", //criminal_damage_and_arson
 		"brown", //drugs
 		"#570345", //public_order
 		"red", //possession_of_weapons
-		"#f40e0e", //violent_crime
+		"black", //violent_crime
 		"#8884d8", //vehicle_crime
-		"orange", //shoplifting
+		"gold", //shoplifting
 	]);
 	// array of month names
 	var months = [
@@ -113,20 +114,20 @@ const ShowPredictionsModal = (props) => {
 
 	var data = [];
 
-	if ( resultsData.predictions ){
-	for (const [key, value] of Object.entries(resultsData.predictions)) {		
-		var crimeCategory = getCrimeCategory(key);
-		var percentage = parseFloat(resultsData.predictions[key]);
+	if (resultsData.predictions) {
+		for (var index in resultsData.predictions) {
+			var crimeCategory = getCrimeCategory(index);
+			var percentage = parseFloat(resultsData.predictions[index]);
 
-		var dataToAdd = {
-			crime: crimeCategory,
-			probability: percentage,
-			label: percentage + "%",
-		};
-		data.push(dataToAdd);
-	}	
+			var dataToAdd = {
+				crime: crimeCategory,
+				probability: percentage,
+				label: percentage + "%",
+			};
+			data.push(dataToAdd);
+		}
 	}
-	
+
 
 	return (
 		<Modal
@@ -134,7 +135,7 @@ const ShowPredictionsModal = (props) => {
 			dialogClassName="modal-dialog modal-xl"
 			show={props.show}
 			onHide={props.onHide}
-			centered>
+			centered>			
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
 					<h2 className="my-3 prediction-modal-heading">
@@ -146,13 +147,15 @@ const ShowPredictionsModal = (props) => {
 					</h2>
 				</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>
-				<ResponsiveContainer width={"100%"} height={500}>
-					<BarChart						
+			<Modal.Body>	
+			<FadeIn delay={350}>		
+				<ResponsiveContainer width={"100%"} height={500}>			
+					<BarChart
 						data={data}
-						layout="vertical"
+						layout="vertical"						
 						barCategoryGap={4}
-						margin={{ top: 0, right: 65, left: 22, bottom: 0 }}>
+						margin={{ top: 0, right: 65, left: 22, bottom: 0 }}>	
+												
 						<XAxis type="number" hide />
 						<YAxis
 							type="category"
@@ -160,10 +163,11 @@ const ShowPredictionsModal = (props) => {
 							dataKey="crime"
 							tickMargin={10}
 						/>
+						
 						<Bar
 							dataKey="probability"
 							fill={"blue"}
-							animationDuration={1700}
+							animationDuration={2500}
 							radius={[0, 8, 8, 0]}>
 							<LabelList
 								className="chart-labellist"
@@ -177,10 +181,11 @@ const ShowPredictionsModal = (props) => {
 									fill={crimeColours[index]}
 								/>
 							))}
-						</Bar>
-					</BarChart>
-				</ResponsiveContainer>
-			</Modal.Body>
+						</Bar>						
+					</BarChart>					
+				</ResponsiveContainer>	
+				</FadeIn>		
+			</Modal.Body>			
 		</Modal>
 	);
 };

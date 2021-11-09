@@ -68,7 +68,7 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 
 	switch (aCrimeCategory) {
 		case "anti-social-behaviour":
-			color = "%238a0404"; //e.g. %23 plus hex code c12b08
+			color = "darkslateblue"; //e.g. %23 plus hex code c12b08
 			iconName = "record-voice-over";
 			iconType = "material";
 			break;
@@ -76,19 +76,19 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 		case "bicycle-theft":
 		case "other-theft":
 		case "theft-from-the-person":
-			color = "purple";
+			color = "blue";
 			iconName = "money-bill-alt";
 			iconType = "awesome";
 			break;
 
 		case "burglary":
-			color = "%23493baf";
+			color = "hotpink";
 			iconName = "home";
 			iconType = "awesome";
 			break;
 
 		case "criminal-damage-arson":
-			color = "orange";
+			color = "orangered";
 			iconName = "fire-alt";
 			iconType = "awesome";
 			break;
@@ -102,18 +102,18 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 		case "public-order":
 		case "other-crime":
 			color = "%23570345";
-			iconName = "group";
-			iconType = "material";
+			iconName = "bullhorn";
+			iconType = "awesome";
 			break;
 
 		case "possession-of-weapons":
 			color = "red";
-			iconName = "home";
+			iconName = "fist-raised";
 			iconType = "awesome";
 			break;
 
 		case "shoplifting":
-			color = "orange";
+			color = "gold";
 			iconName = "shopping-cart";
 			iconType = "awesome";
 			break;
@@ -121,7 +121,7 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 		case "violent-crime":
 		case "robbery":
 		case "violence-and-sexual-offences":
-			color = "%23f40e0e";
+			color = "black";
 			iconName = "sports_kabaddi";
 			iconType = "material";
 			break;
@@ -176,9 +176,10 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 };
 
 export const getCenterPoint = () => {
-	const color = "%23572ec7";
-	const type = "material";
+	const color = "red"; //const color = "%23572ec7";
+	const type = "awesome"; //const type = "material";
 	const iconType = "awesome";
+	const iconName = "search" //"times-circle" //"universal-access"
 
 	const icon = new L.icon({
 		iconUrl:
@@ -186,11 +187,13 @@ export const getCenterPoint = () => {
 			type +
 			"&color=" +
 			color +
+			"&icon=" + //TEST
+			iconName + //TEST
 			"&size=xx-large&iconType=" +
 			iconType +
-			"&iconSize=large&scaleFactor=2&apiKey=" +
+			"&iconSize=large&noWhiteCircle&scaleFactor=2&apiKey=" +			
 			geoapifyAPIKey,
-		iconSize: [75, 95], // size of the icon
+		iconSize: [110, 160], // size of the icon
 		iconAnchor: [15.5, 42], // point of icon corresponding to marker location
 		popupAnchor: [20, -33], // point popup is relative to the iconAnchor
 	});

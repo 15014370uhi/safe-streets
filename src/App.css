@@ -644,13 +644,14 @@ form>fieldset {
   padding-bottom: 7px;
   padding-left: 14px;
   padding-right: 16px;
+  float: left;
 }
 
 .btn-filter-inactive {
   font-size: 1.75em;
   color: #0eb8d6;
   font-weight: normal;
-  background-color: rgb(92, 75, 75) !important;
+  background-color: rgb(92, 75, 75) !important;  
 }
 
 .btn-filter-active {
@@ -659,6 +660,10 @@ form>fieldset {
 
 .btn-filter-inactive>i {
   padding-right: 19px;
+}
+
+.filter-button-icon {
+  font-size: 1.2em !important;
 }
 
 .btn-footer {

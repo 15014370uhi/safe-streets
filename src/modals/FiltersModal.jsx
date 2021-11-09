@@ -4,6 +4,8 @@ import Button from "react-bootstrap/Button";
 import ButtonFilterCrime from "../components/ButtonFilterCrime";
 import uuid from "react-uuid";
 import {getCrimeIcon} from "../util/AssignMapIcons";
+import FadeIn from "react-fade-in";
+
 
 // array to hold crimes to remove from map display
 let filters = [];
@@ -196,6 +198,7 @@ const FiltersModal = (props) => {
 			</Modal.Header>
 
 			<Modal.Body className="filterButtonsGroup">
+			<FadeIn delay={100}>
 				{crimeButtons.map((aButton) => (
 					<ButtonFilterCrime
 						key={uuid()}
@@ -207,6 +210,7 @@ const FiltersModal = (props) => {
 						getCrimeIcon={getCrimeIcon}
 					/>
 				))}
+				</FadeIn>
 			</Modal.Body>
 			<Modal.Footer>
 				<Button

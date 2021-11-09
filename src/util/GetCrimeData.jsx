@@ -14,8 +14,7 @@ export const getCrimeData = async payload => {
 			noCrimes: res.data.noCrimes,
 			policeForce: res.data.policeForce,
 			allCrimes: res.data.allCrimes,
-		  };
-      console.log('res.data.predictions: ' + JSON.stringify(res.data.predictions));
+		  };     
 		  resolve (response);
 		})
 		.catch (error => {

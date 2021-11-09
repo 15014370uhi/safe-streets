@@ -160,7 +160,6 @@ const ShowHistoricCrimeModal = (props) => {
 				currentGraphMonth = currentGraphMonth - 12;
 			}
 
-		
 			var monthlyStats = {
 				"month": months[currentGraphMonth - 1],
 				"Anti-Social Behaviour": 0,
@@ -240,8 +239,10 @@ const ShowHistoricCrimeModal = (props) => {
 	var graphData = getSortedMonths();
 
 	for (const crime in resultsData.historicCrimes) {
-		let aCrimeRecord = resultsData.historicCrimes[crime];		
-		
+		let aCrimeRecord = resultsData.historicCrimes[crime];
+
+		//console.log('crime has: ' + JSON.stringify(resultsData.historicCrimes[crime]));
+
 		// format crime category string
 		var aCategory = aCrimeRecord.category.replace(/-/g, " ");
 		aCategory = aCategory.charAt(0).toUpperCase() + aCategory.slice(1);
@@ -251,14 +252,20 @@ const ShowHistoricCrimeModal = (props) => {
 		var indexOfMonth = parseInt(aCrimeRecord.month - 1);
 		var aMonth = months[indexOfMonth];
 
-		for (var index in graphData){
-			var monthlyCrimes = graphData[index];
-			if(monthlyCrimes.month === aMonth){				
-				monthlyCrimes[aCategory] = monthlyCrimes[aCategory] + 1;						
-			}			
-		}
-	};
+		//console.log('graphdata contains: ' + JSON.stringify(graphData));
 
+		for (const [key, value] of Object.entries(graphData)) {
+			// if current object matches month crime was committed
+			if (value.month === aMonth) {
+				//console.log('matching month for crime: ' + value.name + ' ' + aMonth); 
+				// increment count of crime of this type for month
+				value[aCategory] = value[aCategory] + 1;
+				//console.log('incrementing crime count: ' + value[aCategory]); 
+			}
+		}
+	}
+
+	console.log('graphdata contains: ' + JSON.stringify(graphData));
 
 	return (
 		<Modal
@@ -280,7 +287,7 @@ const ShowHistoricCrimeModal = (props) => {
 					<AreaChart
 						width={"100%"}
 						height={"100%"}
-						data={graphData}
+						data={testData}
 						animationDuration={800}
 						margin={{
 							top: 10,
@@ -291,8 +298,8 @@ const ShowHistoricCrimeModal = (props) => {
 						<CartesianGrid strokeDasharray="3 3" />
 						<XAxis dataKey="month" />
 						<YAxis type="number" domain={["dataMin", "dataMax"]} />
-						<Tooltip />						
-					 <Area
+						<Tooltip />
+						<Area
 							type="monotone"
 							dataKey="Anti-Social Behaviour"
 							stackId="1"
@@ -303,8 +310,8 @@ const ShowHistoricCrimeModal = (props) => {
 							type="monotone"
 							dataKey="Burglary"
 							stackId="1"
-							stroke="hotpink"
-							fill="hotpink"
+							stroke="#493baf"
+							fill="#493baf"
 						/>
 						<Area
 							type="monotone"
@@ -361,7 +368,7 @@ const ShowHistoricCrimeModal = (props) => {
 							stackId="1"
 							stroke="black"
 							fill="black"
-						/> 
+						/>
 					</AreaChart>
 				</ResponsiveContainer>
 			</Modal.Body>
