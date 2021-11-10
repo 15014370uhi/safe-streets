@@ -539,7 +539,7 @@ form>fieldset {
   border-radius: 15px;
   box-shadow: 0 14px 18px rgb(4, 8, 56);
   left: 1.5%;
-  top: 14%;
+  top: 13%;
   z-index: 1000;
 }
 
@@ -559,7 +559,7 @@ form>fieldset {
   border-radius: 10px;
   box-shadow: 0 14px 18px rgb(4, 8, 56);
   right: 1.0%;
-  top: 14%;
+  top: 13%;
   z-index: 1000;
 }
 
@@ -569,30 +569,30 @@ form>fieldset {
   opacity:0;
 }
 
-
 @keyframes fadeIn {
 0% { opacity:0; }
-50% { opacity:0.5; } 
+50% { opacity:0.3; } 
 100% { opacity:1; } 
 }
 
-
-
 .btn-show-warnings {
   animation: fadeIn 3s linear forwards;
+  width: 530px;
   position: fixed;
   font-size: 2.7em;
   padding-left: 0px;
   padding-right: 22px;
-  padding-top: 6px;
+  padding-top: 4px;
   padding-bottom: 0px;
-  margin-right: 5px;
-  border: 4px solid rgb(68, 84, 88);
+  text-align: center;
+  margin: auto;
+  border: 4px solid rgba(98, 17, 21, 0.561);
   border-radius: 10px;
-  box-shadow: 0 14px 18px rgb(4, 8, 56);
-  right: 38%;
-  top: 11%;
-  z-index: 1000;
+  box-shadow: 0 14px 18px rgba(131, 7, 7, 0.479);
+  left: 0%;
+  right: 0%;
+  top: 13%;
+  z-index: 900;  
 }
 
 .crime-warning-item {
@@ -754,6 +754,20 @@ form>fieldset {
 /* MEDIA Queries */
 @media screen and (max-width: 1024px) {
 
+  .btn-show-warnings  > .tooltip-text {
+    display: none;
+  } 
+
+  .btn-show-warnings {    
+    width: auto;
+    padding-right: 0px;
+    padding-left: 0px;
+    left: 50%;
+    right: 50%;
+    top: 15%;
+    transition: all 0.5s ease;
+  } 
+
   /* navigation icon sizes */
   .navbar-logo-text>h1 {
     font-weight: 550;
@@ -911,8 +925,6 @@ form>fieldset {
     transform: translate(5%, 0%);
     transition: all 0.3s ease;
   }
-
-  
 
 .btn-display-historiccrimes > .tooltip-text {
   display: none;

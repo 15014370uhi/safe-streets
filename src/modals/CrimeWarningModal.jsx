@@ -27,36 +27,7 @@ const CrimeWarningModal = (props) => {
 		"#8884d8", //vehicle_crime
 		"gold", //shoplifting
 	]);
-	// array of month names
-	var months = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
-	];
 
-	var aCurrentMonth = months[new Date().getMonth() + 1];
-
-	const getPredictedMonth = () => {
-		//get final graph month to display
-		let predictedMonth = new Date().getMonth() + 1; //zero indexed
-		predictedMonth = months[predictedMonth];
-		return predictedMonth;
-	};
-
-	const getCurrentMonth = () => {
-		let currentMonth = new Date().getMonth() + 1; //zero indexed
-		currentMonth = months[currentMonth];
-		return currentMonth;
-	};
 
 	const getCrimeCategory = (aCrimeCategory) => {
 		let crimeCategory = "";
@@ -124,6 +95,7 @@ const CrimeWarningModal = (props) => {
 				label: percentage + "%",
 			};
 			
+			//TODO fix for classification of crimes violent, theft/property, nuiscence/noise(etc)
 			if(percentage > 20){
 				highThreats.push(crimeData);				
 			};
@@ -165,12 +137,3 @@ const CrimeWarningModal = (props) => {
 
 export default CrimeWarningModal;
 
-
-// <FadeIn delay={150}>		
-// 				<ResponsiveContainer width={"100%"} height={100}>			
-// 									warning high threat
-// 				</ResponsiveContainer>	
-// 				<ResponsiveContainer width={"100%"} height={100}>			
-// 									warning medium threat
-// 				</ResponsiveContainer>	
-// 				</FadeIn>		

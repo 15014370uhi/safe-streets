@@ -20,8 +20,7 @@ def runPredictionModel():
     sector = data.get("sector")
 
     # call machine learning function with data
-    result = getProbability(month, year, lat, lon, sector)
-    #print(result) #TODO TEST
+    result = getProbability(month, year, lat, lon, sector)   
     results_JSON = json.dumps(result)
     return results_JSON
 

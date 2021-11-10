@@ -193,7 +193,7 @@ export const getCenterPoint = () => {
 			iconType +
 			"&iconSize=large&noWhiteCircle&scaleFactor=2&apiKey=" +			
 			geoapifyAPIKey,
-		iconSize: [110, 160], // size of the icon
+		iconSize: [95, 130], // size of the icon
 		iconAnchor: [15.5, 42], // point of icon corresponding to marker location
 		popupAnchor: [20, -33], // point popup is relative to the iconAnchor
 	});

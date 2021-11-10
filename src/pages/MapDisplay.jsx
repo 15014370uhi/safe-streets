@@ -56,13 +56,26 @@ const MapDisplay = () => {
 	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
 	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
 	const [timestamp, setTimestamp] = useState(""); 
+	const [showWarningButton, setShowWarningButton] = useState(false); 
+	
 
 
 	let history = useHistory();
+	//let threatLevel = "...";
 
 	useEffect(() => {
+		console.log('history.location.state: ' + JSON.stringify(history.location.state.threatlevel));
 		if (history.location.state?.isfavourite === "true") {
-			setMapFromFavourite();
+		
+			
+			// set filters from saved favourite filters
+		updateFilteredCrimes(mapDetails.filters);
+
+		if (history.location.state.timestamp) {
+			setTimestamp(history.location.state.timestamp);
+		};		
+		setMapFromFavourite();
+
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -72,28 +85,25 @@ const MapDisplay = () => {
 	};
 
 	const setMapFromFavourite = async () => {
-		// set filters from saved favourite filters
-		updateFilteredCrimes(mapDetails.filters);
-
 		const payload = {
 			lat: mapDetails.lat,
 			lon: mapDetails.lon,
 		};
-
-		if (history.location.state.timestamp) {
-			setTimestamp(history.location.state.timestamp);
-		}
-
 		// populate predictions and historic data for favourite
-		var predictionsResponse = await getPredictions(payload);		
-		var historicResponse = await getHistoricCrimes(payload);
+		var predictionsResponse = await getPredictions(payload);
 		var threatLevel = getThreatLevel(predictionsResponse.predictions);
+		console.log('threat level in mapdisplay: ' + threatLevel);	
+
+		var historicResponse = await getHistoricCrimes(payload);		
 		
 		setResultsData({
 			predictions: predictionsResponse.predictions,
 			historicCrimes: historicResponse.historicCrimes,
 			threatLevel: threatLevel,
 		});
+
+		setShowWarningButton(true);
+		
 	};
 
 	// function which updates the filtered crimes on map
@@ -166,12 +176,11 @@ const MapDisplay = () => {
 				{/* modal for crime warnings */}
 				<ButtonShowWarnings 
 					setModalShow={setShowWarningsModal}
-					threatLevel={resultsData.threatLevel}
+					analysisComplete={showWarningButton}	
 				/>
 				<CrimeWarningModal 
 					show={showWarningsModal}
-					onHide={() => setShowWarningsModal(false)}
-					threatLevel={resultsData.threatLevel}
+					onHide={() => setShowWarningsModal(false)}					
 				/>
 
 				{/* filters */}

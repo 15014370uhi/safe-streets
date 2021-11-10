@@ -146,7 +146,7 @@ const ShowPredictionsModal = (props) => {
 							className="probabilityModal-icon"
 							icon="fa fa-brain fa-lg"
 						/>
-						Probability of crimes occuring during {aCurrentMonth}
+						Predicted ratio of crime types during {aCurrentMonth}
 					</h2>
 				</Modal.Title>
 			</Modal.Header>

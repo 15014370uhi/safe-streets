@@ -205,7 +205,11 @@ const Search = (props) => {
 
 						setCrimestoDisplay(response.allCrimes);
 
-						history.push(`/mapdisplay`);
+						//history.push(`/mapdisplay`);
+						history.push(`/mapdisplay`, {
+							isfavourite: "false", //if map a previously favourited map or new search result							
+							threatlevel: threatLevel,
+						});
 					}
 				}
 			}

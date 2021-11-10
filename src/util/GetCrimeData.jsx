@@ -60,9 +60,9 @@ export const getHistoricCrimes = async (payload) => {
 	});
 };
 
-// return threat level for search area
+// return crime threat level for search area
 export const getThreatLevel = (predictions) => {
-	var threatLevel = "green";
+	var threatLevel = "Low";
 	var highestPercentage = parseFloat("0");
 
 	for (var aPrediction in predictions) {
@@ -74,16 +74,9 @@ export const getThreatLevel = (predictions) => {
 	}
 
 	if (highestPercentage > 30) {
-		threatLevel = "red";
+		threatLevel = "High";
 	} else if (highestPercentage < 30 && highestPercentage > 20) {
-		threatLevel = "yellow";
+		threatLevel = "Medium";
 	}
 	return threatLevel;
-};
-
-// return threat level for search area
-export const getHighThreats = (predictions) => {
-	var highThreatCrimes = [];
-	
-	return highThreatCrimes;
 };
