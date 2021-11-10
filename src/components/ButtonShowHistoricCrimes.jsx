@@ -1,8 +1,20 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
+import Popover from "react-bootstrap/Popover";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 const ButtonShowHistoricCrimes = ({ setModalShow }) => {
 	return (
+		<>
+		<OverlayTrigger
+					placement="right"
+					overlay={
+						<Popover id={"button-tooltip"}>
+							<Popover.Content className="button-tooltip-text">
+								Display Annual Crime Rates
+							</Popover.Content>
+						</Popover>
+					}>
 		<Button
 			className="btn-display-historiccrimes"
 			variant="secondary"
@@ -14,6 +26,8 @@ const ButtonShowHistoricCrimes = ({ setModalShow }) => {
 			/>
 			<span className="tooltip-text">Historic Crime Data</span>
 		</Button>
+		</OverlayTrigger>
+		</>
 	);
 };
 

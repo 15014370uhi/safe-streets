@@ -1,3 +1,35 @@
+.fade {
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInOut {
+  from {
+    opacity: 0.2;
+  }
+
+  50% {
+    opacity: 0.9;
+  }  
+
+  to {
+    opacity: 0.2;
+  }
+}
+
 .navbar {
   background: linear-gradient(90deg, rgb(119, 118, 136) 0%, rgb(213, 208, 235) 100%);
   height: 100px;
@@ -58,7 +90,6 @@ ul {
 }
 
 /* navigation icon sizes */
-
 i.fas,
 i.fa {
   font-size: 1.8em;
@@ -70,11 +101,9 @@ label.nav-icon-label {
   font-size: 1.4em;
 }
 
-
 a.dropdown-toggle.nav-link {
   margin-right: 0px;
 }
-
 
 div.dropdown-menu.show {
   padding-top: 0px;
@@ -124,7 +153,8 @@ div.dropdown-menu.show {
   margin-left: 28%;
 }
 
-.btn-signup, .btn-login {
+.btn-signup,
+.btn-login {
   font-size: 2em;
 }
 
@@ -174,7 +204,7 @@ i.fas.fa-globe {
 
 .uk-guide-map {
   max-height: 650px !important;
-  margin-right: auto; 
+  margin-right: auto;
 }
 
 #showMapGuide:hover,
@@ -231,7 +261,6 @@ i.far.fa-trash-alt.fa-lg:hover {
 }
 
 /* profile page */
-
 .profile-card {
   max-width: 63%;
   margin-left: auto;
@@ -259,8 +288,9 @@ i.far.fa-trash-alt.fa-lg:hover {
   background-color: rgba(38, 46, 117, 0.376);
 }
 
-.profile-favourites-list:hover { 
-  box-shadow: 3px 3px 20px 4px rgba(7, 0, 27, 0.548);  
+.profile-favourites-list:hover {
+  box-shadow: 3px 3px 20px 4px rgba(7, 0, 27, 0.548);
+ 
 }
 
 li.list-group-item.profile-favourites-list {
@@ -268,7 +298,7 @@ li.list-group-item.profile-favourites-list {
 }
 
 li.list-group-item.profile-favourites-list:hover {
-  font-weight: bold;  
+  font-weight: bold;
 }
 
 .profile-favourite-entry {
@@ -319,8 +349,6 @@ li.list-group-item.profile-favourites-list:hover {
   min-height: 50px;
 }
 
-
-
 /* favourites page */
 .card-img,
 .card-img-top {
@@ -347,7 +375,7 @@ li.list-group-item.profile-favourites-list:hover {
 
 .favourite-card-display-button:hover {
   font-weight: bold;
-  box-shadow: 0 3px 18px black; 
+  box-shadow: 0 3px 18px black;
 }
 
 .favourite-card-body>.fa-trash-alt:before {
@@ -384,7 +412,6 @@ div.favourite-card-header.card-header {
   transform: translateY(-0.1em);
   transition: all 0.4s ease-out;
 }
-
 
 /* search form page */
 .form-card {
@@ -483,8 +510,7 @@ form>fieldset {
   background-color: rgb(103, 241, 103);
 }
 
-
-.dropdown-button:hover {  
+.dropdown-button:hover {
   font-weight: bold;
   background-color: rgb(33, 187, 111);
 }
@@ -509,13 +535,11 @@ form>fieldset {
   display: none;
 }
 
-
 /* map display screen */
 .map-container {
   padding-top: 100px;
   position: relative;
 }
-
 
 .mapDisplay {
   display: block;
@@ -547,7 +571,6 @@ form>fieldset {
   font-size: 3em;
 }
 
-
 .btn-open-filter {
   position: fixed;
   font-size: 3em;
@@ -563,21 +586,9 @@ form>fieldset {
   z-index: 1000;
 }
 
-
-
-.fade{  
-  opacity:0;
-}
-
-@keyframes fadeIn {
-0% { opacity:0; }
-50% { opacity:0.3; } 
-100% { opacity:1; } 
-}
-
-.btn-show-warnings {
-  animation: fadeIn 3s linear forwards;
-  width: 530px;
+.btn-show-warnings,
+.btn-show-analysis {
+  width: 540px;
   position: fixed;
   font-size: 2.7em;
   padding-left: 0px;
@@ -592,7 +603,11 @@ form>fieldset {
   left: 0%;
   right: 0%;
   top: 13%;
-  z-index: 900;  
+  z-index: 900;
+}
+
+.btn-show-analysis {
+  animation: fadeInOut 1.5s infinite;
 }
 
 .crime-warning-item {
@@ -614,6 +629,16 @@ form>fieldset {
   padding-right: 10px;
 }
 
+#button-tooltip {
+  background-color: #99c5df;
+}
+
+.button-tooltip-text {
+  font-size: 2em !important;
+  color: #060706 !important;
+  font-weight: bold !important;
+}
+
 .btn-add-to-favourites {
   position: fixed;
   font-size: 4em;
@@ -628,7 +653,6 @@ form>fieldset {
   right: 1.9%;
   z-index: 1000;
 }
-
 
 .btn-delete-favourite {
   position: fixed;
@@ -645,8 +669,8 @@ form>fieldset {
   z-index: 1000;
 }
 
-
 .btn-display-historiccrimes {
+  animation: fadeIn 2s linear forwards;
   position: fixed;
   font-size: 2.7em;
   padding-top: 12px !important;
@@ -662,8 +686,8 @@ form>fieldset {
   transition: all 0.3s ease;
 }
 
-
 .btn-display-predictions {
+  animation: fadeIn 3s linear forwards;
   position: fixed;
   font-size: 2.7em;
   padding-top: 12px !important;
@@ -697,7 +721,7 @@ form>fieldset {
   font-size: 1.75em;
   color: #0eb8d6;
   font-weight: normal;
-  background-color: rgb(92, 75, 75) !important;  
+  background-color: rgb(92, 75, 75) !important;
 }
 
 .btn-filter-active {
@@ -738,7 +762,6 @@ form>fieldset {
   font-size: 1.4em;
 }
 
-
 .chart-labellist {
   font-size: 1.4em;
   font-weight: bold;
@@ -750,15 +773,14 @@ form>fieldset {
   font-weight: bold;
 }
 
-
 /* MEDIA Queries */
 @media screen and (max-width: 1024px) {
 
-  .btn-show-warnings  > .tooltip-text {
+  .btn-show-warnings>.tooltip-text {
     display: none;
-  } 
+  }
 
-  .btn-show-warnings {    
+  .btn-show-warnings {
     width: auto;
     padding-right: 0px;
     padding-left: 0px;
@@ -766,7 +788,7 @@ form>fieldset {
     right: 50%;
     top: 15%;
     transition: all 0.5s ease;
-  } 
+  }
 
   /* navigation icon sizes */
   .navbar-logo-text>h1 {
@@ -902,14 +924,12 @@ form>fieldset {
   a.navbar-logo.navbar-brand.active {
     padding-left: 5px;
   }
-
 }
-
 
 @media screen and (max-width: 815px) {
 
   .fa-search {
-        transition: all 0.3s ease;
+    transition: all 0.3s ease;
   }
 
   .navbar-logo-text>h1 {
@@ -926,28 +946,26 @@ form>fieldset {
     transition: all 0.3s ease;
   }
 
-.btn-display-historiccrimes > .tooltip-text {
-  display: none;
-}
+  .btn-display-historiccrimes>.tooltip-text {
+    display: none;
+  }
 
-.btn-display-predictions > .tooltip-text {
-  display: none;
-}
+  .btn-display-predictions>.tooltip-text {
+    display: none;
+  }
 
+  .btn-display-predictions {
+    padding-right: 0px !important;
+    border: 6px solid rgba(42, 138, 13, 0.849);
+    border-radius: 90px;
+  }
 
-.btn-display-predictions {
-  padding-right: 0px !important;  
-  border: 6px solid rgba(42, 138, 13, 0.849);
-  border-radius: 90px; 
-}
-
-.btn-display-historiccrimes {
-  padding-right: 4px !important;  
-  padding-left: 4px !important; 
-  border: 6px solid rgba(170, 28, 28, 0.849);
-  border-radius: 90px; 
-}
-
+  .btn-display-historiccrimes {
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+    border: 6px solid rgba(170, 28, 28, 0.849);
+    border-radius: 90px;
+  }
 }
 
 @media screen and (max-width: 650px) {

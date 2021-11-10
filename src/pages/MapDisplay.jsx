@@ -58,15 +58,10 @@ const MapDisplay = () => {
 	const [timestamp, setTimestamp] = useState(""); 
 	const [showWarningButton, setShowWarningButton] = useState(false); 
 	
-
-
 	let history = useHistory();
-	//let threatLevel = "...";
 
 	useEffect(() => {
-		console.log('history.location.state: ' + JSON.stringify(history.location.state.threatlevel));
-		if (history.location.state?.isfavourite === "true") {
-		
+		if (history.location.state?.isfavourite === "true") {		
 			
 			// set filters from saved favourite filters
 		updateFilteredCrimes(mapDetails.filters);
@@ -75,7 +70,8 @@ const MapDisplay = () => {
 			setTimestamp(history.location.state.timestamp);
 		};		
 		setMapFromFavourite();
-
+		} else {
+			setShowWarningButton(true);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -92,8 +88,6 @@ const MapDisplay = () => {
 		// populate predictions and historic data for favourite
 		var predictionsResponse = await getPredictions(payload);
 		var threatLevel = getThreatLevel(predictionsResponse.predictions);
-		console.log('threat level in mapdisplay: ' + threatLevel);	
-
 		var historicResponse = await getHistoricCrimes(payload);		
 		
 		setResultsData({
@@ -123,8 +117,6 @@ const MapDisplay = () => {
 			filters: filters,
 		}));
 	};
-
-	
 
 	//default zoom level on map
 	const zoom = 17;
