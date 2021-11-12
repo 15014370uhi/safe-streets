@@ -80,23 +80,23 @@ const CrimeWarningModal = (props) => {
 		return crimeCategory;
 	};
 
-
-	var highThreats = [];
-	
+//TODO change all this to include crime types etc
+	var highThreats = [];	
 
 	if (resultsData.predictions) {
-		for (var index in resultsData.predictions) {
-			var crimeCategory = getCrimeCategory(index);
-			var percentage = parseFloat(resultsData.predictions[index]);
+		for (var crime in resultsData.predictions.percentages) {
+			var crimeCategory = getCrimeCategory(crime);
+			var crimeOccurence = parseInt(resultsData.predictions.totals[crime]);
+			var percentageOfCrimes = parseFloat(resultsData.predictions.percentages[crime]);
 			
 			var crimeData = {
 				crime: crimeCategory,
-				probability: percentage,
-				label: percentage + "%",
+				occurrences: crimeOccurence,				
+				percentage: percentageOfCrimes + "%",
 			};
 			
 			//TODO fix for classification of crimes violent, theft/property, nuiscence/noise(etc)
-			if(percentage > 20){
+			if(percentageOfCrimes > 20){
 				highThreats.push(crimeData);				
 			};
 	}
@@ -112,21 +112,25 @@ const CrimeWarningModal = (props) => {
 			centered>			
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
-					<h2 className="my-3 prediction-modal-heading">
+					<h3 className="my-3 prediction-modal-heading">
 						<MDBIcon
 							className="crime-warnings-icon"
 							icon="fa fa-exclamation fa-lg"
 						/>
-						High threat level for the following crimes..
-					</h2>
+						High threat levels for the following crimes...
+					</h3>
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>	
+			<p><strong><h2>Predicted Crime Incidents</h2></strong></p>		
 			{highThreats.map((aCrime) => (
 				<p className="crime-warning-item"
 				key={uuid()}>
-				{aCrime.crime} {' '}						
-				{aCrime.label}
+				<strong>				
+				{aCrime.crime}: {' '}
+				{aCrime.occurrences} {' '}		
+				</strong>			
+				({aCrime.percentage} of all crimes)
 				</p>)
 				)}
 			

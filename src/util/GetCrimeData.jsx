@@ -63,13 +63,17 @@ export const getHistoricCrimes = async (payload) => {
 // return crime threat level for search area
 export const getThreatLevel = (predictions) => {
 	var threatLevel = "Low";
-	var highestPercentage = parseFloat("0");
+	var highestPercentage = 0;
+	var crimePercentages = predictions.percentages;
 
-	for (var aPrediction in predictions) {
-		var crimeProbability = parseFloat(predictions[aPrediction]);
 
-		if (crimeProbability > highestPercentage) {
-			highestPercentage = crimeProbability;
+	//TODO assess crime type and assign threat level based on crime types
+	for (var aPrediction in crimePercentages) {
+		console.log('getThreatLevel aPrediction: ' + aPrediction + ' ' + crimePercentages[aPrediction]); //TODO
+		var crimePercentage = parseFloat(crimePercentages[aPrediction]);
+
+		if (crimePercentage > highestPercentage) {
+			highestPercentage = crimePercentage;
 		}
 	}
 

@@ -24,59 +24,118 @@ def getCrimeCategory(aCrimeValue):
     if(aCrimeValue == 9):
         return 'Shoplifting' # shop lifting 
 
-# function which formats crime prediction results into an object
-def getResult(data):   
+# function which formats crime prediction occurrences into an object
+def addTotals(crimePercentages, totalNumberCrimes):   
+    
+    results = {}
+    counter = 0
+
+# iterate over crime ratio predictions and format to 2 decimal places
+    for percentage in crimePercentages: 
+        crimeCategory = getCrimeCategory(counter)  # get crime type      
+        occurrences = round(percentage * totalNumberCrimes) # set occurrences of this crime       
+        results[crimeCategory] = occurrences  # add to result object       
+        counter += 1    
+    
+    return results    
+
+# function which generates an object with crime types and crime percentage ratios
+def addPercentages(crimePercentages):   
     
     results = {}
     counter = 0
 
     # iterate over crime predictions and format to 2 decimal places
-    for percentage in data:  
+    for percentage in crimePercentages:  
         aPercentage = f'{(percentage * 100):.2f}'        
         crimeCategory = getCrimeCategory(counter) 
         results[crimeCategory] = aPercentage
         counter += 1   
     
     return results    
+
     
-# function which returns the probablity of crime types occuring 
-# at a latitude and longitude location during the next month
+# function which predicts the percentage ratio of each crime type occurring within 
+# a cluster area that encompasses a latitude and longitude location, 
+# for the next calender month
 def getProbability(month, year, lat, lon, sector):   
     
-    # load KMeans cluster model for current sector
-    clusterFile = 'kmini_models/KMini_' + sector + '.sav'    
+    # set KMeans cluster model filename for current sector
+    clusterFilename = 'kmini_models/KMini_' + sector + '.sav'    
     
-    # load logistic regression model from file
-    cluster_model = joblib.load(clusterFile)
+    # load KMeans cluster model from file
+    cluster_model = joblib.load(clusterFilename)
     
-    # set file location for logistic regression model
-    logisticRegressionFile = 'logisticRegression_models/LogisticRegression_' + sector + '.sav'
+    # set filename for logistic regression ratio prediction model for sector
+    LR_Ratio_Filename = 'logisticRegression_models/LR_Ratio_' + sector + '.sav'
+    
+     # load the logistic regression ratio model from file
+    LR_Ratio_Model = joblib.load(LR_Ratio_Filename)    
  
-    # load the model from the file
-    logisticRegressionModel = joblib.load(logisticRegressionFile)
+    # set filename for logistic regression occurrences model for sector
+    LR_Occurrence_Filename = 'logisticRegression_models/LR_Occurrence_' + sector + '.sav'
+     
+    # load the logistic regression occurrences model from file
+    LR_Occurrence_Model = joblib.load(LR_Occurrence_Filename)
     
-    # get cluster value for user search location lat and lon using KMeans cluster model
+    # get cluster value for lat/lon location using KMeans cluster model
     cluster = cluster_model.predict([[lat, lon]])
    
-    # create X features array as month, year, cluster value
+    # create X features array as month, year, cluster
     X = np.array([[year, month, cluster.item(0)]], dtype=np.float32)   
     
-    # scale data
-    X = logisticRegressionModel.scaler.transform(X) 
+    crimePercentageRatios = predictCrimeRatios(X, LR_Ratio_Model)
+    totalNumberOfCrimes = predictNumberCrimes(X, LR_Occurrence_Model)
+    
+    # generate formatted result object
+    result = {}
+    
+    result['totals'] = addTotals(crimePercentageRatios, totalNumberOfCrimes)  
+    result['percentages'] = addPercentages(crimePercentageRatios)
+    
+    return result
+
+
+
+
+# function which predicts the percentage ratio of crime types that will occur
+def predictCrimeRatios(X, LR_Model):       
+    
+    # scale feature data
+    X = LR_Model.scaler.transform(X) 
    
-    # get reference to cluster value column
+    # get cluster col
     cluster_col = X[:, [2]]
    
-    # get one-hot version of cluster col
-    oneHotEncodedCluster = logisticRegressionModel.encoder.transform(cluster_col).toarray()
+    # one-hot-encode cluster col
+    oneHotEncodedCluster = LR_Model.encoder.transform(cluster_col).toarray()
         
-    # recombine one-hot encoded cluster column back into array
-    X = np.hstack((X[:, :2], oneHotEncodedCluster))
+    # recombine one-hot-encoded cluster column back into feature array
+    X = np.hstack((X[:, :2], oneHotEncodedCluster))    
     
-    # get probability for crime categories
-    prediction = logisticRegressionModel.predict_proba(X)[0]     
-        
-    # generate result object
-    result = getResult(prediction)
+    # predict ratio of crime types as a percentage of all crime type
+    percentages = LR_Model.predict_proba(X)[0]   
+             
+    return percentages
+
+
+
+# function which predicts the total number of crimes that will occur
+def predictNumberCrimes(X, LR_Model):       
+    
+    # scale feature data
+    X = LR_Model.scaler.transform(X) 
    
-    return result
+    # get cluster col
+    cluster_col = X[:, [2]]
+   
+    # one-hot-encode cluster col
+    oneHotEncodedCluster = LR_Model.encoder.transform(cluster_col).toarray()
+        
+    # recombine one-hot-encoded cluster column back into feature array
+    X = np.hstack((X[:, :2], oneHotEncodedCluster))    
+    
+    # predict total number of crimes that will occur
+    totalNumberofCrimes = LR_Model.predict(X)[0]          
+     
+    return totalNumberofCrimes

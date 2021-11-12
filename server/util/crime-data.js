@@ -61,7 +61,7 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
       crimeData = res.data;
     })
     .catch (error => {
-      console.log ('error retrieving crime data from police API: ', error);
+      console.log ('error retrieving crime data from police API: ', error + '\n' + URLCrimes);
     });
 
   // Return the crime data

@@ -18,7 +18,9 @@ import { MDBIcon } from "mdbreact";
 
 const ShowPredictionsModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
-	const [crimeColours, setCrimeColours] = useState([ //TODO move to external file ref for all
+
+	const [crimeColours, setCrimeColours] = useState([
+		//TODO move to external file ref for all
 		"darkslateblue", //anti-social-behaviour
 		"blue", //theft
 		"hotpink", //burglary
@@ -46,21 +48,9 @@ const ShowPredictionsModal = (props) => {
 		"December",
 	];
 
-	var aCurrentMonth = months[new Date().getMonth() + 1];
+	var aCurrentMonth = months[new Date().getMonth() + 1]; // compensate for zero indexed data
 
-	const getPredictedMonth = () => {
-		//get final graph month to display
-		let predictedMonth = new Date().getMonth() + 1; //zero indexed
-		predictedMonth = months[predictedMonth];
-		return predictedMonth;
-	};
-
-	const getCurrentMonth = () => {
-		let currentMonth = new Date().getMonth() + 1; //zero indexed
-		currentMonth = months[currentMonth];
-		return currentMonth;
-	};
-
+	// Function which returns a crime category as graph label text
 	const getCrimeCategory = (aCrimeCategory) => {
 		let crimeCategory = "";
 		switch (aCrimeCategory) {
@@ -114,23 +104,26 @@ const ShowPredictionsModal = (props) => {
 
 	var chartData = [];
 
+	// create graph data for each crime
 	if (resultsData.predictions) {
-		for (var index in resultsData.predictions) {
-			var crimeCategory = getCrimeCategory(index);
-			var percentage = parseFloat(resultsData.predictions[index]);
+		for (var crime in resultsData.predictions.totals) {
+			var crimeCategory = getCrimeCategory(crime);
+			var crimeOccurence = parseInt(
+				resultsData.predictions.totals[crime]
+			);
+			var percentageOfCrimes = parseFloat(
+				resultsData.predictions.percentages[crime]
+			);
 
 			var crimeData = {
 				crime: crimeCategory,
-				probability: percentage,
-				label: percentage + "%",
+				occurrences: crimeOccurence,
+				percentage: percentageOfCrimes + "%",
 			};
+
 			chartData.push(crimeData);
 		}
 	}
-
-	
-	
-
 
 	return (
 		<Modal
@@ -138,7 +131,7 @@ const ShowPredictionsModal = (props) => {
 			dialogClassName="modal-dialog modal-xl"
 			show={props.show}
 			onHide={props.onHide}
-			centered>			
+			centered>
 			<Modal.Header closeButton>
 				<Modal.Title id="contained-modal-title-vcenter">
 					<h2 className="my-3 prediction-modal-heading">
@@ -146,49 +139,48 @@ const ShowPredictionsModal = (props) => {
 							className="probabilityModal-icon"
 							icon="fa fa-brain fa-lg"
 						/>
-						Predicted ratio of crime types during {aCurrentMonth}
+						Number of crime incidents predicted for {aCurrentMonth}
 					</h2>
 				</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>	
-			<FadeIn delay={250}>		
-				<ResponsiveContainer width={"100%"} height={500}>			
-					<BarChart
-						data={chartData}
-						layout="vertical"						
-						barCategoryGap={4}
-						margin={{ top: 0, right: 65, left: 22, bottom: 0 }}>	
-												
-						<XAxis type="number" hide />
-						<YAxis
-							type="category"
-							width={220}
-							dataKey="crime"
-							tickMargin={10}
-						/>
-						
-						<Bar
-							dataKey="probability"
-							fill={"blue"}
-							animationDuration={2000}
-							radius={[0, 8, 8, 0]}>
-							<LabelList
-								className="chart-labellist"
-								dataKey="label"
-								position="right"
-								style={{ fill: "black" }}
+			<Modal.Body>
+				<FadeIn delay={250}>
+					<ResponsiveContainer width={"100%"} height={500}>
+						<BarChart
+							data={chartData}
+							layout="vertical"
+							barCategoryGap={4}
+							margin={{ top: 0, right: 65, left: 22, bottom: 0 }}>
+							<XAxis type="number" hide />
+							<YAxis
+								type="category"
+								width={220}
+								dataKey="crime"
+								tickMargin={10}
 							/>
-							{chartData.map((entry, index) => (
-								<Cell
-									key={`cell-${index}`}
-									fill={crimeColours[index]}
+
+							<Bar
+								dataKey="occurrences"
+								fill={"blue"}
+								animationDuration={2000}
+								radius={[0, 8, 8, 0]}>
+								<LabelList
+									className="chart-labellist"
+									dataKey="occurrences"
+									position="right"
+									style={{ fill: "black" }}
 								/>
-							))}
-						</Bar>						
-					</BarChart>					
-				</ResponsiveContainer>	
-				</FadeIn>		
-			</Modal.Body>			
+								{chartData.map((entry, index) => (
+									<Cell
+										key={`cell-${index}`}
+										fill={crimeColours[index]}
+									/>
+								))}
+							</Bar>
+						</BarChart>
+					</ResponsiveContainer>
+				</FadeIn>
+			</Modal.Body>
 		</Modal>
 	);
 };

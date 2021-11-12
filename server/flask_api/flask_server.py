@@ -22,6 +22,9 @@ def runPredictionModel():
     # call machine learning function with data
     result = getProbability(month, year, lat, lon, sector)   
     results_JSON = json.dumps(result)
+   
+    print("results_JSON: ", results_JSON) #TODO TEST
+    
     return results_JSON
 
 if __name__ == "__main__":
