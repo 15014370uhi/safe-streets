@@ -65,10 +65,8 @@ const getBoundingBox = (latLocation, lonLocation) => {
   lonLocation = parseFloat (lonLocation);
 
   var boundingBox = []; //initialise array to hold bounding box coordinates
-  const latCorrection = 0.006; //offset adjustment for latitude coordinate
-  const lonCorrection = 0.010; //offset adjustment for longitude coordinate
-  // const latCorrection = 0.004; //offset adjustment for latitude coordinate
-  // const lonCorrection = 0.009; //offset adjustment for longitude coordinate
+  const latCorrection = 0.007; //offset adjustment for latitude coordinate
+  const lonCorrection = 0.011; //offset adjustment for longitude coordinate  
   const precision = 6; //significant figures accuracy for Lat, lon coordinates
 
   //top left coordinate of bounding box
@@ -147,7 +145,8 @@ const improveMarkerVisibility = displayCrimes => {
     0.0,
     -0.00013,
     -0.0002,
-    -0.00025 - 0.00030,
+    -0.00025,
+    -0.00030,
     -0.0004,
   ];
 
@@ -173,7 +172,7 @@ const improveMarkerVisibility = displayCrimes => {
   }
 
   // store max of 200 crimes, to cater to mapquest API map markers
- // displayCrimes = displayCrimes.slice (0, 200); //TODO historic data should not be sliced
+ // displayCrimes = displayCrimes.slice (0, 200); 
 
   return displayCrimes;
 };

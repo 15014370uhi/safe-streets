@@ -11,7 +11,6 @@ import { MDBIcon } from "mdbreact";
 
 const CrimeWarningModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
-
 	const [crimeColours, setCrimeColours] = useState([
 		"darkslateblue", // anti-social-behaviour
 		"hotpink", // burglary
@@ -25,6 +24,8 @@ const CrimeWarningModal = (props) => {
 		"#8884d8", // vehicle_crime
 		"black", // violent_crime
 	]);
+
+	var threats;	
 
 	const getCrimeCategory = (aCrimeCategory) => {
 		let crimeCategory = "";
@@ -77,34 +78,73 @@ const CrimeWarningModal = (props) => {
 				//intentially blank
 				break;
 		}
-
 		return crimeCategory;
 	};
 
-	//TODO change all this to include crime types etc
-	var highThreats = [];
+	
+	// Function which sorts an array of crimes by percentage value
+	const sortCrimesByPercentage = (crimeArray) => {
+		// sort crimes by lowest to highest percentage
+		crimeArray.sort(function (crimeA, crimeB) {
+			return crimeA.percentage - crimeB.percentage;
+		});
 
-	if (resultsData.predictions) {
-		for (var crime in resultsData.predictions.percentages) {
+		// reverse order
+		crimeArray.reverse();
+		console.log("crimeArray: " + JSON.stringify(crimeArray));
+		return crimeArray;
+	};
+
+
+	// Function which populates an array with formatted crime predictions
+	const populateCrimes = (crimes) => {
+		var results = [];
+
+		for (var crime in crimes.percentages) {
 			var crimeCategory = getCrimeCategory(crime);
 			var crimeOccurence = parseInt(
-				resultsData.predictions.totals[crime]
+				crimes.totals[crime]
 			);
 			var percentageOfCrimes = parseFloat(
-				resultsData.predictions.percentages[crime]
+				crimes.percentages[crime]
 			);
 
 			var crimeData = {
 				crime: crimeCategory,
 				occurrences: crimeOccurence,
-				percentage: percentageOfCrimes + "%",
+				percentage: percentageOfCrimes,
+				//percentage: percentageOfCrimes + "%",
 			};
-
-			//TODO fix for classification of crimes violent, theft/property, nuiscence/noise(etc)
-			if (percentageOfCrimes > 20) {
-				highThreats.push(crimeData);
-			}
+			results.push(crimeData);
 		}
+
+		// sort crime order by percentage
+		results = sortCrimesByPercentage(results);
+
+		return results;
+	};
+
+
+	// Function which finds the most prolific crimes from an array of crimes
+	const getThreats = (crimes) => {
+
+		// get top 3 crimes... is highest violent etc? if 2/3 top crimes are on the 
+		// vilolent list - set threat high, etc
+
+		
+
+		//tODO find some way to decide which are threats - e.g. violent etc is high threat
+		for(var aCrime in crimes){
+			console.log(aCrime); 
+		}
+		return crimes;
+	};
+
+	if (resultsData.predictions) {
+		threats = populateCrimes(resultsData.predictions);
+
+		// call function to find most prolific crimes
+		//threats = getThreats(threats);
 	}
 
 	return (
@@ -127,16 +167,14 @@ const CrimeWarningModal = (props) => {
 			</Modal.Header>
 			<Modal.Body>
 				<p>
-					<strong>
-						Predicted Crime Incidents
-					</strong>
+					<strong>Predicted Crime Incidents</strong>
 				</p>
-				{highThreats.map((aCrime) => (
+				{threats.map((aCrime) => (
 					<p className="crime-warning-item" key={uuid()}>
 						<strong>
 							{aCrime.crime}: {aCrime.occurrences}{" "}
 						</strong>
-						({aCrime.percentage} of all crimes)
+						({aCrime.percentage}% of all crimes)
 					</p>
 				))}
 			</Modal.Body>
