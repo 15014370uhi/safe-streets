@@ -2,7 +2,7 @@ const axios = require ('axios');
 const {getSector} = require ('../util/crime-data');
 
 // Function which calls the flask server to obtain crime predictions for current area
-const getProbabilities = async (policeForce, latitude, longitude) => {
+const getPredictions = async (policeForce, latitude, longitude) => {
   var predictions;
   var sector = getSector (policeForce); // get name of police sector for this location
   const today = new Date (); // get Date object
@@ -24,10 +24,11 @@ const getProbabilities = async (policeForce, latitude, longitude) => {
         },
       })
       .then (response => {
-        const allData = response.data;
+        const predictionData = response.data;
         predictions = {
-          data: allData, // store returned prediction data
+          data: predictionData, // store returned prediction data
         };
+        console.log('predictions: ' + JSON.stringify(predictions));
       })
       .catch (error => {
         console.log ('Error getting response from flask server: ' + error);
@@ -36,4 +37,4 @@ const getProbabilities = async (policeForce, latitude, longitude) => {
   return predictions;
 };
 
-module.exports = {getProbabilities};
+module.exports = {getPredictions};

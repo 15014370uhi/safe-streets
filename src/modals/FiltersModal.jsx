@@ -34,8 +34,18 @@ const FiltersModal = (props) => {
 			isActive: true,
 		},
 		{
+			label: "Weapons",
+			categories: ["possession-of-weapons"],
+			isActive: true,
+		},
+		{
 			label: "Public Order",
 			categories: ["public-order", "other-crime"],
+			isActive: true,
+		},
+		{
+			label: "Robbery",
+			categories: ["robbery"],
 			isActive: true,
 		},
 		{
@@ -59,14 +69,9 @@ const FiltersModal = (props) => {
 		},
 		{
 			label: "Violent Crime",
-			categories: ["violent-crime", "robbery"],
+			categories: ["violent-crime"],
 			isActive: true,
-		},
-		{
-			label: "Weapons",
-			categories: ["possession-of-weapons"],
-			isActive: true,
-		},
+		},		
 	]);
 
 	// Function which returns the button label for a crime category.
@@ -76,12 +81,6 @@ const FiltersModal = (props) => {
 		switch (aCrimeCategory) {
 			case "anti-social-behaviour":
 				label = "Anti-Social Behaviour";				
-				break;
-
-			case "bicycle-theft":
-			case "other-theft":
-			case "theft-from-the-person":
-				label = "Theft";
 				break;
 
 			case "burglary":
@@ -96,27 +95,36 @@ const FiltersModal = (props) => {
 				label = "Drugs";
 				break;
 
-			case "public-order":
-			case "other-crime":
-				label = "Public Order";
-				break;
-
 			case "possession-of-weapons":
 				label = "Weapons";
 				break;
 
-			case "violent-crime":
-			case "robbery":
-			case "violence-and-sexual-offences":
-				label = "Violent Crime";
+			case "public-order":
+			case "other-crime":
+				label = "Public Order";
+				break;
+				
+			case "robbery":					
+				label = "Robbery";
+				break;
+			
+			case "shoplifting":
+				label = "Shoplifting";
+				break;
+					
+			case "theft-from-the-person":
+			case "bicycle-theft":
+			case "other-theft":			
+				label = "Theft";
 				break;
 
 			case "vehicle-crime":
 				label = "Vehicle Crime";
 				break;
 
-			case "shoplifting":
-				label = "Shoplifting";
+			case "violent-crime":			
+			case "violence-and-sexual-offences":
+				label = "Violent Crime";
 				break;
 
 			default:

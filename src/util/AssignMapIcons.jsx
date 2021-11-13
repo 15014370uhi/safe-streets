@@ -11,12 +11,6 @@ export const getCrimeCategory = (aCrimeCategory) => {
 			crimeCat = "Anti-Social Behaviour";
 			break;
 
-		case "bicycle-theft":
-		case "other-theft":
-		case "theft-from-the-person":
-			crimeCat = "Theft";
-			break;
-
 		case "burglary":
 			crimeCat = "Burglary";
 			break;
@@ -29,28 +23,37 @@ export const getCrimeCategory = (aCrimeCategory) => {
 			crimeCat = "Drugs";
 			break;
 
+		case "possession-of-weapons":
+			crimeCat = "Possession of Weapons";
+			break;
+
 		case "public-order":
 		case "other-crime":
 			crimeCat = "Public Order";
 			break;
 
-		case "possession-of-weapons":
-			crimeCat = "Possession of Weapons";
-			break;
-
-		case "violent-crime":
-		case "robbery":
-		case "violence-and-sexual-offences":
-			crimeCat = "Violent Crime";
-			break;
-
-		case "vehicle-crime":
-			crimeCat = "Vehicle Crime";
+		case "robbery":		
+			crimeCat = "Robbery";
 			break;
 
 		case "shoplifting":
 			crimeCat = "Shoplifting";
 			break;
+
+		case "theft-from-the-person":
+		case "bicycle-theft":
+		case "other-theft":		
+			crimeCat = "Theft";
+			break;
+
+		case "vehicle-crime":
+			crimeCat = "Vehicle Crime";
+			break;
+	
+		case "violent-crime":		
+		case "violence-and-sexual-offences":
+			crimeCat = "Violent Crime";
+			break;	
 
 		default:
 			//intentially blank
@@ -73,14 +76,6 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 			iconType = "material";
 			break;
 
-		case "bicycle-theft":
-		case "other-theft":
-		case "theft-from-the-person":
-			color = "blue";
-			iconName = "money-bill-alt";
-			iconType = "awesome";
-			break;
-
 		case "burglary":
 			color = "hotpink";
 			iconName = "home";
@@ -99,16 +94,22 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 			iconType = "awesome";
 			break;
 
+		case "possession-of-weapons":
+			color = "red";
+			iconName = "fist-raised";
+			iconType = "awesome";
+			break;		
+
 		case "public-order":
 		case "other-crime":
 			color = "%23570345";
 			iconName = "bullhorn";
 			iconType = "awesome";
 			break;
-
-		case "possession-of-weapons":
-			color = "red";
-			iconName = "fist-raised";
+		
+		case "robbery":
+			color = "olive";
+			iconName = "cash-register";
 			iconType = "awesome";
 			break;
 
@@ -118,18 +119,25 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 			iconType = "awesome";
 			break;
 
-		case "violent-crime":
-		case "robbery":
-		case "violence-and-sexual-offences":
-			color = "black";
-			iconName = "sports_kabaddi";
-			iconType = "material";
+		case "theft-from-the-person":
+		case "bicycle-theft":
+		case "other-theft":		
+			color = "blue";
+			iconName = "money-bill-alt";
+			iconType = "awesome";
 			break;
 
 		case "vehicle-crime":
 			color = "%238884d8";
 			iconName = "car";
 			iconType = "awesome";
+			break;
+
+		case "violent-crime":		
+		case "violence-and-sexual-offences":
+			color = "black";
+			iconName = "sports_kabaddi";
+			iconType = "material";
 			break;
 
 		default:
@@ -187,8 +195,8 @@ export const getCenterPoint = () => {
 			type +
 			"&color=" +
 			color +
-			"&icon=" + //TEST
-			iconName + //TEST
+			"&icon=" + 
+			iconName + 
 			"&size=xx-large&iconType=" +
 			iconType +
 			"&iconSize=large&noWhiteCircle&scaleFactor=2&apiKey=" +			

@@ -19,18 +19,18 @@ import { MDBIcon } from "mdbreact";
 const ShowPredictionsModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
 
-	const [crimeColours, setCrimeColours] = useState([
-		//TODO move to external file ref for all
-		"darkslateblue", //anti-social-behaviour
-		"blue", //theft
-		"hotpink", //burglary
-		"orangered", //criminal_damage_and_arson
-		"brown", //drugs
-		"#570345", //public_order
-		"red", //possession_of_weapons
-		"black", //violent_crime
-		"#8884d8", //vehicle_crime
-		"gold", //shoplifting
+	const [crimeColours, setCrimeColours] = useState([		
+		"darkslateblue", // anti-social-behaviour
+		"hotpink", // burglary
+		"orangered", // criminal_damage_and_arson
+		"brown", // drugs
+		"red", // possession_of_weapons
+		"#570345", // public_order
+		"olive", // robbery
+		"gold", // shoplifting
+		"blue", // theft
+		"#8884d8", // vehicle_crime
+		"black", // violent_crime
 	]);
 	// array of month names
 	var months = [
@@ -53,20 +53,18 @@ const ShowPredictionsModal = (props) => {
 	// Function which returns a crime category as graph label text
 	const getCrimeCategory = (aCrimeCategory) => {
 		let crimeCategory = "";
-		switch (aCrimeCategory) {
-			case "Anti_social_behaviour":
-				crimeCategory = "Anti-Social Behaviour";
-				break;
 
-			case "Theft":
-				crimeCategory = "Theft";
+		//console.log('crime category received predictions modal: ' + aCrimeCategory);
+		switch (aCrimeCategory) {
+			case "Anti-social behaviour":
+				crimeCategory = "Anti-Social Behaviour";
 				break;
 
 			case "Burglary":
 				crimeCategory = "Burglary";
 				break;
 
-			case "Criminal_damage_and_arson":
+			case "Criminal damage and arson":
 				crimeCategory = "Criminal Damage & Arson";
 				break;
 
@@ -74,24 +72,32 @@ const ShowPredictionsModal = (props) => {
 				crimeCategory = "Drugs";
 				break;
 
-			case "Public_order":
-				crimeCategory = "Public Order";
-				break;
-
-			case "Possession_of_weapons":
+			case "Possession of weapons":
 				crimeCategory = "Possession of Weapons";
 				break;
 
-			case "Violent_crime":
-				crimeCategory = "Violent Crime";
+			case "Public order":
+				crimeCategory = "Public Order";
 				break;
 
-			case "Vehicle_crime":
-				crimeCategory = "Vehicle Crime";
+			case "Robbery":
+				crimeCategory = "Robbery";
 				break;
 
 			case "Shoplifting":
 				crimeCategory = "Shoplifting";
+				break;
+
+			case "Theft":
+				crimeCategory = "Theft";
+				break;
+
+			case "Vehicle crime":
+				crimeCategory = "Vehicle Crime";
+				break;
+
+			case "Violent crime":
+				crimeCategory = "Violent Crime";
 				break;
 
 			default:

@@ -187,13 +187,7 @@ const ShowHistoricCrimeModal = (props) => {
 			case "Anti social behaviour":
 				crimeCat = "Anti-Social Behaviour";
 				break;
-
-			case "Bicycle theft":
-			case "Other theft":
-			case "Theft from the person":
-				crimeCat = "Theft";
-				break;
-
+				
 			case "Burglary":
 				crimeCat = "Burglary";
 				break;
@@ -206,27 +200,36 @@ const ShowHistoricCrimeModal = (props) => {
 				crimeCat = "Drugs";
 				break;
 
+			case "Possession of weapons":
+				crimeCat = "Possession of Weapons";
+				break;		
+
 			case "Public order":
 			case "Other crime":
 				crimeCat = "Public Order";
 				break;
 
-			case "Possession of weapons":
-				crimeCat = "Possession of Weapons";
+			case "Robbery":			
+				crimeCat = "Robbery";
 				break;
 
-			case "Violent crime":
-			case "Robbery":
-			case "Violence and sexual offences":
-				crimeCat = "Violent Crime";
+			case "Shoplifting":
+				crimeCat = "Shoplifting";
+				break;
+
+			case "Theft from the person":
+			case "Bicycle theft":
+			case "Other theft":			
+				crimeCat = "Theft";
 				break;
 
 			case "Vehicle crime":
 				crimeCat = "Vehicle Crime";
 				break;
-
-			case "Shoplifting":
-				crimeCat = "Shoplifting";
+	
+			case "Violent crime":			
+			case "Violence and sexual offences":
+				crimeCat = "Violent Crime";
 				break;
 
 			default:

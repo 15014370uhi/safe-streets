@@ -1,0 +1,52 @@
+def getCrimeValue(aCrime):
+    if(aCrime == 'Anti-social behaviour'):				Anti-social behaviour
+        return 0  # anti-social behaviour   				Burglary	
+    if(aCrime == 'Burglary'):						Criminal damage and arson
+        return 1  # burglary						Drugs
+    if(aCrime == 'Criminal damage and arson'):				Possession of weapons
+        return 2  # criminal damage					Public order
+    if(aCrime == 'Drugs'):						Robbery
+        return 3  # drugs						Shoplifting
+    if(aCrime == 'Possession of weapons'):				Theft
+        return 4  # weapons    						Vehicle crime
+    if(aCrime == 'Public order'						Violent crime
+       or aCrime == 'Other crime'):
+        return 5  # public order    
+    if(aCrime == 'Robbery'):
+        return 6 # robbery
+    if(aCrime == 'Shoplifting'):
+        return 7 # shop lifting 
+    if(aCrime == 'Theft from the person'
+       or aCrime == 'Bicycle theft'
+       or aCrime == 'Other theft'):
+        return 8  # theft
+    if(aCrime == 'Vehicle crime'):
+        return 9  # vehicle
+    if(aCrime == 'Violent crime'
+       or aCrime == 'Violence and sexual offences'):
+        return 10  # violent crime
+
+# function which returns the crime category for a given crime value
+def getCrimeCategory(aCrimeValue):
+    if(aCrimeValue == 0):
+        return 'Anti-social behaviour'  # anti-social behaviour   
+    if(aCrimeValue == 1):
+        return 'Burglary'  # burglary
+    if(aCrimeValue == 2):
+        return 'Criminal damage and arson'  # criminal damage
+    if(aCrimeValue == 3):
+        return 'Drugs'  # drugs
+    if(aCrimeValue == 4):
+        return 'Possession of weapons'  # weapons       
+    if(aCrimeValue == 5):
+        return 'Public order'  # public order       
+    if(aCrimeValue == 6):
+        return 'Robbery' # robbery
+    if(aCrimeValue == 7):
+        return 'Shoplifting' # shop lifting 
+    if(aCrimeValue == 8):
+            return 'Theft'  # theft
+    if(aCrimeValue == 9):
+        return 'Vehicle crime'  # vehicle
+    if(aCrimeValue == 10):    
+        return 'Violent crime'  # violent crime

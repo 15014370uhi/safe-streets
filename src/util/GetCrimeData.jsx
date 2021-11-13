@@ -65,11 +65,33 @@ export const getThreatLevel = (predictions) => {
 	var threatLevel = "Low";
 	var highestPercentage = 0;
 	var crimePercentages = predictions.percentages;
+	console.log('format of crimePercentages: ' + JSON.stringify(crimePercentages));
 
+	// sort percentage values
+	//crimePercentages.sort((crimeA, crimeB) => crimeA.percentage - crimeB.percentage);
+	//TODO need a way to get percentage for crimeA and crimeB etc
+
+	//TODO Its ok to go by percentage - because they will be the most prolific crimes in area
+
+
+	// allocate crimes to threat groups - low med hi - if violent crimes are in 
+	// hi group for percentage - alert high threat level
+
+	//var highThreats = [];
+	//var mediumThreats = [];
+	//var lowThreats = [];
+
+	//NEW - just sort them by percentage and check top 2 or three percentages if dangerous etc
+
+	//tODO calculate when high percentage of crimes are predicted to be weapons/violent/robbery etc - high 
+	//TODO when high percentage of crimes are theft/arson/car etc medium threat
+	//TODO low threat when anti-social etc
 
 	//TODO assess crime type and assign threat level based on crime types
 	for (var aPrediction in crimePercentages) {
-		console.log('getThreatLevel aPrediction: ' + aPrediction + ' ' + crimePercentages[aPrediction]); //TODO
+		
+		//console.log('getThreatLevel aPrediction: ' + aPrediction + ' ' + crimePercentages[aPrediction]); //TODO
+	
 		var crimePercentage = parseFloat(crimePercentages[aPrediction]);
 
 		if (crimePercentage > highestPercentage) {

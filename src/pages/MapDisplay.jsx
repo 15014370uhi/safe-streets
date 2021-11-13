@@ -13,7 +13,11 @@ import {
 	getCrimeIcon,
 	getCenterPoint,
 } from "../util/AssignMapIcons";
-import { getPredictions, getHistoricCrimes, getThreatLevel} from "../util/GetCrimeData";
+import {
+	getPredictions,
+	getHistoricCrimes,
+	getThreatLevel,
+} from "../util/GetCrimeData";
 
 import uuid from "react-uuid";
 
@@ -55,21 +59,20 @@ const MapDisplay = () => {
 	const [showWarningsModal, setShowWarningsModal] = useState(false); // filters modal
 	const [mapDetails, setMapDetails] = useContext(MapDetails); // map data context
 	const [crimesToDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
-	const [timestamp, setTimestamp] = useState(""); 
-	const [showWarningButton, setShowWarningButton] = useState(false); 
-	
+	const [timestamp, setTimestamp] = useState("");
+	const [showWarningButton, setShowWarningButton] = useState(false);
+
 	let history = useHistory();
 
 	useEffect(() => {
-		if (history.location.state?.isfavourite === "true") {		
-			
+		if (history.location.state?.isfavourite === "true") {
 			// set filters from saved favourite filters
-		updateFilteredCrimes(mapDetails.filters);
+			updateFilteredCrimes(mapDetails.filters);
 
-		if (history.location.state.timestamp) {
-			setTimestamp(history.location.state.timestamp);
-		};		
-		setMapFromFavourite();
+			if (history.location.state.timestamp) {
+				setTimestamp(history.location.state.timestamp);
+			}
+			setMapFromFavourite();
 		} else {
 			setShowWarningButton(true);
 		}
@@ -88,8 +91,8 @@ const MapDisplay = () => {
 		// populate predictions and historic data for favourite
 		var predictionsResponse = await getPredictions(payload);
 		var threatLevel = getThreatLevel(predictionsResponse.predictions);
-		var historicResponse = await getHistoricCrimes(payload);		
-		
+		var historicResponse = await getHistoricCrimes(payload);
+
 		setResultsData({
 			predictions: predictionsResponse.predictions,
 			historicCrimes: historicResponse.historicCrimes,
@@ -97,7 +100,6 @@ const MapDisplay = () => {
 		});
 
 		setShowWarningButton(true);
-		
 	};
 
 	// function which updates the filtered crimes on map
@@ -166,22 +168,24 @@ const MapDisplay = () => {
 				<ButtonBack />
 
 				{/* modal for crime warnings */}
-				<ButtonShowWarnings 
+				<ButtonShowWarnings
 					setModalShow={setShowWarningsModal}
-					analysisComplete={showWarningButton}	
+					analysisComplete={showWarningButton}
 				/>
-				<CrimeWarningModal 
+				<CrimeWarningModal
+					animation={false}
 					show={showWarningsModal}
-					onHide={() => setShowWarningsModal(false)}					
+					onHide={() => setShowWarningsModal(false)}
 				/>
 
 				{/* filters */}
 				<ButtonShowFilters setModalShow={setShowFiltersModal} />
 				<FiltersModal
+					animation={false}
 					show={showFiltersModal}
 					onHide={() => setShowFiltersModal(false)}
 					updateFilteredCrimes={updateFilteredCrimes}
-					favouriteFilters={mapDetails.filters}										
+					favouriteFilters={mapDetails.filters}
 				/>
 
 				{/* add and remove favourites */}
@@ -194,6 +198,7 @@ const MapDisplay = () => {
 				)}
 
 				<RemoveFavouriteModal
+					animation={false}
 					show={showRemoveFavouritesModal}
 					onHide={() => setShowRemoveFavouritesModal(false)}
 					mapdetails={mapDetails}
@@ -202,6 +207,7 @@ const MapDisplay = () => {
 				/>
 
 				<AddFavouriteModal
+					animation={false}
 					show={showAddFavouriteModal}
 					onHide={() => setShowAddFavouriteModal(false)}
 					mapdetails={mapDetails}
@@ -209,13 +215,15 @@ const MapDisplay = () => {
 
 				{/* prediction data from flask server */}
 				<ShowPredictionsModal
+					animation={false}
 					show={showPredictionsModal}
-					onHide={() => setShowPredictionsModal(false)}					
+					onHide={() => setShowPredictionsModal(false)}
 				/>
 				<ButtonShowPredictions setModalShow={setShowPredictionsModal} />
 
 				{/* historic data */}
 				<ShowHistoricCrimeModal
+					animation={false}
 					show={showHistoricCrimeModal}
 					onHide={() => setShowHistoricCrimeModal(false)}
 				/>

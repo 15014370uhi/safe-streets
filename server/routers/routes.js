@@ -6,7 +6,7 @@ const {
 } = require ('../util/crime-data');
 const {getLatLon, getBoundingBox, isWithinUK} = require ('../util/geo-data');
 const {populateCrimeDates} = require ('../util/date-helpers');
-const {getProbabilities} = require ('../util/getCrimePredictions');
+const {getPredictions} = require ('../util/getCrimePredictions');
 const router = require ('express').Router ();
 
 // route for a user search
@@ -66,12 +66,12 @@ router.post ('/', async (req, res) => {
     // check for valid police force/location
     if (typeof policeForce !== 'undefined') {
       // get crime predictions for this location, for the following month
-      var predictions = await getProbabilities (
+      var predictions = await getPredictions (
         policeForce,
         latitude,
         longitude
       );
-      console.log('PREDICTIONS: ' + JSON.stringify(predictions.data));
+      //console.log('PREDICTIONS: ' + JSON.stringify(predictions.data));
       predictionData = predictions.data;
     }
   }
@@ -115,7 +115,7 @@ router.post ('/predictions', async (req, res) => {
   // check for valid police force/location
   if (typeof policeForce !== 'undefined') {
     // get crime predictions for this location, for the following month
-    var predictions = await getProbabilities (policeForce, latitude, longitude);
+    var predictions = await getPredictions (policeForce, latitude, longitude);
   }
 
   res.send ({

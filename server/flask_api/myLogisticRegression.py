@@ -4,25 +4,27 @@ import joblib
 # function which returns the crime category for a given crime value
 def getCrimeCategory(aCrimeValue):
     if(aCrimeValue == 0):
-        return 'Anti_social_behaviour'  # anti-social behaviour
+        return 'Anti-social behaviour'  # anti-social behaviour   
     if(aCrimeValue == 1):
-        return 'Theft'  # theft
-    if(aCrimeValue == 2):
         return 'Burglary'  # burglary
+    if(aCrimeValue == 2):
+        return 'Criminal damage and arson'  # criminal damage
     if(aCrimeValue == 3):
-        return 'Criminal_damage_and_arson'  # criminal damage
-    if(aCrimeValue == 4):
         return 'Drugs'  # drugs
+    if(aCrimeValue == 4):
+        return 'Possession of weapons'  # weapons       
     if(aCrimeValue == 5):
-        return 'Public_order'  # public order
+        return 'Public order'  # public order       
     if(aCrimeValue == 6):
-        return 'Possession_of_weapons'  # weapons
+        return 'Robbery' # robbery
     if(aCrimeValue == 7):
-        return 'Violent_crime'  # violent crime
-    if(aCrimeValue == 8):
-        return 'Vehicle_crime'  # vehicle
-    if(aCrimeValue == 9):
         return 'Shoplifting' # shop lifting 
+    if(aCrimeValue == 8):
+            return 'Theft'  # theft
+    if(aCrimeValue == 9):
+        return 'Vehicle crime'  # vehicle
+    if(aCrimeValue == 10):    
+        return 'Violent crime'  # violent crime
 
 # function which formats crime prediction occurrences into an object
 def addTotals(crimePercentages, totalNumberCrimes):   
@@ -32,8 +34,22 @@ def addTotals(crimePercentages, totalNumberCrimes):
 
 # iterate over crime ratio predictions and format to 2 decimal places
     for percentage in crimePercentages: 
-        crimeCategory = getCrimeCategory(counter)  # get crime type      
-        occurrences = round(percentage * totalNumberCrimes) # set occurrences of this crime       
+        crimeCategory = getCrimeCategory(counter)  # get crime type   
+           
+                 
+        #TODO test weighting factors     
+        # adjust weighting factor to scale crime model
+        weightingFactor = 1; 
+        
+        if(crimeCategory == 'Anti-social behaviour' or crimeCategory == 'Violent crime'):
+            weightingFactor = 1.3;   
+        
+        occurrences = round(percentage * (totalNumberCrimes / weightingFactor)) # set occurrences of this crime 
+        #occurrences = round(percentage * totalNumberCrimes) # set occurrences of this crime 
+
+        print('==========  TOTAL CRIMES PREDICTED: ' + str(totalNumberCrimes) + '  ========')
+        print('Occurrences calculation: (' + str(percentage) 
+              + '%)  *  (' + str(totalNumberCrimes) + '/' + ')')      
         results[crimeCategory] = occurrences  # add to result object       
         counter += 1    
     
@@ -58,7 +74,7 @@ def addPercentages(crimePercentages):
 # function which predicts the percentage ratio of each crime type occurring within 
 # a cluster area that encompasses a latitude and longitude location, 
 # for the next calender month
-def getProbability(month, year, lat, lon, sector):   
+def getPredictions(month, year, lat, lon, sector):   
     
     # set KMeans cluster model filename for current sector
     clusterFilename = 'kmini_models/KMini_' + sector + '.sav'    
@@ -88,10 +104,10 @@ def getProbability(month, year, lat, lon, sector):
     totalNumberOfCrimes = predictNumberCrimes(X, LR_Occurrence_Model)
     
     # generate formatted result object
-    result = {}
-    
+    result = {}    
     result['totals'] = addTotals(crimePercentageRatios, totalNumberOfCrimes)  
     result['percentages'] = addPercentages(crimePercentageRatios)
+    print('percentages set to: ' + str( result['totals'])) 
     
     return result
 

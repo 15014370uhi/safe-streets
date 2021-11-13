@@ -91,30 +91,33 @@ const ShowHistoricCrimeModal = (props) => {
 "Vehicle Crime":5,
 "Violent Crime":20},
 
-{"month":"Apr","Anti-Social Behaviour":10,
-"Burglary":10,
-"Criminal Damage & Arson":9,
-"Drugs":5,
-"Public Order":5,
-"Possession of Weapons":5,
-"Shoplifting":5,
-"Theft":5,
-"Vehicle Crime":5,
-"Violent Crime":20},
+{"month":"Apr",
+"Anti-Social Behaviour": 0,
+				"Burglary": 0,
+				"Criminal Damage & Arson": 0,
+				"Drugs": 0,
+				"Possession of Weapons": 0,
+				"Public Order": 0,
+				"Robbery": 0,
+				"Shoplifting": 0,
+				"Theft": 0,
+				"Vehicle Crime": 0,
+				"Violent Crime": 0,},
 
-{"month":"May","Anti-Social Behaviour":10,
-"Burglary":10,
-"Criminal Damage & Arson":9,
-"Drugs":5,
-"Public Order":5,
-"Possession of Weapons":5,
-"Shoplifting":5,
-"Theft":5,
-"Vehicle Crime":5,
-"Violent Crime":20},
+{"month":"May",
+"Anti-Social Behaviour": 10,
+				"Burglary": 30,
+				"Criminal Damage & Arson": 10,
+				"Drugs": 0,
+				"Possession of Weapons": 0,
+				"Public Order": 0,
+				"Robbery": 0,
+				"Shoplifting": 0,
+				"Theft": 0,
+				"Vehicle Crime": 0,
+				"Violent Crime": 0,},
 
 ];
-
 
 	// array of month names
 	var months = [
@@ -160,15 +163,15 @@ const ShowHistoricCrimeModal = (props) => {
 				currentGraphMonth = currentGraphMonth - 12;
 			}
 
-		
 			var monthlyStats = {
 				"month": months[currentGraphMonth - 1],
 				"Anti-Social Behaviour": 0,
 				"Burglary": 0,
 				"Criminal Damage & Arson": 0,
 				"Drugs": 0,
-				"Public Order": 0,
 				"Possession of Weapons": 0,
+				"Public Order": 0,
+				"Robbery": 0,
 				"Shoplifting": 0,
 				"Theft": 0,
 				"Vehicle Crime": 0,
@@ -188,13 +191,7 @@ const ShowHistoricCrimeModal = (props) => {
 			case "Anti social behaviour":
 				crimeCat = "Anti-Social Behaviour";
 				break;
-
-			case "Bicycle theft":
-			case "Other theft":
-			case "Theft from the person":
-				crimeCat = "Theft";
-				break;
-
+				
 			case "Burglary":
 				crimeCat = "Burglary";
 				break;
@@ -207,27 +204,36 @@ const ShowHistoricCrimeModal = (props) => {
 				crimeCat = "Drugs";
 				break;
 
+			case "Possession of weapons":
+				crimeCat = "Possession of Weapons";
+				break;		
+
 			case "Public order":
 			case "Other crime":
 				crimeCat = "Public Order";
 				break;
 
-			case "Possession of weapons":
-				crimeCat = "Possession of Weapons";
+			case "Robbery":			
+				crimeCat = "Robbery";
 				break;
 
-			case "Violent crime":
-			case "Robbery":
-			case "Violence and sexual offences":
-				crimeCat = "Violent Crime";
+			case "Shoplifting":
+				crimeCat = "Shoplifting";
+				break;
+
+			case "Theft from the person":
+			case "Bicycle theft":
+			case "Other theft":			
+				crimeCat = "Theft";
 				break;
 
 			case "Vehicle crime":
 				crimeCat = "Vehicle Crime";
 				break;
-
-			case "Shoplifting":
-				crimeCat = "Shoplifting";
+	
+			case "Violent crime":			
+			case "Violence and sexual offences":
+				crimeCat = "Violent Crime";
 				break;
 
 			default:
@@ -333,6 +339,13 @@ const ShowHistoricCrimeModal = (props) => {
 							stackId="1"
 							stroke="#570345"
 							fill="#570345"
+						/>
+						<Area
+							type="monotone"
+							dataKey="Robbery"
+							stackId="1"
+							stroke="olive"
+							fill="olive"
 						/>
 						<Area
 							type="monotone"

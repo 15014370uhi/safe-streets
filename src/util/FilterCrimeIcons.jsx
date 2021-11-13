@@ -8,15 +8,16 @@
 const applyFilters = (filters) => {
 	const allCategories = [
 		"anti-social-behaviour",
-		"criminal-damage-arson",
 		"burglary",
+		"criminal-damage-arson",		
 		"drugs",
-		"theft",
-		"public-order",
-		"possession-of-weapons",
+		"possession-of-weapons",		
+		"public-order",	
+		"robbery",	
 		"shoplifting",
-		"violent-crime",
+		"theft",		
 		"vehicle-crime",
+		"violent-crime",
 	];
 
 	// if crime is not to be hidden, add to array of crimes to display
