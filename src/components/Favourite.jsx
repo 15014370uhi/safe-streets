@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import uuid from "react-uuid";
 import Card from "react-bootstrap/Card";
-import Col from "react-bootstrap/col";
+import Col from "react-bootstrap/Col";
 import { getCenterPoint } from "../util/AssignMapIcons";
 
 // import leaflet related
