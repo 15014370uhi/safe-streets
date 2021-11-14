@@ -47,9 +47,9 @@ const AddFavouriteModal = (props) => {
 
 	return (
 		<Modal
-			show={props.show}
-			onHide={props.onHide}
 			animation={false}
+			show={props.show}
+			onHide={props.onHide}			
 			size="lg"
 			centered>
 			<Modal.Header closeButton>

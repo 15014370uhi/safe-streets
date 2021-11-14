@@ -3,7 +3,7 @@ const {improveMarkerVisibility} = require ('./geo-data');
 const axios = require ('axios');
 
 /**   
- * Function which returns crime data for a spcific month 
+ * function which returns crime data for a spcific month 
  * within a lat/lon bounding box geographical area
  * 
  * @param {string} crimeDateCheck The month to check for recorded crimes
@@ -70,7 +70,7 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
   return crimeData;
 };
 
-// Function which creates an array of all crimes to be displayed on map
+// function which creates an array of all crimes to be displayed on map
 const populateAllCrimes = async crimes => {
   var allCrimes = [];
 
@@ -105,7 +105,7 @@ const populateAllCrimes = async crimes => {
   return allCrimes;
 };
 
-// Function which retrieves the previous 12 months crime data
+// function which retrieves the previous 12 months crime data
 const getHistoricCrimes = async aBoundingBox => {
   var crimeMonthsArrayHistoric = populateCrimeDates (12);
   var crimesHistoric = [];
@@ -115,9 +115,6 @@ const getHistoricCrimes = async aBoundingBox => {
   for (let aMonth of crimeMonthsArrayHistoric) {
 
     crimesDuringMonthHistoric = await getCrimeData (aMonth, aBoundingBox);
-
-    console.log('Historic - Number of crimes found for ' + aMonth + ' = ' 
-    + crimesDuringMonthHistoric.length);
 
     // if crimes exist for month being checked, add them to collection of crimes
     if (
@@ -255,7 +252,7 @@ const getSector = aPoliceForce => {
 };
 
 /**
- * Function which returns the name of the police force for the current search lat and lon  
+ * function which returns the name of the police force for the current search lat and lon  
  * 
  * @param {string} aLatitude The lat for the prediction
  * @param {string} aLongitude The lon for the prediction

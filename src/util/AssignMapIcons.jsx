@@ -2,7 +2,7 @@ import L from "leaflet";
 
 const geoapifyAPIKey = "b0188d827da8401786390efebdbc0484";
 
-// Function which returns a text label for a given crime category
+// function which returns a text label for a given crime category
 export const getCrimeCategory = (aCrimeCategory) => {
 	let crimeCat;
 
@@ -62,7 +62,7 @@ export const getCrimeCategory = (aCrimeCategory) => {
 	return crimeCat;
 };
 
-// Function which returns the correct map icon for a crime category
+// function which returns the correct map icon for a crime category
 export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 	var icon;
 	var iconName;

@@ -23,6 +23,60 @@ export const getCrimeData = async (payload) => {
 	});
 };
 
+export const getCrimeCategory = (aCrimeCategory) => {
+	let crimeCategory = "";
+	switch (aCrimeCategory) {
+		case "Anti-social behaviour": // Low threat
+			crimeCategory = "Anti-Social Behaviour";
+			break;
+
+		case "Burglary": // Medium threat
+			crimeCategory = "Burglary";
+			break;
+
+		case "Criminal damage and arson": // Medium threat
+			crimeCategory = "Criminal Damage & Arson";
+			break;
+
+		case "Drugs": // Low threat
+			crimeCategory = "Drugs";
+			break;
+
+		case "Possession of weapons": // High threat
+			crimeCategory = "Possession of Weapons";
+			break;
+
+		case "Public order": // Low threat
+			crimeCategory = "Public Order";
+			break;
+
+		case "Robbery": //High threat
+			crimeCategory = "Robbery";
+			break;
+
+		case "Shoplifting": // Low threat
+			crimeCategory = "Shoplifting";
+			break;
+
+		case "Theft": // Medium threat
+			crimeCategory = "Theft";
+			break;
+
+		case "Vehicle crime": // Medium threat
+			crimeCategory = "Vehicle Crime";
+			break;
+
+		case "Violent crime": // High threat
+			crimeCategory = "Violent Crime";
+			break;
+
+		default:
+			//intentially blank
+			break;
+	}
+	return crimeCategory;
+};
+
 // function which completes an API call to get predicted crime rates
 export const getPredictions = async (payload) => {
 	return new Promise((resolve) => {
@@ -60,49 +114,74 @@ export const getHistoricCrimes = async (payload) => {
 	});
 };
 
-// return crime threat level for search area
-export const getThreatLevel = (predictions) => {
-	var threatLevel = "Low";
-	var highestPercentage = 0;
-	var crimePercentages = predictions.percentages;
-	console.log('format of crimePercentages: ' + JSON.stringify(crimePercentages));
+// function which sorts an array of crimes from highest to lowest percentage value
+export const sortCrimesByPercentage = (predictions) => {
+	var result;
 
-	// sort percentage values
-	//crimePercentages.sort((crimeA, crimeB) => crimeA.percentage - crimeB.percentage);
-	//TODO need a way to get percentage for crimeA and crimeB etc
+	// sort crimes by lowest to highest percentage
+	result = predictions.sort(function (crimeA, crimeB) {
+		return crimeA.percentage - crimeB.percentage;
+	});
 
-	//TODO Its ok to go by percentage - because they will be the most prolific crimes in area
+	// reverse order
+	result.reverse();
 
+	return result;
+};
 
-	// allocate crimes to threat groups - low med hi - if violent crimes are in 
-	// hi group for percentage - alert high threat level
+// function which populates an array with formatted crime predictions
+export const populateCrimes = (predictions) => {
+	var results = [];
 
-	//var highThreats = [];
-	//var mediumThreats = [];
-	//var lowThreats = [];
+	for (var crime in predictions.percentages) {
+		var crimeCategory = getCrimeCategory(crime);
+		var crimeOccurence = parseInt(predictions.totals[crime]);
+		var percentageOfCrimes = parseFloat(predictions.percentages[crime]);
 
-	//NEW - just sort them by percentage and check top 2 or three percentages if dangerous etc
-
-	//tODO calculate when high percentage of crimes are predicted to be weapons/violent/robbery etc - high 
-	//TODO when high percentage of crimes are theft/arson/car etc medium threat
-	//TODO low threat when anti-social etc
-
-	//TODO assess crime type and assign threat level based on crime types
-	for (var aPrediction in crimePercentages) {
-		
-		//console.log('getThreatLevel aPrediction: ' + aPrediction + ' ' + crimePercentages[aPrediction]); //TODO
-	
-		var crimePercentage = parseFloat(crimePercentages[aPrediction]);
-
-		if (crimePercentage > highestPercentage) {
-			highestPercentage = crimePercentage;
-		}
+		var crimeData = {
+			crime: crimeCategory,
+			occurrences: crimeOccurence,
+			percentage: percentageOfCrimes,
+		};
+		results.push(crimeData);
 	}
+	results = sortCrimesByPercentage(results);
 
-	if (highestPercentage > 30) {
-		threatLevel = "High";
-	} else if (highestPercentage < 30 && highestPercentage > 20) {
-		threatLevel = "Medium";
+	return results;
+};
+
+// function which finds the most prolific crimes from an array of crimes
+export const getThreatLevel = (predictions) => {
+	
+	var threatLevel = "Low";
+
+	// format crime data as objects
+	const formattedCrimeArray = populateCrimes(predictions);
+
+	// sort predictions by percentage
+	const sortedPredictions = sortCrimesByPercentage(formattedCrimeArray);
+
+	//for (var counter = 0; counter < 3; counter++) {
+	for (var counter = 0; counter < 2; counter++) {
+		var crimeType = sortedPredictions[counter].crime;
+
+		// check which crimes are highest two predicted crime types
+		if (
+			crimeType === "Possession of Weapons" ||
+			crimeType === "Violent Crime" ||
+			crimeType === "Robbery"
+		) {
+			threatLevel = "High";
+			break;
+		} else if (
+			crimeType === "Vehicle Crime" ||
+			crimeType === "Theft" ||
+			crimeType === "Criminal Damage & Arson" ||
+			crimeType === "Burglary"
+		) {
+			threatLevel = "Medium";			
+			break;
+		}
 	}
 	return threatLevel;
 };

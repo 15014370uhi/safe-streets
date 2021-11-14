@@ -11,7 +11,7 @@ const firebaseConfig = {
 	appId: "1:400130243033:web:3439d32591167991e041c8",
 };
 
-// Function which returns the latest user document from firestore
+// function which returns the latest user document from firestore
 const getUserDocument = async (uid) => {
 	// no UID supplied, return null
 	if (!uid) {
@@ -48,7 +48,7 @@ export const createUserWithEmailAndPassword = async (email, password) => {
 	}
 };
 
-// Function to create a user document //TODO document all functions
+// function to create a user document //TODO document all functions
 export const generateUserDocument = async (user, additionalData) => {
 	// if user missing, exit
 	if (!user) {
@@ -76,7 +76,7 @@ export const generateUserDocument = async (user, additionalData) => {
 	return getUserDocument(user.uid);
 };
 
-// Function to add a new favourite to a user collection of favourites
+// function to add a new favourite to a user collection of favourites
 export const addUserFavourite = async (
 	title,
 	allCrimes,
@@ -203,7 +203,7 @@ export const reauthenticateUser = async (password) => {
 	await user.reauthenticateWithCredential(credentials);
 };
 
-// Function to delete a user document from firestore
+// function to delete a user document from firestore
 export const deleteUserDocument = async () => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
 
@@ -214,7 +214,7 @@ export const deleteUserDocument = async () => {
 	await userDocumentRef.delete();
 };
 
-// Function to delete a user account from firebase (authentication list)
+// function to delete a user account from firebase (authentication list)
 export const deleteUserAccount = async () => {
 	var user = firebase.auth().currentUser; //get reference to currently logged in user
 

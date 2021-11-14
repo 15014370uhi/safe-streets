@@ -74,7 +74,7 @@ const FiltersModal = (props) => {
 		},		
 	]);
 
-	// Function which returns the button label for a crime category.
+	// function which returns the button label for a crime category.
 	const getButtonLabel = (aCrimeCategory) => {
 		let label = "";
 
@@ -194,9 +194,9 @@ const FiltersModal = (props) => {
 
 	return (
 		<Modal
-			show={props.show}
-			onHide={props.onHide}
 			animation={false}
+			show={props.show}
+			onHide={props.onHide}			
 			size="lg"
 			centered>
 			<Modal.Header closeButton>
@@ -204,7 +204,6 @@ const FiltersModal = (props) => {
 					Crime Filters
 				</Modal.Title>
 			</Modal.Header>
-
 			<Modal.Body className="filterButtonsGroup">
 			<FadeIn delay={100}>
 				{crimeButtons.map((aButton) => (

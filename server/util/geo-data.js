@@ -179,7 +179,7 @@ const improveMarkerVisibility = displayCrimes => {
 
 
 /**
-	 * Function which checks if a latitude, longitude coordinate lies
+	 * function which checks if a latitude, longitude coordinate lies
 	 * within the united kingdom boundary or not
 	 * @param {Number} lat The latitude coordinate
 	 * @param {Number} lon The longituded coordinate

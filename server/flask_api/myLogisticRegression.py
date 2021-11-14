@@ -1,4 +1,5 @@
 import numpy as np
+import math
 import joblib
 
 # function which returns the crime category for a given crime value
@@ -36,22 +37,17 @@ def addTotals(crimePercentages, totalNumberCrimes):
     # iterate over crime ratio predictions and format to 2 decimal places
     for percentage in crimePercentages:
         crimeCategory = getCrimeCategory(counter)  # get crime type
-
-        # TODO test weighting factors
-        # adjust weighting factor to scale crime model
-        # weightingFactor = 1;
-        # if(crimeCategory == 'Anti-social behaviour' or crimeCategory == 'Violent crime'):
-        #    weightingFactor = 1.3;
-        # occurrences = round(percentage * (totalNumberCrimes / weightingFactor)) # set occurrences of this crime
-
-        occurrences = round(
-            percentage * totalNumberCrimes
-        )  # set occurrences of this crime
-
-        # print('==========  TOTAL CRIMES PREDICTED: ' + str(totalNumberCrimes) + '  ========')
-        # print('Occurrences calculation: (' + str(percentage)
-        #       + '%)  *  (' + str(totalNumberCrimes) + '/' + ')')
-
+       
+        # adjust weighting factor to scale crime model bias
+        weightingFactor = 1;       
+        if(crimeCategory == 'Anti-social behaviour' or crimeCategory == 'Violent crime'):
+           weightingFactor = 1.4;   
+        
+        # testOccurrences = int(math.ceil(percentage * totalNumberCrimes))          
+         
+        # set total occurrences of this crime            
+        occurrences = int(math.ceil(percentage * (totalNumberCrimes / weightingFactor))) # set occurrences of this crime
+         
         results[crimeCategory] = occurrences  # add to result object
         counter += 1
 
@@ -111,8 +107,7 @@ def getPredictions(month, year, lat, lon, sector):
     # generate formatted result object
     result = {}
     result["totals"] = addTotals(crimePercentageRatios, totalNumberOfCrimes)
-    result["percentages"] = addPercentages(crimePercentageRatios)
-    print("percentages set to: " + str(result["totals"]))
+    result["percentages"] = addPercentages(crimePercentageRatios)   
 
     return result
 

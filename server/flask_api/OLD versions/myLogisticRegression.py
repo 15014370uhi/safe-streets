@@ -23,7 +23,7 @@ def getCrimeCategory(aCrimeValue):
     if(aCrimeValue == 8):   
         return 'Vehicle_crime' 
 
-# Function which returns a crime probablity prediction score
+# function which returns a crime probablity prediction score
 # for a given location and month
 def getResult(data):   
     

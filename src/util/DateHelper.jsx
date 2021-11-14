@@ -1,5 +1,5 @@
 /**
- * Function which converts a month number into the string name equivalent
+ * function which converts a month number into the string name equivalent
  * @param {aMonthNumber} the number of the month
  * @returns {string} The name of the month
  */
