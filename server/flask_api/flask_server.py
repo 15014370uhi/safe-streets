@@ -1,20 +1,21 @@
 from flask import Flask, request
 from flask_cors import CORS
 import json
+import os
 from myLogisticRegression import getPredictions 
 
-app = Flask(__name__, static_folder='../../build', static_url_path='/')
 #app = Flask(__name__, static_folder='../../build', static_url_path='')
-#app = Flask(__name__)
+#app = Flask(__name__, static_folder='../../build', static_url_path='')
+app = Flask(__name__)
 CORS(app)
 
-@app.route("/", defaults={'path':'/'})
-#@app.route("/")
+#@app.route("/", defaults={'path':''})
+@app.route("/")
 
-def index():
-    return app.send_static_file('index.html')
 # def index():
-#     return "Welcome to safe streets machine learning flask server"
+#     return app.send_static_file('index.html')
+def index():
+    return "Welcome to safe streets machine learning flask server"
 
 @app.route("/predict", methods=["POST"])
 def runPredictionModel():
@@ -34,4 +35,6 @@ def runPredictionModel():
     return results_JSON
 
 if __name__ == "__main__":
-    app.run(port=5000)
+   app.run(host='0.0.0.0', debug=False, port=os.environ.get('PORT', 80))
+   
+   # app.run(port=5000)
