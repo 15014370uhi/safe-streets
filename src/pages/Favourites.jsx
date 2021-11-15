@@ -50,13 +50,13 @@ const Favourites = (props) => {
 		});
 	};
 
-	// Function which deletes a specific favourited map
+	// function which deletes a specific favourited map
 	const deleteFavourite = async (aTimestamp) => {
 		await deleteUserFavourite(aTimestamp);
 		getFavourites();
 	};
 
-	// Function which gets all user favourited maps
+	// function which gets all user favourited maps
 	const getFavourites = async () => {
 		var favouritesReturned = await getUserFavourites();
 		setLocalFavourites(favouritesReturned);

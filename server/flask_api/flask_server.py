@@ -23,7 +23,7 @@ def runPredictionModel():
     result = getPredictions(month, year, lat, lon, sector)   
     results_JSON = json.dumps(result)
    
-    print("results_JSON: ", results_JSON) #TODO TEST
+    print("results_JSON: ", results_JSON)
     
     return results_JSON
 

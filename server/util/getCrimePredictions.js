@@ -1,7 +1,7 @@
 const axios = require ('axios');
 const {getSector} = require ('../util/crime-data');
 
-// Function which calls the flask server to obtain crime predictions for current area
+// function which calls the flask server to obtain crime predictions for current area
 const getPredictions = async (policeForce, latitude, longitude) => {
   var predictions;
   var sector = getSector (policeForce); // get name of police sector for this location
@@ -28,7 +28,6 @@ const getPredictions = async (policeForce, latitude, longitude) => {
         predictions = {
           data: predictionData, // store returned prediction data
         };
-        console.log('predictions: ' + JSON.stringify(predictions));
       })
       .catch (error => {
         console.log ('Error getting response from flask server: ' + error);

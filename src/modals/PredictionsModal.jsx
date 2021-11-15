@@ -50,7 +50,7 @@ const ShowPredictionsModal = (props) => {
 
 	var aCurrentMonth = months[new Date().getMonth() + 1]; // compensate for zero indexed data
 
-	// Function which returns a crime category as graph label text
+	// function which returns a crime category as graph label text
 	const getCrimeCategory = (aCrimeCategory) => {
 		let crimeCategory = "";
 

@@ -1,5 +1,5 @@
 /**
- * Function which converts a month number into the string name equivalent
+ * function which converts a month number into the string name equivalent
  * @param {aMonthNumber} the number of the month
  * @returns {string} The name of the month
  */
@@ -23,7 +23,7 @@ const getMonthName = aMonthNumber => {
 };
 
 /**
- * Function which extracts the year and month from a string and returns
+ * function which extracts the year and month from a string and returns
  * a Date object representation
  *
  * @param {string} stringDate String representation of year and month
@@ -40,7 +40,7 @@ const getYearAndMonth = stringDate => {
 };
 
 /**
- * Function which returns an array of dates in the format YYYY-MM
+ * function which returns an array of dates in the format YYYY-MM
  * for a given number of months, begining 1 month prior
  * to the current month
  *

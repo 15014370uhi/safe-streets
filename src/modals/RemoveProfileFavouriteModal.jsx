@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import { deleteUserFavourite } from "../firebase";
 
 const RemoveProfileFavouriteModal = (props) => {
+		
 	const deleteFavourite = async () => {		
 		await deleteUserFavourite(props.timestamp);	
 		props.updateUserFavourites();	
@@ -12,9 +13,9 @@ const RemoveProfileFavouriteModal = (props) => {
 
 	return (
 		<Modal
-			show={props.show}
-			onHide={props.onHide}
 			animation={false}
+			show={props.show}
+			onHide={props.onHide}			
 			size="lg"
 			centered>
 			<Modal.Header closeButton>
@@ -29,7 +30,7 @@ const RemoveProfileFavouriteModal = (props) => {
 				<Button
 					variant="red"
 					type="submit"
-					onClick={() => deleteFavourite(props.timestamp)}>
+					onClick={() => deleteFavourite()}>
 					Delete Favourite
 				</Button>
 			</Modal.Footer>
@@ -38,3 +39,4 @@ const RemoveProfileFavouriteModal = (props) => {
 };
 
 export default RemoveProfileFavouriteModal;
+//onClick={() => deleteFavourite()}>

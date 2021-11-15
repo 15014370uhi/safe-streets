@@ -66,7 +66,7 @@ const FiltersModal = (props) => {
 		},
 	]);
 
-	// Function which returns the button label for a crime category.
+	// function which returns the button label for a crime category.
 	const getButtonLabel = (aCrimeCategory) => {
 		let label = "";
 

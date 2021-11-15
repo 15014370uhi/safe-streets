@@ -1,5 +1,5 @@
 /**
- * Function which returns an array of all user selected crime filters to apply
+ * function which returns an array of all user selected crime filters to apply
  *
  * @param {array} filters All user selected filters
  *
@@ -28,7 +28,7 @@ const applyFilters = (filters) => {
 	return crimesToDisplay;
 };
 
-// Function which creates an array of all crimes to be displayed on map
+// function which creates an array of all crimes to be displayed on map
 export const populateDisplayCrimes = (crimes, filters) => {
 	var displayCrimes = [];
 

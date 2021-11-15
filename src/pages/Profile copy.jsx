@@ -51,7 +51,7 @@ const Profile = () => {
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	// Function to confirm deletion of a favourite
+	// function to confirm deletion of a favourite
 	const confirmFavouriteDeletion = (aFavourite) => {
 		return (
 			<RemoveProfileFavouriteModal
@@ -129,7 +129,7 @@ const Profile = () => {
 			.catch((err) => console.log(err));
 	};
 
-	// Function to delete the current user's account
+	// function to delete the current user's account
 	const deleteUserHandler = async (e) => {
 		// re-authenticate user with password input
 		await reauthenticateUser(password)

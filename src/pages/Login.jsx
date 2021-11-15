@@ -31,7 +31,7 @@ const Login = () => {
 		});
 	};
 
-	// Function to handle user form input
+	// function to handle user form input
 	const onChangeHandler = (e) => {
 		const { name, value } = e.currentTarget;
 		// if email input set email state

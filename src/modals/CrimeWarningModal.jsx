@@ -1,151 +1,50 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import { ResultsData } from "../contexts/ResultsDataContext";
+import { populateCrimes } from "../util/GetCrimeData";
 import FadeIn from "react-fade-in";
 import uuid from "react-uuid";
-
-import { ResponsiveContainer } from "recharts";
 
 //style components
 import { MDBIcon } from "mdbreact";
 
 const CrimeWarningModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
-	const [crimeColours, setCrimeColours] = useState([
-		"darkslateblue", // anti-social-behaviour
-		"hotpink", // burglary
-		"orangered", // criminal_damage_and_arson
-		"brown", // drugs
-		"red", // possession_of_weapons
-		"#570345", // public_order
-		"olive", // robbery
-		"gold", // shoplifting
-		"blue", // theft
-		"#8884d8", // vehicle_crime
-		"black", // violent_crime
-	]);
 
-	var threats;	
+	const displayCrimes = populateCrimes(resultsData.predictions);
 
-	const getCrimeCategory = (aCrimeCategory) => {
-		let crimeCategory = "";
-		switch (aCrimeCategory) {
-			case "Anti-social behaviour":
-				crimeCategory = "Anti-Social Behaviour";
+	const getIncidentText = (occurences) => {
+		var text = "incident";
+
+		if (occurences > 1) {
+			text = "incidents";
+		}
+
+		return text;
+	};
+	// function which returns the correct threat message for each level
+	const getThreatMessage = (aThreatLevel) => {
+		var message;
+
+		switch (aThreatLevel) {
+			case "High":
+				message = "Risk of violence";
 				break;
 
-			case "Burglary":
-				crimeCategory = "Burglary";
+			case "Medium":
+				message = "Risk to property or possessions";
 				break;
 
-			case "Criminal damage and arson":
-				crimeCategory = "Criminal Damage & Arson";
-				break;
-
-			case "Drugs":
-				crimeCategory = "Drugs";
-				break;
-
-			case "Possession of weapons":
-				crimeCategory = "Possession of Weapons";
-				break;
-
-			case "Public order":
-				crimeCategory = "Public Order";
-				break;
-
-			case "Robbery":
-				crimeCategory = "Robbery";
-				break;
-
-			case "Shoplifting":
-				crimeCategory = "Shoplifting";
-				break;
-
-			case "Theft":
-				crimeCategory = "Theft";
-				break;
-
-			case "Vehicle crime":
-				crimeCategory = "Vehicle Crime";
-				break;
-
-			case "Violent crime":
-				crimeCategory = "Violent Crime";
+			case "Low":
+				message = "Risk of noise and distruption";
 				break;
 
 			default:
 				//intentially blank
 				break;
 		}
-		return crimeCategory;
+		return message;
 	};
-
-	
-	// Function which sorts an array of crimes by percentage value
-	const sortCrimesByPercentage = (crimeArray) => {
-		// sort crimes by lowest to highest percentage
-		crimeArray.sort(function (crimeA, crimeB) {
-			return crimeA.percentage - crimeB.percentage;
-		});
-
-		// reverse order
-		crimeArray.reverse();
-		console.log("crimeArray: " + JSON.stringify(crimeArray));
-		return crimeArray;
-	};
-
-
-	// Function which populates an array with formatted crime predictions
-	const populateCrimes = (crimes) => {
-		var results = [];
-
-		for (var crime in crimes.percentages) {
-			var crimeCategory = getCrimeCategory(crime);
-			var crimeOccurence = parseInt(
-				crimes.totals[crime]
-			);
-			var percentageOfCrimes = parseFloat(
-				crimes.percentages[crime]
-			);
-
-			var crimeData = {
-				crime: crimeCategory,
-				occurrences: crimeOccurence,
-				percentage: percentageOfCrimes,
-				//percentage: percentageOfCrimes + "%",
-			};
-			results.push(crimeData);
-		}
-
-		// sort crime order by percentage
-		results = sortCrimesByPercentage(results);
-
-		return results;
-	};
-
-
-	// Function which finds the most prolific crimes from an array of crimes
-	const getThreats = (crimes) => {
-
-		// get top 3 crimes... is highest violent etc? if 2/3 top crimes are on the 
-		// vilolent list - set threat high, etc
-
-		
-
-		//tODO find some way to decide which are threats - e.g. violent etc is high threat
-		for(var aCrime in crimes){
-			console.log(aCrime); 
-		}
-		return crimes;
-	};
-
-	if (resultsData.predictions) {
-		threats = populateCrimes(resultsData.predictions);
-
-		// call function to find most prolific crimes
-		//threats = getThreats(threats);
-	}
 
 	return (
 		<Modal
@@ -155,28 +54,57 @@ const CrimeWarningModal = (props) => {
 			onHide={props.onHide}
 			centered>
 			<Modal.Header closeButton>
-				<Modal.Title id="contained-modal-title-vcenter">
-					<h3 className="my-3 prediction-modal-heading">
+				<Modal.Title 
+				id="contained-modal-title-vcenter">						
+					<p className="my-3 prediction-modal-heading">
 						<MDBIcon
 							className="crime-warnings-icon"
 							icon="fa fa-exclamation fa-lg"
 						/>
-						High threat levels for the following crimes...
-					</h3>
+						Predicted Threat Level: {resultsData.threatLevel}
+						<span className="risk-title-declaration">
+							{" "}
+							({getThreatMessage(resultsData.threatLevel)}){" "}
+						</span>
+					</p>
 				</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<p>
-					<strong>Predicted Crime Incidents</strong>
-				</p>
-				{threats.map((aCrime) => (
-					<p className="crime-warning-item" key={uuid()}>
-						<strong>
-							{aCrime.crime}: {aCrime.occurrences}{" "}
-						</strong>
-						({aCrime.percentage}% of all crimes)
-					</p>
-				))}
+				<FadeIn delay={100}>
+					<Modal.Body>
+						<Modal.Title id="contained-modal-title-vcenter">
+							<p className="threat-list-titles">
+								Most Prolific Predicted Crimes
+							</p>
+						</Modal.Title>
+						{displayCrimes.slice(0, 2).map((aCrime) => (
+							<p className="crime-warning-top" key={uuid()}>
+								<strong>{aCrime.crime}: </strong>
+								{aCrime.occurrences}{" "}
+								{getIncidentText(aCrime.occurrences)}
+								<span className="percentages-top-crimes">
+									({aCrime.percentage}% of crimes)
+								</span>
+							</p>
+						))}
+					</Modal.Body>
+					<Modal.Body>
+						<Modal.Title id="contained-modal-title-vcenter">
+							<p className="threat-list-titles">
+								Other Predicted Crimes
+							</p>
+						</Modal.Title>
+						{displayCrimes.slice(2).map((aCrime) => (
+							<p className="crime-warning-other" key={uuid()}>
+								{aCrime.crime}: {aCrime.occurrences}{" "}
+								{getIncidentText(aCrime.occurrences)}
+								<span className="percentages-other-crimes">
+									({aCrime.percentage}% of crimes)
+								</span>
+							</p>
+						))}
+					</Modal.Body>
+				</FadeIn>
 			</Modal.Body>
 		</Modal>
 	);

@@ -34,7 +34,6 @@ export const getPredictions = async (payload) => {
 					predictions: res.data.predictions,
 				};				
 				resolve(response);
-				//console.log('res.data.predictions: ' + JSON.stringify(res.data.predictions));
 			})
 			.catch((error) => {
 				console.log("error in obtaining prediction results from API: ");

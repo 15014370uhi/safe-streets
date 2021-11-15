@@ -32,16 +32,16 @@ import FadeIn from "react-fade-in";
 import RemoveProfileFavouriteModal from "../modals/RemoveProfileFavouriteModal";
 
 const Profile = () => {
-	const [localFavourites, setLocalFavourites] = useState([]);
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState(null);
 	const user = useContext(UserContext);
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
-	const [crimestoDisplay, setCrimesToDisplay] = useContext(Crimes); // crimes data context
+	const [crimestoDisplay, setCrimesToDisplay] = useContext(Crimes);
+	const [localFavourites, setLocalFavourites] = useState([]);
+	const [timestampToDelete, setTimestampToDelete] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState(null);
+	const [show, setShow] = useState(false);
 	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
 		useState(false);
-	// modal dialog state for user account deletion
-	const [show, setShow] = useState(false);
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);
 	const history = useHistory();
@@ -50,47 +50,6 @@ const Profile = () => {
 		getUserDetails();
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	// Function to confirm deletion of a favourite
-	const confirmFavouriteDeletion = (aFavourite) => {
-		return (
-			<RemoveProfileFavouriteModal
-				show={showRemoveFavouritesModal}
-				onHide={() => setShowRemoveFavouritesModal(false)}
-				mapdetails={mapDetails}
-				timestamp={aFavourite.timestamp}
-			/>
-		);
-	};
-
-	// remove a favourite from a user's collection of all favourites
-	const deleteFavourite = (aFavourite) => {
-		var userRef = firebase.firestore().collection("users").doc(user.uid);
-		userRef
-			.get()
-			.then(function (doc) {
-				if (doc.exists) {
-					const favouritesToKeep = doc
-						.data()
-						.favourites.filter(
-							(favourite) =>
-								favourite.timestamp !== aFavourite.timestamp
-						);
-					// update firestore doc with the filtered favourites
-					userRef.update({
-						favourites: favouritesToKeep,
-					});
-
-					// update favourites state
-					setLocalFavourites(favouritesToKeep);
-				} else {
-					console.log("No favourites!");
-				}
-			})
-			.catch(function (error) {
-				console.log("Error getting favourites:", error);
-			});
-	};
 
 	// function which retrieves the favourites for a user
 	const getUserDetails = async () => {
@@ -129,7 +88,7 @@ const Profile = () => {
 			.catch((err) => console.log(err));
 	};
 
-	// Function to delete the current user's account
+	// function to delete the current user's account
 	const deleteUserHandler = async (e) => {
 		// re-authenticate user with password input
 		await reauthenticateUser(password)
@@ -186,6 +145,12 @@ const Profile = () => {
 		});
 	};
 
+	// function to display confirmation modal
+	const displayConfirmationModal = (aTimestamp) => {
+		setTimestampToDelete(aTimestamp);
+		setShowRemoveFavouritesModal(true);
+	};
+
 	return (
 		<React.Fragment>
 			{user ? (
@@ -211,16 +176,6 @@ const Profile = () => {
 								<div
 									key={uuid()}
 									className="profile-list-favourite-item">
-
-									<RemoveProfileFavouriteModal
-										show={showRemoveFavouritesModal}
-										onHide={() =>
-											setShowRemoveFavouritesModal(false)
-										}										
-										timestamp={favourite.timestamp}
-										updateUserFavourites={getUserDetails}
-									/>
-
 									<MDBListGroupItem className="profile-favourites-list">
 										<MDBCardLink>
 											<label
@@ -228,18 +183,29 @@ const Profile = () => {
 												onClick={() => {
 													displayMap(favourite);
 												}}>
-												{favourite.title}
+												{favourite.title} timestamp:{" "}
+												{favourite.timestamp}
 											</label>
 										</MDBCardLink>
 										<i
 											className="far fa-trash-alt fa-lg trash-profile"
-											onClick={() => {setShowRemoveFavouritesModal(true)}												
-											}
+											onClick={() => {
+												displayConfirmationModal(
+													favourite.timestamp
+												);
+											}}
 										/>
 									</MDBListGroupItem>
 								</div>
 							))}
 						</MDBListGroup>
+						<RemoveProfileFavouriteModal
+							animation={false}
+							show={showRemoveFavouritesModal}
+							onHide={() => setShowRemoveFavouritesModal(false)}
+							updateUserFavourites={getUserDetails}
+							timestamp={timestampToDelete}
+						/>
 						<MDBCardFooter className="profile-footer">
 							<MDBBtn
 								color="primary"
@@ -316,5 +282,3 @@ const Profile = () => {
 	);
 };
 export default Profile;
-
-//deleteFavourite(favourite);
