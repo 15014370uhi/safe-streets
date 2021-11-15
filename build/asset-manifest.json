@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bc0a2c63.chunk.css",
+    "main.js": "/static/js/main.abbe3a87.chunk.js",
+    "main.js.map": "/static/js/main.abbe3a87.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.cb6ad6e6.js",
+    "runtime-main.js.map": "/static/js/runtime-main.cb6ad6e6.js.map",
+    "static/css/2.6aa1db00.chunk.css": "/static/css/2.6aa1db00.chunk.css",
+    "static/js/2.07796bfb.chunk.js": "/static/js/2.07796bfb.chunk.js",
+    "static/js/2.07796bfb.chunk.js.map": "/static/js/2.07796bfb.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.6aa1db00.chunk.css.map": "/static/css/2.6aa1db00.chunk.css.map",
+    "static/css/main.bc0a2c63.chunk.css.map": "/static/css/main.bc0a2c63.chunk.css.map",
+    "static/js/2.07796bfb.chunk.js.LICENSE.txt": "/static/js/2.07796bfb.chunk.js.LICENSE.txt",
+    "static/media/mdb.css": "/static/media/arrow_right.0897f985.svg",
+    "static/media/logo.ac4324cd.svg": "/static/media/logo.ac4324cd.svg",
+    "static/media/ukVectorGuide.675d95a8.svg": "/static/media/ukVectorGuide.675d95a8.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.cb6ad6e6.js",
+    "static/css/2.6aa1db00.chunk.css",
+    "static/js/2.07796bfb.chunk.js",
+    "static/css/main.bc0a2c63.chunk.css",
+    "static/js/main.abbe3a87.chunk.js"
+  ]
+}
