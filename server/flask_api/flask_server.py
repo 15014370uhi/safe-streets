@@ -3,14 +3,16 @@ from flask_cors import CORS
 import json
 from myLogisticRegression import getPredictions 
 
-#app = Flask(__name__, static_folder='../build', static_url_path='/')
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../../build', static_url_path='/')
+#app = Flask(__name__, static_folder='../../build', static_url_path='')
+#app = Flask(__name__)
 CORS(app)
 
-@app.route("/")
+@app.route("/", defaults={'path':'/'})
+#@app.route("/")
+
 def index():
     return app.send_static_file('index.html')
-
 # def index():
 #     return "Welcome to safe streets machine learning flask server"
 
