@@ -17,6 +17,7 @@ app.use (
     origin: [
       'http://localhost:3000',
       'http://virtual-revolution.com/safe-streets/',
+      'https://safe-streets-app.herokuapp.com/',
     ],
     credentials: true,
   })
