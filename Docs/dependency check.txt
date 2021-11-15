@@ -1,0 +1,30 @@
+
+Unused dependencies
+* @fortawesome/fontawesome-svg-core
+* @fortawesome/free-solid-svg-icons
+* @fortawesome/react-fontawesome
+* @material-ui/core
+* @material-ui/icons
+* @testing-library/jest-dom
+* @testing-library/react
+* @testing-library/user-event
+* bootstrap
+* depcheck
+* leaflet.markercluster
+* react-leaflet-markercluster
+* react-papaparse
+* react-router-bootstrap
+* web-vitals
+Missing dependencies
+* eslint-config-react-app: .\package.json
+* @typescript-eslint/parser: .\package.json
+* eslint-plugin-import: .\package.json
+* eslint-plugin-flowtype: .\package.json
+* eslint-plugin-jsx-a11y: .\package.json
+* eslint-plugin-react-hooks: .\package.json
+* @typescript-eslint/eslint-plugin: .\package.json
+* babel-eslint: .\package.json
+* eslint-plugin-react: .\package.json
+* eslint-plugin-jest: .\package.json
+* eslint-plugin-testing-library: .\package.json
+* bootstrap-css-only: .\src\index.js

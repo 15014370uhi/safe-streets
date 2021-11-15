@@ -14,7 +14,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
-    "depcheck": "^1.4.1",
+    "depcheck": "^1.4.2",
     "firebase": "^8.2.6",
     "leaflet": "^1.7.1",
     "leaflet.markercluster": "^1.5.3",
