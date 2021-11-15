@@ -5,6 +5,9 @@
   "main": "server.js",
   "author": "Richard Clark",
   "license": "MIT",
+  "engines": {
+    "node": "15.5.1"
+  },
   "dependencies": {
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
