@@ -1,2 +1,2 @@
 FLASK_APP=flask_server.py
-FLASK_ENV=production
+FLASK_ENV=development

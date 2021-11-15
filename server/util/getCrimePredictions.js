@@ -17,7 +17,7 @@ const getPredictions = async (policeForce, latitude, longitude) => {
     await axios
       .request ({
         method: 'POST',
-        url: serverURL,
+        url: localURL,
         data: {
           month: predictionMonth, // the month to predict (current month + 1)
           year: predictionYear, // the year to predict
