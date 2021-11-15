@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flask_cors import CORS
 import json
-import os
+#import os
 from myLogisticRegression import getPredictions 
 
 app = Flask(__name__)
@@ -24,7 +24,7 @@ def runPredictionModel():
     result = getPredictions(month, year, lat, lon, sector)   
     results_JSON = json.dumps(result)
    
-    #print("results_JSON: ", results_JSON)
+   # print("results_JSON: ", results_JSON)
     
     return results_JSON
 

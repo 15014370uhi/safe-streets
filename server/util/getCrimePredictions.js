@@ -10,14 +10,11 @@ const getPredictions = async (policeForce, latitude, longitude) => {
   const predictionMonth = today.getMonth () + 1; // get next month
 
   if (typeof sector !== 'undefined') {
-
-    var localURL = 'http://localhost:5000/predict';
-    var serverURL = 'https://safe-streets-app.herokuapp.com/predict';
     // call flask server API to get prediction data
     await axios
       .request ({
         method: 'POST',
-        url: localURL,
+        url: 'http://localhost:5000/predict',
         data: {
           month: predictionMonth, // the month to predict (current month + 1)
           year: predictionYear, // the year to predict
@@ -31,6 +28,7 @@ const getPredictions = async (policeForce, latitude, longitude) => {
         predictions = {
           data: predictionData, // store returned prediction data
         };
+        console.log(JSON.stringify(predictions));
       })
       .catch (error => {
         console.log ('Error getting response from flask server: ' + error);

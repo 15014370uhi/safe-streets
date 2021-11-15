@@ -16,8 +16,7 @@ app.use (
   cors ({
     origin: [
       'http://localhost:3000',
-      'http://virtual-revolution.com/safe-streets/',
-      'https://safe-streets-app.herokuapp.com/',
+      'http://virtual-revolution.com/safe-streets/',      
     ],
     credentials: true,
   })

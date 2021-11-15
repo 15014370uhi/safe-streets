@@ -71,7 +71,7 @@ router.post ('/', async (req, res) => {
         latitude,
         longitude
       );
-      //console.log('PREDICTIONS: ' + JSON.stringify(predictions.data));
+      console.log('PREDICTIONS received routes: ' + JSON.stringify(predictions.data));
       predictionData = predictions.data;
     }
   }

@@ -1,12 +1,9 @@
 import axios from "axios";
 
-var localURL = 'http://localhost:4000/api/map';
-var serverURL = 'https://safe-streets-app.herokuapp.com/api/map';
-
 export const getCrimeData = async (payload) => {
 	return new Promise((resolve) => {
 		axios
-			.post(localURL, payload)
+			.post("http://localhost:4000/api/map", payload)
 			.then((res) => {
 				const response = {
 					predictions: res.data.predictions,
@@ -84,7 +81,7 @@ export const getCrimeCategory = (aCrimeCategory) => {
 export const getPredictions = async (payload) => {
 	return new Promise((resolve) => {
 		axios
-			.post(localURL + "/predictions", payload)
+			.post("http://localhost:4000/api/map/predictions", payload)
 			.then((res) => {
 				const response = {
 					predictions: res.data.predictions,
@@ -104,7 +101,7 @@ export const getPredictions = async (payload) => {
 export const getHistoricCrimes = async (payload) => {
 	return new Promise((resolve) => {
 		axios
-			.post(localURL + "/historic", payload)
+			.post("http://localhost:4000/api/map/historic", payload)
 			.then((res) => {
 				const response = {
 					historicCrimes: res.data.historicCrimes,
