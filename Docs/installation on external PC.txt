@@ -1,0 +1,16 @@
+https://stackoverflow.com/questions/34993200/copy-complete-virtualenv-to-another-pc?fbclid=IwAR232sXOfDsZf4ziN-o7aikFOsYLDMofYc3WdV1WubNktOMMidiFLc8K4LM
+
+Do the following steps on the source machine:
+workon [environment_name]
+pip freeze > requirements.txt
+copy requirements.txt to other PC
+On the other PC:
+create a virtual environment using mkvirtualenv [environment_name]
+workon [environment_name]
+pip install -r requirements.txt
+
+
+Usually I use virtualenv to create a new environment, then I go to the environment where I want to copy from, copy all the folders and paste it into the environment folder I just created, but most importantly when asking if you want to replace the Destination files, choose to skip these files. This way you keep your settings. At least for me, this has worked very well. I hope it works for you too.
+
+
+also - maybe useful https://stackoverflow.com/questions/1534210/use-different-python-version-with-virtualenv?rq=1 

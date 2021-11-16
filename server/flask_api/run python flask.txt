@@ -7,4 +7,5 @@ python3 -m venv venv (create the environ - first time)
 venv\Scripts\activate (then after created)
 flask run (after created)
 
+example of pip install:
 pip install flask python-dotenv
