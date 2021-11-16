@@ -28,7 +28,7 @@ const getPredictions = async (policeForce, latitude, longitude) => {
         predictions = {
           data: predictionData, // store returned prediction data
         };
-        console.log(JSON.stringify(predictions));
+        //(JSON.stringify(predictions));
       })
       .catch (error => {
         console.log ('Error getting response from flask server: ' + error);
