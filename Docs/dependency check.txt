@@ -1,20 +1,21 @@
 
 Unused dependencies
-* @fortawesome/fontawesome-svg-core
-* @fortawesome/free-solid-svg-icons
-* @fortawesome/react-fontawesome
-* @material-ui/core
-* @material-ui/icons
+* @fortawesome/fontawesome-svg-core  - done
+* @fortawesome/free-solid-svg-icons  - done
+* @fortawesome/react-fontawesome     - done
+* @material-ui/core                  - done
+* @material-ui/icons                 - done
 * @testing-library/jest-dom
 * @testing-library/react
 * @testing-library/user-event
-* bootstrap
+* bootstrap                         - done
 * depcheck
-* leaflet.markercluster
-* react-leaflet-markercluster
-* react-papaparse
-* react-router-bootstrap
+* leaflet.markercluster             - TODO once running with flask
+* react-leaflet-markercluster       - TODO once running with flask
+* react-papaparse                   - done
+* react-router-bootstrap            - done
 * web-vitals
+
 Missing dependencies
 * eslint-config-react-app: .\package.json
 * @typescript-eslint/parser: .\package.json

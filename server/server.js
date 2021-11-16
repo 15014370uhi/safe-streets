@@ -3,6 +3,7 @@ const dotenv = require ('dotenv');
 const cors = require ('cors');
 const routes = require ('./routers/routes');
 const app = express ();
+const path =require('path')
 
 //allow environmental variables
 dotenv.config ();
@@ -12,11 +13,13 @@ const PORT = process.env.PORT || 4000;
 
 //middleware
 app.use (express.json ());
+app.use(express.static(path.join(__dirname, "../build"))); //test
 app.use (
   cors ({
     origin: [
       'http://localhost:3000',
-      'http://virtual-revolution.com/safe-streets/',      
+      'http://virtual-revolution.com/safe-streets/', 
+      'https://safe-streets-app.herokuapp.com/',     
     ],
     credentials: true,
   })
