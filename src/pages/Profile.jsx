@@ -183,8 +183,8 @@ const Profile = () => {
 												onClick={() => {
 													displayMap(favourite);
 												}}>
-												{favourite.title} timestamp:{" "}
-												{favourite.timestamp}
+												{favourite.title}{" "} 
+												({favourite.timestamp.slice(0, -10)})
 											</label>
 										</MDBCardLink>
 										<i

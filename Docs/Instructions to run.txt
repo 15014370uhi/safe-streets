@@ -1,0 +1,12 @@
+Activate virtual environment
+(base) D:\github\safe-streets\server\flask_api>venv\Scripts\activate
+
+Run flask server
+(venv) (base) D:\github\safe-streets\server\flask_api>flask run
+
+
+Run Node Server
+D:\github\safe-streets\server> nodemon
+
+Run React
+D:\github\safe-streets npm start
