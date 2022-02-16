@@ -11,7 +11,7 @@ const ButtonShowHistoricCrimes = ({ setModalShow }) => {
 					overlay={
 						<Popover id={"button-tooltip"}>
 							<Popover.Content className="button-tooltip-text">
-								Display Annual Crime Rates
+								Display Historic Crime Rates
 							</Popover.Content>
 						</Popover>
 					}>
@@ -24,7 +24,7 @@ const ButtonShowHistoricCrimes = ({ setModalShow }) => {
 				className="fa fa-chart-line fa-lg mx-4"
 				title="View Historic Crime Data"
 			/>
-			<span className="tooltip-text">Historic Crime Data</span>
+			<span className="tooltip-text">View Crime History</span>
 		</Button>
 		</OverlayTrigger>
 		</>

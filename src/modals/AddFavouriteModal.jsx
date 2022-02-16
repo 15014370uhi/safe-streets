@@ -56,7 +56,7 @@ const AddFavouriteModal = (props) => {
 				<Modal.Title id="contained-modal-title-vcenter">
 					<h3 className="my-3">
 						<MDBIcon className="addFavModal-icon" icon="bookmark" />
-						Add New Favourite Location
+						Add New Favourite
 					</h3>
 				</Modal.Title>
 			</Modal.Header>

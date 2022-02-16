@@ -23,7 +23,7 @@ const ButtonShowPredictions = ({ setModalShow }) => {
 				className="fa fa-brain fa-lg mx-4"
 				title="View Crime Predictions"
 			/>
-			<span className="tooltip-text">Crime Predictions</span>
+			<span className="tooltip-text">Predict Crimes</span>
 		</Button>
 		</OverlayTrigger>
 		</>

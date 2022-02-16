@@ -25,7 +25,17 @@ import geopandas as gpd
 =================
 FLASK VENV in server folder
 
+1. run flask server 
+
 cd server
 cd flask_api
-venv\Scripts\activate
-flask run
+venv\Scripts\activate (may have to go into Scripts folder)
+flask run (from within the flask_api folder - not inside venv folders)
+
+2. run safe-streets Server
+
+goto safe-streets\server folder within terminal and run nodemon
+
+3. run safe-streets front end
+
+from safe-streets folder run npm start
