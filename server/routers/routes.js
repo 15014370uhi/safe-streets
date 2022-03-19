@@ -36,8 +36,8 @@ router.post ('/', async (req, res) => {
     // populate an array with all month dates to check for crimes
     var monthsToCheck = populateCrimeDates (numberOfMonths);
 
-    // array to hold crimes to display on map
-    let crimesDuringMonth = []; //array to hold a specific month's crimes
+    //array to hold a specific month's crimes
+    let crimesDuringMonth = []; 
 
     // get crime data for a bounding box location, for all specified months
     for (let aMonth of monthsToCheck) {
@@ -71,7 +71,8 @@ router.post ('/', async (req, res) => {
         latitude,
         longitude
       );
-      //console.log('PREDICTIONS received routes: ' + JSON.stringify(predictions.data));
+      //TODO TEST
+      console.log('PREDICTIONS received routes: ' + JSON.stringify(predictions.data));
       predictionData = predictions.data;
     }
   }

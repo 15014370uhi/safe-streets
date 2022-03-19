@@ -21,7 +21,7 @@ def runPredictionModel():
 
     # call machine learning function with data
     result = getPredictions(month, year, lat, lon, sector)   
-    results_JSON = json.dumps(result)   
+    results_JSON = json.dumps(result)       
     
     return results_JSON
 
