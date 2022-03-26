@@ -65,10 +65,12 @@ const getBoundingBox = (latLocation, lonLocation) => {
   lonLocation = parseFloat (lonLocation);
 
   var boundingBox = []; //initialise array to hold bounding box coordinates
-  const latCorrection = 0.007; //offset adjustment for latitude coordinate
-  const lonCorrection = 0.011; //offset adjustment for longitude coordinate  
+  const latCorrection = 0.004; //offset adjustment for latitude coordinate //Vertical size
+  const lonCorrection = 0.005; //offset adjustment for longitude coordinate //Horizontal size 
   const precision = 6; //significant figures accuracy for Lat, lon coordinates
 
+  //original values 0.007, 0.011 - nice square 0.006, 0.010
+  
   //top left coordinate of bounding box
   const latTopLeft = parseFloat (latLocation + latCorrection).toPrecision (
     precision
@@ -114,12 +116,14 @@ const getBoundingBox = (latLocation, lonLocation) => {
     lonBotLeft
   );
 
+  console.log('Bounding box: ' + boundingBox);
+  console.log('alternative: ' + lonBotLeft +','+ latBotLeft+','+lonBotRight+','+latTopLeft);
   //return bounding box coordinates
   return boundingBox;
 };
 
 // function which improves the visibility of overlapping and identically positioned
-// map markers, by adding a random value to latitude and longitude positions of crimes
+// map markers, by adding a small random value to latitude and longitude positions of crimes
 const improveMarkerVisibility = displayCrimes => {
   var referenceLats = []; // to store duplicate latitudes
   var referencelons = []; // to store duplicate longitudes
@@ -135,7 +139,7 @@ const improveMarkerVisibility = displayCrimes => {
   // get set of all crime longitudes
   var uniqueLons = [...new Set (referencelons)];
 
-  // values to adjust crime marker location by
+  // values to adjust crime marker location slightly by
   var locationValues = [
     0.00010,
     0.00021,
@@ -171,7 +175,7 @@ const improveMarkerVisibility = displayCrimes => {
     }
   }
 
-  // store max of 200 crimes, to cater to mapquest API map markers
+  // TEST: store max of 200 crimes, 
  // displayCrimes = displayCrimes.slice (0, 200); 
 
   return displayCrimes;

@@ -156,7 +156,7 @@ const ShowPredictionsModal = (props) => {
 							data={chartData}
 							layout="vertical"
 							barCategoryGap={4}
-							margin={{ top: 0, right: 65, left: 22, bottom: 0 }}>
+							margin={{ top: 0, right: 65, left: 55, bottom: 0 }}>
 							<XAxis type="number" hide />
 							<YAxis
 								type="category"

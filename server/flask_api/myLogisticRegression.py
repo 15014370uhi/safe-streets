@@ -28,11 +28,11 @@ def getCrimeCategory(aCrimeValue):
         return "Violent crime"  # violent crime
 
 
-# function which formats crime prediction occurrences into an object
+# function which formats crime prediction occurrences into a usable object
 def addTotals(crimePercentages, totalNumberCrimes):
     
-    print ('addTotals received:  ' + '\nPERCENTAGES' + str(crimePercentages) 
-                           + '\nTotal Crimes:' + str(totalNumberCrimes))
+   # print ('addTotals received:  ' + '\nPERCENTAGES' + str(crimePercentages) 
+   #                         + '\nTotal Crimes:' + str(totalNumberCrimes))
 
     results = {}
     counter = 0
@@ -50,14 +50,12 @@ def addTotals(crimePercentages, totalNumberCrimes):
         occurrences = percentage * totalNumberCrimes # set occurrences of this crime
         occurrences = round(occurrences) #round up to nearest int
         
-        #TODO original code        
+        #TODO Alternative code        
         #occurrences = int(percentage * totalNumberCrimes) # set occurrences of this crime
-
-        
-        
+                
         print ('Occurence for ' + str(crimeCategory) + ' set to: ' + str(occurrences))
          
-        #TODO Original
+        #TODO Alternative code
         #occurrences = int(math.ceil(percentage * (totalNumberCrimes / weightingFactor))) # set occurrences of this crime
 
         results[crimeCategory] = occurrences  # add to result object

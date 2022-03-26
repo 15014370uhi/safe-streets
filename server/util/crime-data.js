@@ -28,7 +28,7 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
   let crimeData;
 
   // base URL for geographical location polygon search of police crime data API
-  let baseURL = 'https://data.police.uk/api/crimes-street/all-crime?poly=';
+  let baseURL = 'https://data.police.uk/api/crimes-street/all-crime?poly='; 
 
   // generate URL for API with bounding box area, and crime month required
   let URLCrimes =
@@ -51,9 +51,7 @@ const getCrimeData = async (crimeDateCheck, boundingBox) => {
     '&date=' +
     crimeDateCheck;
 
-   // console.log('crimeURL: ' + URLCrimes);
-
-  // call police data API to retieve crimes for specified month and area
+  // call police data API to retieve historic crimes for specified month and area
   await axios
     .get (URLCrimes)
     .then (res => {
@@ -77,14 +75,15 @@ const populateAllCrimes = async crimes => {
   // add crime details for each crime
   for (let crimeCollection of crimes) {
     for (let aCrime of crimeCollection) {
+
       // store details of current crime
       let aCrimeCategory = aCrime.category;
       let aCrimeLat = aCrime.location.latitude;
       let aCrimeLon = aCrime.location.longitude;
-      let aCrimeDate = getYearAndMonth (aCrime.month);
+      let aCrimeDate = getYearAndMonth (aCrime.month); // split year and month
       let aCrimeYear = aCrimeDate.getFullYear ();
-      let aCrimeMonth = aCrimeDate.getMonth () + 1; //zero based count +1
-      
+      let aCrimeMonth = aCrimeDate.getMonth () + 1; //Correction for Zero based count
+          
       // create new object with crime details to add
       const aCrimeDetails = {
         category: aCrimeCategory,
@@ -93,7 +92,6 @@ const populateAllCrimes = async crimes => {
         month: aCrimeMonth,
         year: aCrimeYear,
       };
-
       // add current crime to array of all crimes to display on map
       allCrimes.push (aCrimeDetails);
     }
@@ -118,7 +116,6 @@ const getHistoricCrimes = async aBoundingBox => {
 
     // if crimes exist for month being checked, add them to collection of crimes
     if (
-      //crimesDuringMonthHistoric !== undefined &&
       crimesDuringMonthHistoric.length > 0
     ) {
       crimesHistoric.push (crimesDuringMonthHistoric);
@@ -147,13 +144,14 @@ const getHistoricCrimes = async aBoundingBox => {
         month: aCrimeMonth,
         year: aCrimeYear,
       };
+
+      //TODO TEST 
+      //console.log('Adding crim with month: ' + JSON.stringify (aCrimeDetails.month));
+
       // add current crime to array of all crimes to display on map
       historicCrimes.push (aCrimeDetails);
     }    
   }
-
-  //console.log('returning historic crimes length: ' + historicCrimes.length);
-
   return historicCrimes;
 };
 

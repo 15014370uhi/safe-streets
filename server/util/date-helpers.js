@@ -4,6 +4,8 @@
  * @returns {string} The name of the month
  */
 const getMonthName = aMonthNumber => {
+
+  aMonthNumber = aMonthNumber - 1; 
   var months = [
     'January',
     'February',
@@ -65,7 +67,7 @@ const populateCrimeDates = numberOfMonthsRequired => {
   let crimeDateToCheck = '';
 
   /**
-	 * Set initial crime month to 2 months prior,
+	 * Set initial crime month check to 2 months prior,
 	 * since the past 1-2 month's crimes are not usually listed on police API.
 	 */
   if (currentMonth === 1) {

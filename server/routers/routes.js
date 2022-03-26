@@ -89,7 +89,7 @@ router.post ('/', async (req, res) => {
   });
 });
 
-// route for only historic crime data
+// route for historic crime data retrieval
 router.post ('/historic', async (req, res) => {
   let latitude = req.body.lat; // latitude searched for
   let longitude = req.body.lon; // longitude searched for
@@ -100,12 +100,13 @@ router.post ('/historic', async (req, res) => {
   // store previous 12 months of crime data
   var historicCrimes = await getHistoricCrimes (boundingBox);
 
+  // return historic crimes data
   res.send ({
     historicCrimes: historicCrimes,
   });
 });
 
-// route for only machine learning crime predictions from flask server
+// route for machine learning crime predictions from flask server
 router.post ('/predictions', async (req, res) => {
   let latitude = req.body.lat; // latitude searched for
   let longitude = req.body.lon; // longitude searched for
@@ -119,6 +120,7 @@ router.post ('/predictions', async (req, res) => {
     var predictions = await getPredictions (policeForce, latitude, longitude);
   }
 
+  //return crime predictions
   res.send ({
     predictions: predictions.data,
   });

@@ -8,6 +8,7 @@ const ButtonShowFilters = ({ setModalShow }) => {
 		<>
 		<OverlayTrigger
 					placement="left"
+					rootClose={true}
 					overlay={
 						<Popover id={"button-tooltip"}>
 							<Popover.Content className="button-tooltip-text">

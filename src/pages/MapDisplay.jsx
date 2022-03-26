@@ -92,7 +92,7 @@ const MapDisplay = () => {
 		var predictionsResponse = await getPredictions(payload);
 		var threatLevel = getThreatLevel(predictionsResponse.predictions);
 		var historicResponse = await getHistoricCrimes(payload);
-
+		
 		setResultsData({
 			predictions: predictionsResponse.predictions,
 			historicCrimes: historicResponse.historicCrimes,
@@ -134,15 +134,15 @@ const MapDisplay = () => {
 				whenCreated={() => setMap(map)}
 				zoomControl={false}>
 				{/* for each crime, add the correct marker to map */}
-				{crimesToDisplay.map((crime) => (
+				{crimesToDisplay.map((crime) => (					
 					<Marker
 						key={uuid()}
 						position={[crime.latitude, crime.longitude]}
 						icon={getCrimeIcon(crime.category, false)}>
 						<Popup className="icon-popup">
 							{getCrimeCategory(crime.category)}
-							{"\n"}
-							<p>
+							{"\n"}													
+							<p>							
 								{getMonthName(crime.month)}, {crime.year}
 							</p>
 							<p>

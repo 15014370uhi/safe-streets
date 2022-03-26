@@ -8,6 +8,7 @@ const ButtonShowHistoricCrimes = ({ setModalShow }) => {
 		<>
 		<OverlayTrigger
 					placement="right"
+					rootClose={true}
 					overlay={
 						<Popover id={"button-tooltip"}>
 							<Popover.Content className="button-tooltip-text">

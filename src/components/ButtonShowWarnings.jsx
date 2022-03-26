@@ -22,6 +22,7 @@ const ButtonShowWarnings = ({ setModalShow, analysisComplete }) => {
 			{analysisComplete ? (
 				<OverlayTrigger
 					placement="bottom"
+					rootClose={true}
 					overlay={
 						<Popover id={"button-tooltip"}>
 							<Popover.Content className="button-tooltip-text">

@@ -4,8 +4,21 @@ https://blog.miguelgrinberg.com/post/how-to-create-a-react--flask-project
 (Within server flask folder)
 
 python3 -m venv venv (create the environ - first time)
-venv\Scripts\activate (then after created)
-flask run (after created)
+
+Normal activation once venv exists:
+
+GO to folder:
+>cd safe-streets\server\flask_api\venv>
+>Scripts\activate 
+>cd..
+>safe-streets\server\flask_api\flask run 
+
+Run Node Server:
+safe-streets\server> nodemon 
+
+Run React:
+safe-streets> npm start
+
 
 example of pip install:
 pip install flask python-dotenv

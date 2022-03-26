@@ -20,5 +20,6 @@ export const getMonthName = (aMonthNumber) => {
 		"December",
 	];
 
+	aMonthNumber = (aMonthNumber - 1); // zero indexed array
 	return months[aMonthNumber];
 };

@@ -35,8 +35,8 @@ export const populateDisplayCrimes = (crimes, filters) => {
 	// call function which creates a list of crime categories to display on map
 	const categoriesToInclude = applyFilters(filters);
 
-	crimes.forEach((aCrime) => {
-		if (categoriesToInclude.includes(aCrime.category)) {
+	crimes.forEach((aCrime) => {		
+		if (categoriesToInclude.includes(aCrime.category)) {			
 			displayCrimes.push(aCrime);
 		}
 	});

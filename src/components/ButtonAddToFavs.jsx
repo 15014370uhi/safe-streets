@@ -8,6 +8,7 @@ const ButtonAddToFavs = ({ setModalShow }) => {
 		<>
 		<OverlayTrigger
 					placement="left"
+					rootClose={true}
 					overlay={
 						<Popover id={"button-tooltip"}>
 							<Popover.Content>
