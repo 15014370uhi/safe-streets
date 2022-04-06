@@ -30,9 +30,6 @@ def getCrimeCategory(aCrimeValue):
 
 # function which formats crime prediction occurrences into a usable object
 def addTotals(crimePercentages, totalNumberCrimes):
-    
-   # print ('addTotals received:  ' + '\nPERCENTAGES' + str(crimePercentages) 
-   #                         + '\nTotal Crimes:' + str(totalNumberCrimes))
 
     results = {}
     counter = 0
@@ -40,24 +37,10 @@ def addTotals(crimePercentages, totalNumberCrimes):
     # iterate over crime ratio predictions and format to 2 decimal places
     for percentage in crimePercentages:
         crimeCategory = getCrimeCategory(counter)  # get crime type
-       
-        # adjust weighting factor to scale crime model bias
-        weightingFactor = 1;       
-        if(crimeCategory == 'Anti-social behaviour' or crimeCategory == 'Violent crime'):
-           weightingFactor = 1.4;          
-         
-        # set total occurrences of this crime type           
-        occurrences = percentage * totalNumberCrimes # set occurrences of this crime
-        occurrences = round(occurrences) #round up to nearest int
-        
-        #TODO Alternative code        
-        #occurrences = int(percentage * totalNumberCrimes) # set occurrences of this crime
-                
-        print ('Occurence for ' + str(crimeCategory) + ' set to: ' + str(occurrences))
-         
-        #TODO Alternative code
-        #occurrences = int(math.ceil(percentage * (totalNumberCrimes / weightingFactor))) # set occurrences of this crime
 
+        # set total occurrences of this crime type
+        occurrences = percentage * totalNumberCrimes  # set occurrences of this crime
+        occurrences = round(occurrences)  # round up to nearest int
         results[crimeCategory] = occurrences  # add to result object
         counter += 1
 
@@ -77,6 +60,7 @@ def addPercentages(crimePercentages):
         counter += 1
 
     return results
+
 
 # function which predicts the percentage ratio of each crime type occurring within
 # a cluster area that encompasses a latitude and longitude location,
@@ -112,17 +96,13 @@ def getPredictions(month, year, lat, lon, sector):
     crimePercentageRatios = predictCrimeRatios(X, LR_Ratio_Model)
     totalNumberOfCrimes = predictNumberCrimes(X, LR_Occurrence_Model)
 
-    print ("Crime Occurrence Prediction for Sector: " + str(sector) 
-           + "\nMonth: " + str(month)
-           + "\nCluster: " + str(cluster) + 
-           "\nTotal Number of Crimes: " + str(totalNumberOfCrimes))
-
     # generate formatted result object
     result = {}
     result["totals"] = addTotals(crimePercentageRatios, totalNumberOfCrimes)
-    result["percentages"] = addPercentages(crimePercentageRatios)   
-    
+    result["percentages"] = addPercentages(crimePercentageRatios)
+
     return result
+
 
 # function which predicts the percentage ratio of crime types that will occur
 def predictCrimeRatios(X, LR_Model):

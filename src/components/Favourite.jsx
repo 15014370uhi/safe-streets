@@ -10,7 +10,7 @@ import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
 /**
- * A favourite for a user //TODO fix function descriptions
+ * A favourite for a user
  *
  * @param {string} title - Title for this favourite
  * @param {string} timestamp - Date the favourite was created
@@ -32,7 +32,11 @@ const Favourite = ({
 
 	return (
 		<Col className="container-fluid mt-4">
-			<Card className="favourite-card" key={uuid()} border="info" style={{ width: "18rem" }}>
+			<Card
+				className="favourite-card"
+				key={uuid()}
+				border="info"
+				style={{ width: "18rem" }}>
 				<MapContainer
 					className="markercluster-map"
 					center={[lat, lon]}

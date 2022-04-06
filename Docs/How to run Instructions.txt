@@ -1,0 +1,15 @@
+Activate virtual environment using Anaconda Prompt
+(base) safe-streets\server\flask_api
+>venv\Scripts\activate
+
+Run flask server
+(venv) (base) safe-streets\server\flask_api
+>flask run
+
+Run Node Server
+safe-streets\server
+>nodemon
+
+Run React
+safe-streets 
+>npm start

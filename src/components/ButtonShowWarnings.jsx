@@ -11,6 +11,7 @@ const ButtonShowWarnings = ({ setModalShow, analysisComplete }) => {
 	var variant = "success";
 	var threatText = resultsData.threatLevel;
 
+	// set threat level
 	if (resultsData.threatLevel === "Medium") {
 		variant = "warning";
 	} else if (resultsData.threatLevel === "High") {
@@ -50,7 +51,7 @@ const ButtonShowWarnings = ({ setModalShow, analysisComplete }) => {
 						title="Warning"
 					/>
 					<span className="tooltip-text">
-						Analysing Threats....{' '} 
+						Analysing Threats....{" "}
 						<Spinner
 							as="span"
 							animation="border"

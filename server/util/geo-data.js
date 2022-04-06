@@ -2,13 +2,13 @@ const mapquest = require ('mapquest');
 const axios = require ('axios');
 mapquest.key = process.env.MAPQUEST_API_KEY;
 
-/**   
- * function which returns the latitude and longitude of a named UK street location
- * 
- * @param {string} locationName The location name
- * 
- * @return {object} Object containing latitude and longitude
- */
+/*   
+ function which returns the latitude and longitude of a named UK street location
+  
+ @param {string} locationName The location name
+  
+ @return {object} Object containing latitude and longitude
+*/
 const getLatLon = async locationName => {
   //API key
   const apiKey = process.env.MAPQUEST_API_KEY;
@@ -50,27 +50,27 @@ const getLatLon = async locationName => {
   return geoLocationData;
 };
 
-/**
-   * Returns an array of latitude and longitutde coordinates 
-   * forming approx 1 mile square bounding box centered on 
-   * a pair of latitude and longitude coordinates.
-   *
-   * @param {string} latLocation The center point latitude coordinate
-   * @param {string} lonLocation The center point longitude coordinate
-   *
-   * @return {array} Bounding box of map area
-   */
+/*
+  Returns an array of latitude and longitutde coordinates 
+  forming approx 1 mile square bounding box centered on 
+  a pair of latitude and longitude coordinates.
+   
+  @param {string} latLocation The center point latitude coordinate
+  @param {string} lonLocation The center point longitude coordinate
+   
+  @return {array} Bounding box of map area
+*/
 const getBoundingBox = (latLocation, lonLocation) => {
   latLocation = parseFloat (latLocation);
   lonLocation = parseFloat (lonLocation);
 
   var boundingBox = []; //initialise array to hold bounding box coordinates
   const latCorrection = 0.004; //offset adjustment for latitude coordinate //Vertical size
-  const lonCorrection = 0.005; //offset adjustment for longitude coordinate //Horizontal size 
+  const lonCorrection = 0.005; //offset adjustment for longitude coordinate //Horizontal size
   const precision = 6; //significant figures accuracy for Lat, lon coordinates
 
   //original values 0.007, 0.011 - nice square 0.006, 0.010
-  
+
   //top left coordinate of bounding box
   const latTopLeft = parseFloat (latLocation + latCorrection).toPrecision (
     precision
@@ -116,14 +116,14 @@ const getBoundingBox = (latLocation, lonLocation) => {
     lonBotLeft
   );
 
-  console.log('Bounding box: ' + boundingBox);
-  console.log('alternative: ' + lonBotLeft +','+ latBotLeft+','+lonBotRight+','+latTopLeft);
   //return bounding box coordinates
   return boundingBox;
 };
 
-// function which improves the visibility of overlapping and identically positioned
-// map markers, by adding a small random value to latitude and longitude positions of crimes
+/*
+ function which improves the visibility of overlapping and identically positioned
+ map markers, by adding a small random value to latitude and longitude positions of crimes
+ */
 const improveMarkerVisibility = displayCrimes => {
   var referenceLats = []; // to store duplicate latitudes
   var referencelons = []; // to store duplicate longitudes
@@ -175,12 +175,8 @@ const improveMarkerVisibility = displayCrimes => {
     }
   }
 
-  // TEST: store max of 200 crimes, 
- // displayCrimes = displayCrimes.slice (0, 200); 
-
   return displayCrimes;
 };
-
 
 /**
 	 * function which checks if a latitude, longitude coordinate lies
@@ -190,12 +186,17 @@ const improveMarkerVisibility = displayCrimes => {
 	 *
 	 * @returns {Boolean} isValidCoordinate Returns true if coordinate lies within UK
 	 */
- const isWithinUK = (lat, lon) => {
-		let isValidCoordinate = true;
-		if (lat < 49.88 || lat > 60.86 || lon < -8.21 || lon > 1.77) {
-			isValidCoordinate = false;
-		}
-		return isValidCoordinate;
-	};
+const isWithinUK = (lat, lon) => {
+  let isValidCoordinate = true;
+  if (lat < 49.88 || lat > 60.86 || lon < -8.21 || lon > 1.77) {
+    isValidCoordinate = false;
+  }
+  return isValidCoordinate;
+};
 
-module.exports = {getLatLon, getBoundingBox, improveMarkerVisibility, isWithinUK};
+module.exports = {
+  getLatLon,
+  getBoundingBox,
+  improveMarkerVisibility,
+  isWithinUK,
+};

@@ -1,7 +1,0 @@
-{
-
-'totals': {'Anti_social_behaviour': 230, 'Theft': 19, 'Burglary': 9, 'Criminal_damage_and_arson': 27, 'Drugs': 8, 'Public_order': 26, 'Possession_of_weapons': 4, 'Violent_crime': 113, 'Vehicle_crime': 7, 'Shoplifting': 5}, 
-
-'percentages': {'Anti_social_behaviour': '51.35', 'Theft': '4.34', 'Burglary': '2.02', 'Criminal_damage_and_arson': '5.99', 'Drugs': '1.79', 'Public_order': '5.74', 'Possession_of_weapons': '0.79', 'Violent_crime': '25.29', 'Vehicle_crime': '1.59', 'Shoplifting': '1.10'}
-
-}

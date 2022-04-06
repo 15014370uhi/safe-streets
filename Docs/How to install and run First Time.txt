@@ -1,0 +1,32 @@
+==Instructions to run safe streets web application==
+
+1. Install Anaconda 
+https://docs.anaconda.com/anaconda/install/index.html
+
+2. Open Anaconda CMD Prompt application
+3. Start Python Virtual Environment from Flask_api folder
+
+ >safe-streets\server\flask_api>
+ >venv\Scripts\activate     
+
+4*. (*First time only - Import pip settings to virtual environment)
+
+ >pip install -r requirements.txt
+
+5. Start flask server
+
+ >flask run
+
+6. Start Node within server folder using VS Code terminal
+
+>safe-streets\server\
+>nodemon
+
+7. Start React in Root folder using VS Code terminal
+
+>safe-streets\
+>npm start
+
+9. Browser should open with application screen 
+    Register new account with email and password and you will be automatically logged in 
+    and perform a search.

@@ -1,7 +1,0 @@
-anaconda CMD
- D:\github\safe-streets\server\flask_api>venv\Scripts\activate
- flask run
-
-goto safe-streets server folder - nodemon
-goto safe-streets src folder - npm start
-

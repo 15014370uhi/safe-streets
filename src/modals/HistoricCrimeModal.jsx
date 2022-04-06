@@ -17,108 +17,6 @@ import { MDBIcon } from "mdbreact";
 const ShowHistoricCrimeModal = (props) => {
 	const [resultsData, setResultsData] = useContext(ResultsData);
 
-	var testData = 
-	[
-		{"month":"Oct",
-"Anti-Social Behaviour":10,
-"Burglary":10,
-"Criminal Damage & Arson":9,
-"Drugs":5,
-"Public Order":5,
-"Possession of Weapons":5,
-"Shoplifting":5,
-"Theft":5,
-"Vehicle Crime":5,
-"Violent Crime":20
-},
-
-{"month":"Nov",
-"Anti-Social Behaviour":10,
-"Burglary":10,
-"Criminal Damage & Arson":9,
-"Drugs":5,
-"Public Order":5,
-"Possession of Weapons":5,
-"Shoplifting":5,
-"Theft":5,
-"Vehicle Crime":5,
-"Violent Crime":20},
-
-{"month":"Dec",
-"Anti-Social Behaviour":10,
-"Burglary":10,
-"Criminal Damage & Arson":9,
-"Drugs":5,
-"Public Order":5,
-"Possession of Weapons":5,
-"Shoplifting":5,
-"Theft":5,
-"Vehicle Crime":5,
-"Violent Crime":20},
-
-{"month":"Jan",
-"Anti-Social Behaviour":10,
-"Burglary":10,
-"Criminal Damage & Arson":9,
-"Drugs":5,
-"Public Order":5,
-"Possession of Weapons":5,
-"Shoplifting":5,
-"Theft":5,
-"Vehicle Crime":5,
-"Violent Crime":20},
-
-{"month":"Feb",
-"Anti-Social Behaviour":10,
-"Burglary":10,
-"Criminal Damage & Arson":9,
-"Drugs":5,
-"Public Order":5,
-"Possession of Weapons":5,
-"Shoplifting":5,
-"Theft":5,
-"Vehicle Crime":5,
-"Violent Crime":20},
-
-{"month":"Mar","Anti-Social Behaviour":10,
-"Burglary":10,
-"Criminal Damage & Arson":9,
-"Drugs":5,
-"Public Order":5,
-"Possession of Weapons":5,
-"Shoplifting":5,
-"Theft":5,
-"Vehicle Crime":5,
-"Violent Crime":20},
-
-{"month":"Apr",
-"Anti-Social Behaviour": 0,
-				"Burglary": 0,
-				"Criminal Damage & Arson": 0,
-				"Drugs": 0,
-				"Possession of Weapons": 0,
-				"Public Order": 0,
-				"Robbery": 0,
-				"Shoplifting": 0,
-				"Theft": 0,
-				"Vehicle Crime": 0,
-				"Violent Crime": 0,},
-
-{"month":"May",
-"Anti-Social Behaviour": 10,
-				"Burglary": 30,
-				"Criminal Damage & Arson": 10,
-				"Drugs": 0,
-				"Possession of Weapons": 0,
-				"Public Order": 0,
-				"Robbery": 0,
-				"Shoplifting": 0,
-				"Theft": 0,
-				"Vehicle Crime": 0,
-				"Violent Crime": 0,},
-
-];
-
 	// array of month names
 	var months = [
 		"Jan",
@@ -164,7 +62,7 @@ const ShowHistoricCrimeModal = (props) => {
 			}
 
 			var monthlyStats = {
-				"month": months[currentGraphMonth - 1],
+				month: months[currentGraphMonth - 1],
 				"Anti-Social Behaviour": 0,
 				"Burglary": 0,
 				"Criminal Damage & Arson": 0,
@@ -191,7 +89,7 @@ const ShowHistoricCrimeModal = (props) => {
 			case "Anti social behaviour":
 				crimeCat = "Anti-Social Behaviour";
 				break;
-				
+
 			case "Burglary":
 				crimeCat = "Burglary";
 				break;
@@ -206,14 +104,14 @@ const ShowHistoricCrimeModal = (props) => {
 
 			case "Possession of weapons":
 				crimeCat = "Possession of Weapons";
-				break;		
+				break;
 
 			case "Public order":
 			case "Other crime":
 				crimeCat = "Public Order";
 				break;
 
-			case "Robbery":			
+			case "Robbery":
 				crimeCat = "Robbery";
 				break;
 
@@ -223,15 +121,15 @@ const ShowHistoricCrimeModal = (props) => {
 
 			case "Theft from the person":
 			case "Bicycle theft":
-			case "Other theft":			
+			case "Other theft":
 				crimeCat = "Theft";
 				break;
 
 			case "Vehicle crime":
 				crimeCat = "Vehicle Crime";
 				break;
-	
-			case "Violent crime":			
+
+			case "Violent crime":
 			case "Violence and sexual offences":
 				crimeCat = "Violent Crime";
 				break;
@@ -246,8 +144,8 @@ const ShowHistoricCrimeModal = (props) => {
 	var graphData = getSortedMonths();
 
 	for (const crime in resultsData.historicCrimes) {
-		let aCrimeRecord = resultsData.historicCrimes[crime];		
-		
+		let aCrimeRecord = resultsData.historicCrimes[crime];
+
 		// format crime category string
 		var aCategory = aCrimeRecord.category.replace(/-/g, " ");
 		aCategory = aCategory.charAt(0).toUpperCase() + aCategory.slice(1);
@@ -257,14 +155,13 @@ const ShowHistoricCrimeModal = (props) => {
 		var indexOfMonth = parseInt(aCrimeRecord.month - 1);
 		var aMonth = months[indexOfMonth];
 
-		for (var index in graphData){
+		for (var index in graphData) {
 			var monthlyCrimes = graphData[index];
-			if(monthlyCrimes.month === aMonth){				
-				monthlyCrimes[aCategory] = monthlyCrimes[aCategory] + 1;						
-			}			
+			if (monthlyCrimes.month === aMonth) {
+				monthlyCrimes[aCategory] = monthlyCrimes[aCategory] + 1;
+			}
 		}
-	};
-
+	}
 
 	return (
 		<Modal
@@ -281,7 +178,7 @@ const ShowHistoricCrimeModal = (props) => {
 					</h3>
 				</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>			
+			<Modal.Body>
 				<ResponsiveContainer width={"100%"} height={600}>
 					<AreaChart
 						width={"100%"}
@@ -297,8 +194,8 @@ const ShowHistoricCrimeModal = (props) => {
 						<CartesianGrid strokeDasharray="3 3" />
 						<XAxis dataKey="month" />
 						<YAxis type="number" domain={["dataMin", "dataMax"]} />
-						<Tooltip />						
-					 <Area
+						<Tooltip />
+						<Area
 							type="monotone"
 							dataKey="Anti-Social Behaviour"
 							stackId="1"
@@ -374,7 +271,7 @@ const ShowHistoricCrimeModal = (props) => {
 							stackId="1"
 							stroke="black"
 							fill="black"
-						/> 
+						/>
 					</AreaChart>
 				</ResponsiveContainer>
 			</Modal.Body>

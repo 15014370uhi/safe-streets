@@ -7,7 +7,6 @@ import Navbar from "../navigation/NavBar";
 import Search from "../pages/Search";
 import Favourites from "../pages/Favourites";
 import MapDisplay from "../pages/MapDisplay";
-
 import { Route, Switch, Redirect } from "react-router-dom";
 
 const Application = () => {

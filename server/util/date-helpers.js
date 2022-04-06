@@ -1,11 +1,11 @@
-/**
- * function which converts a month number into the string name equivalent
- * @param {aMonthNumber} the number of the month
- * @returns {string} The name of the month
- */
-const getMonthName = aMonthNumber => {
+/*
+ function which converts a month number into the string name equivalent
 
-  aMonthNumber = aMonthNumber - 1; 
+ @param {aMonthNumber} the number of the month
+ @returns {string} The name of the month
+*/
+const getMonthName = aMonthNumber => {
+  aMonthNumber = aMonthNumber - 1;
   var months = [
     'January',
     'February',
@@ -24,14 +24,14 @@ const getMonthName = aMonthNumber => {
   return months[aMonthNumber];
 };
 
-/**
- * function which extracts the year and month from a string and returns
- * a Date object representation
- *
- * @param {string} stringDate String representation of year and month
- *
- * @return {Date} The date object containing year and month of crime
- */
+/*
+ function which extracts the year and month from a string and returns
+ a Date object representation
+ 
+ @param {string} stringDate String representation of year and month
+ 
+ @return {Date} The date object containing year and month of crime
+*/
 const getYearAndMonth = stringDate => {
   const crimeYear = stringDate.slice (0, 4);
   var crimeMonth = stringDate.slice (5);
@@ -41,15 +41,15 @@ const getYearAndMonth = stringDate => {
   return crimeDate;
 };
 
-/**
- * function which returns an array of dates in the format YYYY-MM
- * for a given number of months, begining 1 month prior
- * to the current month
- *
- * @param {number} numberOfMonthsRequired The number of months to check for crimes
- *
- * @return {array} The array of dates to check for crimes
- */
+/*
+ function which returns an array of dates in the format YYYY-MM
+ for a given number of months, begining 1 month prior
+ to the current month
+ 
+ @param {number} numberOfMonthsRequired The number of months to check for crimes
+ 
+ @return {array} The array of dates to check for crimes
+*/
 const populateCrimeDates = numberOfMonthsRequired => {
   // initialise an array to hold dates of months and year(s) to check for crimes
   let dateArray = [];

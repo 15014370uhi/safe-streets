@@ -144,10 +144,7 @@ const getHistoricCrimes = async aBoundingBox => {
         month: aCrimeMonth,
         year: aCrimeYear,
       };
-
-      //TODO TEST 
-      //console.log('Adding crim with month: ' + JSON.stringify (aCrimeDetails.month));
-
+     
       // add current crime to array of all crimes to display on map
       historicCrimes.push (aCrimeDetails);
     }    

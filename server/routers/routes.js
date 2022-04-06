@@ -37,7 +37,7 @@ router.post ('/', async (req, res) => {
     var monthsToCheck = populateCrimeDates (numberOfMonths);
 
     //array to hold a specific month's crimes
-    let crimesDuringMonth = []; 
+    let crimesDuringMonth = [];
 
     // get crime data for a bounding box location, for all specified months
     for (let aMonth of monthsToCheck) {
@@ -66,13 +66,8 @@ router.post ('/', async (req, res) => {
     // check for valid police force/location
     if (typeof policeForce !== 'undefined') {
       // get crime predictions for this location, for the following month
-      var predictions = await getPredictions (
-        policeForce,
-        latitude,
-        longitude
-      );
-      //TODO TEST
-      console.log('PREDICTIONS received routes: ' + JSON.stringify(predictions.data));
+      var predictions = await getPredictions (policeForce, latitude, longitude);
+
       predictionData = predictions.data;
     }
   }
@@ -120,7 +115,7 @@ router.post ('/predictions', async (req, res) => {
     var predictions = await getPredictions (policeForce, latitude, longitude);
   }
 
-  //return crime predictions
+  // return crime predictions
   res.send ({
     predictions: predictions.data,
   });

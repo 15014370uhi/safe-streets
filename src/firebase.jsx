@@ -31,7 +31,6 @@ const getUserDocument = async (uid) => {
 };
 
 // function to create a new user with email and password
-//TODO add email authenticating
 export const createUserWithEmailAndPassword = async (email, password) => {
 	try {
 		const { user } = await auth.createUserWithEmailAndPassword(
@@ -48,7 +47,7 @@ export const createUserWithEmailAndPassword = async (email, password) => {
 	}
 };
 
-// function to create a user document //TODO document all functions
+// function to create a user document 
 export const generateUserDocument = async (user, additionalData) => {
 	// if user missing, exit
 	if (!user) {

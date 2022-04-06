@@ -21,7 +21,7 @@ const Search = (props) => {
 	const history = useHistory();
 	const [mapDetails, setMapDetails] = useContext(MapDetails);
 	const [resultsData, setResultsData] = useContext(ResultsData);
-	const [crimestoDisplay, setCrimestoDisplay] = useContext(Crimes); //TODO not needed?
+	const [crimestoDisplay, setCrimestoDisplay] = useContext(Crimes);
 
 	// function which updates the map context
 	const setMapData = (aLocationName, aLat, aLon, allCrimes) => {
@@ -194,7 +194,7 @@ const Search = (props) => {
 						);
 
 						// get crime threat level for area
-						var threatLevel = getThreatLevel(response.predictions);						
+						var threatLevel = getThreatLevel(response.predictions);
 
 						// pass historic crime data and flask prediction data to results context
 						setResultsData({
@@ -205,9 +205,8 @@ const Search = (props) => {
 
 						setCrimestoDisplay(response.allCrimes);
 
-						//history.push(`/mapdisplay`);
 						history.push(`/mapdisplay`, {
-							isfavourite: "false", //if map a previously favourited map or new search result							
+							isfavourite: "false", //if map a previously favourited map or new search result
 							threatlevel: threatLevel,
 						});
 					}
