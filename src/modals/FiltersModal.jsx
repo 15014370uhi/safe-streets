@@ -141,6 +141,8 @@ const FiltersModal = (props) => {
 				var aLabel = getButtonLabel(aFavouriteFilter);
 				changeFilterState(aLabel); // convert saved filters to button label
 			}
+		} else {
+			filters = []; 
 		}
 		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -170,6 +172,8 @@ const FiltersModal = (props) => {
 			for (let category of categories) {
 				filters.push(category);
 			}
+			//TODO: filters
+			console.log("filters holds: " + filters);
 		}
 		// update set of buttons with new state
 		setCrimeButtons(updatedButtons);
