@@ -7,9 +7,9 @@ Run flask server
 >flask run
 
 Run Node Server
-safe-streets\server
+>safe-streets\server
 >nodemon
 
 Run React
-safe-streets 
+>safe-streets 
 >npm start
