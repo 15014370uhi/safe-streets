@@ -119,7 +119,8 @@ const MapDisplay = () => {
 	};
 
 	//default zoom level on map
-	const zoom = 17;
+	const zoom = 18; // lower number closer zoom
+	
 
 	return (
 		<div className="map-container">

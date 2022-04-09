@@ -71,7 +71,7 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 
 	switch (aCrimeCategory) {
 		case "anti-social-behaviour":
-			color = "darkslateblue"; //e.g. %23 plus hex code c12b08
+			color = "darkslateblue"; // alternative %23 plus hex code c12b08
 			iconName = "record-voice-over";
 			iconType = "material";
 			break;
@@ -147,7 +147,7 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 
 	if (isForButton) {
 		// create icon for filter button
-		var size = "x-large"; //x-large, large, small (default medium no need to declare)
+		var size = "x-large"; // x-large, large, small (default medium no need to declare)
 
 		icon = new L.icon({
 			iconUrl:
@@ -184,8 +184,8 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 };
 
 export const getCenterPoint = () => {
-	const color = "red"; //const color = "%23572ec7";
-	const type = "awesome"; //const type = "material";
+	const color = "red"; 
+	const type = "awesome"; 
 	const iconType = "awesome";
 	const iconName = "search" 
 
