@@ -8,7 +8,7 @@ const RemoveProfileFavouriteModal = (props) => {
 	const deleteFavourite = async () => {		
 		await deleteUserFavourite(props.timestamp);	
 		props.updateUserFavourites();	
-		props.onHide(); //hide modal interface
+		props.onHide(); // hide modal interface
 	};
 
 	return (
@@ -39,4 +39,3 @@ const RemoveProfileFavouriteModal = (props) => {
 };
 
 export default RemoveProfileFavouriteModal;
-//onClick={() => deleteFavourite()}>

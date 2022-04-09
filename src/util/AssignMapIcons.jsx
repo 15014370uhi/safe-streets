@@ -147,7 +147,7 @@ export const getCrimeIcon = (aCrimeCategory, isForButton) => {
 
 	if (isForButton) {
 		// create icon for filter button
-		var size = "x-large"; //x-large large small (default medium no need to declare)
+		var size = "x-large"; //x-large, large, small (default medium no need to declare)
 
 		icon = new L.icon({
 			iconUrl:
@@ -187,7 +187,7 @@ export const getCenterPoint = () => {
 	const color = "red"; //const color = "%23572ec7";
 	const type = "awesome"; //const type = "material";
 	const iconType = "awesome";
-	const iconName = "search" //"times-circle" //"universal-access"
+	const iconName = "search" 
 
 	const icon = new L.icon({
 		iconUrl:

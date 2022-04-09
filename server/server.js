@@ -4,10 +4,10 @@ const cors = require ('cors');
 const routes = require ('./routers/routes');
 const app = express ();
 
-//allow environmental variables
+// allow environmental variables
 dotenv.config ();
 
-//set port to server env variable or port 4000
+// set port to server env variable or port 4000
 const PORT = process.env.PORT || 4000;
 
 //middleware

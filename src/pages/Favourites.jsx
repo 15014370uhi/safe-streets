@@ -45,7 +45,7 @@ const Favourites = (props) => {
 		updateMap(aFavourite);
 
 		history.push(`/mapdisplay`, {
-			isfavourite: "true", //if map is a previously favourited map or new search result
+			isfavourite: "true", // if map is a previously favourited map or new search result
 			timestamp: aTimestamp,
 		});
 	};

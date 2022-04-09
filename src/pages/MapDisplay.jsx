@@ -35,7 +35,6 @@ import ButtonRemoveFromFavs from "../components/ButtonRemoveFromFavs";
 import ButtonShowFilters from "../components/ButtonShowFilters";
 import ButtonShowPredictions from "../components/ButtonShowPredictions";
 import ButtonShowWarnings from "../components/ButtonShowWarnings";
-
 import ButtonBack from "../components/ButtonBack";
 import ButtonShowHistoricCrimes from "../components/ButtonShowHistoricCrimes";
 
@@ -51,7 +50,6 @@ const MapDisplay = () => {
 	const [showAddFavouriteModal, setShowAddFavouriteModal] = useState(false); // favourites modal
 	const [showRemoveFavouritesModal, setShowRemoveFavouritesModal] =
 		useState(false);
-
 	const [resultsData, setResultsData] = useContext(ResultsData);
 	const [showFiltersModal, setShowFiltersModal] = useState(false); // filters modal
 	const [showHistoricCrimeModal, setShowHistoricCrimeModal] = useState(false); // data chart modal

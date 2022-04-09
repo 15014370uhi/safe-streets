@@ -54,7 +54,6 @@ const ShowPredictionsModal = (props) => {
 	const getCrimeCategory = (aCrimeCategory) => {
 		let crimeCategory = "";
 
-		//console.log('crime category received predictions modal: ' + aCrimeCategory);
 		switch (aCrimeCategory) {
 			case "Anti-social behaviour":
 				crimeCategory = "Anti-Social Behaviour";
@@ -164,7 +163,6 @@ const ShowPredictionsModal = (props) => {
 								dataKey="crime"
 								tickMargin={10}
 							/>
-
 							<Bar
 								dataKey="occurrences"
 								fill={"blue"}

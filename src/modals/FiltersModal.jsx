@@ -142,7 +142,7 @@ const FiltersModal = (props) => {
 				changeFilterState(aLabel); // convert saved filters to button label
 			}
 		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		//eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	// function to handle user form input

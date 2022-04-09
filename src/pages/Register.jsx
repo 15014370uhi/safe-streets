@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "../firebase";
 import { Link, useHistory } from "react-router-dom";
 
-//styled components
+// styled components
 import {
 	MDBContainer,
 	MDBRow,

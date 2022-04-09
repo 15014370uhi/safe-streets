@@ -38,7 +38,7 @@ const ShowHistoricCrimeModal = (props) => {
 	const getSortedMonths = () => {
 		var sortedMonths = [];
 
-		//get final graph month to display
+		// get final graph month to display
 		let finalGraphMonth = new Date().getMonth() + 1; //zero indexed
 
 		if (finalGraphMonth === 1) {

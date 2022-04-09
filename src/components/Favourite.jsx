@@ -27,7 +27,7 @@ const Favourite = ({
 }) => {
 	const [map, setMap] = useState(null); // leaflet map object
 
-	//default zoom level on map
+	// default zoom level on map
 	const zoom = 15;
 
 	return (

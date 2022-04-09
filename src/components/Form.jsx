@@ -22,7 +22,7 @@ const Search = (props) => {
 
 	let [imageOpen, setImageOpen] = useState(false);
 
-	// map guide image popup for uk
+	// UK map guide image popup
 	const handleShowImage = (e) => {
 		e.preventDefault();
 		setImageOpen(!imageOpen);
